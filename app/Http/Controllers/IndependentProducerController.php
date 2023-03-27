@@ -20,7 +20,7 @@ class IndependentProducerController extends Controller
         $applications = IndependentProducer:: orderBy('id', 'ASC')->get();
 
 
-        return view('Independent_producers.index', compact(['applications']))
+        return view('independent_producers.index', compact(['applications']))
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -33,7 +33,7 @@ class IndependentProducerController extends Controller
     {
         $user = auth()->user();
 
-        return view('Independent_producers.create');
+        return view('independent_producers.create');
     }
 
 
@@ -42,7 +42,7 @@ class IndependentProducerController extends Controller
 
         $files = $request->allFiles();
         if (empty($files)) {
-            return view('Independent_producers.create',
+            return view('independent_producers.create',
                 ['message' => 'You have not provided the mandatory attachments']);
         }
 
