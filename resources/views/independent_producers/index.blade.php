@@ -1,7 +1,7 @@
 @extends('layouts.main.master')
 
 @section('content')
-    <div class="content-wrapper">
+
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -20,7 +20,7 @@
         </section>
 
         <!-- Main content -->
-        <section class="content">
+
             <div class="container-fluid">
 
                 <div class="row">
@@ -190,7 +190,7 @@
                         <!-- /.card -->
                         </div>
                     </div>
-        </section>
+
         <!-- /.content -->
     </div>
 

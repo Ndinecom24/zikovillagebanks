@@ -39,7 +39,7 @@ class IndependentProducerController extends Controller
 
     public function store(Request $request)
     {
-
+        $tech = substr($request->engagement_number, 0,3);
         $files = $request->allFiles();
         if (empty($files)) {
             return view('independent_producers.create',
@@ -50,7 +50,7 @@ class IndependentProducerController extends Controller
 
 
 //        $docCount = 'RE/IPP/' .$request->engagement_number.'/'. IndependentProducer::count('id');
-        $docCount = 'RE/IPP/' . $request->engagement_number . '/' . $date->month . $date->year . '00000' . IndependentProducer::count('id');
+        $docCount = 'RE/IPP/' . $tech . '/' . $date->month . $date->year . '00000' . IndependentProducer::count('id');
         $validatedData = $request->validate([
             'invoiced_services' => ['required'],
         ]);

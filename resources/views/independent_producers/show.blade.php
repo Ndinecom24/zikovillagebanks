@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="content-wrapper">
+
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -41,7 +41,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <a class="btn btn-outline-success float-right"
-                                   href="{{route('independent-producer.index')}}">
+                                   href="{{route('home')}}">
                                     <i class="fa fa-backward"></i> Back
                                 </a>
                                 <h4 class="title">IPP DETAILS</h4>
@@ -413,11 +413,132 @@
 
                 </form>
 
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card card-solid">
+                            <div class="card-header bg-gradient-orange">
+                                <h4 class="card-title"> ASSIGNMENT APPROVALS</h4>
+                            </div>
+                            <div class="card-body">
+                                <nav class="w-1000">
+                                    <div class="nav nav-tabs" id="product-tab" role="tablist">
 
+                                        <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab"
+                                           href="#product-desc" role="tab" aria-controls="product-desc"
+                                           aria-selected="true">Current </a>
+                                        <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab"
+                                           href="#product-comments" role="tab" aria-controls="product-comments"
+                                           aria-selected="false">History</a>
+                                    </div>
+                                </nav>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="tab-content p-3" id="nav-tabContent">
+                                            <div class="tab-pane fade active show" id="product-desc" role="tabpanel"
+                                                 aria-labelledby="product-desc-tab">
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-sm-12">
+                                                        <div class="row">
+                                                            <div class="col-lg-1 col-sm-12">
+                                                                <label class="form-control-label">Reason</label>
+                                                            </div>
+                                                            <div class="col-lg-11 col-sm-12 mb-2">
+                                                        <textarea class="form-control" rows="5" name="reason"
+                                                                  required></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2 col-sm-12 text-left ">
+                                                        <div id="divSubmit_show">
+                                                            <button id="btnSubmit_approve" type="submit" name="approval"
+                                                                    class="btn btn-outline-success mr-2 p-2  "
+                                                                    value='Approved'>APPROVE
+                                                            </button>
+                                                            <button id="btnSubmit_reject" type="submit" name="approval"
+                                                                    class="btn btn-outline-danger ml-2 p-2  "
+                                                                    value='Rejected'>REJECT
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="tab-pane fade" id="product-comments" role="tabpanel"
+                                             aria-labelledby="product-comments-tab">
+                                            <div class="tab-pane fade active show" id="product-desc" role="tabpanel"
+                                                 aria-labelledby="product-desc-tab">
+                                                <div class="table-responsive mt-10 ">
+
+                                                    <div class="table-responsive mt-10 ">
+                                                        <table id="example11" class="table ">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>User Name</th>
+                                                                <th>User Staff-No</th>
+                                                                <th>Status From</th>
+                                                                <th>Status To</th>
+                                                                <th>Action</th>
+                                                                <th>Comment</th>
+                                                                <th>Updated By</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            {{--                                                                @foreach($assignment->approvals as $approval)--}}
+                                                            <tr>
+
+
+                                                                <td>
+                                                                    {{--                                                                            {{$device->device_type->name}}--}}
+                                                                </td>
+                                                                <td>
+                                                                    {{--                                                                    <span class="badge badge-{{$approval->statusFrom->html ?? 'dark'}}">--}}
+                                                                    {{--                                                                        {{$approval->statusFrom->name ?? '--'}} </span>--}}
+                                                                </td>
+                                                                <td>
+                                                                    {{--                                                                     <span class="badge badge-{{$approval->statusTo->html ?? 'dark'}}">--}}
+                                                                    {{--                                                                        {{$approval->statusTo->name ?? '--'}} </span>--}}
+                                                                </td>
+                                                                <td>
+                                                                    {{--                                                                            {{$approval->action ?? '--'}}--}}
+                                                                </td>
+                                                                <td>
+                                                                    {{--                                                                            {{$approval->comment ?? '--'}}--}}
+                                                                </td>
+                                                                <td>
+                                                                    {{--                                                                            {{$approval->Employee->name ?? '--'}}--}}
+                                                                </td>
+                                                                <td>
+                                                                    {{--                                                                            {{$approval->Employee->staff_no ?? '--'}}--}}
+                                                                </td>
+                                                            </tr>
+                                                            {{--                                                                @endforeach--}}
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
-    </div>
+
 
 
 @endsection

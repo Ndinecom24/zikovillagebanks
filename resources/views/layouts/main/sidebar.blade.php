@@ -12,7 +12,7 @@
     <div class="sidebar">
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column " data-widget="treeview" role="menu"
+            <ul class="nav nav-pills nav-sidebar nav-child-indent flex-column " data-widget="treeview" role="menu"
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item">
@@ -22,19 +22,54 @@
                     </a>
                 </li>
 
+{{--                <li class="nav-item">--}}
+{{--                    <a href="{{route('independent-producer.index')}}" class="nav-link ">--}}
+{{--                        <i class="nav-icon fas fa-file-alt"></i>--}}
+{{--                        <p>Independent Power Producers</p>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+
+                <li class="nav-header">SUBSTATIONS</li>
                 <li class="nav-item">
-                    <a href="{{route('independent-producer.index')}}" class="nav-link ">
-                        <i class="nav-icon fas fa-file-alt"></i>
-                        <p>Independent Power Producers</p>
+                    <a href="{{route('province.index')}}" class="nav-link ">
+                        <i class="far fa-circle nav-icon text-warning"></i>
+                        <p>Provinces</p>
+                    </a>
+
+                </li>
+
+                <li class="nav-header ">REPORTS</li>
+
+                <li class="nav-item">
+                    <a href="{{route('reports.index')}}" class="nav-link ">
+                        <i class="far fa-circle nav-icon text-warning"></i>
+                        <p>General Reports</p>
                     </a>
                 </li>
 
+
+                    <li class="nav-item">
+                        <a href="{{route('reports.index')}}" class="nav-link ">
+                            <i class="far fa-circle nav-icon text-warning"></i>
+                            <p>Graphical Reports</p>
+                        </a>
+                    </li>
+
+
+
+                <li class="nav-header ">USERS</li>
                 <li class="nav-item">
                     <a href="{{route('user.index')}}" class="nav-link ">
-                        <i class="nav-icon fas fa-file-alt"></i>
+                        <i class="far fa-circle nav-icon text-warning"></i>
                         <p>Users</p>
                     </a>
                 </li>
+{{--                <li class="nav-item">--}}
+{{--                    <a href="{{route('user.create')}}" class="nav-link ">--}}
+{{--                        <i class="far fa-circle nav-icon text-warning"></i>--}}
+{{--                        <p>Users Create</p>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

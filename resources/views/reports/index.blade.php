@@ -1,12 +1,12 @@
 @extends('layouts.main.master')
 
 
-@push('custom-styles')
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
-@endpush
+{{--@push('custom-styles')--}}
+{{--    <!-- DataTables -->--}}
+{{--    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">--}}
+{{--    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">--}}
+{{--    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">--}}
+{{--@endpush--}}
 
 
 @section('content')
@@ -16,11 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark text-uppercase text-green ">RENEWABLE ENERGY MANAGEMENT SYSTEM</h1>
+                    <h1 class="m-0 text-dark text-uppercase text-green ">REPORTS</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('reports.index')}}">Reports</a></li>
 {{--                        <li class="breadcrumb-item active">System</li>--}}
                     </ol>
                 </div><!-- /.col -->
@@ -58,30 +59,30 @@
             <!-- Info boxes -->
             <div class="row">
                 <!-- /.col -->
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3 bg-info">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
                            href="">
                             <span><i class="fa fa-file"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text">INVOICED SERVICES</span>
-{{--                            <span class="info-box-number">00</span>--}}
+                            <span class="info-box-text">SOLAR TECHNOLOGY</span>
+                            <span class="info-box-number">00</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
 
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3 bg-success">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
                            href=" ">
                             <span><i class="fa fa-file"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> VOLTAGE LEVELS</span>
-{{--                            <span class="info-box-number">00</span>--}}
+                            <span class="info-box-text"> WIND TECHNOLOGY</span>
+                            <span class="info-box-number">00</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -90,29 +91,58 @@
                 <!-- fix for small devices only -->
                 <div class="clearfix hidden-md-up"></div>
 
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3 bg-warning">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
                            href=" ">
                             <span><i class="fa fa-file"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> IPP'S</span>
-{{--                            <span class="info-box-number"> 00</span>--}}
+                            <span class="info-box-text">GEOTHERMAL TECHNOLOGY</span>
+                            <span class="info-box-number"> 00</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3 bg-danger">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
                            href=" ">
                             <span><i class="fa fa-file"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> TERMINATED CONTRACTS</span>
-{{--                            <span class="info-box-number">00</span>--}}
+                            <span class="info-box-text"> HYDRO TECHNOLOGY</span>
+                            <span class="info-box-number">00</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
+                        <a class="info-box-icon elevation-1"
+                           href=" ">
+                            <span><i class="fa fa-file"></i></span>
+                        </a>
+                        <div class="info-box-content">
+                            <span class="info-box-text"> BIOMASS TECHNOLOGY</span>
+                            <span class="info-box-number">00</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
+                        <a class="info-box-icon elevation-1"
+                           href=" ">
+                            <span><i class="fa fa-file"></i></span>
+                        </a>
+                        <div class="info-box-content">
+                            <span class="info-box-text">WASTE OF ENERGY</span>
+                            <span class="info-box-number">00</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -127,33 +157,57 @@
                 </div>
 
 
+            <div class="card">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <form method='post' action="">
+                                @csrf
+                                <div class="input-group">
+                                    {{--                                                                                                        <input wire:model.debounce.500ms="searchTerm"--}}
+                                    <input name="searchTerm"
+                                           type="search"
+                                           class="form-control"
+                                           placeholder="Search...">
+                                    <input name="searchTerm"
+                                           type="date"
+                                           class="form-control"
+                                          >
+                                    <input name="searchTerm"
+                                           type="date"
+                                           class="form-control"
+                                          >
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- /.card-body -->
+
+            </div>
+
             <div class="row">
                 <!-- Left col -->
                 <div class="col-md-12">
                     <!-- TABLE: LATEST ORDERS -->
                     <div class="card">
-                        <div class="card-header border-transparent  bg-gradient-orange " style="opacity: .9">
-                            <h3 class="card-title"></h3>  </span>
-{{--                                class="badge badge-success right ml-2">22</span>--}}
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
                         <!-- /.card-header -->
                         <div class="card-body p-2">
 
                             <div class="table-responsive mt-10 ">
-                                <table id="example1" class="table ">
-                                    <thead>
+                                <table class="table table-hover table-bordered data-table nowrap">
+                                    <thead class="text-uppercase">
                                     <tr>
                                         <th>Ref No</th>
                                         <th>Technology</th>
                                         <th>Name Of IPP</th>
                                         <th>Date of Application</th>
-                                        <th>Size of plant [MW]</th>
+                                        <th>Size of plant</th>
                                         <th>Province (Location)</th>
                                         <th>District (Location)</th>
                                         <th>Available Capacity</th>
@@ -161,60 +215,25 @@
                                         <th>Expiry Date</th>
                                         <th>Status of Engagement</th>
                                         <th>Contact Person (Name)</th>
-                                        <th>Action</th>
+                                        <th>Type of Venture</th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
-
-                                    @foreach($applications as $item)
-                                        <tr>
-                                            <td class="text-left">{{$item->system_ref}}</td>
-                                            <td class="text-left">{{$item->engagement_number}}</td>
-                                            <td class="text-left">{{$item->name_of_ipp}}</td>
-                                            <td class="text-left">{{$item->date_of_application}}</td>
-                                            <td class="text-left">{{$item->size_of_plant}}{{$item->size_of_plant_unit}}</td>
-                                            <td class="text-left">{{$item->province}}</td>
-                                            <td class="text-left">{{$item->district}}
-                                            <td class="text-left">{{$item->available_capacity}}</td>
-                                            <td class="text-left">{{$item->voltage_level}}</td>
-                                            <td class="text-left">{{$item->expiry_connection_point}}</td>
-                                            <td class="text-left">{{$item->status_of_engagement}}</td>
-                                            <td class="text-left">{{$item->contact_person_name}}</td>
-
-
-                                            <td class="text-left">
-                                                <div class="input-group-prepend">
-                                                    <button type="button"
-                                                            class="btn btn-outline-success dropdown-toggle"
-                                                            data-toggle="dropdown">
-                                                        Action <span class="caret"></span>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item"
-                                                           href="{{ route('independent-producer.show',$item) }}">
-                                                            View
-                                                        </a>
-                                                        {{--                                                                                                        <a class="dropdown-item"--}}
-                                                        {{--                                                                                                           href="{{ route('contract-indexation.destroy',$item->id) }}">--}}
-                                                        {{--                                                                                                            Delete--}}
-                                                        {{--                                                                                                        </a>--}}
-
-                                                        <a class="dropdown-item"
-                                                           href="{{ route('independent-producer.edit',$item->id) }}">Edit
-                                                        </a>
-                                                        {{--                                                @if(Auth::user()->user_access_level_id == 0||Auth::user()->user_access_level_id == 1 || Auth::user()->user_access_level_id == 2)--}}
-                                                        {{--                                                    <a class="dropdown-item"--}}
-                                                        {{--                                                       href="{{ route('contract.ict.edit',$item->id) }}">Edit--}}
-                                                        {{--                                                        Contract--}}
-                                                        {{--                                                    </a>--}}
-                                                        {{--                                                @endif--}}
-
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    <tr></tr>
+                                    </tbody>
                                     </tbody>
                                 </table>
                             </div>
@@ -222,8 +241,8 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            <a href="{{ route('independent-producer.create') }}"
-                               class="btn btn-sm bg-gradient-green float-left">New IPP</a>
+{{--                            <a href="{{ route('independent-producer.create') }}"--}}
+{{--                               class="btn btn-sm bg-gradient-green float-left">New IPP</a>--}}
                         </div>
                         <!-- /.card-footer -->
                     </div>

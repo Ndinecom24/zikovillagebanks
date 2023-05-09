@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\IndependentProducer;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,7 +24,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $applications = IndependentProducer:: orderBy('id', 'ASC')->get();
+
+        return view('home', compact(['applications']))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+
     }
     /**
      * Show the application dashboard.

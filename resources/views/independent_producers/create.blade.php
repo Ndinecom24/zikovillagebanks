@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="content-wrapper">
+{{--    <div class="content-wrapper">--}}
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -46,7 +46,7 @@
                             <div class="card-header">
 
                                 <a class="btn btn-outline-success float-right"
-                                   href="{{ route('independent-producer.index') }}">
+                                   href="{{route('home')}}">
                                     <i class="fa fa-backward"></i> Back
                                 </a>
                                 <h4 class="title">Add IPP</h4>
@@ -80,9 +80,10 @@
 
                                                 <div class="form-group">
                                                     <label for="sel_suppliers">Invoiced Services</label>
-                                                    <input type="text" class="form-control"
-                                                           id="invoiced_services"
-                                                           name="invoiced_services">
+                                                    <select name="invoiced_services" id="" class="form-control" type="text">
+                                                        <option>N/A</option>
+                                                        <option>INVOICED</option>
+                                                    </select>
                                                 </div>
 
                                             </div>
@@ -94,12 +95,12 @@
                                                             id="type"
                                                             name="engagement_number"
                                                             type="text">
-                                                        <option value="SOL">SOLAR</option>
-                                                        <option value="WIN">WIND</option>
-                                                        <option value="GEO">GEOTHERMAL</option>
-                                                        <option value="HYD">HYDRO</option>
-                                                        <option value="BIO">BIOMASS</option>
-                                                        <option value="WAS">WASTE OF ENERGY</option>
+                                                        <option value="SOLAR">SOLAR</option>
+                                                        <option value="WIND">WIND</option>
+                                                        <option value="GEOTHERMAL">GEOTHERMAL</option>
+                                                        <option value="HYDRO">HYDRO</option>
+                                                        <option value="BIOMASS">BIOMASS</option>
+                                                        <option value="WASTE OF ENERGY">WASTE OF ENERGY</option>
                                                     </select>
                                                 </div>
 
@@ -174,7 +175,7 @@
                                                             id="contract_period_unit"
                                                             name="size_of_plant_unit">
                                                         <option>MW</option>
-                                                        <option>KW</option>
+                                                        <option>kW</option>
 
                                                     </select>
 
@@ -327,23 +328,31 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="contract_end_date">Date of Update</label>
-                                                    <input type="date"
+                                                    <input type="text"
                                                            class="form-control"
                                                            id="date_of_update"
-                                                           name="date_of_update"
-                                                           >
+                                                           name="date_of_update" value="{{date('Y-m-d H:i:s')}}" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="contract_comment">Updated By
-                                                        Date</label>
-                                                    <input class="form-control" type="date"
+                                                    <label for="contract_comment">Updated By</label>
+                                                    <input class="form-control" type="text"
                                                            id="updated_by"
-                                                           name="updated_by">
+                                                           name="updated_by" value="{{$user = auth()->user()->name}}" readonly>
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="contract_comment">Type Of Venture</label>
+                                                    <select name="" id="">
+
+                                                        <option>Joint Venture</option>
+                                                        <option>IPP</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
                                         </div>
 
