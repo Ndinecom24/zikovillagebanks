@@ -11,15 +11,22 @@ class Districts extends Model
     protected $table= 'districts';
     protected $fillable = [
 
+        'province_id',
         'district',
-        'province_id'
+
+
     ];
 
-    protected $with = [
 
-        'substations'
-    ];
-    public function substations(){
-        return $this->hasMany( ConnectionPoints::class, 'district');
+    public function  province(){
+        return $this->belongsTo(Province::class,'province_id','id');
+    }
+
+//    protected $with = [
+//
+//        'connectionPoint'
+//    ];
+    public function connectionPoint(){
+        return $this->hasMany( ConnectionPoints::class, 'district_id','id');
     }
 }

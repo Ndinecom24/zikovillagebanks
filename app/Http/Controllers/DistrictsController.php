@@ -35,10 +35,11 @@ class DistrictsController extends Controller
      */
     public function store(Request $request)
     {
-        //        dd($request->all());
+
         $validatedData = $request->validate([
-            'district' => ['required'],
             'province_id' => ['required'],
+            'district' => ['required'],
+
 
 
         ]);
@@ -57,7 +58,7 @@ class DistrictsController extends Controller
 
             ]
         );
-        return redirect()->route('province.show')
+        return redirect()->route('province.show',  $request->province_id)
             ->with('message', 'Submitted Successfully');
     }
 
@@ -90,7 +91,7 @@ class DistrictsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         //
     }

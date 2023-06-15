@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\ConnectionPointsController;
 use App\Http\Controllers\DistrictsController;
 use App\Http\Controllers\IndependentProducerController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
+use App\Models\ConnectionPoints;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,8 +64,14 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
 
     Route::get('/province/index', [ProvinceController::class, 'index'])->name('province.index');
     Route::post('/province/store', [ProvinceController::class, 'store'])->name('province.store');
-    Route::get('/province/show', [ProvinceController::class, 'show'])->name('province.show');
-
+    Route::get('/province/show/{id}/{district}', [ProvinceController::class, 'show'])->name('province.show');
 
     Route::post('/districts/store', [DistrictsController::class, 'store'])->name('districts.store');
+
+    Route::post('/node/store', [ConnectionPointsController::class, 'store'])->name('node.store');
+
+
+    Route::get('/status/index', [StatusController::class, 'index'])->name('status.index');
+    Route::post('/status/store', [StatusController::class, 'store'])->name('status.store');
+    Route::post('/destroy/{id}', [StatusController::class, 'destroy'])->name('status.destroy');
 });

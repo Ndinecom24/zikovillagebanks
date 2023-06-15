@@ -55,6 +55,18 @@
                         </a>
                     </li>
 
+                <li class="nav-header ">Configurations</li>
+
+                <li class="nav-item">
+                    <a href="{{route('status.index')}}" class="nav-link ">
+                        <i class="far fa-circle nav-icon text-warning"></i>
+                        <p>Statuses</p>
+                    </a>
+                </li>
+
+
+
+
 
 
                 <li class="nav-header ">USERS</li>

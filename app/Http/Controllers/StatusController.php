@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ConnectionPoints;
-use App\Models\Districts;
+use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
-class ConnectionPointsController extends Controller
+class StatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,12 @@ class ConnectionPointsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+
     {
-        //
+        $status = Status:: orderBy('id','ASC')->get();
+
+      return view('status.index', compact(['status']))
+          ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -36,45 +40,22 @@ class ConnectionPointsController extends Controller
      */
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
-            'district_id' => ['required'],
-            'substation' => ['required'],
-            'voltage_level' => ['required'],
-            'layout' => ['required'],
-            'coordinates' => ['required'],
-            'installed_capacity' => ['required'],
-            'substation_capacity' => ['required'],
-
-
+            'status' => ['required'],
 
         ]);
 
-        $province = ConnectionPoints::updateOrCreate(
+        $province = Status::updateOrCreate(
             [
-
-                'district_id' => $request->district_id,
-                'substation' => $request->substation,
-                'voltage_level' => $request->voltage_level,
-                'layout' => $request->layout,
-                'coordinates' => $request->coordinates,
-                'installed_capacity' => $request->installed_capacity,
-                'substation_capacity' => $request->substation_capacity,
-
-
+                'status' => $request->status,
             ],
             [
-                'district_id' => $request->district_id,
-                'substation' => $request->substation,
-                'voltage_level' => $request->voltage_level,
-                'layout' => $request->layout,
-                'coordinates' => $request->coordinates,
-                'installed_capacity' => $request->installed_capacity,
-                'substation_capacity' => $request->substation_capacity,
+                'status' => $request->status,
 
             ]
         );
-        return redirect()->back()
-            ->with('message', 'Submitted Successfully');
+        return Redirect::back()->with('message', 'Status Submitted Successfully');
     }
 
     /**
@@ -119,6 +100,8 @@ class ConnectionPointsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $status = Status::findOrFail($id);
+        $status->delete();
+        return Redirect::back()->with('message', 'Status Deleted Successfully');
     }
 }

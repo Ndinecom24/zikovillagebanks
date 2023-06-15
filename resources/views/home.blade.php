@@ -56,32 +56,34 @@
 
         <div class="container-fluid">
             <!-- Info boxes -->
+
+
             <div class="row">
                 <!-- /.col -->
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3 bg-info">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
                            href="">
                             <span><i class="fa fa-file"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text">INVOICED SERVICES</span>
-{{--                            <span class="info-box-number">00</span>--}}
+                            <span class="info-box-text">SOLAR TECHNOLOGY</span>
+                            <span class="info-box-number">{{number_format($applications->where('engagement_number','SOLAR')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
 
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3 bg-success">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
                            href=" ">
                             <span><i class="fa fa-file"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> VOLTAGE LEVELS</span>
-{{--                            <span class="info-box-number">00</span>--}}
+                            <span class="info-box-text"> WIND TECHNOLOGY</span>
+                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WIND')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -90,29 +92,58 @@
                 <!-- fix for small devices only -->
                 <div class="clearfix hidden-md-up"></div>
 
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3 bg-warning">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
                            href=" ">
                             <span><i class="fa fa-file"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> IPP'S</span>
-{{--                            <span class="info-box-number"> 00</span>--}}
+                            <span class="info-box-text">GEOTHERMAL TECHNOLOGY</span>
+                            <span class="info-box-number"> {{number_format($applications->where('engagement_number','GEOTHERMAL')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3 bg-danger">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
                            href=" ">
                             <span><i class="fa fa-file"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> TERMINATED CONTRACTS</span>
-{{--                            <span class="info-box-number">00</span>--}}
+                            <span class="info-box-text"> HYDRO TECHNOLOGY</span>
+                            <span class="info-box-number">{{number_format($applications->where('engagement_number','HYDRO')->count())}}</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
+                        <a class="info-box-icon elevation-1"
+                           href=" ">
+                            <span><i class="fa fa-file"></i></span>
+                        </a>
+                        <div class="info-box-content">
+                            <span class="info-box-text"> BIOMASS TECHNOLOGY</span>
+                            <span class="info-box-number">{{number_format($applications->where('engagement_number','BIOMASS')->count())}}</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-2">
+                    <div class="info-box mb-3 bg-gray">
+                        <a class="info-box-icon elevation-1"
+                           href=" ">
+                            <span><i class="fa fa-file"></i></span>
+                        </a>
+                        <div class="info-box-content">
+                            <span class="info-box-text">WASTE OF ENERGY</span>
+                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WASTE OF ENERGY')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -123,6 +154,73 @@
                 <!-- /.col -->
 
             </div>
+{{--            <div class="row">--}}
+{{--                <!-- /.col -->--}}
+{{--                <div class="col-12 col-sm-6 col-md-3">--}}
+{{--                    <div class="info-box mb-3 bg-info">--}}
+{{--                        <a class="info-box-icon elevation-1"--}}
+{{--                           href="">--}}
+{{--                            <span><i class="fa fa-file"></i></span>--}}
+{{--                        </a>--}}
+{{--                        <div class="info-box-content">--}}
+{{--                            <span class="info-box-text">INVOICED SERVICES</span>--}}
+{{--                            <span class="info-box-number">00</span>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.info-box-content -->--}}
+{{--                    </div>--}}
+{{--                    <!-- /.info-box -->--}}
+{{--                </div>--}}
+
+{{--                <div class="col-12 col-sm-6 col-md-3">--}}
+{{--                    <div class="info-box mb-3 bg-success">--}}
+{{--                        <a class="info-box-icon elevation-1"--}}
+{{--                           href=" ">--}}
+{{--                            <span><i class="fa fa-file"></i></span>--}}
+{{--                        </a>--}}
+{{--                        <div class="info-box-content">--}}
+{{--                            <span class="info-box-text"> VOLTAGE LEVELS</span>--}}
+{{--                            <span class="info-box-number">00</span>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.info-box-content -->--}}
+{{--                    </div>--}}
+{{--                    <!-- /.info-box -->--}}
+{{--                </div>--}}
+{{--                <!-- fix for small devices only -->--}}
+{{--                <div class="clearfix hidden-md-up"></div>--}}
+
+{{--                <div class="col-12 col-sm-6 col-md-3">--}}
+{{--                    <div class="info-box mb-3 bg-warning">--}}
+{{--                        <a class="info-box-icon elevation-1"--}}
+{{--                           href=" ">--}}
+{{--                            <span><i class="fa fa-file"></i></span>--}}
+{{--                        </a>--}}
+{{--                        <div class="info-box-content">--}}
+{{--                            <span class="info-box-text"> IPP'S</span>--}}
+{{--                            <span class="info-box-number"> 00</span>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.info-box-content -->--}}
+{{--                    </div>--}}
+{{--                    <!-- /.info-box -->--}}
+{{--                </div>--}}
+{{--                <div class="col-12 col-sm-6 col-md-3">--}}
+{{--                    <div class="info-box mb-3 bg-danger">--}}
+{{--                        <a class="info-box-icon elevation-1"--}}
+{{--                           href=" ">--}}
+{{--                            <span><i class="fa fa-file"></i></span>--}}
+{{--                        </a>--}}
+{{--                        <div class="info-box-content">--}}
+{{--                            <span class="info-box-text"> TERMINATED CONTRACTS</span>--}}
+{{--                            <span class="info-box-number">00</span>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.info-box-content -->--}}
+{{--                    </div>--}}
+{{--                    <!-- /.info-box -->--}}
+{{--                </div>--}}
+
+
+{{--                <!-- /.col -->--}}
+
+{{--            </div>--}}
                     <!-- /.info-box -->
                 </div>
 

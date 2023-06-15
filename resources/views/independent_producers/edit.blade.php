@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
                         <li class="breadcrumb-item active">Simple Tables</li>
                     </ol>
                 </div>
@@ -327,7 +327,7 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="contract_comment">Updated By
                                                 </label>
@@ -338,13 +338,23 @@
                                         </div>
 
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="contract_comment">Expected Day Of Commissioning
                                                 </label>
-                                                <input class="form-control" type="text"
-                                                       id="updated_by"
-                                                       name="updated_by">
+                                                <input class="form-control" type="date"
+                                                       id="expected_date_commissioning"
+                                                       name="expected_date_commissioning" value="{{$item->expected_date_commissioning}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="contract_comment">Expected Commercial Operation Date
+                                                </label>
+                                                <input class="form-control" type="date"
+                                                       id="expected_commercial"
+                                                       name="expected_commercial" value="{{$item->expected_commercial}}">
                                             </div>
                                         </div>
 

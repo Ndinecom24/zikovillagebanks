@@ -6,13 +6,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Provinces</h1>
+                    <h1>Statuses</h1>
                 </div>
 
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Provinces</li>
+                        <li class="breadcrumb-item active">Statuses</li>
                     </ol>
                 </div>
             </div>
@@ -51,19 +51,19 @@
                     <div class="row">
 
                         <div class="col-md-3">
-                            <form method='post' action="">
+                            <form method='post' action="#">
                                 @csrf
                                 <div class="input-group">
-{{--                                                                    <input wire:model.debounce.500ms="searchTerm"--}}
-{{--                                                                                    <input name="searchTerm"--}}
-{{--                                                                                           type="search"--}}
-{{--                                                                                           class="form-control m-1"--}}
-{{--                                                                                           placeholder="Search contracts">--}}
+                                    {{--                                                                    <input wire:model.debounce.500ms="searchTerm"--}}
+                                    {{--                                                                                    <input name="searchTerm"--}}
+                                    {{--                                                                                           type="search"--}}
+                                    {{--                                                                                           class="form-control m-1"--}}
+                                    {{--                                                                                           placeholder="Search contracts">--}}
                                     <div class="input-group-btn">
-{{--                                                                                            <button type="submit" class="btn btn-outline-primary m-1">--}}
-{{--                                                                                                <i class="fa fa-search"></i>--}}
-{{--                                                                                                Search--}}
-{{--                                                                                            </button>--}}
+                                        {{--                                                                                            <button type="submit" class="btn btn-outline-primary m-1">--}}
+                                        {{--                                                                                                <i class="fa fa-search"></i>--}}
+                                        {{--                                                                                                Search--}}
+                                        {{--                                                                                            </button>--}}
                                     </div>
                                 </div>
                             </form>
@@ -73,7 +73,7 @@
 
                     <button class="btn btn-sm bg-gradient-orange float-right" data-toggle="modal"
                             data-target="#modal-create">
-                        Add Province
+                        Add Status
                     </button>
 
 
@@ -88,48 +88,49 @@
                 <div class="card">
 
 
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-hover table-striped">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
                             <thead>
 
-                            <tr class="text-nowrap">
+                            <tr>
 
-                                <th>ID</th>
-                                <th>Province</th>
+
+                                <th>Status Name</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($province as $item)
+                                @foreach($status as $item)
                                 <tr>
-                                    <td >{{$item->id}}</td>
-                                    <td >{{$item->province}}</td>
+
+                                    <td >{{$item->status}}</td>
 
                                     <td>
-                                        <a class="btn btn-sm bg-gradient-gray" style="margin: 1px" href="{{route('province.show', [ 'id'=> $item->id, 'district'=>0])}}">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <a class="btn btn-sm bg-gradient-gray"  data-toggle="modal" data-target="" style="margin: 1px" title="Edit gym">
+                                        <a class="btn btn-sm bg-gradient-gray" style="margin: 1px" href="">
                                             <i class="fa fa-pen"></i>
+                                        </a>
+                                        <a class="btn btn-sm bg-gradient-gray" href="{{route('status.destroy', $item->id)}}" title="Delete Status">
+                                            <i class="fa fa-trash"></i>
                                         </a>
 
                                     </td>
                                 </tr>
 
-                            @endforeach
+                                @endforeach
                             </tbody>
 
                             <tfoot>
-{{--                            <tr>--}}
-{{--                                <td colspan="11"> <span>No data available </span></td>--}}
-{{--                            </tr>--}}
+                            {{--                            <tr>--}}
+                            {{--                                <td colspan="11"> <span>No data available </span></td>--}}
+                            {{--                            </tr>--}}
                             </tfoot>
 
                         </table>
 
-                                                        <div style="padding: 20px">
-{{--                                                            {!! $province->links() !!}--}}
-                                                        </div>
+                        <div style="padding: 20px">
+                            {{--                                                            {!! $province->links() !!}--}}
+                        </div>
 
                     </div>
                     <!-- /.card-body -->
@@ -138,28 +139,28 @@
             <!-- /.card -->
 
 
-        <!-- /.content -->
+            <!-- /.content -->
 
             <!-- NEW MODAL-->
             <div class="modal fade" id="modal-create">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title text-center">Add Province</h4>
+                            <h4 class="modal-title text-center">Add Status</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <!-- form start -->
-                        <form role="form-new" method="post" action="{{route('province.store')}}">
+                        <form role="form-new" method="post" action="{{route('status.store')}}">
                             @csrf
 
                             <div class="modal-body">
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Province</label>
+                                    <label for="inputName" class="col-sm-2 col-form-label">Status</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control uppercase" name="province" required
-                                               placeholder="Province Name">
+                                        <input type="text" class="form-control uppercase" name="status" required
+                                               placeholder="Status" style="text-transform:uppercase;">
                                     </div>
                                 </div>
                                 <div class="modal-footer">

@@ -19,7 +19,7 @@ class IndependentProducer extends Model
         'date_of_application',
         'size_of_plant',
         'size_of_plant_unit',
-        'province',
+        'province_id',
         'district',
         'proposed_connection_point',
         'total_system_generated',
@@ -35,6 +35,10 @@ class IndependentProducer extends Model
         'contact_person_name',
         'contact_person_email',
         'contact_person_phone',
+        'type_of_venture',
+        'expected_date_commissioning',
+        'expected_commercial',
+        'status_id'
 
 
     ];

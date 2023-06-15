@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ConnectionPoints;
+use App\Models\Districts;
+use App\Models\IndependentProducer;
 use App\Models\Province;
 use Illuminate\Http\Request;
 
@@ -64,10 +67,24 @@ class ProvinceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Province $province)
+    public function show($id,  $district )
     {
-//        $user = auth()->user();
-        return view('nodes.show')->with(compact('province'));;
+        $my_district = Districts::find($district);
+        $my_connectionPoint = ConnectionPoints::
+            where( 'district_id' , $district )
+            ->get()
+        ;
+
+        $producers = IndependentProducer:: orderBy('id','ASC')
+            ->where('province_id', $id)
+            ->get();
+
+
+        $province = Province::with('districts.connectionPoint')->find($id);
+
+//dd($province);
+
+        return view('nodes.show')->with(compact('producers','province', 'my_district','my_connectionPoint'));;
     }
 
     /**

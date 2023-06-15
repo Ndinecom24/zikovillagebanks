@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\FileUploads;
 use App\Models\IndependentProducer;
+use App\Models\Province;
+use App\Models\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -32,8 +34,10 @@ class IndependentProducerController extends Controller
     public function create()
     {
         $user = auth()->user();
+        $province = Province::get();
+        $status = Status::get();
 
-        return view('independent_producers.create');
+        return view('independent_producers.create')->with(compact('user','province', 'status'));
     }
 
 
@@ -69,7 +73,7 @@ class IndependentProducerController extends Controller
                 'date_of_application' => $request->date_of_application,
                 'size_of_plant' => $request->size_of_plant,
                 'size_of_plant_unit' => $request->size_of_plant_unit,
-                'province' => $request->province,
+                'province_id' => $request->province_id,
                 'district' => $request->district,
                 'proposed_connection_point' => $request->proposed_connection_point,
 //                'total_system_generated'=> $total,
@@ -96,7 +100,7 @@ class IndependentProducerController extends Controller
                 'date_of_application' => $request->date_of_application,
                 'size_of_plant' => $request->size_of_plant,
                 'size_of_plant_unit' => $request->size_of_plant_unit,
-                'province' => $request->province,
+                'province_id' => $request->province_id,
                 'district' => $request->district,
                 'proposed_connection_point' => $request->proposed_connection_point,
 //                'total_system_generated'=> $total,
@@ -246,6 +250,10 @@ class IndependentProducerController extends Controller
         $item->contact_person_name = $request->contact_person_name;
         $item->contact_person_email = $request->contact_person_email;
         $item->contact_person_phone = $request->contact_person_phone;
+        $item->type_of_venture = $request->type_of_venture;
+        $item->expected_date_commissioning = $request->expected_date_commissioning;
+        $item->expected_commercial = $request->expected_commercial;
+//        $item->contact_person_phone = $request->contact_person_phone;
         $item->save();
 
         return redirect()->route('independent-producer.index')->with('message', 'Contract Data is successfully updated');

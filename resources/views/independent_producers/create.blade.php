@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            {{--                            <li class="breadcrumb-item"><a href="#">Home</a></li>--}}
+                                                        <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
                             {{--                            <li class="breadcrumb-item active">Simple Tables</li>--}}
                         </ol>
                     </div>
@@ -176,6 +176,7 @@
                                                             name="size_of_plant_unit">
                                                         <option>MW</option>
                                                         <option>kW</option>
+                                                        <option>kV</option>
 
                                                     </select>
 
@@ -188,12 +189,17 @@
 
 
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="contract_currency_id">Province</label>
-                                                    <input type="text" class="form-control"
-                                                           id="province"
-                                                           name="province"/>
+                                                    <select type="text" class="form-control"
+                                                           id="sel"
+                                                            name="province_id" onchange="togglefunction(event)">
+                                                        <option selected disabled hidden>Select Province</option>
+                                                        @foreach($province as $province)
+                                                        <option value="{{$province->id}}">{{$province->province}}</option>
+                                                        @endforeach
+                                                    </select>
 
 
                                                 </div>
@@ -203,36 +209,39 @@
 
 
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
 
                                                 <div class="form-group">
                                                     <label for="effective date">District</label>
-                                                    <input type="text" class="form-control"
+                                                    <select type="text" class="form-control"
                                                            id="district"
-                                                           name="district">
+                                                           name="district" onchange="choice1(this)">
+                                                        <option>-- select District --</option>
+                                                    </select>
                                                 </div>
 
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
+
+
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="contract_currency_id">Proposed Connection Point</label>
-                                                    <textarea class="form-control" name="proposed_connection_point"
-                                                              id="proposed_connection_point"
-                                                              cols="30" rows="3"></textarea>
+                                                    <select class="form-control" name="proposed_connection_point"
+                                                            id="proposed_connection_point">
+                                                        <option></option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                        </div>
 
+                                        </div>
 
 
 
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="contract_start_date">Total Available</label>
+                                                    <label for="contract_start_date">Total Available Capacity</label>
                                                     <input type="number"
                                                            class="form-control" step="any"
                                                            id="total_available_capacity"
@@ -265,8 +274,7 @@
                                                 <div class="form-group">
                                                     <label for="contract_currency_id">Voltage Level</label>
                                                     <input type="number" step="any" class="form-control" name="voltage_level"
-                                                              id="voltage_level"
-                                                              >
+                                                              id="voltage_level">
                                                 </div>
                                             </div>
                                         </div>
@@ -304,10 +312,16 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="contract_end_date">Status Of Engagement</label>
-                                                    <input type="text"
+                                                    <select type="text"
                                                            class="form-control"
                                                            id="status_of_engagement"
-                                                           name="status_of_engagement"/>
+                                                            name="status_of_engagement">
+
+                                                        <option selected disabled hidden>Select Status</option>
+                                                        @foreach($status as $status)
+                                                            <option value="{{$status->id}}">{{$status->status}}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -346,7 +360,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="contract_comment">Type Of Venture</label>
-                                                    <select name="" id="">
+                                                    <select name="type_of_venture" class="form-control">
 
                                                         <option>Joint Venture</option>
                                                         <option>IPP</option>
@@ -449,12 +463,13 @@
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
-    </div>
+
 
 @endsection
 @push('custom-scripts')
     <script>
-$(document).ready(function () {
+
+  $(document).ready(function () {
 
     var total_available_capacity = document.getElementById('total_available_capacity').value;
     var committed_capacity = document.getElementById('committed_capacity').value;
@@ -462,7 +477,7 @@ $(document).ready(function () {
     console.log(total_available_capacity)
     console.log(committed_capacity)
 
-    console.log("test");
+    // console.log("test");
 
     $('#total_available_capacity').keyup(function (){
 
@@ -483,6 +498,33 @@ $(document).ready(function () {
     });
 });
 
+
+
+function choice1(select) {
+
+    var district=select.options[select.selectedIndex].getAttribute('data-amount');
+    // var months=select.options[select.selectedIndex].getAttribute('data-months');
+}
+
+
+
+function togglefunction(e) {
+
+    var selected_value = e.target.value;
+
+    var province = {!! json_encode($province->toArray()) !!};
+    responce = " <option selected disabled=\"true\"  value=\"\"> Select District</option>";
+
+    $.each(province, function (index, value) {
+        if (value.id == selected_value) {
+            $.each(value.districts, function (index1, value2) {
+                responce += "<option  data-amount='" + value2.district + "'  value='" + value2.id + "'  > " + value2.district + " </option> ";
+            });
+        }
+    });
+    $("#district").html(responce);
+
+}
 
     </script>
 @endpush

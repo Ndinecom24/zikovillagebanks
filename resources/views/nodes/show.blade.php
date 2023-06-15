@@ -54,7 +54,14 @@
 
                                 <h5 class="m-0 text-dark text-uppercase text-green ">Province</h5>
                                 <BR>
+
                                 <h6><b>{{$province->province}}</b></h6> <p></p>
+                                <BR>
+                                @foreach($province->districts as $district)
+                                   <a href="{{route('province.show',['id'=> $province->id, 'district'=>$district->id])}}">{{$district->district}}</a>
+                                @endforeach
+                                <BR>
+
 
 
                             </div>
@@ -100,33 +107,44 @@
                         <table class="table table-hover table-striped">
                             <thead>
                             <tr class="text-nowrap">
-                                <th>District</th>
+
                                 <th>Demand Substation</th>
                                 <th>Voltage</th>
                                 <th>System</th>
                                 <th>Layout</th>
                                 <th>Installed Capacity(MVA)</th>
-
                                 <th>Substation Capacity(MVA)</th>
+                                <th>Connection Points</th>
                                 <th>Status</th>
                                 <th class="text-center">ACTION</th>
 
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="connectionPoint">
+                            @foreach($my_connectionPoint as $item)
 
                                 <tr>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
+
+                                    <td class="text-left">{{$item->substation}}</td>
+                                    <td class="text-left">{{$item->voltage_level}}</td>
+                                    <td class="text-left">{{$item->layout}}</td>
+                                    <td class="text-left">{{$item->coordinates}}</td>
+                                    <td class="text-left">{{$item->installed_capacity}}</td>
+                                    <td class="text-left">{{$item->substation_capacity}}</td>
+
+                                    <td class="text-left">
+
+                                        <a class="btn btn-sm bg-gradient-gray" style="margin: 1px"
+                                           data-toggle="modal"
+                                           data-target="#modal-void" titel="Delete Payment Plan">
+                                        </a>
+
+                                    </td>
                                     <td class="text-left"></td>
                                     <td class="text-center">
 
-                                        <a class="btn btn-sm bg-gradient-gray"  data-toggle="modal" data-target="#modal-void" style="margin: 1px" title="Add Substation">
+                                        <a class="btn btn-sm bg-gradient-gray"  data-toggle="modal"
+                                           data-target="#modal-void" style="margin: 1px" title="Add Substation">
                                             <i class="fa fa-plus"></i>
                                         </a>
                                         <a class="btn btn-sm bg-gradient-gray"  data-toggle="modal" data-target="" style="margin: 1px" title="Edit Payment Plan">
@@ -141,13 +159,19 @@
                                     </td>
                                 </tr>
 
-
+                            @endforeach
                             </tbody>
 
 
 
                         </table>
 
+
+
+
+{{--                        @foreach($province->districts as $item)--}}
+
+{{--                        @endforeach--}}
                         <div style="padding: 20px">
                             {{--                                    {!! $applications->links() !!}--}}
                         </div>
@@ -161,6 +185,7 @@
 
             <!-- /.card -->
         </div>
+
 
         <!-- /.content -->
     </div>
@@ -182,8 +207,8 @@
                         <div class="form-group row">
                             <label for="inputName" class="col-sm-2 col-form-label">Province</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control uppercase" name="province" readonly
-                                       placeholder="Province Name" value="">
+                                <input type="text" class="form-control uppercase" name="province_id" readonly
+                                       placeholder="Province Name" value="{{$province->id}}">
                             </div>
                         </div>
                             <div class="form-group row">
@@ -217,16 +242,15 @@
                     </button>
                 </div>
                 <!-- form start -->
-                <form role="form-new" method="post" action="">
+                <form role="form-new" method="post" action="{{route('node.store')}}">
                     @csrf
 
                     <div class="modal-body">
                         <div class="form-group row">
                             <label for="inputName" class="col-sm-2 col-form-label">District </label>
                             <div class="col-sm-10">
-                                <select type="text" class="form-control" name="district_id" readonly>
-                                    <option selected  value=""></option>
-                                </select>
+                                <input type="text" class="form-control" name="district_id" value="{{$my_district->id  ??''}}" readonly>
+
                             </div>
                         </div>
                         <div class="form-group row">
@@ -251,6 +275,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Coordinates</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="coordinates"
+                                       placeholder="Enter coordinates">
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label for="inputName" class="col-sm-2 col-form-label">Installed Capacity</label>
@@ -280,3 +311,35 @@
     </div>
 
 @endsection
+<script>
+    const courses = [{
+        "Name": "Communications",
+        "Date": "22 April 2022",
+        "Code": "CS368"
+    },
+        {
+            "Name": "Programming",
+            "Date": "22 April 2021",
+            "Code": "CS368"
+        },
+        {
+            "Name": "Networks",
+            "Date": "22 April 2002",
+            "Code": "CS368"
+        }]
+    const table = document.getElementsByName("tableBody");
+    courses.map(course=>{
+
+        console.log(tableBody);
+        // let row = table.insertRow();
+        // let name = row.insertCell(0);
+        // name.innerHTML = course.Name;
+        // let date = row.insertCell(1);
+        // date.innerHTML = course.Date;
+        // let code = row.insertCell(2);
+        // code.innerHTML = course.Code;
+    });
+
+
+
+</script>
