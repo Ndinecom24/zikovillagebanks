@@ -154,74 +154,6 @@
                 <!-- /.col -->
 
             </div>
-{{--            <div class="row">--}}
-{{--                <!-- /.col -->--}}
-{{--                <div class="col-12 col-sm-6 col-md-3">--}}
-{{--                    <div class="info-box mb-3 bg-info">--}}
-{{--                        <a class="info-box-icon elevation-1"--}}
-{{--                           href="">--}}
-{{--                            <span><i class="fa fa-file"></i></span>--}}
-{{--                        </a>--}}
-{{--                        <div class="info-box-content">--}}
-{{--                            <span class="info-box-text">INVOICED SERVICES</span>--}}
-{{--                            <span class="info-box-number">00</span>--}}
-{{--                        </div>--}}
-{{--                        <!-- /.info-box-content -->--}}
-{{--                    </div>--}}
-{{--                    <!-- /.info-box -->--}}
-{{--                </div>--}}
-
-{{--                <div class="col-12 col-sm-6 col-md-3">--}}
-{{--                    <div class="info-box mb-3 bg-success">--}}
-{{--                        <a class="info-box-icon elevation-1"--}}
-{{--                           href=" ">--}}
-{{--                            <span><i class="fa fa-file"></i></span>--}}
-{{--                        </a>--}}
-{{--                        <div class="info-box-content">--}}
-{{--                            <span class="info-box-text"> VOLTAGE LEVELS</span>--}}
-{{--                            <span class="info-box-number">00</span>--}}
-{{--                        </div>--}}
-{{--                        <!-- /.info-box-content -->--}}
-{{--                    </div>--}}
-{{--                    <!-- /.info-box -->--}}
-{{--                </div>--}}
-{{--                <!-- fix for small devices only -->--}}
-{{--                <div class="clearfix hidden-md-up"></div>--}}
-
-{{--                <div class="col-12 col-sm-6 col-md-3">--}}
-{{--                    <div class="info-box mb-3 bg-warning">--}}
-{{--                        <a class="info-box-icon elevation-1"--}}
-{{--                           href=" ">--}}
-{{--                            <span><i class="fa fa-file"></i></span>--}}
-{{--                        </a>--}}
-{{--                        <div class="info-box-content">--}}
-{{--                            <span class="info-box-text"> IPP'S</span>--}}
-{{--                            <span class="info-box-number"> 00</span>--}}
-{{--                        </div>--}}
-{{--                        <!-- /.info-box-content -->--}}
-{{--                    </div>--}}
-{{--                    <!-- /.info-box -->--}}
-{{--                </div>--}}
-{{--                <div class="col-12 col-sm-6 col-md-3">--}}
-{{--                    <div class="info-box mb-3 bg-danger">--}}
-{{--                        <a class="info-box-icon elevation-1"--}}
-{{--                           href=" ">--}}
-{{--                            <span><i class="fa fa-file"></i></span>--}}
-{{--                        </a>--}}
-{{--                        <div class="info-box-content">--}}
-{{--                            <span class="info-box-text"> TERMINATED CONTRACTS</span>--}}
-{{--                            <span class="info-box-number">00</span>--}}
-{{--                        </div>--}}
-{{--                        <!-- /.info-box-content -->--}}
-{{--                    </div>--}}
-{{--                    <!-- /.info-box -->--}}
-{{--                </div>--}}
-
-
-{{--                <!-- /.col -->--}}
-
-{{--            </div>--}}
-                    <!-- /.info-box -->
                 </div>
 
 
@@ -250,6 +182,7 @@
                                         <th>Ref No</th>
                                         <th>Technology</th>
                                         <th>Name Of IPP</th>
+                                        <th>Name Of Project</th>
                                         <th>Date of Application</th>
                                         <th>Size of plant [MW]</th>
                                         <th>Province (Location)</th>
@@ -269,6 +202,7 @@
                                             <td class="text-left">{{$item->system_ref}}</td>
                                             <td class="text-left">{{$item->engagement_number}}</td>
                                             <td class="text-left">{{$item->name_of_ipp}}</td>
+                                            <td class="text-left">{{$item->type_of_venture}}</td>
                                             <td class="text-left">{{$item->date_of_application}}</td>
                                             <td class="text-left">{{$item->size_of_plant}}{{$item->size_of_plant_unit}}</td>
                                             <td class="text-left">{{$item->province->province}}</td>

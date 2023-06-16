@@ -74,7 +74,7 @@ class IndependentProducerController extends Controller
                 'size_of_plant' => $request->size_of_plant,
                 'size_of_plant_unit' => $request->size_of_plant_unit,
                 'province_id' => $request->province_id,
-                'district' => $request->district,
+                'district_id' => $request->district,
                 'proposed_connection_point' => $request->proposed_connection_point,
 //                'total_system_generated'=> $total,
                 'available_capacity' => $request->available_capacity,
@@ -85,6 +85,7 @@ class IndependentProducerController extends Controller
                 'updates_on_engagements' => $request->updates_on_engagements,
                 'date_of_update' => $request->date_of_update,
                 'updated_by' => $request->updated_by,
+                'type_of_venture' => $request->type_of_venture,
                 'contact_person_name' => $request->contact_person_name,
                 'contact_person_email' => $request->contact_person_email,
                 'contact_person_phone' => $request->contact_person_phone
@@ -101,7 +102,7 @@ class IndependentProducerController extends Controller
                 'size_of_plant' => $request->size_of_plant,
                 'size_of_plant_unit' => $request->size_of_plant_unit,
                 'province_id' => $request->province_id,
-                'district' => $request->district,
+                'district_id' => $request->district,
                 'proposed_connection_point' => $request->proposed_connection_point,
 //                'total_system_generated'=> $total,
                 'available_capacity' => $request->available_capacity,
@@ -113,6 +114,7 @@ class IndependentProducerController extends Controller
 //                'doc_type' => $request->doc_type,
                 'date_of_update' => $request->date_of_update,
                 'updated_by' => $request->updated_by,
+                'type_of_venture' => $request->type_of_venture,
                 'contact_person_name' => $request->contact_person_name,
                 'contact_person_email' => $request->contact_person_email,
                 'contact_person_phone' => $request->contact_person_phone

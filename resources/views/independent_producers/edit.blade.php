@@ -184,7 +184,7 @@
                                                 <label for="contract_currency_id">Province</label>
                                                 <input type="text" class="form-control"
                                                        id="province"
-                                                       name="province" value="{{$item->province}}">
+                                                       name="province" value="{{$item->province->province}}">
                                             </div>
                                         </div>
 
@@ -194,7 +194,7 @@
                                                 <label for="effective date">District</label>
                                                 <input type="text" class="form-control"
                                                        id="district"
-                                                       name="district" value="{{$item->district}}">
+                                                       name="district" value="{{$item->districts->district}}">
                                             </div>
                                         </div>
 
