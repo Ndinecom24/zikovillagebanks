@@ -56,7 +56,10 @@
                                 <BR>
 
                                 <h6><b>{{$province->province}}</b></h6> <p></p>
+
                                 <BR>
+                                <h5 class="m-0 text-dark text-uppercase text-orange ">DISTRICTS</h5>
+                                <br>
                                 @foreach($province->districts as $district)
                                    <a href="{{route('province.show',['id'=> $province->id, 'district'=>$district->id])}}">{{$district->district}}</a>
                                 @endforeach
@@ -95,7 +98,10 @@
                             Add District
                         </button>
 
-                        <!-- /.card-body -->
+                    <a class="btn btn-sm bg-gradient-gray float-right"  data-toggle="modal"
+                       data-target="#modal-void" style="margin: 1px" title="Add Substation">
+                        Add Substation
+                    </a>
 
                     </div>
                     <!-- /.card -->
@@ -108,14 +114,14 @@
                             <thead>
                             <tr class="text-nowrap">
 
-                                <th>Demand Substation</th>
+                                <th>Substation</th>
                                 <th>Voltage</th>
-                                <th>System</th>
+
                                 <th>Layout</th>
                                 <th>Installed Capacity(MVA)</th>
                                 <th>Substation Capacity(MVA)</th>
-                                <th>Connection Points</th>
-                                <th>Status</th>
+
+
                                 <th class="text-center">ACTION</th>
 
                             </tr>
@@ -127,26 +133,15 @@
 
                                     <td class="text-left">{{$item->substation}}</td>
                                     <td class="text-left">{{$item->voltage_level}}</td>
-                                    <td class="text-left">{{$item->layout}}</td>
+
                                     <td class="text-left">{{$item->coordinates}}</td>
                                     <td class="text-left">{{$item->installed_capacity}}</td>
                                     <td class="text-left">{{$item->substation_capacity}}</td>
 
-                                    <td class="text-left">
 
-                                        <a class="btn btn-sm bg-gradient-gray" style="margin: 1px"
-                                           data-toggle="modal"
-                                           data-target="#modal-void" titel="Delete Payment Plan">
-                                        </a>
-
-                                    </td>
-                                    <td class="text-left"></td>
                                     <td class="text-center">
 
-                                        <a class="btn btn-sm bg-gradient-gray"  data-toggle="modal"
-                                           data-target="#modal-void" style="margin: 1px" title="Add Substation">
-                                            <i class="fa fa-plus"></i>
-                                        </a>
+
                                         <a class="btn btn-sm bg-gradient-gray"  data-toggle="modal" data-target="" style="margin: 1px" title="Edit Payment Plan">
                                             <i class="fa fa-pen"></i>
                                         </a>

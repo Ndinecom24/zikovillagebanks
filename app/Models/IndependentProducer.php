@@ -20,7 +20,7 @@ class IndependentProducer extends Model
         'size_of_plant',
         'size_of_plant_unit',
         'province_id',
-        'district',
+        'district_id',
         'proposed_connection_point',
         'total_system_generated',
         'available_capacity',
@@ -43,9 +43,28 @@ class IndependentProducer extends Model
 
     ];
 
+protected $with =[
+    'province',
+    'districts',
+];
 
 
 
+//    public function province(){
+//        return $this->hasMany( Province::class, 'province_id','id');
+//    }
+//    public function districts(){
+//        return $this->hasMany( Districts::class, 'district_id','id');
+//    }
+
+
+    public function  province(){
+        return $this->belongsTo(Province::class,'province_id','id');
+    }
+
+    public function  districts(){
+        return $this->belongsTo(Districts::class,'district_id','id');
+    }
 //    public static function booted(){
 //
 //

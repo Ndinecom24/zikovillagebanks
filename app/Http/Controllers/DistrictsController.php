@@ -58,7 +58,7 @@ class DistrictsController extends Controller
 
             ]
         );
-        return redirect()->route('province.show',  $request->province_id)
+        return redirect()->back()
             ->with('message', 'Submitted Successfully');
     }
 

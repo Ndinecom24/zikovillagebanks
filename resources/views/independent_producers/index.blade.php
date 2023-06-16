@@ -97,7 +97,7 @@
                         <!-- /.card -->
                         {{--                    </div>--}}
                         {{--                </div>--}}
-
+khkhkhuhj
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title"><b>Power Agreements</b></h3>
@@ -130,8 +130,8 @@
                                             <td class="text-left">{{$item->name_of_ipp}}</td>
                                             <td class="text-left">{{$item->date_of_application}}</td>
                                             <td class="text-left">{{$item->size_of_plant}}{{$item->size_of_plant_unit}}</td>
-                                            <td class="text-left">{{$item->province}}</td>
-                                            <td class="text-left">{{$item->district}}
+                                            <td class="text-left">{{$item->province->provine}}</td>
+                                            <td class="text-left">{{$item->districts->district}}
                                             <td class="text-left">{{$item->available_capacity}}</td>
                                             <td class="text-left">{{$item->voltage_level}}</td>
                                             <td class="text-left">{{$item->expiry_connection_point}}</td>

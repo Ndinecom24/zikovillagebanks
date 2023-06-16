@@ -9,6 +9,7 @@ class Districts extends Model
 {
     use HasFactory;
     protected $table= 'districts';
+    protected $with = ['connectionPoint'];
     protected $fillable = [
 
         'province_id',
@@ -29,4 +30,6 @@ class Districts extends Model
     public function connectionPoint(){
         return $this->hasMany( ConnectionPoints::class, 'district_id','id');
     }
+
+
 }

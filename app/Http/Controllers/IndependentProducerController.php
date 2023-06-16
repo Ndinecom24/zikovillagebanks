@@ -34,10 +34,10 @@ class IndependentProducerController extends Controller
     public function create()
     {
         $user = auth()->user();
-        $province = Province::get();
-        $status = Status::get();
+        $provinces = Province::get();
+        $statuses = Status::get();
 
-        return view('independent_producers.create')->with(compact('user','province', 'status'));
+        return view('independent_producers.create')->with(compact('user','provinces', 'statuses'));
     }
 
 
@@ -138,6 +138,7 @@ class IndependentProducerController extends Controller
                 $fileName = trim(preg_replace('/\s+/', ' ', $filename . '_' . time() . '.' . $extension));
                 // Upload File
                 $path = $file_one->storeAs('public/contracts', $fileName);
+//                $path = $file_one->storeAs(storage_path('app/public/contracts'), $fileName);
                 $uuid = Str::uuid()->toString();
 
                 //
