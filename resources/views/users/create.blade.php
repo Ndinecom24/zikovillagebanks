@@ -1,35 +1,48 @@
 @extends('layouts.main.master')
 
+
+@push('custom-styles')
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet"
+          href="{{ asset('dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+@endpush
+
+
 @section('content')
 
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Profile</h1>
-                </div>
-
+                    <h1 class="m-0 text-dark">System User Form</h1>
+                </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="">Home</a></li>
-                        <li class="breadcrumb-item active">User Profile</li>
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                        <li class="breadcrumb-item active">System User</li>
                     </ol>
-                </div>
-            </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
         </div><!-- /.container-fluid -->
-    </section>
-    <!-- Main content -->
+    </div>
+    <!-- /.content-header -->
+
+
+    <!-- Main page content -->
     <section class="content">
 
-        @if (session()->has('message'))
+
+        @if(session()->has('message'))
             <div class="alert alert-success alert-dismissible">
-                <p class="lead"> {{ session()->get('message') }}</p>
+                <p class="lead"> {{session()->get('message')}}</p>
             </div>
         @endif
-        @if (session()->has('error'))
+        @if(session()->has('error'))
             <div class="alert alert-danger alert-dismissible">
-                <p class="lead"> {{ session()->get('error') }}</p>
+                <p class="lead"> {{session()->get('error')}}</p>
             </div>
         @endif
 
@@ -41,318 +54,146 @@
                     @endforeach
                 </ul>
             </div>
-        @endif
+    @endif
 
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                    <!-- Profile Image -->
-                    <div class="card card-success card-outline">
-                        <form>
-                            <meta name="csrf-token" content="{{ csrf_token() }}">
-                            <div class="card-body box-profile">
-                                <div class="text-center">
-                                    <a href="#">
-                                        <img class="profile-user-img img-fluid img-circle"
-                                             src="" alt="Image not found"
-                                             title="Click Here to Edit Image"
-                                             data-toggle="modal"
-                                             data-target="#modal-edit-profile">
-                                    </a>
-                                </div>
+    <!-- Default box -->
+        <div class="card">
+            <form name="db2" action="{{route('user.store')}}" method="post">
+                @csrf
+                <div class="card-body">
 
-                                <h3 class="profile-username text-center"></h3>
-
-                                {{--                            <input class="text-muted text-center form-control" name="staff_no">--}}
-                                <select class="form-control text-center"
-                                        id="sel_man_no"
-                                        name="staff_no"
-                                        data-parsley-required="true"
-                                        data-parsley-required-message="You must select man number">
-                                </select>
-                                <div style="text-align:center;">
-                                    <label for="man number">Man Number</label>
-                                </div>
-
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-12  form-group ">
+                            <label for="staff_no">EMPLOYEE STAFF NO: <span class="required">*</span></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="staff_no_search"
+                                       onChange="myFunc(this.value)" name="staff_no" required maxlength="100" >
 
                             </div>
-
-
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12  form-group ">
+                            <label for="staff_name"> STAFF NAME: <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="staff_name_search" name="staff_name"
+                                   required  readonly >
+                        </div>
                     </div>
-                    <!-- /.card -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-9">
-                    <div class="card">
-                        <div class="card-header p-2">
-                            <ul class="nav nav-pills">
-                                <h3 class="text-uppercase text-orange"><b>User Details</b></h3>
-
-                            </ul>
-                        </div><!-- /.card-header -->
-                        <div class="card-body">
-                            <div class="tab-content">
-
-                                <div class="active tab-pane" id="activity">
-                                    <!-- Post -->
-                                    <div class="post">
-
-                                        <!-- /.user-block -->
-                                        <div class="row">
-                                            <div class="col-6">
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate" class="col-sm-2 col-form-label"><b>Name</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="name" id=""
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate" class="col-sm-2 col-form-label"><b>NRC</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="directorate" id=""
-                                                               name="nrc" class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate"
-                                                           class="col-sm-2 col-form-label"><b>Phone</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" id="" name="phone_no"
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate" class="col-sm-2 col-form-label"><b>Extension</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="extension" id=""
-                                                               class="form-control">
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate"
-                                                           class="col-sm-2 col-form-label"><b>Email</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="staff_email" id=""
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate" class="col-sm-2 col-form-label"><b>Directorate</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="directorate" id=""
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate"
-                                                           class="col-sm-2 col-form-label"><b>Location</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="location" id=""
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                            <div class="col-6">
-
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate"
-                                                           class="col-sm-2 col-form-label"><b>Division</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="division" id=""
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate"
-                                                           class="col-sm-2 col-form-label"><b>Station</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="directorate" id=""
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate" class="col-sm-2 col-form-label"><b>Business
-                                                            Unit</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="directorate" id=""
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate" class="col-sm-2 col-form-label"><b>Cost
-                                                            Center</b></label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="directorate" id=""
-                                                               class="form-control" readonly>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group row">
-                                                    <label for="Directorate"
-                                                           class="col-sm-2 col-form-label"><b>Usertype</b></label>
-                                                    <div class="col-sm-10">
-                                                        <select class="form-control">
-                                                            <option>MANAGING DIRECTOR</option>
-                                                            <option>DIRECTOR</option>
-                                                            <option>HEAD RENEWABLE ENERGY</option>
-                                                            <option>CHIEF ENGINEER</option>
-                                                            <option>EDITOR</option>
-                                                            <option>VIEWER</option>
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-outline-success">Submit
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                    <!-- /.post -->
-                                </div>
-                                <!-- /.tab-pane -->
-
-                            </div>
-                            <!-- /.tab-content -->
-                        </div><!-- /.card-body -->
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12  form-group ">
+                            <label for="user_unit"> USER-UNIT / DEPARTMENT : <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="user_unit" name="user_unit" readonly required >
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12  form-group ">
+                            <label for="directorate"> DIRECTORATE: <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="directorate" name="directorate" readonly required >
+                        </div>
                     </div>
-                    <!-- /.nav-tabs-custom -->
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-12  form-group ">
+                            <label for="mobile_no">MOBILE NUMBER: <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="mobile_no" name="mobile_no" required
+                                   maxlength="100"
+                                   readonly>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12  form-group ">
+                            <label for="staff_email"> STAFF EMAIL: <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="staff_email" name="staff_email"
+                                   required   readonly >
+                        </div>
+                        <div class="col-4 form-group ">
+                            <label for="user_type_id"> SYSTEM ROLE : <span class="required">*</span></label>
+                            <select name="user_role_id" id="user_role_id" class="form-control" required >
+                                <option value=""> --Choose Role-- </option>
+                                {{--                                @foreach ($roles as $row)--}}
+                                {{--                                    <option value="{{$row->id}}">{{$row->name}}</option>--}}
+                                {{--                                @endforeach--}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4 form-group mt-4">
+                            <label for="location_id"> SERVICE DESK: <span class="required">*</span></label>
+                            <select name="location_id" id="location_id" class="form-control" required>
+                                <option  value=""  >-- Select User's Location --</option>
+                                {{--                                @foreach ($locations as $loc)--}}
+                                {{--                                    <option value="{{$loc->id}}">{{$loc->name}}</option>--}}
+                                {{--                                @endforeach--}}
+                            </select>
+                        </div>
+                        <div class="col-4 form-group mt-4">
+                            <label for="user_type_id"> STATUS ID: <span class="required">*</span></label>
+                            <select name="status_id" id="status_id" class="form-control" required >
+                                {{--                                @foreach ($statuses as $row)--}}
+                                {{--                                    <option value="{{$row->id}}">{{$row->name}}</option>--}}
+                                {{--                                @endforeach--}}
+                            </select>
+                        </div>
+                        <div class="col-4 form-group mt-4">
+                            <label for="password"> PASSWORD: <span class="required">*</span></label>
+                            <input type="password" class="form-control" id="password" name="password" required
+                                   placeholder="User's Default Password">
+                        </div>
+                    </div>
                 </div>
-                </form>
-                <!-- /.col -->
-            </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="row">
+                        <div id="submit_button" class="col-12 text-center">
+                            {{--                            @can(config('chilolezo.permissions.user_create'))--}}
+                            <input class="btn btn-lg btn-success" type="submit" value="Submit"
+                                   name="submit_form" class="form-control">
+                            {{--                            @endcan--}}
+                            <input class="btn btn-lg btn-secondary" type="reset" value="Back"
+                                   name="reset_form" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-footer-->
+            </form>
+        </div>
+        <!-- /.card -->
     </section>
     <!-- /.content -->
 @endsection
+
+
 @push('custom-scripts')
+
     <script>
+        function myFunc(val) {
+            const route = "{{ route('user.search') }}";
+            $.ajax({
+                type: 'POST',
+                url: route,
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                data: {staff_no: val},
+                dataType: 'json',
+                encode: true
+            })
+                .done(function (data) {
+                    console.log(data);
 
+                    if (data['success'] === true) {
 
-        $(function () {
-            $(".btn-success").click(function(){
-                var lsthmtl = $(".clone").html();
-                $(".increment").after(lsthmtl);
-            });
-            $("body").on("click",".btn-danger",function(){
-                $(this).parents(".hdtuto").remove();
-            });
-        });
+                        console.log(data);
 
+                        $("#directorate").val(data.employee.directorate);
+                        $("#user_unit").val(data.employee.functional_section);
+                        $("#staff_name_search").val(data.employee.name);
+                        $("#staff_email").val(data.employee.staff_email);
+                        $("#mobile_no").val(data.employee.mobile_no);
 
-        // add row
-        $("#addRow").click(function () {
-            var html = '';
-            html += '<div id="inputFormRow">';
-            html += '<div class="input-group mb-3">';
-            html += '<input type="file" name="filenames[]" class="form-control">';
-            html += '<div class="input-group-append">';
-            html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
-            html += '</div>';
-            html += '</div>';
+                    } else if (data['success' === false]) {
 
-            $('#newRow').append(html);
-        });
-
-        // remove row
-        $(document).on('click', '#removeRow', function () {
-            $(this).closest('#inputFormRow').remove();
-        });
-
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        $(document).ready(function () {
-
-            $("#sel_man_no").select2({
-                theme: 'bootstrap4',
-                placeholder: 'Select Man No',
-                allowClear: true,
-
-                ajax: {
-                    url: "{{route('getManNumbers')}}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            _token: CSRF_TOKEN,
-                            search: params.term || "",// search term
-                            page: params.page || 1
-                        };
-                    },
-                    complete: function (response) {
-                        console.log(response);
-
-                        $('#sel_man_no').on('change', function (e) {
-
-                            if (e.handled !== true) {
-
-                                e.handled = true;
-
-                                if (this.value != null || this.value != "") {
-
-                                    $("#loading_email").show();
-                                    $("#email").fadeOut();
-
-                                    $.ajax({
-                                            url: "{{route('getEmployee')}}",
-                                            data: {
-                                                man_no: this.value,
-
-                                            },
-                                            success: function (response) {
-                                                console.log(response)
-
-                                                $('#name').val(response.employee.name);
-                                                $('#sex').val(response.employee.sex);
-                                                $('#job_title').val(response.employee.job_title);
-                                                $('#grade').val(response.employee.grade);
-                                                $('#directorate').val(response.employee.directorate);
-                                                $('#functional_section').val(response.employee.functional_section);
-                                                $('#station').val(response.employee.station);
-                                                $('#location').val(response.employee.location);
-                                                $('#email').val(response.employee.staff_email);
-
-                                                $("#loading_email").hide();
-                                                $("#email").fadeIn();
-                                            }
-                                        }
-                                    );
-                                }
-
-                            }
-
-                        });
+                        $("#directorate").val('');
+                        $("#user_unit").val('');
+                        $("#staff_name_search").val('');
+                        $("#staff_email").val('');
                     }
 
-                },
-                cache: true,
-            });
-
-        });
-
-
+                });
+        }
     </script>
+
 @endpush

@@ -50,16 +50,14 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
 
     //routes for adding users
     Route::get('/users/index', [UserController::class, 'index'])->name('user.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('user.create');
-    Route::post('/users/store', [UserController::class, 'store'])->name('user.store');
-    Route::get('/users/search', [UserController::class, 'getEmployeeData'])->name('api.search.employee');
-    Route::get('/getManNumbers', [UserController::class, 'getManNumbers'])->name('getManNumbers');
-    Route::get('/getOfficerResponsibleNumbers', [UserController::class, 'getOfficerResponsibleNumbers'])->name('getOfficerResponsibleNumbers');
-    Route::get('/getManNumber', [UserController::class, 'getManNumber'])->name('getManNumber');
-    Route::get('/getEmployees', [UserController::class, 'getEmployees'])->name('getEmployees');
-    Route::get('/getEmployee', [UserController::class, 'getEmployee'])->name('getEmployee');
+    Route::post('store', [\App\Http\Controllers\UserController::class, 'store'])->name('user.store');
+    Route::post('search', [\App\Http\Controllers\UserController::class, 'getStaffDetails'])->name('user.search');
+    Route::get('create', [\App\Http\Controllers\UserController::class, 'create'])->name('user.create');
+    Route::get('show', [\App\Http\Controllers\UserController::class, 'show'])->name('user.show');
 
-    //routes for reports
+
+
+
     Route::get('/reports/index', [ReportsController::class, 'index'])->name('reports.index');
 
     Route::get('/province/index', [ProvinceController::class, 'index'])->name('province.index');

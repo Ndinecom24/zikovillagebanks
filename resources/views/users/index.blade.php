@@ -44,10 +44,9 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <button class="btn btn-sm bg-gradient-orange float-left" data-toggle="modal"
-                        data-target="#modal-create">
+                <a class="btn btn-sm bg-gradient-orange float-left" href="{{route('user.create')}}">
                     Add Users
-                </button>
+                </a>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"

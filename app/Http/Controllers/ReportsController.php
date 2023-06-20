@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\IndependentProducer;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller
@@ -11,9 +12,27 @@ class ReportsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('reports.index');
+        if (!$request->hasValidSignature()) {
+            abort(401);
+        }
+        $applications = collect([]);
+
+
+        if ($request->has('engagement_number')) {
+
+            $applications = IndependentProducer::where('engagement_number', '=', $request->has('engagement_number'))
+                ->orderBy('id', 'ASC')->get();
+        } else {
+            $applications = IndependentProducer:: orderBy('id', 'ASC')->get();
+        }
+
+
+        return view('reports.index', compact(['applications']))
+            ->with('i', (request()->input('page', 1) - 1) * 10);;
+
+
     }
 
     /**
@@ -29,7 +48,7 @@ class ReportsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -40,7 +59,7 @@ class ReportsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -51,7 +70,7 @@ class ReportsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -62,8 +81,8 @@ class ReportsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -74,7 +93,7 @@ class ReportsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -41,19 +41,19 @@
                 <li class="nav-header ">REPORTS</li>
 
                 <li class="nav-item">
-                    <a href="{{route('reports.index')}}" class="nav-link ">
+                    <a href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index')}}" class="nav-link ">
                         <i class="far fa-circle nav-icon text-warning"></i>
-                        <p>General Reports</p>
+                        <p>Reports</p>
                     </a>
                 </li>
 
 
-                    <li class="nav-item">
-                        <a href="{{route('reports.index')}}" class="nav-link ">
-                            <i class="far fa-circle nav-icon text-warning"></i>
-                            <p>Graphical Reports</p>
-                        </a>
-                    </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{route('reports.index')}}" class="nav-link ">--}}
+{{--                            <i class="far fa-circle nav-icon text-warning"></i>--}}
+{{--                            <p>Graphical Reports</p>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
 
                 <li class="nav-header ">Configurations</li>
 
