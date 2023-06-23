@@ -62,28 +62,34 @@
                     <table id="example1" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Man No</th>
-
-                            <th>Email</th>
-
-
-                            <th>Action</th>
+                            <th>STAFF NO</th>
+                            <th>NAME</th>
+                            <th>EMAIL</th>
+{{--                            <th>JOB TITLE</th>--}}
+{{--                            <th>USER UNIT</th>--}}
+{{--                            <th>DIRECTORATE</th>--}}
+{{--                            <th>MOBILE NUMBER</th>--}}
+{{--                            <th>SYSTEM ROLE</th>--}}
+                            <th>ACTION</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($users as $item)
                             <tr>
-                                <td>{{$item->id}}</td>
+
 
                                 <td>{{$item->staff_no}} </td>
                                 <td class="text-orange">{{$item->name}}</td>
                                 <td class="text-orange">{{$item->email}}</td>
+{{--                                <td class="text-orange">{{$item->job_title}}</td>--}}
+{{--                                <td class="text-orange">{{$item->user_unit}}</td>--}}
+{{--                                <td class="text-orange">{{$item->directorate}}</td>--}}
+{{--                                <td class="text-orange">{{$item->mobile_no}}</td>--}}
+{{--                                <td class="text-orange">{{$item->user_role_id}}</td>--}}
 
 
                                 <td>
-                                    <a href="#" class="btn btn-sm bg-gradient-gray float-left " style="margin: 1px">
+                                    <a class="btn btn-sm bg-gradient-gray float-left " data-toggle="modal" data-target="#modal-user" style="margin: 1px">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <button class="btn btn-sm bg-gradient-gray float-left" style="margin: 1px"
@@ -116,7 +122,7 @@
 
 
     <!-- NEW MODAL-->
-    <div class="modal fade" id="modal-create">
+    <div class="modal fade" id="modal-user">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">

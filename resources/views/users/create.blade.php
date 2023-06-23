@@ -79,11 +79,15 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12  form-group ">
+                        <div class="col-lg-6 col-md-4 col-sm-12  form-group ">
+                            <label for="user_unit"> JOB TITLE : <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="job_title" name="job_title" readonly required >
+                        </div>
+                        <div class="col-lg-6 col-md-4 col-sm-12  form-group ">
                             <label for="user_unit"> USER-UNIT / DEPARTMENT : <span class="required">*</span></label>
                             <input type="text" class="form-control" id="user_unit" name="user_unit" readonly required >
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12  form-group ">
+                        <div class="col-lg-6 col-md-4 col-sm-12  form-group ">
                             <label for="directorate"> DIRECTORATE: <span class="required">*</span></label>
                             <input type="text" class="form-control" id="directorate" name="directorate" readonly required >
                         </div>
@@ -112,23 +116,23 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-4 form-group mt-4">
-                            <label for="location_id"> SERVICE DESK: <span class="required">*</span></label>
-                            <select name="location_id" id="location_id" class="form-control" required>
-                                <option  value=""  >-- Select User's Location --</option>
-                                {{--                                @foreach ($locations as $loc)--}}
-                                {{--                                    <option value="{{$loc->id}}">{{$loc->name}}</option>--}}
-                                {{--                                @endforeach--}}
-                            </select>
-                        </div>
-                        <div class="col-4 form-group mt-4">
-                            <label for="user_type_id"> STATUS ID: <span class="required">*</span></label>
-                            <select name="status_id" id="status_id" class="form-control" required >
-                                {{--                                @foreach ($statuses as $row)--}}
-                                {{--                                    <option value="{{$row->id}}">{{$row->name}}</option>--}}
-                                {{--                                @endforeach--}}
-                            </select>
-                        </div>
+{{--                        <div class="col-4 form-group mt-4">--}}
+{{--                            <label for="location_id"> SERVICE DESK: <span class="required">*</span></label>--}}
+{{--                            <select name="location_id" id="location_id" class="form-control" required>--}}
+{{--                                <option  value=""  >-- Select User's Location --</option>--}}
+{{--                                --}}{{--                                @foreach ($locations as $loc)--}}
+{{--                                --}}{{--                                    <option value="{{$loc->id}}">{{$loc->name}}</option>--}}
+{{--                                --}}{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-4 form-group mt-4">--}}
+{{--                            <label for="user_type_id"> STATUS ID: <span class="required">*</span></label>--}}
+{{--                            <select name="status_id" id="status_id" class="form-control" required >--}}
+{{--                                --}}{{--                                @foreach ($statuses as $row)--}}
+{{--                                --}}{{--                                    <option value="{{$row->id}}">{{$row->name}}</option>--}}
+{{--                                --}}{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
                         <div class="col-4 form-group mt-4">
                             <label for="password"> PASSWORD: <span class="required">*</span></label>
                             <input type="password" class="form-control" id="password" name="password" required

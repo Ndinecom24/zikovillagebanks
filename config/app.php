@@ -120,7 +120,8 @@ return [
     */
 
     'key' => env('APP_KEY'),
-
+    'password-changed' =>'1',
+    'password_not_changed' =>'0',
     'cipher' => 'AES-256-CBC',
 
     /*

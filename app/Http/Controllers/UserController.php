@@ -92,9 +92,9 @@ class UserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+       return view('users.show');
     }
 
     /**
@@ -129,6 +129,31 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function changePassword(Request $request)
+    {
+        $user = auth()->user();
+        $request->validate([
+            'password' => 'required|min:8|confirmed',
+        ]);
+        if ($request->password == $request->old_password) {
+            return redirect()->back()->withInput()->withErrors(['password' => "Sorry your old password is the same as the new one"]);
+        }
+        if ($request->password == 'Zesco123' || $request->password == 'zesco123' || $request->password == 'zesco@123' ||
+            $request->password == 'Zesco@123' || $request->password == 'Zesco12345' || $request->password == 'zesco12345') {
+            return redirect()->back()->withInput()->withErrors(['password' => "Sorry your new password has been listed as too common hence not so much secure.Please change to another password."]);
+        }
+        if ($user->password == Hash::make($request->password)) {
+            return redirect()->back()->withInput()->withErrors(['password' => "Sorry your old password you entered is wrong"]);
+        } else {
+            $user->password = Hash::make($request->password);
+            $user->password_change = config('app.password_not_changed');
+            $user->save();
+            return redirect()->back()->with('message', 'User Password Updated Successfully');
+        }
+
     }
 
 }

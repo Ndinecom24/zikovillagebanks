@@ -121,7 +121,7 @@
                     <!-- /.info-box -->
                 </div>
                 <div class="col-12 col-sm-6 col-md-2">
-                    <div class="info-box mb-3 bg-brown">
+                    <div class="info-box mb-3 bg-sienna">
                         <a class="info-box-icon elevation-1"
                            href=" ">
                             <span><i class="fas fa-leaf"></i></span>

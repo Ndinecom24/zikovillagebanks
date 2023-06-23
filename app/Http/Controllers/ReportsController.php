@@ -22,7 +22,7 @@ class ReportsController extends Controller
 
         if ($request->has('engagement_number')) {
 
-            $applications = IndependentProducer::where('engagement_number', '=', $request->has('engagement_number'))
+            $applications = IndependentProducer::where('engagement_number', '=', trim($request->get('engagement_number')))
                 ->orderBy('id', 'ASC')->get();
         } else {
             $applications = IndependentProducer:: orderBy('id', 'ASC')->get();
