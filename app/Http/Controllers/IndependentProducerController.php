@@ -45,22 +45,13 @@ class IndependentProducerController extends Controller
     {
         $tech = substr($request->engagement_number, 0,3);
         $files = $request->allFiles();
-        if (empty($files)) {
-            return view('independent_producers.create',
-                ['message' => 'You have not provided the mandatory attachments']);
-        }
-
         $date = Carbon::now();
 
 
-//        $docCount = 'RE/IPP/' .$request->engagement_number.'/'. IndependentProducer::count('id');
         $docCount = 'RE/IPP/' . $tech . '/' . $date->month . $date->year . '00000' . IndependentProducer::count('id');
         $validatedData = $request->validate([
             'invoiced_services' => ['required'],
         ]);
-
-//        $total =  $request->total_available_capacity - $request->committed_capacity;
-
 
         $ippcontract = IndependentProducer::updateOrCreate(
 
@@ -121,62 +112,67 @@ class IndependentProducerController extends Controller
 
             ]);
 
-        if (array_key_exists('doc_type', $files)) {
+        if (!empty($files)) {
+            if (array_key_exists('doc_type', $files)) {
 
-            $doc_types = $files['doc_type'];
+                $doc_types = $files['doc_type'];
 
 //            dd($doc_types);
 
-            foreach ($doc_types as $file_one) {
+                foreach ($doc_types as $file_one) {
 
-                $filenameWithExt = preg_replace("/[^a-zA-Z]+/", "_", $file_one->getClientOriginalName());
-                // Get just filename
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                //get size
-                $size = number_format($file_one->getSize() * 0.000001, 2);
-                // Get just ext
-                $extension = $file_one->getClientOriginalExtension();
-                // Filename to store
-                $fileName = trim(preg_replace('/\s+/', ' ', $filename . '_' . time() . '.' . $extension));
-                // Upload File
-                $path = $file_one->storeAs('public/contracts', $fileName);
+                    $filenameWithExt = preg_replace("/[^a-zA-Z]+/", "_", $file_one->getClientOriginalName());
+                    // Get just filename
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    //get size
+                    $size = number_format($file_one->getSize() * 0.000001, 2);
+                    // Get just ext
+                    $extension = $file_one->getClientOriginalExtension();
+                    // Filename to store
+                    $fileName = trim(preg_replace('/\s+/', ' ', $filename . '_' . time() . '.' . $extension));
+                    // Upload File
+                    $path = $file_one->storeAs('public/contracts', $fileName);
 //                $path = $file_one->storeAs(storage_path('app/public/contracts'), $fileName);
-                $uuid = Str::uuid()->toString();
+                    $uuid = Str::uuid()->toString();
 
-                //
-                FileUploads::updateOrCreate(
-                    [
-                        'uuid' => $uuid,
-                        'name' => $fileName,
-                        'size' => $size,
-                        'path' => $path,
-                        'ext' => $file_one->extension(),
-                        'folder' => IndependentProducerController::class,
-                        'model_id' => $ippcontract->id ?? 1,
-                        'modal_code' => $ippcontract->system_ref ?? 1,
-                        'type' => 'contracts'
+                    //
+                    FileUploads::updateOrCreate(
+                        [
+                            'uuid' => $uuid,
+                            'name' => $fileName,
+                            'size' => $size,
+                            'path' => $path,
+                            'ext' => $file_one->extension(),
+                            'folder' => IndependentProducerController::class,
+                            'model_id' => $ippcontract->id ?? 1,
+                            'modal_code' => $ippcontract->system_ref ?? 1,
+                            'type' => 'contracts'
 
-                    ],
-                    [
-                        'uuid' => $uuid,
-                        'name' => $fileName,
-                        'size' => $size,
-                        'path' => $path,
-                        'ext' => $file_one->extension(),
-                        'folder' => IndependentProducerController::class,
-                        'model_id' => $ippcontract->id ?? 1,
-                        'modal_code' => $ippcontract->system_ref ?? 1,
-                        'type' => 'contracts'
+                        ],
+                        [
+                            'uuid' => $uuid,
+                            'name' => $fileName,
+                            'size' => $size,
+                            'path' => $path,
+                            'ext' => $file_one->extension(),
+                            'folder' => IndependentProducerController::class,
+                            'model_id' => $ippcontract->id ?? 1,
+                            'modal_code' => $ippcontract->system_ref ?? 1,
+                            'type' => 'contracts'
 
-                    ]
-                );
+                        ]
+                    );
 
 //                dd(123);
-                return redirect()->route('independent-producer.index')
-                    ->with('message', 'Submitted Successfully');
+
+                }
+
             }
 
         }
+
+        return redirect()->route('independent-producer.index')
+            ->with('message', 'Submitted Successfully');
     }
 
     /**

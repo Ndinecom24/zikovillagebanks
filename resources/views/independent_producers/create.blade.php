@@ -211,7 +211,7 @@
                                                 <label for="effective date">District</label>
                                                 <select type="text" class="form-control"
                                                         id="district"
-                                                        name="district" onchange="choice1(this)">
+                                                        name="district_id" onchange="choice1(this)">
                                                     <option>-- select District --</option>
                                                 </select>
                                             </div>

@@ -5,7 +5,7 @@ return [
         'driver'         => 'oracle',
         'tns'            => env('DB_TNS', ''),
         'host'           => env('DB_HOST', ''),
-        'port'           => env('REMS_DB_PORT', '1521'),
+        'port'           => env('DB_PORT', '1521'),
         'database'       => env('DB_DATABASE', ''),
         'service_name'   => env('DB_SERVICENAME', ''),
         'username'       => env('DB_USERNAME', ''),
@@ -19,7 +19,7 @@ return [
         'max_name_len'   => env('ORA_MAX_NAME_LEN', 30),
         'dynamic'        => [],
     ],
-
+/*
     'oracle_isd' => [
         'driver'         => 'oracle',
         'tns'            => env('prod_db_tns', ''),
@@ -36,7 +36,7 @@ return [
         'server_version' => env('prod_db_server_version', '11g'),
         'load_balance'   => env('prod_db_load_balance', 'yes'),
         'dynamic'        => [],
-    ],
+    ],*/
 
 
 ];
