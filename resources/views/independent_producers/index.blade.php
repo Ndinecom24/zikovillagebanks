@@ -128,7 +128,7 @@ khkhkhuhj
                                             <td class="text-left">{{$item->system_ref}}</td>
                                             <td class="text-left">{{$item->engagement_number}}</td>
                                             <td class="text-left">{{$item->name_of_ipp}}</td>
-                                            <td class="text-left">{{$item->date_of_application}}</td>
+                                            <td class="text-left">{{$item->date_of_application ??''}}</td>
                                             <td class="text-left">{{$item->size_of_plant}}{{$item->size_of_plant_unit}}</td>
                                             <td class="text-left">{{$item->province->province ??''}}</td>
                                             <td class="text-left">{{$item->districts->district ??''}}
