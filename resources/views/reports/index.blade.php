@@ -206,16 +206,15 @@
                                         <th>Ref No</th>
                                         <th>Technology</th>
                                         <th>Name Of IPP</th>
-                                        <th>Date of Application</th>
+                                        <th>Name Of Project</th>
                                         <th>Size of plant</th>
                                         <th>Province (Location)</th>
                                         <th>District (Location)</th>
                                         <th>Available Capacity</th>
                                         <th>Voltage Level</th>
-                                        <th>Expiry Date</th>
                                         <th>Status of Engagement</th>
                                         <th>Contact Person (Name)</th>
-                                        <th>Type of Venture</th>
+
 
                                     </tr>
                                     </thead>
@@ -226,13 +225,11 @@
                                         <td class="text-left">{{$item->engagement_number}}</td>
                                         <td class="text-left">{{$item->name_of_ipp}}</td>
                                         <td class="text-left">{{$item->type_of_venture}}</td>
-                                        <td class="text-left">{{$item->date_of_application}}</td>
                                         <td class="text-left">{{$item->size_of_plant}}{{$item->size_of_plant_unit}}</td>
                                         <td class="text-left">{{$item->province->province}}</td>
                                         <td class="text-left">{{$item->districts->district}}
+                                        <td class="text-left">{{$item->districts->voltage_level}}</td>
                                         <td class="text-left">{{$item->available_capacity}}</td>
-                                        <td class="text-left">{{$item->voltage_level}}</td>
-                                        <td class="text-left">{{$item->expiry_connection_point}}</td>
                                         <td class="text-left">{{$item->status_of_engagement}}</td>
                                         <td class="text-left">{{$item->contact_person_name}}</td>
                                     </tr>
