@@ -211,7 +211,6 @@
                                         <th>Province (Location)</th>
                                         <th>District (Location)</th>
                                         <th>Available Capacity</th>
-                                        <th>Voltage Level</th>
                                         <th>Status of Engagement</th>
                                         <th>Contact Person (Name)</th>
 
@@ -228,7 +227,7 @@
                                         <td class="text-left">{{$item->size_of_plant}}{{$item->size_of_plant_unit}}</td>
                                         <td class="text-left">{{$item->province->province}}</td>
                                         <td class="text-left">{{$item->districts->district}}
-                                        <td class="text-left">{{$item->districts->voltage_level}}</td>
+
                                         <td class="text-left">{{$item->available_capacity}}</td>
                                         <td class="text-left">{{$item->status_of_engagement}}</td>
                                         <td class="text-left">{{$item->contact_person_name}}</td>
