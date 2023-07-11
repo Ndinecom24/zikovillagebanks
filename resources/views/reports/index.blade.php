@@ -225,8 +225,8 @@
                                         <td class="text-left">{{$item->name_of_ipp}}</td>
                                         <td class="text-left">{{$item->type_of_venture}}</td>
                                         <td class="text-left">{{$item->size_of_plant}}{{$item->size_of_plant_unit}}</td>
-                                        <td class="text-left">{{$item->province->province}}</td>
-                                        <td class="text-left">{{$item->districts->district}}
+                                        <td class="text-left">{{$item->province->province ??''}}</td>
+                                        <td class="text-left">{{$item->districts->district ??''}}
 
                                         <td class="text-left">{{$item->available_capacity}}</td>
                                         <td class="text-left">{{$item->status_of_engagement}}</td>

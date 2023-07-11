@@ -89,7 +89,7 @@
                                                 <input type="text" class="form-control"
                                                        id="invoiced_services"
                                                        name="invoiced_services"
-                                                       value="{{$item->invoiced_services}}">
+                                                       value="{{$item->invoiced_services??''}}">
 
                                             </div>
 
@@ -103,7 +103,7 @@
                                                         id="type"
                                                         name="engagement_number"
                                                         type="text">
-                                                    <option>{{$item->engagement_number}}</option>
+                                                    <option>{{$item->engagement_number??''}}</option>
                                                     <option value="SOL">SOLAR</option>
                                                     <option value="WIN">WIND</option>
                                                     <option value="GEO">GEOTHERMAL</option>
@@ -125,7 +125,7 @@
                                                 <label for="sel_suppliers">Name of IPP</label>
                                                 <input type="text" step="any" class="form-control"
                                                        id="capacity1"
-                                                       name="name_of_ipp" value="{{$item->name_of_ipp}}">
+                                                       name="name_of_ipp" value="{{$item->name_of_ipp??''}}">
                                             </div>
 
                                         </div>
@@ -138,7 +138,7 @@
                                                 <input type="text" step="any" class="form-control"
                                                        id="capacity1"
                                                        name="date_of_application"
-                                                       value="{{$item->date_of_application}}" readonly>
+                                                       value="{{$item->date_of_application??''}}" readonly>
                                             </div>
                                         </div>
 
@@ -153,7 +153,7 @@
                                                        style="color: black;resize: none;"
                                                        id="contract_period"
                                                        name="size_of_plant" type="text" step="any"
-                                                       value="{{$item->size_of_plant}}">
+                                                       value="{{$item->size_of_plant??''}}">
                                             </div>
                                         </div>
 
@@ -165,7 +165,7 @@
                                                 <select type="text" class="form-control"
                                                         id="contract_period_unit"
                                                         name="size_of_plant_unit">
-                                                    <option>{{$item->size_of_plant_unit}}</option>
+                                                    <option>{{$item->size_of_plant_unit??''}}</option>
                                                     <option>MW</option>
                                                     <option>KW</option>
 
@@ -184,7 +184,7 @@
                                                 <label for="contract_currency_id">Province</label>
                                                 <input type="text" class="form-control"
                                                        id="province"
-                                                       name="province" value="{{$item->province->province}}">
+                                                       name="province" value="{{$item->province->province??''}}">
                                             </div>
                                         </div>
 
@@ -194,7 +194,7 @@
                                                 <label for="effective date">District</label>
                                                 <input type="text" class="form-control"
                                                        id="district"
-                                                       name="district" value="{{$item->districts->district}}">
+                                                       name="district" value="{{$item->districts->district??''}}">
                                             </div>
                                         </div>
 
@@ -210,7 +210,7 @@
                                                 <textarea class="form-control" name="proposed_connection_point"
                                                           id="proposed_connection_point"
                                                           cols="30"
-                                                          rows="3">{{$item->proposed_connection_point}}</textarea>
+                                                          rows="3">{{$item->proposed_connection_point??''}}</textarea>
 
                                             </div>
                                         </div>
@@ -222,7 +222,7 @@
                                                        class="form-control" step="any"
                                                        id="available_capacity"
                                                        name="available_capacity"
-                                                       value="{{$item->available_capacity}}">
+                                                       value="{{$item->available_capacity??''}}">
 
                                             </div>
                                         </div>
@@ -237,7 +237,7 @@
                                                 <label for="contract_currency_id">Voltage Level</label>
                                                 <input type="number" step="any" class="form-control"
                                                        name="voltage_level"
-                                                       id="voltage_level" value="{{$item->voltage_level}}">
+                                                       id="voltage_level" value="{{$item->voltage_level??''}}">
                                             </div>
                                         </div>
 
@@ -249,7 +249,7 @@
                                                        class="form-control"
                                                        id="date_of_connection"
                                                        name="date_of_connection"
-                                                       value="{{$item->date_of_connection}}"
+                                                       value="{{$item->date_of_connection??''}}??"
                                                        data-parsley-required="true"
                                                        readonly>
 
@@ -269,7 +269,7 @@
                                                        class="form-control"
                                                        id="expiry_connection_point"
                                                        name="expiry_connection_point"
-                                                       value="{{$item->expiry_connection_point}}"
+                                                       value="{{$item->expiry_connection_point??''}}"
                                                        data-parsley-required="true"
                                                        readonly>
                                             </div>
@@ -283,7 +283,7 @@
                                                         id="type"
                                                         name="status_of_engagement"
                                                         type="text">
-                                                    <option>{{$item->status_of_engagement}}</option>
+                                                    <option>{{$item->status_of_engagement??''}}</option>
                                                     <option>TERMINATED</option>
                                                     <option value="WIN">UNDER REVIEW</option>
 
@@ -306,7 +306,7 @@
                                                        class="form-control"
                                                        id="updates_on_engagements"
                                                        name="updates_on_engagements"
-                                                       value="{{$item->updates_on_engagements}}"
+                                                       value="{{$item->updates_on_engagements??''}}"
                                                        data-parsley-required="true">
                                             </div>
                                         </div>
@@ -316,7 +316,7 @@
                                                 <input type="date"
                                                        class="form-control"
                                                        id="date_of_update"
-                                                       name="date_of_update" value="{{$item->date_of_update}}"
+                                                       name="date_of_update" value="{{$item->date_of_update??''}}"
                                                 >
 
                                             </div>
@@ -333,7 +333,7 @@
                                                 </label>
                                                 <input class="form-control" type="text"
                                                        id="updated_by"
-                                                       name="updated_by" value="{{$item->updated_by}}" readonly>
+                                                       name="updated_by" value="{{$item->updated_by??''}}" readonly>
                                             </div>
                                         </div>
 
@@ -344,7 +344,7 @@
                                                 </label>
                                                 <input class="form-control" type="date"
                                                        id="expected_date_commissioning"
-                                                       name="expected_date_commissioning" value="{{$item->expected_date_commissioning}}">
+                                                       name="expected_date_commissioning" value="{{$item->expected_date_commissioning??''}}">
                                             </div>
                                         </div>
 
@@ -354,7 +354,7 @@
                                                 </label>
                                                 <input class="form-control" type="date"
                                                        id="expected_commercial"
-                                                       name="expected_commercial" value="{{$item->expected_commercial}}">
+                                                       name="expected_commercial" value="{{$item->expected_commercial??''}}">
                                             </div>
                                         </div>
 
@@ -369,7 +369,7 @@
                                                 <input type="text" step="any" class="form-control"
                                                        id="contact_person_name"
                                                        name="contact_person_name"
-                                                       value="{{$item->contact_person_name}}">
+                                                       value="{{$item->contact_person_name??''}}">
 
                                             </div>
                                         </div>
@@ -381,7 +381,7 @@
                                                 <input type="text" name="contact_person_email"
                                                        id="contact_person_email"
                                                        class="form-control"
-                                                       value="{{$item->contact_person_email}}">
+                                                       value="{{$item->contact_person_email??''}}">
                                             </div>
                                         </div>
 
@@ -390,7 +390,7 @@
                                                 <label for="status">Contact Number</label>
                                                 <input type="number" step="any" name="contact_person_phone"
                                                        id="contact_person_phone"
-                                                       class="form-control" value="{{$item->contact_person_phone}}">
+                                                       class="form-control" value="{{$item->contact_person_phone??''}}">
 
                                             </div>
                                         </div>
