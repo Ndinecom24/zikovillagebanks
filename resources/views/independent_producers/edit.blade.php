@@ -184,7 +184,7 @@
                                                 <label for="contract_currency_id">Province</label>
                                                 <input type="text" class="form-control"
                                                        id="province"
-                                                       name="province" value="{{$item->province->province??''}}">
+                                                       name="province" readonly value="{{$item->province->province??''}}">
                                             </div>
                                         </div>
 
@@ -194,7 +194,7 @@
                                                 <label for="effective date">District</label>
                                                 <input type="text" class="form-control"
                                                        id="district"
-                                                       name="district" value="{{$item->districts->district??''}}">
+                                                       name="district" readonly value="{{$item->districts->district??''}}">
                                             </div>
                                         </div>
 
@@ -207,10 +207,9 @@
                                             <div class="form-group">
                                                 <label for="contract_currency_id">Proposed Connection
                                                     Point</label>
-                                                <textarea class="form-control" name="proposed_connection_point"
+                                                <input class="form-control" name="proposed_connection_point"
                                                           id="proposed_connection_point"
-                                                          cols="30"
-                                                          rows="3">{{$item->proposed_connection_point??''}}</textarea>
+                                                          value="{{$item->proposed_connection_point??''}}" readonly>
 
                                             </div>
                                         </div>
