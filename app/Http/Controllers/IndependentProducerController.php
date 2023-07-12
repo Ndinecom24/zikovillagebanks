@@ -207,7 +207,10 @@ class IndependentProducerController extends Controller
             ->where('modal_code', $item->system_ref)
             ->get();
 
-        return view('independent_producers.edit')->with(compact('item', 'contracts'));
+        $provinces = Province::get();
+        $statuses = Status::get();
+
+        return view('independent_producers.edit')->with(compact('item', 'contracts','provinces','statuses'));
     }
 
     /**
@@ -234,8 +237,8 @@ class IndependentProducerController extends Controller
         $item->date_of_application = $request->date_of_application;
         $item->size_of_plant = $request->size_of_plant;
         $item->size_of_plant_unit = $request->size_of_plant_unit;
-        $item->province = $request->province;
-        $item->district = $request->district;
+        $item->province_id = $request->province;
+        $item->district_id = $request->district;
         $item->proposed_connection_point = $request->proposed_connection_point;
         $item->available_capacity = $request->available_capacity;
 //             $item-> 'effective_date_comment' => $request->effective_date_comment,

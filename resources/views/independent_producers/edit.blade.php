@@ -182,9 +182,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="contract_currency_id">Province</label>
-                                                <input type="text" class="form-control"
-                                                       id="province"
-                                                       name="province" readonly value="{{$item->province->province??''}}">
+                                                <select type="text" class="form-control"
+                                                       id="sel"
+                                                       name="province_id" onchange="togglefunction(event)" >
+                                                    <option selected disabled hidden>Select Province</option>
+                                                    @foreach($provinces as $province)
+                                                        <option value="{{$province->id}}">{{$province->province}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 
@@ -192,9 +197,12 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="effective date">District</label>
-                                                <input type="text" class="form-control"
+                                                <select type="text" class="form-control"
                                                        id="district"
-                                                       name="district" readonly value="{{$item->districts->district??''}}">
+                                                        name="district_id" onchange="choice1(this)">
+                                                    <option>-- select District --</option>
+
+                                                    </select>
                                             </div>
                                         </div>
 
@@ -207,9 +215,12 @@
                                             <div class="form-group">
                                                 <label for="contract_currency_id">Proposed Connection
                                                     Point</label>
-                                                <input class="form-control" name="proposed_connection_point"
+                                                <select class="form-control" name="proposed_connection_point"
                                                           id="proposed_connection_point"
-                                                          value="{{$item->proposed_connection_point??''}}" readonly>
+                                                        value="{{$item->proposed_connection_point??''}}"   onchange="connectionPointsOnchange(this)">
+
+                                                    <option></option>
+                                                </select>
 
                                             </div>
                                         </div>
@@ -244,13 +255,11 @@
                                             <div class="form-group">
                                                 <label for="contract_end_date">Date of Connection(
                                                     Estimated)</label>
-                                                <input type="text"
+                                                <input type="date"
                                                        class="form-control"
                                                        id="date_of_connection"
                                                        name="date_of_connection"
-                                                       value="{{$item->date_of_connection??''}}??"
-                                                       data-parsley-required="true"
-                                                       readonly>
+                                                       data-parsley-required="true">
 
                                             </div>
                                         </div>
@@ -264,13 +273,11 @@
                                             <div class="form-group">
                                                 <label for="contract_start_date">Expiry Date of Connection Point
                                                     Commitment</label>
-                                                <input type="text"
+                                                <input type="date"
                                                        class="form-control"
                                                        id="expiry_connection_point"
                                                        name="expiry_connection_point"
-                                                       value="{{$item->expiry_connection_point??''}}"
-                                                       data-parsley-required="true"
-                                                       readonly>
+                                                       data-parsley-required="true">
                                             </div>
                                         </div>
 
@@ -279,12 +286,14 @@
                                                 <label for="contract_end_date">Status Of Engagement</label>
 
                                                 <select class="form-control"
-                                                        id="type"
+                                                        id="status_of_engagement"
                                                         name="status_of_engagement"
                                                         type="text">
-                                                    <option>{{$item->status_of_engagement??''}}</option>
-                                                    <option>TERMINATED</option>
-                                                    <option value="WIN">UNDER REVIEW</option>
+                                                    <option selected disabled hidden>Select Status</option>
+
+                                                @foreach($statuses as $status)
+                                                        <option>{{$status->status}}</option>
+                                                    @endforeach
 
 
                                                 </select>
@@ -457,3 +466,108 @@
     <!-- /.content -->
 
 @endsection
+@push('custom-scripts')
+    <script>
+        window.provinces = {!! json_encode($provinces->toArray() ) !!};
+        let connection_points = [];
+
+
+        $(document).ready(function () {
+
+            var total_available_capacity = document.getElementById('total_available_capacity').value;
+            var committed_capacity = document.getElementById('committed_capacity').value;
+
+            console.log(total_available_capacity)
+            console.log(committed_capacity)
+
+            // console.log("test");
+
+            $('#total_available_capacity').keyup(function () {
+
+                var total_available_capacity = document.getElementById('total_available_capacity').value;
+                var committed_capacity = document.getElementById('committed_capacity').value;
+
+                $('#available_capacity').val((parseFloat(total_available_capacity) - parseFloat(committed_capacity)))
+
+            });
+
+            $('#committed_capacity').keyup(function () {
+
+                var total_available_capacity = document.getElementById('total_available_capacity').value;
+                var committed_capacity = document.getElementById('committed_capacity').value;
+
+                $('#available_capacity').val((parseFloat(total_available_capacity) - parseFloat(committed_capacity)))
+
+            });
+        });
+
+
+        // function (e) {
+        //
+        //     var district = select.options[select.selectedIndex].getAttribute('data-amount');
+        //     // var months=select.options[select.selectedIndex].getAttribute('data-months');
+        // }
+
+        function connectionPointsOnchange(e) {
+
+            const voltage =    e.selectedOptions[0].getAttribute('data-voltage')
+            $('[name=voltage_level]').val(voltage);
+
+        }
+
+        function choice1(e) {
+
+            const selected_value = e.value;
+
+            let selectedPoints = connection_points.filter(function (connection_point) {
+                return parseInt(connection_point.district_id) === parseInt(selected_value);
+            });
+
+            if (selectedPoints.length === 0) {
+                return
+            }
+
+            let options = " <option selected disabled=\"true\"  value=\"\">-- Select Connection Point --</option>";
+
+            $.each(selectedPoints[0].points, function (index1, point) {
+                options += "<option data-voltage='" + point.voltage_level + "'  value='" + point.substation + "'  > " + point.substation + " </option> ";
+
+                /* if(district.hasOwnProperty('connection_point')){
+                     connection_points.push({'district_id':district.id , 'points': district.connection_point});
+                 }*/
+            });
+
+
+            $("#proposed_connection_point").html(options);
+
+        }
+
+        function togglefunction(e) {
+
+            const selected_value = e.target.value;
+
+            let selectedProvince = window.provinces.filter(function (province) {
+                return parseInt(province.id) === parseInt(selected_value);
+            });
+
+            if (selectedProvince.length === 0) {
+                return
+            }
+
+            let districtOptions = " <option selected disabled=\"true\"  value=\"\">-- Select District --</option>";
+
+            $.each(selectedProvince[0].districts, function (index1, district) {
+                districtOptions += "<option   value='" + district.id + "'  > " + district.district + " </option> ";
+
+                if (district.hasOwnProperty('connection_point')) {
+                    connection_points.push({'district_id': district.id, 'points': district.connection_point});
+                }
+            });
+
+
+            $("#district").html(districtOptions);
+
+        }
+
+    </script>
+@endpush
