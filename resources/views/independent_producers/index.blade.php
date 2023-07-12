@@ -97,7 +97,7 @@
                         <!-- /.card -->
                         {{--                    </div>--}}
                         {{--                </div>--}}
-khkhkhuhj
+
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title"><b>Power Agreements</b></h3>
