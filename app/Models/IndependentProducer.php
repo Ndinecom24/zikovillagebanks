@@ -9,6 +9,12 @@ class IndependentProducer extends Model
 {
     use HasFactory;
     protected $table='independent_producers';
+    protected $casts =[
+        'date_of_application'=> 'date:Y-m-d',
+        'date_of_connection'=> 'date:Y-m-d',
+        'date_of_update'=> 'date:Y-m-d',
+        'expected_date_commissioning'=> 'date:Y-m-d',
+    ];
     protected $fillable=[
 
         'system_ref',

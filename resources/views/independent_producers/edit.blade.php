@@ -135,10 +135,10 @@
 
                                                 <label for="sel_suppliers">Application Date</label>
 
-                                                <input type="text" step="any" class="form-control"
+                                                <input type="date" step="any" class="form-control"
                                                        id="capacity1"
                                                        name="date_of_application"
-                                                       value="{{$item->date_of_application??''}}" readonly>
+                                                       value="{{$item->date_of_application??''}}">
                                             </div>
                                         </div>
 
@@ -185,7 +185,7 @@
                                                 <select type="text" class="form-control"
                                                        id="sel"
                                                        name="province_id" onchange="togglefunction(event)" >
-                                                    <option selected disabled hidden>Select Province</option>
+                                                    <option selected disabled >Select Province</option>
                                                     @foreach($provinces as $province)
                                                         <option value="{{$province->id}}">{{$province->province}}</option>
                                                     @endforeach
@@ -228,11 +228,11 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="contract_start_date">Available Capacity</label>
-                                                <input type="number"
-                                                       class="form-control" step="any"
+                                                <input type="text"
+                                                       class="form-control"
                                                        id="available_capacity"
                                                        name="available_capacity"
-                                                       value="{{$item->available_capacity??''}}">
+                                                       value="{{$item->available_capacity??''}}" readonly>
 
                                             </div>
                                         </div>
@@ -245,9 +245,9 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="contract_currency_id">Voltage Level</label>
-                                                <input type="number" step="any" class="form-control"
+                                                <input type="text" step="any" class="form-control"
                                                        name="voltage_level"
-                                                       id="voltage_level" value="{{$item->voltage_level??''}}">
+                                                       id="voltage_level" value="{{$item->voltage_level??''}}" readonly>
                                             </div>
                                         </div>
 
