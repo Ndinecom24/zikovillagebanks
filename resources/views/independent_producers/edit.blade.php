@@ -307,7 +307,7 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="contract_start_date">Updates with New Engagement</label>
                                                 <input type="text" step="any"
@@ -318,7 +318,7 @@
                                                        data-parsley-required="true">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="contract_end_date">Date of Update</label>
                                                 <input type="date"
@@ -327,6 +327,19 @@
                                                        name="date_of_update" value="{{$item->date_of_update??''}}"
                                                 >
 
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="contract_comment">Type Of Venture</label>
+                                                <select name="type_of_venture" class="form-control">
+
+                                                    <option>{{$item->type_of_venture??''}}</option>
+                                                    <option>ZESCO Owned</option>
+                                                    <option>ZESCO JV</option>
+                                                    <option>IPP</option>
+                                                </select>
                                             </div>
                                         </div>
 
@@ -370,40 +383,40 @@
                                     </div>
 
 
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="contract_comment">Contact Person Name</label>
-                                                <input type="text" step="any" class="form-control"
-                                                       id="contact_person_name"
-                                                       name="contact_person_name"
-                                                       value="{{$item->contact_person_name??''}}">
+{{--                                    <div class="row">--}}
+{{--                                        <div class="col-md-4">--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label for="contract_comment">Contact Person Name</label>--}}
+{{--                                                <input type="text" step="any" class="form-control"--}}
+{{--                                                       id="contact_person_name"--}}
+{{--                                                       name="contact_person_name"--}}
+{{--                                                       value="{{$item->contact_person_name??''}}">--}}
 
-                                            </div>
-                                        </div>
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="contract_type">Contact Email
-                                                </label>
-                                                <input type="text" name="contact_person_email"
-                                                       id="contact_person_email"
-                                                       class="form-control"
-                                                       value="{{$item->contact_person_email??''}}">
-                                            </div>
-                                        </div>
+{{--                                        <div class="col-md-4">--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label for="contract_type">Contact Email--}}
+{{--                                                </label>--}}
+{{--                                                <input type="text" name="contact_person_email"--}}
+{{--                                                       id="contact_person_email"--}}
+{{--                                                       class="form-control"--}}
+{{--                                                       value="{{$item->contact_person_email??''}}">--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="status">Contact Number</label>
-                                                <input type="number" step="any" name="contact_person_phone"
-                                                       id="contact_person_phone"
-                                                       class="form-control" value="{{$item->contact_person_phone??''}}">
+{{--                                        <div class="col-md-4">--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label for="status">Contact Number</label>--}}
+{{--                                                <input type="number" step="any" name="contact_person_phone"--}}
+{{--                                                       id="contact_person_phone"--}}
+{{--                                                       class="form-control" value="{{$item->contact_person_phone??''}}">--}}
 
-                                            </div>
-                                        </div>
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                    </div>
+{{--                                    </div>--}}
 
 
                                     <div class="modal-footer">
