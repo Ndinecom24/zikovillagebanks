@@ -84,7 +84,7 @@ class ProvinceController extends Controller
 
 //dd($province);
 
-        return view('nodes.show')->with(compact('producers','province', 'my_district','my_connectionPoint'));;
+        return view('nodes.show')->with(compact('producers','province', 'my_district', 'my_connectionPoint'));;
     }
 
     /**
