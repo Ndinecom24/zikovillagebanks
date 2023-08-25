@@ -27,6 +27,7 @@ class HomeController extends Controller
 
         $applications = IndependentProducer:: orderBy('id', 'ASC')->get();
 
+
         return view('home', compact(['applications']))
             ->with('i', (request()->input('page', 1) - 1) * 10);
 

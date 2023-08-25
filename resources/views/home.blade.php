@@ -113,7 +113,7 @@
                             <span><i class="fas fa-water"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> HYDRO TECHNOLOGY</span>
+                            <span class="info-box-text"> HYBRID TECHNOLOGY</span>
                             <span class="info-box-number">{{number_format($applications->where('engagement_number','HYDRO')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
@@ -183,15 +183,16 @@
                                         <th>Technology</th>
                                         <th>Name Of IPP</th>
                                         <th>Name Of Project</th>
-                                        <th>Date of Application</th>
+{{--                                        <th>Date of Application</th>--}}
                                         <th>Size of plant [MW]</th>
                                         <th>Province (Location)</th>
                                         <th>District (Location)</th>
+                                        <th>Coordinates</th>
                                         <th>Available Capacity</th>
                                         <th>Voltage Level</th>
-                                        <th>Expiry Date</th>
+                                        <th>LCOE Date</th>
                                         <th>Status of Engagement</th>
-                                        <th>Contact Person (Name)</th>
+{{--                                        <th>Contact Person (Name)</th>--}}
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -199,19 +200,20 @@
 
                                     @foreach($applications as $item)
                                         <tr>
-                                            <td class="text-left">{{$item->system_ref??''}}</td>
-                                            <td class="text-left">{{$item->engagement_number??''}}</td>
-                                            <td class="text-left">{{$item->name_of_ipp??''}}</td>
-                                            <td class="text-left">{{$item->type_of_venture??''}}</td>
-                                            <td class="text-left">{{$item->date_of_application??''}}</td>
-                                            <td class="text-left">{{$item->size_of_plant??''}}{{$item->size_of_plant_unit??''}}</td>
-                                            <td class="text-left">{{$item->province->province??''}}</td>
-                                            <td class="text-left">{{$item->districts->district ??''}}
-                                            <td class="text-left">{{$item->available_capacity??''}}</td>
-                                            <td class="text-left">{{$item->voltage_level??''}}</td>
-                                            <td class="text-left">{{$item->expiry_connection_point??''}}</td>
-                                            <td class="text-left">{{$item->status_of_engagement??''}}</td>
-                                            <td class="text-left">{{$item->contact_person_name??''}}</td>
+                                            <td class="text-left">{{$item->system_ref?? 'No Value'}}</td>
+                                            <td class="text-left">{{$item->engagement_number?? 'No Value'}}</td>
+                                            <td class="text-left">{{$item->name_of_ipp?? 'No Value'}}</td>
+                                            <td class="text-left">{{$item->type_of_venture?? 'No Value'}}</td>
+{{--                                            <td class="text-left">{{$item->date_of_application??''}}</td>--}}
+                                            <td class="text-left">{{$item->size_of_plant?? 'No Value'}}{{$item->size_of_plant_unit?? 'No Value'}}</td>
+                                            <td class="text-left">{{$item->province->province?? 'No Value'}}</td>
+                                            <td class="text-left">{{$item->districts->district ?? 'No Value'}}
+                                            <td class="text-left">{{$item->proposed_connection_point ?? 'No Value'}}
+                                            <td class="text-left">{{$item->available_capacity?? 'No Value'}}</td>
+                                            <td class="text-left">{{$item->voltage_level?? 'No Value'}}</td>
+                                            <td class="text-left">{{$item->ipp_tariff??'No Value'}}</td>
+                                            <td class="text-left">{{$item->status_of_engagement?? 'No Value'}}</td>
+{{--                                            <td class="text-left">{{$item->contact_person_name??''}}</td>--}}
 
 
                                             <td class="text-left">

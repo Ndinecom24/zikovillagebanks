@@ -44,6 +44,8 @@ class IndependentProducer extends Model
         'type_of_venture',
         'expected_date_commissioning',
         'expected_commercial',
+        'preferred_connection_level',
+        'ipp_tariff',
         'status_id'
 
 
@@ -52,6 +54,7 @@ class IndependentProducer extends Model
 protected $with =[
     'province',
     'districts',
+
 ];
 
 
@@ -71,6 +74,9 @@ protected $with =[
     public function  districts(){
         return $this->belongsTo(Districts::class,'district_id','id');
     }
+
+
+
 //    public static function booted(){
 //
 //

@@ -166,8 +166,8 @@
                                                         id="contract_period_unit"
                                                         name="size_of_plant_unit">
                                                     <option>{{$item->size_of_plant_unit??''}}</option>
-                                                    <option>MW</option>
-                                                    <option>KW</option>
+{{--                                                    <option>MW</option>--}}
+
 
                                                 </select>
                                             </div>
@@ -184,21 +184,31 @@
                                                 <label for="contract_currency_id">Province</label>
                                                 <select type="text" class="form-control"
                                                        id="sel"
-                                                       name="province_id" onchange="togglefunction(event)" >
-                                                    <option selected disabled >Select Province</option>
+                                                       name="province_id" >
+{{--                                                    <option selected disabled >Select Province</option>--}}
+
                                                     @foreach($provinces as $province)
-                                                        <option value="{{$province->id}}">{{$province->province}}</option>
+                                                        @if($item->province_id == $province->id)
+
+                                                            <option selected value="{{$province->id}}">{{$province->province}}</option>
+                                                            @else
+                                                            <option value="{{$province->id}}">{{$province->province}}</option>
+                                                            @endif
+
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
 
-
+{{--{{dd($item)}}--}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="effective date">District</label>
                                                 <select type="text" class="form-control"
                                                        id="district"
+                                                        data-selected-district="{{$item->district_id}}
+                                                            "
+
                                                         name="district_id" onchange="choice1(this)">
                                                     <option>-- select District --</option>
 
@@ -232,7 +242,7 @@
                                                        class="form-control"
                                                        id="available_capacity"
                                                        name="available_capacity"
-                                                       value="{{$item->available_capacity??''}}" readonly>
+                                                       value="{{$item->available_capacity??''}}">
 
                                             </div>
                                         </div>
@@ -259,7 +269,7 @@
                                                        class="form-control"
                                                        id="date_of_connection"
                                                        name="date_of_connection"
-                                                       data-parsley-required="true">
+                                                       data-parsley-required="true" value="{{ !is_null($item->date_of_connection) ? date("Y-m-d",strtotime($item->date_of_connection)) : ""}}">
 
                                             </div>
                                         </div>
@@ -277,7 +287,7 @@
                                                        class="form-control"
                                                        id="expiry_connection_point"
                                                        name="expiry_connection_point"
-                                                       data-parsley-required="true">
+                                                       data-parsley-required="true" value="{{ !is_null($item->expiry_connection_point) ? date("Y-m-d",strtotime($item->expiry_connection_point)) : ""}}">
                                             </div>
                                         </div>
 
@@ -306,6 +316,28 @@
 
 
                                     <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="status">Preferred Connection Level</label>
+                                                <input type="text" name="preferred_connection_level"
+                                                       id="preferred_connection_level"
+                                                       class="form-control" value="{{$item->preferred_connection_level}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="status">LCOE</label>
+                                                <input type="number" name="ipp_tariff"
+                                                       id="ipp_tariff"
+                                                       class="form-control" step="any" value="{{$item->ipp_tariff}}">
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="row">
 
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -321,11 +353,10 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="contract_end_date">Date of Update</label>
-                                                <input type="date"
+                                                <input type="text"
                                                        class="form-control"
                                                        id="date_of_update"
-                                                       name="date_of_update" value="{{$item->date_of_update??''}}"
-                                                >
+                                                       name="date_of_update" value="{{date('Y-m-d H:i:s')}}" readonly>
 
                                             </div>
                                         </div>
@@ -365,9 +396,10 @@
                                                 </label>
                                                 <input class="form-control" type="date"
                                                        id="expected_date_commissioning"
-                                                       name="expected_date_commissioning" value="{{$item->expected_date_commissioning??''}}">
+                                                       name="expected_date_commissioning" value="{{ !is_null($item->expected_date_commissioning) ? date("Y-m-d",strtotime($item->expected_date_commissioning)) : ""}}">
                                             </div>
                                         </div>
+{{--                                        "{{ !is_null($contract->contract_distributed_date) ? date("Y-m-d",strtotime($contract->contract_distributed_date)) : ""}}"--}}
 
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -375,7 +407,7 @@
                                                 </label>
                                                 <input class="form-control" type="date"
                                                        id="expected_commercial"
-                                                       name="expected_commercial" value="{{$item->expected_commercial??''}}">
+                                                       name="expected_commercial" value="{{ !is_null($item->expected_commercial) ? date("Y-m-d",strtotime($item->expected_commercial)) : ""}}">
                                             </div>
                                         </div>
 
@@ -483,9 +515,47 @@
     <script>
         window.provinces = {!! json_encode($provinces->toArray() ) !!};
         let connection_points = [];
+        function togglefunction(selected_value) {
 
+            // const  = e?.target?.value ||
+
+            let selectedProvince = window.provinces.filter(function (province) {
+                return parseInt(province.id) === parseInt(selected_value);
+            });
+
+            if (selectedProvince.length === 0) {
+                return
+            }
+
+            let districtOptions = " <option selected disabled=\"true\"  value=\"\">-- Select District --</option>";
+
+            $.each(selectedProvince[0].districts, function (index1, district) {
+                districtOptions += "<option   value='" + district.id + "'  > " + district.district + " </option> ";
+
+                if (district.hasOwnProperty('connection_point')) {
+                    connection_points.push({'district_id': district.id, 'points': district.connection_point});
+                }
+            });
+
+            const district =  $("#district").attr('data-selected-district')?.trim();
+            $("#district").html(districtOptions);
+            $("#district").val(district).change();
+
+        }
 
         $(document).ready(function () {
+            $(document).on('change', '[name="province_id"]' , function(){ togglefunction(this.value) });
+            $('[name="province_id"]').change();
+
+
+
+
+
+
+
+
+
+
 
             var total_available_capacity = document.getElementById('total_available_capacity').value;
             var committed_capacity = document.getElementById('committed_capacity').value;
@@ -555,32 +625,32 @@
 
         }
 
-        function togglefunction(e) {
-
-            const selected_value = e.target.value;
-
-            let selectedProvince = window.provinces.filter(function (province) {
-                return parseInt(province.id) === parseInt(selected_value);
-            });
-
-            if (selectedProvince.length === 0) {
-                return
-            }
-
-            let districtOptions = " <option selected disabled=\"true\"  value=\"\">-- Select District --</option>";
-
-            $.each(selectedProvince[0].districts, function (index1, district) {
-                districtOptions += "<option   value='" + district.id + "'  > " + district.district + " </option> ";
-
-                if (district.hasOwnProperty('connection_point')) {
-                    connection_points.push({'district_id': district.id, 'points': district.connection_point});
-                }
-            });
-
-
-            $("#district").html(districtOptions);
-
-        }
+        // function togglefunction(e) {
+        //
+        //     const selected_value = e?.target?.value || $('#sel').val();
+        //
+        //     let selectedProvince = window.provinces.filter(function (province) {
+        //         return parseInt(province.id) === parseInt(selected_value);
+        //     });
+        //
+        //     if (selectedProvince.length === 0) {
+        //         return
+        //     }
+        //
+        //     let districtOptions = " <option selected disabled=\"true\"  value=\"\">-- Select District --</option>";
+        //
+        //     $.each(selectedProvince[0].districts, function (index1, district) {
+        //         districtOptions += "<option   value='" + district.id + "'  > " + district.district + " </option> ";
+        //
+        //         if (district.hasOwnProperty('connection_point')) {
+        //             connection_points.push({'district_id': district.id, 'points': district.connection_point});
+        //         }
+        //     });
+        //
+        //
+        //     $("#district").html(districtOptions);
+        //
+        // }
 
     </script>
 @endpush

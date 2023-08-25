@@ -300,6 +300,29 @@
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="status">Preferred Connection Level</label>
+                                                    <input type="text" name="preferred_connection_level"
+                                                           id="preferred_connection_level"
+                                                           class="form-control" value="{{$item->preferred_connection_level}}" readonly>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="status">LCOE</label>
+                                                    <input type="text" name="ipp_tariff"
+                                                           id="ipp_tariff"
+                                                           class="form-control" value="{{$item->ipp_tariff}}" readonly>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
 
                                         <div class="row">
                                             <div class="col-md-6">

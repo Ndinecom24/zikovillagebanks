@@ -171,14 +171,13 @@
 
                                                 <label for="sel_suppliers">Unit Measure</label>
 
-                                                <select type="text" class="form-control"
+                                                <input type="text" class="form-control"
                                                         id="contract_period_unit"
-                                                        name="size_of_plant_unit">
-                                                    <option>MW</option>
-                                                    <option>kW</option>
-                                                    <option>kV</option>
+                                                        name="size_of_plant_unit" value="MW" readonly>
 
-                                                </select>
+
+
+
 
                                             </div>
                                         </div>
@@ -264,7 +263,7 @@
 
 
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="contract_currency_id">Voltage Level</label>
                                                 <input type="text" class="form-control"
@@ -272,7 +271,31 @@
                                                        id="voltage_level" readonly>
                                             </div>
                                         </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="status">LCOE</label>
+                                                <input type="text" name="ipp_tariff"
+                                                       id="ipp_tariff"
+                                                       class="form-control">
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="status">Preferred Connection Level</label>
+                                                <input type="text" name="preferred_connection_level"
+                                                       id="preferred_connection_level"
+                                                       class="form-control">
+
+                                            </div>
+                                        </div>
+
                                     </div>
+
+
+
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -401,6 +424,7 @@
                                             </div>
                                         </div>
                                     </div>
+
 
 
                                     <br>

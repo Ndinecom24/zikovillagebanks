@@ -43,6 +43,8 @@ class IndependentProducerController extends Controller
 
     public function store(Request $request)
     {
+
+//        dd($request->all());
         $tech = substr($request->engagement_number, 0,3);
         $files = $request->allFiles();
         $date = Carbon::now();
@@ -79,7 +81,9 @@ class IndependentProducerController extends Controller
                 'type_of_venture' => $request->type_of_venture,
                 'contact_person_name' => $request->contact_person_name,
                 'contact_person_email' => $request->contact_person_email,
-                'contact_person_phone' => $request->contact_person_phone
+                'contact_person_phone' => $request->contact_person_phone,
+                'preferred_connection_level' => $request->contact_person_phone,
+                'ipp_tariff' => $request->ipp_tariff,
             ],
 
 
@@ -108,7 +112,11 @@ class IndependentProducerController extends Controller
                 'type_of_venture' => $request->type_of_venture,
                 'contact_person_name' => $request->contact_person_name,
                 'contact_person_email' => $request->contact_person_email,
-                'contact_person_phone' => $request->contact_person_phone
+                'contact_person_phone' => $request->contact_person_phone,
+
+                'preferred_connection_level' => $request->contact_person_phone,
+                'ipp_tariff' => $request->ipp_tariff,
+
 
             ]);
 
@@ -171,7 +179,7 @@ class IndependentProducerController extends Controller
 
         }
 
-        return redirect()->route('independent-producer.index')
+        return redirect()->route('home')
             ->with('message', 'Submitted Successfully');
     }
 
@@ -208,6 +216,7 @@ class IndependentProducerController extends Controller
             ->get();
 
         $provinces = Province::get();
+
         $statuses = Status::get();
 
         return view('independent_producers.edit')->with(compact('item', 'contracts','provinces','statuses'));
@@ -237,8 +246,8 @@ class IndependentProducerController extends Controller
         $item->date_of_application = $request->date_of_application;
         $item->size_of_plant = $request->size_of_plant;
         $item->size_of_plant_unit = $request->size_of_plant_unit;
-        $item->province_id = $request->province;
-        $item->district_id = $request->district;
+        $item->province_id = $request->province_id;
+        $item->district_id = $request->district_id;
         $item->proposed_connection_point = $request->proposed_connection_point;
         $item->available_capacity = $request->available_capacity;
 //             $item-> 'effective_date_comment' => $request->effective_date_comment,
@@ -255,10 +264,16 @@ class IndependentProducerController extends Controller
         $item->type_of_venture = $request->type_of_venture;
         $item->expected_date_commissioning = $request->expected_date_commissioning;
         $item->expected_commercial = $request->expected_commercial;
+        $item->preferred_connection_level = $request->contact_person_phone;
+        $item->ipp_tariff = $request->ipp_tariff;
+
+
+
+
 //        $item->contact_person_phone = $request->contact_person_phone;
         $item->save();
 
-        return redirect()->route('independent-producer.index')->with('message', 'Contract Data is successfully updated');
+        return redirect()->route('home')->with('message', 'Contract Data is successfully updated');
     }
 
     /**

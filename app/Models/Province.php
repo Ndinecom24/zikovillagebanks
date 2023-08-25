@@ -21,4 +21,10 @@ class Province extends Model
         return $this->hasMany( Districts::class, 'province_id','id');
     }
 
+
+//    public function independentProducers(){
+//
+//        return $this->belongsTo(IndependentProducer::class, 'province_id', 'id');
+//    }
+
 }

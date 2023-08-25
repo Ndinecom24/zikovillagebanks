@@ -31,5 +31,9 @@ class Districts extends Model
         return $this->hasMany( ConnectionPoints::class, 'district_id','id');
     }
 
+//    public function independentProducer(){
+//
+//        return $this->belongsTo(IndependentProducer::class, 'district_id','id');
+//    }
 
 }
