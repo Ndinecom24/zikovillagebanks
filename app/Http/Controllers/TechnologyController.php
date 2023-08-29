@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Technology;
 use Illuminate\Http\Request;
 
 class TechnologyController extends Controller
@@ -35,17 +36,17 @@ class TechnologyController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'province' => ['required'],
+            'technology_name' => ['required'],
 
         ]);
 
-        $province = Province::updateOrCreate(
+        $technology = Technology::updateOrCreate(
             [
-                'province' => $request->province,
+                'technology_name' => $request->technology_name,
 
             ],
             [
-                'province' => $request->province,
+                'technology_name' => $request->technology_name,
 
             ]
         );

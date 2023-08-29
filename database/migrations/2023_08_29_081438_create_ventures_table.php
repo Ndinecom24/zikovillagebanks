@@ -15,6 +15,7 @@ class CreateVenturesTable extends Migration
     {
         Schema::create('ventures', function (Blueprint $table) {
             $table->id();
+            $table->string('venture_type');
             $table->timestamps();
         });
     }
