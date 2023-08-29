@@ -47,6 +47,13 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{\Illuminate\Support\Facades\URL::signedRoute('graphical.reports')}}" class="nav-link ">
+                        <i class="far fa-circle nav-icon text-warning"></i>
+                        <p>Graphical Summary Reports</p>
+                    </a>
+                </li>
+
 
 {{--                    <li class="nav-item">--}}
 {{--                        <a href="{{route('reports.index')}}" class="nav-link ">--}}
@@ -61,6 +68,21 @@
                     <a href="{{route('status.index')}}" class="nav-link ">
                         <i class="far fa-circle nav-icon text-warning"></i>
                         <p>Statuses</p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="{{route('venture.index')}}" class="nav-link ">
+                        <i class="far fa-circle nav-icon text-warning"></i>
+                        <p>Ventures</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('technology.index')}}" class="nav-link ">
+                        <i class="far fa-circle nav-icon text-warning"></i>
+                        <p>Technologies</p>
                     </a>
                 </li>
 

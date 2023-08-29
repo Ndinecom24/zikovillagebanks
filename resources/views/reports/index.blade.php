@@ -158,6 +158,40 @@
 
 
             <div class="card">
+
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 border-right">
+                            <a   href="">
+                                <div class="description-block">
+                                    <h5 class="description-header"> </h5>
+                                    <span class="description-text">CLASSIFIED</span>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-6 border-right">
+                            <a   href="">
+                                <div class="description-block">
+                                    <h5 class="description-header"> </h5>
+                                    <span class="description-text">UNCLASSIFED</span>
+                                </div>
+                            </a>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+
+
+
+            </div>
+
+
+            <div class="card">
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="row">

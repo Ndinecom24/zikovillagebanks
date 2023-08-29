@@ -6,7 +6,9 @@ use App\Http\Controllers\IndependentProducerController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VentureController;
 use App\Models\ConnectionPoints;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -72,4 +74,15 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/status/index', [StatusController::class, 'index'])->name('status.index');
     Route::post('/status/store', [StatusController::class, 'store'])->name('status.store');
     Route::post('/destroy/{id}', [StatusController::class, 'destroy'])->name('status.destroy');
+
+
+
+
+
+    Route::get('/reports', [ReportsController::class, 'create'])->name('graphical.reports');
+
+    Route::get('/technology', [TechnologyController::class, 'index'])->name('technology.index');
+
+    Route::get('/ventures', [VentureController::class, 'index'])->name('venture.index');
+
 });
