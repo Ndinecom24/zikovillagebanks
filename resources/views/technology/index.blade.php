@@ -6,13 +6,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Provinces</h1>
+                    <h1>Technology</h1>
                 </div>
 
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Provinces</li>
+                        <li class="breadcrumb-item active">Technology</li>
                     </ol>
                 </div>
             </div>
@@ -151,14 +151,14 @@
                             </button>
                         </div>
                         <!-- form start -->
-                        <form role="form-new" method="post" action="">
+                        <form role="form-new" method="post" action="{{route('technology.store')}}">
                             @csrf
 
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <label for="inputName" class="col-sm-2 col-form-label">Technology</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control uppercase" name="technology" required
+                                        <input type="text" class="form-control uppercase" name="technology_name" required
                                                placeholder="Technology...">
                                     </div>
                                 </div>

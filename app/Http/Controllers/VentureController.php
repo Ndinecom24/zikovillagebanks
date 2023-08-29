@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Venture;
 use Illuminate\Http\Request;
 
 class VentureController extends Controller
@@ -34,7 +35,23 @@ class VentureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'venture_type' => ['required'],
+
+        ]);
+
+        $venture = Venture::updateOrCreate(
+            [
+                'venture_type' => $request->venture_type,
+
+            ],
+            [
+                'venture_type' => $request->venture_type,
+
+            ]
+        );
+        return redirect()->back()
+            ->with('message', 'Submitted Successfully');
     }
 
     /**

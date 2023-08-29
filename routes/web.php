@@ -82,7 +82,9 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/reports', [ReportsController::class, 'create'])->name('graphical.reports');
 
     Route::get('/technology', [TechnologyController::class, 'index'])->name('technology.index');
+    Route::get('/technology/store', [TechnologyController::class, 'store'])->name('technology.store');
 
     Route::get('/ventures', [VentureController::class, 'index'])->name('venture.index');
+    Route::get('/ventures/store', [VentureController::class, 'store'])->name('venture.store');
 
 });

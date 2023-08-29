@@ -50,7 +50,7 @@
                 <li class="nav-item">
                     <a href="{{\Illuminate\Support\Facades\URL::signedRoute('graphical.reports')}}" class="nav-link ">
                         <i class="far fa-circle nav-icon text-warning"></i>
-                        <p>Graphical Summary Reports</p>
+                        <p>Graphical Summary</p>
                     </a>
                 </li>
 

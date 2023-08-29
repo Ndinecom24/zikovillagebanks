@@ -50,7 +50,7 @@ class TechnologyController extends Controller
 
             ]
         );
-        return redirect()->route('province.index')
+        return redirect()->back()
             ->with('message', 'Submitted Successfully');
     }
 

@@ -112,7 +112,7 @@
                             <span><i class="fas fa-water"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> HYDRO TECHNOLOGY</span>
+                            <span class="info-box-text"> HYBRID TECHNOLOGY</span>
 {{--                            <span class="info-box-number">{{number_format($applications->where('engagement_number','HYDRO')->count())}}</span>--}}
                         </div>
                         <!-- /.info-box-content -->
@@ -162,7 +162,15 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-6 border-right">
+                    <div class="col-sm-2 border-right">
+                        <a   href="">
+                            <div class="description-block">
+                                <h5 class="description-header"> </h5>
+                                <span class="description-text">INDEPENDENT POWER PRODUCERS</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-2 border-right">
                         <a   href="">
                             <div class="description-block">
                                 <h5 class="description-header"> </h5>
@@ -170,12 +178,38 @@
                             </div>
                         </a>
                     </div>
-
-                    <div class="col-sm-6 border-right">
+                    <div class="col-sm-2 border-right">
                         <a   href="">
                             <div class="description-block">
                                 <h5 class="description-header"> </h5>
-                                <span class="description-text">UNCLASSIFED</span>
+                                <span class="description-text">UNCLASSIFIED DEVELOPERS</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-2 border-right">
+                        <a   href="">
+                            <div class="description-block">
+                                <h5 class="description-header"> </h5>
+                                <span class="description-text">MW</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-sm-2 border-right">
+                        <a   href="">
+                            <div class="description-block">
+                                <h5 class="description-header"> </h5>
+                                <span class="description-text">GIS DEVELOPERS</span>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div class="col-sm-2 border-right">
+                        <a   href="">
+                            <div class="description-block">
+                                <h5 class="description-header"> </h5>
+                                <span class="description-text">ALL DEVELOPERS</span>
                             </div>
                         </a>
                     </div>
@@ -193,13 +227,13 @@
                 </div>
 
 
-                <div class="col-md-6 col-lg-6 col-sm-12">
+                <div class="col-md-4 col-lg-4 col-sm-12">
                     <div class="card">
                         <div class="card-header">
 {{--                            <a class="btn btn-outline-success float-right"--}}
 {{--                               href="{{route('home')}}">--}}
 {{--                                <i class="fa fa-backward"></i> Back--}}
-                            </a>
+{{--                            </a>--}}
                             <table class="table table-hover table-bordered data-table nowrap">
                                 <thead class="text-uppercase">
                                 <tr>
@@ -223,29 +257,20 @@
 
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body p-0">
 
-
-
-
-                            <div class="card-body">
-                                <!-- /.card-body -->
-                            </div>
-
-                        </div>
                     </div>
                 </div>
                 <!-- /.card -->
 
 
 
-                <div class="col-md-6 col-lg-6 col-sm-12">
+                <div class="col-md-8 col-lg-8 col-sm-12">
                     {{--  QUOTATION FILES--}}
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title text-bold text-orange"></h4>
 
-
+                            <div id="main" style="width: 1200px;height:400px;"></div>
 
                         </div>
 
@@ -263,3 +288,50 @@
     </section>
     <!-- /.content -->
 @endsection
+@push('custom-scripts')
+<script type="text/javascript">
+    // Initialize the echarts instance based on the prepared dom
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+        title: {
+            text: 'Referer of a Website',
+            subtext: 'Fake Data',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left'
+        },
+        series: [
+            {
+                name: 'Access From',
+                type: 'pie',
+                radius: '60%',
+                data: [
+                    { value: 1048, name: 'BIOMASS' },
+                    { value: 735, name: 'WIND' },
+                    { value: 580, name: 'SOLAR' },
+                    { value: 484, name: 'GEOTHERMAL' },
+                    { value: 300, name: 'HYBRID' }
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    option && myChart.setOption(option);
+
+</script>
+@endpush
