@@ -6,6 +6,7 @@ use App\Models\FileUploads;
 use App\Models\IndependentProducer;
 use App\Models\Province;
 use App\Models\Status;
+use App\Models\Venture;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -36,8 +37,9 @@ class IndependentProducerController extends Controller
         $user = auth()->user();
         $provinces = Province::get();
         $statuses = Status::get();
+        $ventures = Venture::get();
 
-        return view('independent_producers.create')->with(compact('user','provinces', 'statuses'));
+        return view('independent_producers.create')->with(compact('user','provinces', 'statuses','ventures'));
     }
 
 

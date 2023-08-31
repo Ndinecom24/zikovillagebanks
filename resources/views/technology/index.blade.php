@@ -100,10 +100,10 @@
                             </tr>
                             </thead>
                             <tbody>
-{{--                            @foreach($province as $item)--}}
+                            @foreach($technologies as $item)
                                 <tr>
-                                    <td ></td>
-                                    <td ></td>
+                                    <td >{{$item->id}}</td>
+                                    <td >{{$item->technology_name}}</td>
 
                                     <td>
 {{--                                        <a class="btn btn-sm bg-gradient-gray" style="margin: 1px" href="{{route('province.show', [ 'id'=> $item->id, 'district'=>0])}}">--}}
@@ -116,7 +116,7 @@
                                     </td>
                                 </tr>
 
-{{--                            @endforeach--}}
+                            @endforeach
                             </tbody>
 
                             <tfoot>

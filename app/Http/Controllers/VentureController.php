@@ -14,7 +14,11 @@ class VentureController extends Controller
      */
     public function index()
     {
-        return view('venture_types.index');
+        $ventures = Venture:: orderBy('id','ASC')->get();
+
+        return view('venture_types.index', compact(['ventures']))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+
     }
 
     /**
@@ -31,7 +35,7 @@ class VentureController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illumventure_typeinate\Http\Response
      */
     public function store(Request $request)
     {

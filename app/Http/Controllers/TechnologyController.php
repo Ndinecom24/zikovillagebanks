@@ -14,7 +14,12 @@ class TechnologyController extends Controller
      */
     public function index()
     {
-        return view('technology.index');
+
+        $technologies = Technology:: orderBy('id','ASC')->get();
+
+        return view('technology.index', compact(['technologies']))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+
     }
 
     /**

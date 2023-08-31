@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Independent Power Producers</h1>
+                    <h1>Independent Power Producers Registration</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -25,7 +25,7 @@
         <div class="container-fluid">
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8">
 
                     @if (!empty($message))
                         <div class="alert alert-success alert-block">
@@ -49,7 +49,7 @@
                                href="{{route('home')}}">
                                 <i class="fa fa-backward"></i> Back
                             </a>
-                            <h4 class="title">Add IPP</h4>
+                            <h4 class="title">Create IPP</h4>
 
                         </div>
                         <!-- /.card-header -->
@@ -382,11 +382,10 @@
                                             <div class="form-group">
                                                 <label for="contract_comment">Type Of Venture</label>
                                                 <select name="type_of_venture" class="form-control">
-
-                                                    <option>--Select--</option>
-                                                    <option>ZESCO Owned</option>
-                                                    <option>ZESCO JV</option>
-                                                    <option>IPP</option>
+                                                    <option selected disabled hidden>--Select Venture--</option>
+                                                    @foreach($ventures as $venture)
+                                                        <option value="{{$venture->id}}">{{$venture->venture_type}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
