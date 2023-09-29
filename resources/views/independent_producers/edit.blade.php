@@ -107,7 +107,7 @@
                                                     <option value="SOL">SOLAR</option>
                                                     <option value="WIN">WIND</option>
                                                     <option value="GEO">GEOTHERMAL</option>
-                                                    <option value="HYD">HYDRO</option>
+                                                    <option value="HYB">HYBRID</option>
                                                     <option value="BIO">BIOMASS</option>
                                                     <option value="WAS">WASTE OF ENERGY</option>
                                                 </select>

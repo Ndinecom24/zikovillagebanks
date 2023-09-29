@@ -114,7 +114,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text"> HYBRID TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','HYDRO')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications->where('engagement_number','HYBRID')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>

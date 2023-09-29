@@ -30,7 +30,7 @@ class ReportsController extends Controller
 
 
         return view('reports.index', compact(['applications']))
-            ->with('i', (request()->input('page', 1) - 1) * 10);;
+            ->with('i', (request()->input('page', 1) - 1) * 10);
 
 
     }
@@ -99,5 +99,27 @@ class ReportsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function pieChart(Request $request)
+    {
+
+        if (!$request->hasValidSignature()) {
+            abort(401);
+        }
+        $ventures = collect([]);
+
+
+        if ($request->has('type_of_venture')) {
+
+            $ventures = IndependentProducer::where('type_of_venture', '=', trim($request->get('engagement_number')))
+                ->orderBy('id', 'ASC')->get();
+        } else {
+            $ventures = IndependentProducer:: orderBy('id', 'ASC')->get();
+        }
+
+
+        return view('reports.graphical_reports', compact(['ventures']))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 }
