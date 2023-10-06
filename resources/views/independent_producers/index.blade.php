@@ -159,6 +159,11 @@
                                                         <a class="dropdown-item"
                                                            href="{{ route('independent-producer.edit',$item->id) }}">Edit
                                                         </a>
+
+                                                        <a class="dropdown-item"
+                                                           href="{{ route('independent-producer.destroy',$item->id) }}">
+                                                            Delete
+                                                        </a>
                                                         {{--                                                @if(Auth::user()->user_access_level_id == 0||Auth::user()->user_access_level_id == 1 || Auth::user()->user_access_level_id == 2)--}}
                                                         {{--                                                    <a class="dropdown-item"--}}
                                                         {{--                                                       href="{{ route('contract.ict.edit',$item->id) }}">Edit--}}

@@ -286,7 +286,12 @@ class IndependentProducerController extends Controller
      */
     public function destroy($id)
     {
-        // php artisan storage:link
+      $producers = IndependentProducer::findOrFail($id);
+      $producers->delete();
+        return redirect()->route('home')
+            ->with('message', 'Deleted Successfully');
+
+
     }
 
 }

@@ -99,8 +99,9 @@
                                                     <option value="WIND">WIND</option>
                                                     <option value="GEOTHERMAL">GEOTHERMAL</option>
                                                     <option value="HYBRID">HYBRID</option>
+                                                    <option value="HYDROGEN">HYDROGEN</option>
                                                     <option value="BIOMASS">BIOMASS</option>
-                                                    <option value="WASTE OF ENERGY">WASTE OF ENERGY</option>
+                                                    <option value="WASTE TO ENERGY">WASTE TO ENERGY</option>
                                                 </select>
                                             </div>
 
