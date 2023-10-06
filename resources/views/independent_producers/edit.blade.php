@@ -104,12 +104,13 @@
                                                         name="engagement_number"
                                                         type="text">
                                                     <option>{{$item->engagement_number??''}}</option>
-                                                    <option value="SOL">SOLAR</option>
-                                                    <option value="WIN">WIND</option>
-                                                    <option value="GEO">GEOTHERMAL</option>
-                                                    <option value="HYB">HYBRID</option>
-                                                    <option value="BIO">BIOMASS</option>
-                                                    <option value="WAS">WASTE OF ENERGY</option>
+                                                    <option value="SOLAR">SOLAR</option>
+                                                    <option value="WIND">WIND</option>
+                                                    <option value="GEOTHERMAL">GEOTHERMAL</option>
+                                                    <option value="HYBRID">HYBRID</option>
+                                                    <option value="HYDROGEN">HYDROGEN</option>
+                                                    <option value="BIOMASS">BIOMASS</option>
+                                                    <option value="WASTE TO ENERGY">WASTE TO ENERGY</option>
                                                 </select>
                                             </div>
 
