@@ -143,7 +143,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text">WASTE TO ENERGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WASTE OF ENERGY')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WASTE TO ENERGY')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -187,10 +187,10 @@
                                         <th>Size of plant [MW]</th>
                                         <th>Province (Location)</th>
                                         <th>District (Location)</th>
-                                        <th>Coordinates</th>
+{{--                                        <th>Coordinates</th>--}}
                                         <th>Available Capacity</th>
                                         <th>Voltage Level</th>
-                                        <th>LCOE Date</th>
+{{--                                        <th>LCOE Date</th>--}}
                                         <th>Status of Engagement</th>
 {{--                                        <th>Contact Person (Name)</th>--}}
                                         <th>Action</th>
@@ -208,10 +208,10 @@
                                             <td class="text-left">{{$item->size_of_plant?? 'No Value'}}{{$item->size_of_plant_unit?? 'No Value'}}</td>
                                             <td class="text-left">{{$item->province->province?? 'No Value'}}</td>
                                             <td class="text-left">{{$item->districts->district ?? 'No Value'}}
-                                            <td class="text-left">{{$item->proposed_connection_point ?? 'No Value'}}
+{{--                                            <td class="text-left">{{$item->proposed_connection_point ?? 'No Value'}}--}}
                                             <td class="text-left">{{$item->available_capacity?? 'No Value'}}</td>
                                             <td class="text-left">{{$item->voltage_level?? 'No Value'}}</td>
-                                            <td class="text-left">{{$item->ipp_tariff??'No Value'}}</td>
+{{--                                            <td class="text-left">{{$item->ipp_tariff??'No Value'}}</td>--}}
                                             <td class="text-left">{{$item->status_of_engagement?? 'No Value'}}</td>
 {{--                                            <td class="text-left">{{$item->contact_person_name??''}}</td>--}}
 

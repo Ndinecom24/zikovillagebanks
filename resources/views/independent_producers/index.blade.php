@@ -94,9 +94,6 @@
                             <!-- /.card-body -->
 
                         </div>
-                        <!-- /.card -->
-                        {{--                    </div>--}}
-                        {{--                </div>--}}
 
                         <div class="card">
                             <div class="card-header">
