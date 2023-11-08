@@ -112,7 +112,7 @@
                             <span><i class="fas fa-water"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text"> HYDRO TECHNOLOGY</span>
+                            <span class="info-box-text"> HYBRID TECHNOLOGY</span>
                             <span class="info-box-number">{{number_format($applications->where('engagement_number','HYDRO')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->

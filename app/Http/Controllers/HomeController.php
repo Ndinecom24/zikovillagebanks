@@ -22,14 +22,26 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $applications = IndependentProducer:: orderBy('id', 'ASC')->get();
+//        if (!$request->hasValidSignature()) {
+//            abort(401);
+//        }
 
+        $applications = collect([]);
+
+        if ($request->has('engagement_number')) {
+
+            $applications = IndependentProducer::where('engagement_number', '=', trim($request->get('engagement_number')))
+                ->orderBy('id', 'ASC')->get();
+        } else {
+            $applications = IndependentProducer:: orderBy('id', 'ASC')->get();
+        }
 
         return view('home', compact(['applications']))
             ->with('i', (request()->input('page', 1) - 1) * 10);
+
 
     }
     /**

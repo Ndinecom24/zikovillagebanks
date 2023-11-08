@@ -291,6 +291,8 @@
 @push('custom-scripts')
 <script type="text/javascript">
     // Initialize the echarts instance based on the prepared dom
+    var ventureType = @json($ventures)
+    
     var chartDom = document.getElementById('main');
     var myChart = echarts.init(chartDom);
     var option;

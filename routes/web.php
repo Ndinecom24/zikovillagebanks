@@ -79,7 +79,7 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
 
 
 
-    Route::get('/reports', [ReportsController::class, 'create'])->name('graphical.reports');
+    Route::get('/reports', [ReportsController::class, 'pieChart'])->name('graphical.reports');
 
     Route::get('/technology', [TechnologyController::class, 'index'])->name('technology.index');
     Route::post('/technology/store', [TechnologyController::class, 'store'])->name('technology.store');

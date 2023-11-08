@@ -42,7 +42,7 @@ class ReportsController extends Controller
      */
     public function create()
     {
-        return view('reports.graphical_reports');
+
     }
 
     /**
