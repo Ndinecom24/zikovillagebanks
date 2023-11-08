@@ -57,6 +57,8 @@ class IndependentProducer extends Model
 protected $with =[
     'province',
     'districts',
+    'ventures',
+
 
 ];
 
@@ -76,6 +78,9 @@ protected $with =[
 
     public function  districts(){
         return $this->belongsTo(Districts::class,'district_id','id');
+    }
+    public function  ventures(){
+        return $this->belongsTo(Venture::class,'type_of_venture','id');
     }
 
 

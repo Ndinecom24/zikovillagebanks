@@ -203,7 +203,7 @@
                                             <td class="text-left">{{$item->system_ref?? 'No Value'}}</td>
                                             <td class="text-left">{{$item->engagement_number?? 'No Value'}}</td>
                                             <td class="text-left">{{$item->name_of_ipp?? 'No Value'}}</td>
-                                            <td class="text-left">{{$item->type_of_venture?? 'No Value'}}</td>
+                                            <td class="text-left">{{$item->ventures->venture_type?? 'No Value'}}</td>
 {{--                                            <td class="text-left">{{$item->date_of_application??''}}</td>--}}
                                             <td class="text-left">{{$item->size_of_plant?? 'No Value'}}{{$item->size_of_plant_unit?? 'No Value'}}</td>
                                             <td class="text-left">{{$item->province->province?? 'No Value'}}</td>
