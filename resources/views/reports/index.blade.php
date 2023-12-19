@@ -141,7 +141,7 @@
                             <span><i class="fas fa-charging-station"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text">WASTE OF ENERGY</span>
+                            <span class="info-box-text">WASTE TO ENERGY</span>
                             <span class="info-box-number">{{number_format($applications->where('engagement_number','WASTE OF ENERGY')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
@@ -234,7 +234,7 @@
                         <div class="card-body p-2">
 
                             <div class="table-responsive mt-10 ">
-                                <table class="table table-hover table-bordered data-table nowrap">
+                                <table id="example1" class="table table-hover table-bordered data-table nowrap">
                                     <thead class="text-uppercase">
                                     <tr>
                                         <th>Ref No</th>
@@ -254,17 +254,17 @@
                                     <tbody>
                                     @foreach($applications as $item)
                                     <tr>
-                                        <td class="text-left">{{$item->system_ref}}</td>
-                                        <td class="text-left">{{$item->engagement_number}}</td>
-                                        <td class="text-left">{{$item->name_of_ipp}}</td>
-                                        <td class="text-left">{{$item->type_of_venture}}</td>
-                                        <td class="text-left">{{$item->size_of_plant}}{{$item->size_of_plant_unit}}</td>
-                                        <td class="text-left">{{$item->province->province ??''}}</td>
-                                        <td class="text-left">{{$item->districts->district ??''}}
+                                        <td class="text-left">{{$item->system_ref ??"--No Value--"}}</td>
+                                        <td class="text-left">{{$item->engagement_number ??"--No Value--"}}</td>
+                                        <td class="text-left">{{$item->name_of_ipp ??"--No Value--"}}</td>
+                                        <td class="text-left">{{$item->type_of_venture ??"--No Value--"}}</td>
+                                        <td class="text-left">{{$item->size_of_plant ??"--No Value--"}}{{$item->size_of_plant_unit}}</td>
+                                        <td class="text-left">{{$item->province->province ??"--No Value--"}}</td>
+                                        <td class="text-left">{{$item->districts->district ??"--No Value--"}}
 
-                                        <td class="text-left">{{$item->available_capacity}}</td>
-                                        <td class="text-left">{{$item->status_of_engagement}}</td>
-                                        <td class="text-left">{{$item->contact_person_name}}</td>
+                                        <td class="text-left">{{$item->available_capacity ??"--No Value--"}}</td>
+                                        <td class="text-left">{{$item->status_of_engagement ??"--No Value--"}}</td>
+                                        <td class="text-left">{{$item->contact_person_name ??"--No Value--"}}</td>
                                     </tr>
                                     @endforeach
                                     </tbody>

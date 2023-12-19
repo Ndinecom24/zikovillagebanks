@@ -62,7 +62,7 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box mb-3 bg-yellow">
                         <a class="info-box-icon elevation-1"
-                           href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index',['engagement_number'=> 'SOLAR'])}}">
+                           href="#">
                             <span><i class="fas fa-sun"></i></span>
                         </a>
                         <div class="info-box-content">
@@ -77,7 +77,7 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box mb-3 bg-green">
                         <a class="info-box-icon elevation-1"
-                           href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index',['engagement_number'=> 'WIND'])}} ">
+                           href="# ">
                             <span><i class="fas fa-wind"></i></span>
                         </a>
                         <div class="info-box-content">
@@ -94,7 +94,7 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box mb-3 bg-red">
                         <a class="info-box-icon elevation-1"
-                           href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index',['engagement_number'=> 'GEOTHERMAL'])}} ">
+                           href="# ">
                             <span><i class="fas fa-industry"></i></span>
                         </a>
                         <div class="info-box-content">
@@ -108,7 +108,7 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box mb-3 bg-blue">
                         <a class="info-box-icon elevation-1"
-                           href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index',['engagement_number'=> 'HYDRO'])}} ">
+                           href="# ">
                             <span><i class="fas fa-water"></i></span>
                         </a>
                         <div class="info-box-content">
@@ -122,7 +122,7 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box mb-3 bg-brown">
                         <a class="info-box-icon elevation-1"
-                           href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index',['engagement_number'=> 'BIOMASS'])}} ">
+                           href="#">
                             <span><i class="fas fa-leaf"></i></span>
                         </a>
                         <div class="info-box-content">
@@ -137,11 +137,11 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
-                           href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index',['engagement_number'=> 'WASTE OF ENERGY'])}} ">
+                           >
                             <span><i class="fas fa-charging-station"></i></span>
                         </a>
                         <div class="info-box-content">
-                            <span class="info-box-text">WASTE OF ENERGY</span>
+                            <span class="info-box-text">WASTE TO ENERGY</span>
                             {{--                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WASTE OF ENERGY')->count())}}</span>--}}
                         </div>
                         <!-- /.info-box-content -->
