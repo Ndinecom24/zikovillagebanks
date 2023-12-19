@@ -68,7 +68,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text">SOLAR TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','SOLAR')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','SOLAR')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -83,7 +83,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text"> WIND TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WIND')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','WIND')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -100,7 +100,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text ">GEOTHERMAL TECHNOLOGY</span>
-                            <span class="info-box-number"> {{number_format($applications->where('engagement_number','GEOTHERMAL')->count())}}</span>
+                            <span class="info-box-number"> {{number_format($applications_counts->where('engagement_number','GEOTHERMAL')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -114,7 +114,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text"> HYBRID TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','HYBRID')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','HYBRID')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -128,7 +128,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text"> BIOMASS TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','BIOMASS')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','BIOMASS')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -143,7 +143,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text">WASTE TO ENERGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WASTE TO ENERGY')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','WASTE TO ENERGY')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>

@@ -29,7 +29,9 @@ class HomeController extends Controller
 //            abort(401);
 //        }
 
-        $applications = collect([]);
+//        $applications = collect([]);
+
+        $applications_counts = IndependentProducer:: orderBy('id', 'ASC')->get();
 
         if ($request->has('engagement_number')) {
 
@@ -39,7 +41,7 @@ class HomeController extends Controller
             $applications = IndependentProducer:: orderBy('id', 'ASC')->get();
         }
 
-        return view('home', compact(['applications']))
+        return view('home', compact(['applications', 'applications_counts']))
             ->with('i', (request()->input('page', 1) - 1) * 10);
 
 

@@ -18,8 +18,7 @@ class ReportsController extends Controller
         if (!$request->hasValidSignature()) {
             abort(401);
         }
-        $applications = collect([]);
-
+        $applications_counts = IndependentProducer:: orderBy('id', 'ASC')->get();
 
         if ($request->has('engagement_number')) {
 
@@ -30,7 +29,7 @@ class ReportsController extends Controller
         }
 
 
-        return view('reports.index', compact(['applications']))
+        return view('reports.index', compact(['applications', 'applications_counts']))
             ->with('i', (request()->input('page', 1) - 1) * 10);
 
 

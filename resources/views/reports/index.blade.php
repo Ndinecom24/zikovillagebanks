@@ -67,7 +67,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text">SOLAR TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','SOLAR')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','SOLAR')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -82,7 +82,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text"> WIND TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WIND')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','WIND')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -99,7 +99,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text ">GEOTHERMAL TECHNOLOGY</span>
-                            <span class="info-box-number"> {{number_format($applications->where('engagement_number','GEOTHERMAL')->count())}}</span>
+                            <span class="info-box-number"> {{number_format($applications_counts->where('engagement_number','GEOTHERMAL')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -108,12 +108,12 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box mb-3 bg-blue">
                         <a class="info-box-icon elevation-1"
-                           href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index',['engagement_number'=> 'HYDRO'])}} ">
+                           href="{{\Illuminate\Support\Facades\URL::signedRoute('reports.index',['engagement_number'=> 'HYBRID'])}} ">
                             <span><i class="fas fa-water"></i></span>
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text"> HYBRID TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','HYDRO')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','HYBRID')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -127,7 +127,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text"> BIOMASS TECHNOLOGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','BIOMASS')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','BIOMASS')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -142,7 +142,7 @@
                         </a>
                         <div class="info-box-content">
                             <span class="info-box-text">WASTE TO ENERGY</span>
-                            <span class="info-box-number">{{number_format($applications->where('engagement_number','WASTE OF ENERGY')->count())}}</span>
+                            <span class="info-box-number">{{number_format($applications_counts->where('engagement_number','WASTE OF ENERGY')->count())}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -257,7 +257,7 @@
                                         <td class="text-left">{{$item->system_ref ??"--No Value--"}}</td>
                                         <td class="text-left">{{$item->engagement_number ??"--No Value--"}}</td>
                                         <td class="text-left">{{$item->name_of_ipp ??"--No Value--"}}</td>
-                                        <td class="text-left">{{$item->type_of_venture ??"--No Value--"}}</td>
+                                        <td class="text-left">{{$item->type_of_venture->ventures ??"--No Value--"}}</td>
                                         <td class="text-left">{{$item->size_of_plant ??"--No Value--"}}{{$item->size_of_plant_unit}}</td>
                                         <td class="text-left">{{$item->province->province ??"--No Value--"}}</td>
                                         <td class="text-left">{{$item->districts->district ??"--No Value--"}}
