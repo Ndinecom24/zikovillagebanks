@@ -13,4 +13,6 @@ class Venture extends Model
         [
             'venture_type'
         ];
+
+
 }

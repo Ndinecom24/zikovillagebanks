@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\IndependentProducer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportsController extends Controller
 {
@@ -103,23 +104,39 @@ class ReportsController extends Controller
 
     public function pieChart(Request $request)
     {
-
-        if (!$request->hasValidSignature()) {
-            abort(401);
-        }
+//
+//        if (!$request->hasValidSignature()) {
+//            abort(401);
+//        }
         $ventures = collect([]);
 
 
         if ($request->has('type_of_venture')) {
 
-            $ventures = IndependentProducer::where('type_of_venture', '=', trim($request->get('engagement_number')))
-                ->orderBy('id', 'ASC')->get();
+
+
+
+            $ventures = IndependentProducer::
+             select ('engagement_number', DB::raw('count(*) as total'), DB::raw('sum(size_of_plant) as amount'))
+
+               -> where('type_of_venture', '=', trim($request->get('type_of_venture')))
+                ->groupBy('engagement_number')
+                ->get();
+//            dd($ventures);
         } else {
-            $ventures = IndependentProducer:: orderBy('id', 'ASC')->get();
+
+
+            $ventures = IndependentProducer::
+            select ('engagement_number', DB::raw('count(*) as total'), DB::raw('sum(size_of_plant) as amount'))
+                ->groupBy('engagement_number')
+                ->get();
         }
 
 
         return view('reports.graphical_reports', compact(['ventures']))
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
+
+
+
 }
