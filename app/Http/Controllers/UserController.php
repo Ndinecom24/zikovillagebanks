@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -18,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User:: orderBy('id', 'ASC')->get();
+        $users = User:: orderBy('id', 'ASC')->paginate(15);
 
 
         return view('users.index', compact(['users']))
@@ -62,9 +63,9 @@ class UserController extends Controller
             'name' => ['required'],
             'staff_no' => ['required'],
             'email' => ['required'],
-            'usertype' => ['required'],
             'password' => ['required'],
         ]);
+
 
         $users = User::updateOrCreate(
             [
@@ -77,9 +78,16 @@ class UserController extends Controller
             [
                 'name' => $request->name,
                 'staff_no' => $request->staff_no,
+                'directorate' => $request->directorate,
+                'user_unit' => $request->user_unit,
+                'job_title' => $request->job_title,
+                'mobile_no' => $request->mobile_no,
                 'email' => $request->email,
                 'usertype' => $request->usertype,
-                'password' =>  Hash::make($request->password)
+                'password' =>  Hash::make($request->password),
+                'password_change' => config('app.password_not_changed'),
+                'total_login' => 0,
+                'uuid' => Str::uuid()->toString(),
             ]
         );
         return redirect()->route('user.index')

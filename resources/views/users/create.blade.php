@@ -74,7 +74,7 @@
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12  form-group ">
                             <label for="staff_name"> STAFF NAME: <span class="required">*</span></label>
-                            <input type="text" class="form-control" id="staff_name_search" name="staff_name"
+                            <input type="text" class="form-control" id="staff_name_search" name="name"
                                    required  readonly >
                         </div>
                     </div>
@@ -101,18 +101,24 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12  form-group ">
                             <label for="staff_email"> STAFF EMAIL: <span class="required">*</span></label>
-                            <input type="text" class="form-control" id="staff_email" name="staff_email"
+                            <input type="text" class="form-control" id="staff_email" name="email"
                                    required   readonly >
                         </div>
-                        <div class="col-4 form-group ">
-                            <label for="user_type_id"> SYSTEM ROLE : <span class="required">*</span></label>
-                            <select name="user_role_id" id="user_role_id" class="form-control" required >
-                                <option value=""> --Choose Role-- </option>
-                                {{--                                @foreach ($roles as $row)--}}
-                                {{--                                    <option value="{{$row->id}}">{{$row->name}}</option>--}}
-                                {{--                                @endforeach--}}
-                            </select>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                            <label for="password"> PASSWORD: <span class="required">*</span></label>
+                            <input type="password" class="form-control" id="password" name="password" required
+                                   placeholder="User's Default Password">
                         </div>
+{{--                        <div class="col-4 form-group ">--}}
+{{--                            <label for="user_type_id"> SYSTEM ROLE : <span class="required">*</span></label>--}}
+{{--                            <select name="user_role_id" id="user_role_id" class="form-control" required >--}}
+{{--                                <option value=""> --Choose Role-- </option>--}}
+{{--                                --}}{{--                                @foreach ($roles as $row)--}}
+{{--                                --}}{{--                                    <option value="{{$row->id}}">{{$row->name}}</option>--}}
+{{--                                --}}{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
                     </div>
 
                     <div class="row">
@@ -133,11 +139,7 @@
 {{--                                --}}{{--                                @endforeach--}}
 {{--                            </select>--}}
 {{--                        </div>--}}
-                        <div class="col-4 form-group mt-4">
-                            <label for="password"> PASSWORD: <span class="required">*</span></label>
-                            <input type="password" class="form-control" id="password" name="password" required
-                                   placeholder="User's Default Password">
-                        </div>
+
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -187,6 +189,7 @@
                         $("#staff_name_search").val(data.employee.name);
                         $("#staff_email").val(data.employee.staff_email);
                         $("#mobile_no").val(data.employee.mobile_no);
+                        $("#job_title").val(data.employee.job_title);
 
                     } else if (data['success' === false]) {
 

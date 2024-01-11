@@ -22,13 +22,17 @@ class User extends Authenticatable
 
         'name',
         'staff_no',
+        'directorate',
         'email',
         'job_title',
         'user_unit',
-        'directorate',
+
         'mobile_no',
         'user_role_id',
         'password',
+        'password_changed',
+        'total_login',
+        'uuid'
     ];
 
     /**

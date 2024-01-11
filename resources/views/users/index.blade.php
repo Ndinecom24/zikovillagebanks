@@ -65,11 +65,9 @@
                             <th>STAFF NO</th>
                             <th>NAME</th>
                             <th>EMAIL</th>
-{{--                            <th>JOB TITLE</th>--}}
-{{--                            <th>USER UNIT</th>--}}
-{{--                            <th>DIRECTORATE</th>--}}
-{{--                            <th>MOBILE NUMBER</th>--}}
-{{--                            <th>SYSTEM ROLE</th>--}}
+                            <th>DIRECTORATE</th>
+                            <th>JOB TITLE</th>
+                            <th>TOTAL LOGINS</th>
                             <th>ACTION</th>
                         </tr>
                         </thead>
@@ -78,9 +76,12 @@
                             <tr>
 
 
-                                <td>{{$item->staff_no}} </td>
-                                <td class="text-orange">{{$item->name}}</td>
-                                <td class="text-orange">{{$item->email}}</td>
+                                <td>{{$item->staff_no ?? '--'}} </td>
+                                <td class="text-orange">{{$item->name ?? '--'}}</td>
+                                <td class="text-orange">{{$item->email ?? '--'}}</td>
+                                <td class="text-orange">{{$item->directorate ?? '--'}}</td>
+                                <td class="text-orange">{{$item->job_title ?? '--'}}</td>
+                                <td class="text-orange">{{$item->total_login ?? '--'}}</td>
 {{--                                <td class="text-orange">{{$item->job_title}}</td>--}}
 {{--                                <td class="text-orange">{{$item->user_unit}}</td>--}}
 {{--                                <td class="text-orange">{{$item->directorate}}</td>--}}

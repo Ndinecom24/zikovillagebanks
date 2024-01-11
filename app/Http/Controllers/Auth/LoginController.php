@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -37,6 +38,14 @@ class LoginController extends Controller
      *
      * @return void
      */
+
+    protected function authenticated(Request $request, $user)
+    {
+        //increase the count for the login
+        $user->total_login = (($user->total_login ?? 0)) + 1 ;
+        $user->save();
+    }
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
