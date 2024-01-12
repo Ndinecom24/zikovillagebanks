@@ -272,6 +272,7 @@
             </div>
             <!-- /.row -->
        <!--/. container-fluid -->
+            @include('password-reset-modal.password_reset_modal')
     </section>
     <!-- /.content -->
 @endsection
@@ -312,6 +313,30 @@
                 "responsive": true,
             });
         });
+
+        // Get the modal on windows page load
+        window.onload = function () {
+            //check if the user password is changed
+            var pwd_change = {!! json_encode(  config('constants.password_not_changed')  ) !!};
+            var user_pwd_change = {!! json_encode(  \Auth::user()->password_changed ) !!};
+            var user_pwd_ezesco = {!! json_encode(  \Auth::user()->password ) !!};
+
+
+            if (Number(pwd_change) == Number(user_pwd_change)) {
+                $('#modal-change-password').modal({backdrop: 'static', keyboard: false});
+                $('#modal-change-password').modal('show');
+            } else if (user_pwd_ezesco == "$2y$10$IEb9UtrGydjucN3uD4VWZ.us5bKNTNxmwUVgpwHWGm.ids9j6q/IC") {
+                alert("Sorry your password has been detected amongst the list of very weak passwords");
+                $('#modal-change-password').modal({backdrop: 'static', keyboard: false});
+                $('#modal-change-password').modal('show');
+            }
+
+            if (user_unit == null) {
+                $('#modal-change-unit').modal({backdrop: 'static', keyboard: false});
+                $('#modal-change-unit').modal('show');
+            }
+
+        }
     </script>
 
 

@@ -43,7 +43,7 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
         Route::get('/show/{item}', [IndependentProducerController::class, 'show'])->name('show');
         Route::get('/edit/{item}', [IndependentProducerController::class, 'edit'])->name('edit');
         Route::post('/update/{item}', [IndependentProducerController::class, 'update'])->name('update');
-        Route::get('/destroy/{id}', [IndependentProducerController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{item}', [IndependentProducerController::class, 'destroy'])->name('destroy');
         Route::post('/store', [IndependentProducerController::class, 'store'])->name('store');
 
 
@@ -56,6 +56,8 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::post('search', [\App\Http\Controllers\UserController::class, 'getStaffDetails'])->name('user.search');
     Route::get('create', [\App\Http\Controllers\UserController::class, 'create'])->name('user.create');
     Route::get('show', [\App\Http\Controllers\UserController::class, 'show'])->name('user.show');
+    Route::get('destroy/{item}', [UserController::class, 'destroy'])->name('user.delete');
+    Route::post('change', [UserController::class, 'changePassword'])->name('user.change.password');
 
 
 

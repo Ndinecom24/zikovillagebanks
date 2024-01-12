@@ -136,7 +136,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->back()->with('message', 'User deleted Successfully');
+
     }
 
 
@@ -157,11 +160,10 @@ class UserController extends Controller
             return redirect()->back()->withInput()->withErrors(['password' => "Sorry your old password you entered is wrong"]);
         } else {
             $user->password = Hash::make($request->password);
-            $user->password_change = config('app.password_not_changed');
+            $user->password_changed = config('app.password_changed');
             $user->save();
             return redirect()->back()->with('message', 'User Password Updated Successfully');
         }
-
     }
 
 }
