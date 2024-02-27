@@ -182,7 +182,7 @@
                                         <th>Ref No</th>
                                         <th>Technology</th>
                                         <th>Name Of IPP</th>
-                                        <th>Name Of Project</th>
+                                        <th>Type of Venture</th>
 {{--                                        <th>Date of Application</th>--}}
                                         <th>Size of plant [MW]</th>
                                         <th>Province (Location)</th>
