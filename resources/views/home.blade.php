@@ -138,7 +138,7 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="info-box mb-3 bg-gray">
                         <a class="info-box-icon elevation-1"
-                           href=" {{\Illuminate\Support\Facades\URL::signedRoute('home',['engagement_number'=> 'WASTE OF ENERGY'])}}">
+                           href=" {{\Illuminate\Support\Facades\URL::signedRoute('home',['engagement_number'=> 'WASTE TO ENERGY'])}}">
                             <span><i class="fas fa-charging-station"></i></span>
                         </a>
                         <div class="info-box-content">
