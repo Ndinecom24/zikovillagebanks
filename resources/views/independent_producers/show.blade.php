@@ -301,7 +301,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="status">Preferred Connection Level</label>
                                                     <input type="text" name="preferred_connection_level"
@@ -311,12 +311,22 @@
                                             </div>
 
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="status">LCOE</label>
                                                     <input type="text" name="ipp_tariff"
                                                            id="ipp_tariff"
                                                            class="form-control" value="{{$item->ipp_tariff}}" readonly>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="status">Type of Venture</label>
+                                                    <input type="text" name="ipp_tariff"
+                                                           id="ipp_tariff"
+                                                           class="form-control" value="{{$item->ventures->venture_type??''}}" readonly>
 
                                                 </div>
                                             </div>
@@ -436,7 +446,7 @@
 
                 </form>
 
-                <div class="row">
+                <div class="row" style="display:none">
                     <div class="col-12">
                         <div class="card card-solid">
                             <div class="card-header bg-gradient-orange">

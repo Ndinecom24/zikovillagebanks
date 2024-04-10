@@ -220,8 +220,8 @@ class IndependentProducerController extends Controller
         $provinces = Province::get();
 
         $statuses = Status::get();
-
-        return view('independent_producers.edit')->with(compact('item', 'contracts','provinces','statuses'));
+        $ventures = Venture::get();
+        return view('independent_producers.edit')->with(compact('item', 'contracts','provinces','statuses', 'ventures'));
     }
 
     /**

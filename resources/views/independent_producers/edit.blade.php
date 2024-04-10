@@ -366,11 +366,11 @@
                                             <div class="form-group">
                                                 <label for="contract_comment">Type Of Venture</label>
                                                 <select name="type_of_venture" class="form-control">
+                                                    <option>{{$item->ventures->venture_type??''}}</option>
+                                                    @foreach($ventures as $venture)
+                                                        <option value="{{$venture->id}}">{{$venture->venture_type}}</option>
+                                                    @endforeach
 
-                                                    <option>{{$item->type_of_venture??''}}</option>
-                                                    <option>ZESCO Owned</option>
-                                                    <option>ZESCO JV</option>
-                                                    <option>IPP</option>
                                                 </select>
                                             </div>
                                         </div>
