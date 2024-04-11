@@ -7,7 +7,7 @@
         <br>
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="text-orange"><strong>{{$province->province}}</strong></h1>
+                <h1 class="text-orange"><strong>{{$province->province}} PROVINCE</strong></h1>
             </div>
 
             <div class="col-sm-6">
