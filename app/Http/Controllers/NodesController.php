@@ -56,7 +56,7 @@ class NodesController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**

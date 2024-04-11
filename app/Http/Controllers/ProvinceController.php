@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ConnectionPoints;
 use App\Models\Districts;
 use App\Models\IndependentProducer;
+use App\Models\Nodes;
 use App\Models\Province;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,7 @@ class ProvinceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -64,18 +65,17 @@ class ProvinceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id,  $district )
+    public function show($id, $district)
     {
         $my_district = Districts::find($district);
         $my_connectionPoint = ConnectionPoints::
-            where( 'district_id' , $district )
-            ->get()
-        ;
+        where('district_id', $district)
+            ->get();
 
-        $producers = IndependentProducer:: orderBy('id','ASC')
+        $producers = IndependentProducer:: orderBy('id', 'ASC')
             ->where('province_id', $id)
             ->get();
 
@@ -84,13 +84,13 @@ class ProvinceController extends Controller
 
 //dd($province);
 
-        return view('nodes.show')->with(compact('producers','province', 'my_district', 'my_connectionPoint'));;
+        return view('nodes.show')->with(compact('producers', 'province', 'my_district', 'my_connectionPoint'));;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -101,8 +101,8 @@ class ProvinceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -113,11 +113,35 @@ class ProvinceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
     }
+
+
+    public function editSubstations(Request $request, $id)
+    {
+        $substations = ConnectionPoints::find($id);
+
+        $validatedData = $request->validate([
+            'substation' => ['required'],
+
+        ]);
+
+        $substations->update([
+            'substation' => $request->substation,
+            'voltage_level' => $request->voltage_level,
+            'coordinates' => $request->coordinates,
+            'layout' => $request->layout,
+            'installed_capacity' => $request->installed_capacity,
+            'substation_capacity' => $request->substation_capacity,
+        ]);
+
+        return redirect()->back()
+            ->with('message', 'Substation Updated Successfully');
+    }
+
 }

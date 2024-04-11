@@ -33,7 +33,7 @@
                 <li class="nav-item">
                     <a href="{{route('province.index')}}" class="nav-link ">
                         <i class="far fa-circle nav-icon text-warning"></i>
-                        <p>Provinces</p>
+                        <p>Connection Points</p>
                     </a>
 
                 </li>

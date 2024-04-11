@@ -68,6 +68,8 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::post('/province/store', [ProvinceController::class, 'store'])->name('province.store');
     Route::get('/province/show/{id}/{district}', [ProvinceController::class, 'show'])->name('province.show');
 
+    Route::post('/substations/show/{id}', [ProvinceController::class, 'editSubstations'])->name('substations.edit');
+
     Route::post('/districts/store', [DistrictsController::class, 'store'])->name('districts.store');
 
     Route::post('/node/store', [ConnectionPointsController::class, 'store'])->name('node.store');
@@ -89,5 +91,6 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
 
     Route::get('/ventures', [VentureController::class, 'index'])->name('venture.index');
     Route::post('/ventures/store', [VentureController::class, 'store'])->name('venture.store');
+    Route::post('/ventures/update/{id}', [VentureController::class, 'update'])->name('venture.update');
 
 });

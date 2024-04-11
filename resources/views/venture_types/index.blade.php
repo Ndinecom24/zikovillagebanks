@@ -109,7 +109,7 @@
                                     {{--                                        <a class="btn btn-sm bg-gradient-gray" style="margin: 1px" href="{{route('province.show', [ 'id'=> $item->id, 'district'=>0])}}">--}}
                                     {{--                                            <i class="fa fa-eye"></i>--}}
                                     {{--                                        </a>--}}
-                                    <a class="btn btn-sm bg-gradient-gray"  data-toggle="modal" data-target="" style="margin: 1px" title="Edit gym">
+                                    <a class="btn btn-sm bg-gradient-gray"  data-toggle="modal" data-target="#edit-venture{{$item->id}}" style="margin: 1px" title="Edit Venture">
                                         <i class="fa fa-pen"></i>
                                     </a>
 
@@ -172,4 +172,39 @@
                     </div>
                 </div>
             </div>
+
+            @foreach($ventures as $item)
+            <div class="modal fade" id="edit-venture{{$item->id}}">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center">Edit Venture </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <!-- form start -->
+                        <form method="post" action="{{route('venture.update', $item->id)}}">
+                            @csrf
+
+                            <div class="modal-body">
+                                <div class="form-group row">
+                                    <label for="inputName" class="col-sm-2 col-form-label">Venture</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control uppercase" name="venture_type" required
+                                              value="{{$item->venture_type}}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-outline-success">Submit
+                                    </button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+    @endforeach
 @endsection

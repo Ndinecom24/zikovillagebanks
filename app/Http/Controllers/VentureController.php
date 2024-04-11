@@ -89,8 +89,22 @@ class VentureController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ventures = Venture::find($id);
+
+        $validatedData = $request->validate([
+            'venture_type' => ['required'],
+
+        ]);
+
+        $ventures->update([
+            'venture_type' => $request->venture_type,
+
+        ]);
+
+        return redirect()->back()
+            ->with('message', 'Venture Updated Successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -100,6 +114,6 @@ class VentureController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }
