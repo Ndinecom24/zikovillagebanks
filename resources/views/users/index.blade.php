@@ -1,4 +1,11 @@
 @extends('layouts.main.master')
+@push('custom-styles')
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet"
+          href="{{ asset('dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('dashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+@endpush
 
 @section('content')
 
@@ -94,12 +101,10 @@
                                             data-target="#modal-edit">
                                         <i class="fa fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-sm bg-gradient-gray float-left" style="margin: 1px"
-                                            title="Delete"
-                                            data-toggle="modal"
-                                            data-target="#modal-delete{{$item->id}}">
+                                    <a class="btn btn-sm bg-gradient-danger" data-toggle="modal"
+                                       data-target="#modal-deactivate">
                                         <i class="fa fa-trash"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
 
@@ -112,9 +117,38 @@
                 </div>
             </div>
         </div>
+
     </section>
 
+    <!-- NEW MODAL-->
+    <div class="modal fade" id="modal-deactivate">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">Deactivate User</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- form start -->
+                <form role="form-new" method="post" action="">
+                    @csrf
 
+                    <div class="modal-body">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="inputName">ARE YOU SURE YOU WANT TO DEACTIVATE THIS USER?</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-outline-success">Submit
+                            </button>
 
-    @include('user-modals.user_delete')
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection

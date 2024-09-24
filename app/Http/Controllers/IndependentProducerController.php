@@ -268,11 +268,6 @@ class IndependentProducerController extends Controller
         $item->expected_commercial = $request->expected_commercial;
         $item->preferred_connection_level = $request->contact_person_phone;
         $item->ipp_tariff = $request->ipp_tariff;
-
-
-
-
-//        $item->contact_person_phone = $request->contact_person_phone;
         $item->save();
 
         return redirect()->route('home')->with('message', 'Contract Data is successfully updated');

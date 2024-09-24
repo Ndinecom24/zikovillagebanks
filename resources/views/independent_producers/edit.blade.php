@@ -167,7 +167,7 @@
                                                         id="contract_period_unit"
                                                         name="size_of_plant_unit">
                                                     <option>{{$item->size_of_plant_unit??''}}</option>
-{{--                                                    <option>MW</option>--}}
+                                                    {{--                                                    <option>MW</option>--}}
 
 
                                                 </select>
@@ -184,36 +184,38 @@
                                             <div class="form-group">
                                                 <label for="contract_currency_id">Province</label>
                                                 <select type="text" class="form-control"
-                                                       id="sel"
-                                                       name="province_id" >
-{{--                                                    <option selected disabled >Select Province</option>--}}
+                                                        id="sel"
+                                                        name="province_id">
+                                                    {{--                                                    <option selected disabled >Select Province</option>--}}
 
                                                     @foreach($provinces as $province)
                                                         @if($item->province_id == $province->id)
 
-                                                            <option selected value="{{$province->id}}">{{$province->province}}</option>
-                                                            @else
-                                                            <option value="{{$province->id}}">{{$province->province}}</option>
-                                                            @endif
+                                                            <option selected
+                                                                    value="{{$province->id}}">{{$province->province}}</option>
+                                                        @else
+                                                            <option
+                                                                value="{{$province->id}}">{{$province->province}}</option>
+                                                        @endif
 
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
 
-{{--{{dd($item)}}--}}
+                                        {{--{{dd($item)}}--}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="effective date">District</label>
                                                 <select type="text" class="form-control"
-                                                       id="district"
+                                                        id="district"
                                                         data-selected-district="{{$item->district_id}}
                                                             "
 
                                                         name="district_id" onchange="choice1(this)">
                                                     <option>-- select District --</option>
 
-                                                    </select>
+                                                </select>
                                             </div>
                                         </div>
 
@@ -227,8 +229,9 @@
                                                 <label for="contract_currency_id">Proposed Connection
                                                     Point</label>
                                                 <select class="form-control" name="proposed_connection_point"
-                                                          id="proposed_connection_point"
-                                                        value="{{$item->proposed_connection_point??''}}"   onchange="connectionPointsOnchange(this)">
+                                                        id="proposed_connection_point"
+                                                        value="{{$item->proposed_connection_point??''}}"
+                                                        onchange="connectionPointsOnchange(this)">
 
                                                     <option></option>
                                                 </select>
@@ -270,7 +273,8 @@
                                                        class="form-control"
                                                        id="date_of_connection"
                                                        name="date_of_connection"
-                                                       data-parsley-required="true" value="{{ !is_null($item->date_of_connection) ? date("Y-m-d",strtotime($item->date_of_connection)) : ""}}">
+                                                       data-parsley-required="true"
+                                                       value="{{ !is_null($item->date_of_connection) ? date("Y-m-d",strtotime($item->date_of_connection)) : ""}}">
 
                                             </div>
                                         </div>
@@ -288,7 +292,8 @@
                                                        class="form-control"
                                                        id="expiry_connection_point"
                                                        name="expiry_connection_point"
-                                                       data-parsley-required="true" value="{{ !is_null($item->expiry_connection_point) ? date("Y-m-d",strtotime($item->expiry_connection_point)) : ""}}">
+                                                       data-parsley-required="true"
+                                                       value="{{ !is_null($item->expiry_connection_point) ? date("Y-m-d",strtotime($item->expiry_connection_point)) : ""}}">
                                             </div>
                                         </div>
 
@@ -302,7 +307,7 @@
                                                         type="text">
                                                     <option selected disabled hidden>Select Status</option>
 
-                                                @foreach($statuses as $status)
+                                                    @foreach($statuses as $status)
                                                         <option>{{$status->status}}</option>
                                                     @endforeach
 
@@ -322,7 +327,8 @@
                                                 <label for="status">Preferred Connection Level</label>
                                                 <input type="text" name="preferred_connection_level"
                                                        id="preferred_connection_level"
-                                                       class="form-control" value="{{$item->preferred_connection_level}}">
+                                                       class="form-control"
+                                                       value="{{$item->preferred_connection_level}}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -368,7 +374,8 @@
                                                 <select name="type_of_venture" class="form-control">
                                                     <option>{{$item->ventures->venture_type??''}}</option>
                                                     @foreach($ventures as $venture)
-                                                        <option value="{{$venture->id}}">{{$venture->venture_type}}</option>
+                                                        <option
+                                                            value="{{$venture->id}}">{{$venture->venture_type}}</option>
                                                     @endforeach
 
                                                 </select>
@@ -397,10 +404,11 @@
                                                 </label>
                                                 <input class="form-control" type="date"
                                                        id="expected_date_commissioning"
-                                                       name="expected_date_commissioning" value="{{ !is_null($item->expected_date_commissioning) ? date("Y-m-d",strtotime($item->expected_date_commissioning)) : ""}}">
+                                                       name="expected_date_commissioning"
+                                                       value="{{ !is_null($item->expected_date_commissioning) ? date("Y-m-d",strtotime($item->expected_date_commissioning)) : ""}}">
                                             </div>
                                         </div>
-{{--                                        "{{ !is_null($contract->contract_distributed_date) ? date("Y-m-d",strtotime($contract->contract_distributed_date)) : ""}}"--}}
+                                        {{--                                        "{{ !is_null($contract->contract_distributed_date) ? date("Y-m-d",strtotime($contract->contract_distributed_date)) : ""}}"--}}
 
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -408,7 +416,8 @@
                                                 </label>
                                                 <input class="form-control" type="date"
                                                        id="expected_commercial"
-                                                       name="expected_commercial" value="{{ !is_null($item->expected_commercial) ? date("Y-m-d",strtotime($item->expected_commercial)) : ""}}">
+                                                       name="expected_commercial"
+                                                       value="{{ !is_null($item->expected_commercial) ? date("Y-m-d",strtotime($item->expected_commercial)) : ""}}">
                                             </div>
                                         </div>
 
@@ -416,40 +425,40 @@
                                     </div>
 
 
-{{--                                    <div class="row">--}}
-{{--                                        <div class="col-md-4">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label for="contract_comment">Contact Person Name</label>--}}
-{{--                                                <input type="text" step="any" class="form-control"--}}
-{{--                                                       id="contact_person_name"--}}
-{{--                                                       name="contact_person_name"--}}
-{{--                                                       value="{{$item->contact_person_name??''}}">--}}
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="contract_comment">Contact Person Name</label>
+                                                <input type="text" step="any" class="form-control"
+                                                       id="contact_person_name"
+                                                       name="contact_person_name"
+                                                       value="{{$item->contact_person_name??''}}">
 
-{{--                                            </div>--}}
-{{--                                        </div>--}}
+                                            </div>
+                                        </div>
 
-{{--                                        <div class="col-md-4">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label for="contract_type">Contact Email--}}
-{{--                                                </label>--}}
-{{--                                                <input type="text" name="contact_person_email"--}}
-{{--                                                       id="contact_person_email"--}}
-{{--                                                       class="form-control"--}}
-{{--                                                       value="{{$item->contact_person_email??''}}">--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="contract_type">Contact Email
+                                                </label>
+                                                <input type="text" name="contact_person_email"
+                                                       id="contact_person_email"
+                                                       class="form-control"
+                                                       value="{{$item->contact_person_email??''}}">
+                                            </div>
+                                        </div>
 
-{{--                                        <div class="col-md-4">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label for="status">Contact Number</label>--}}
-{{--                                                <input type="number" step="any" name="contact_person_phone"--}}
-{{--                                                       id="contact_person_phone"--}}
-{{--                                                       class="form-control" value="{{$item->contact_person_phone??''}}">--}}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="status">Contact Number</label>
+                                                <input type="number" step="any" name="contact_person_phone"
+                                                       id="contact_person_phone"
+                                                       class="form-control" value="{{$item->contact_person_phone??''}}">
 
-{{--                                            </div>--}}
-{{--                                        </div>--}}
+                                            </div>
+                                        </div>
 
-{{--                                    </div>--}}
+                                    </div>
 
 
                                     <div class="modal-footer">
@@ -467,43 +476,122 @@
                 <!-- /.card -->
 
 
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {{--  QUOTATION FILES--}}
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title text-bold text-orange"> Files</h4>
 
-            <div class="col-md-6 col-lg-6 col-sm-12">
-                {{--  QUOTATION FILES--}}
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title text-bold text-orange">Contract Files</h4>
-
-                        <a class="float-right" href="#" data-toggle="modal" data-sent_data=""
-                           data-target="#modal-add-quotation">Add File</a>
-
-                    </div>
-                    <div class="card-body" style="width:100%;  ">
-                        <div class="row">
-                            @foreach($contracts as $item)
-                                <div class="col-lg-12 col-sm-12 mb-3">
-                                    <iframe id="" src="{{asset('storage/contracts/'.$item->name)}}"
-                                            style="width:100%; height: 1000px " title="{{$item->name}}"></iframe>
-                                    <span> </span>
-                                    <span> | </span>
-                                    <a href="{{asset('storage/contracts/'.$item->name)}}"
-                                       target="_blank">View</a>
-                                    <span> | </span>
-                                    <a href="#" data-toggle="modal" data-sent_data=""
-                                       data-target="#modal-change">Edit</a>
-                                    @endforeach
-                                </div>
+                            <a class="btn btn-outline-success float-right" data-toggle="modal"
+                               data-target="#modal-add-file">Add File</a>
 
                         </div>
+                        <div class="card-body" style="width:100%;  ">
+                            <div class="row">
+                                @foreach($contracts as $item)
+                                    <div class="col-lg-6 col-sm-6 mb-3">
+                                        <iframe id="" src="{{asset('storage/contracts/'.$item->name)}}"
+                                                style="width:100%; height: 1000px " title="{{$item->name}}"></iframe>
+                                        <span> </span>
+                                        <span> | </span>
+                                        <a href="{{asset('storage/contracts/'.$item->name)}}"
+                                           target="_blank">View</a>
+                                        <span> | </span>
+                                        <a href="#" data-toggle="modal" data-sent_data=""
+                                           data-target="#modal-change">Edit</a>
+                                        @endforeach
+                                    </div>
+
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
-
             </div>
         </div>
 
+        <!-- ADD MODAL-->
+        <div class="modal fade" id="modal-add-file">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center">Add Contract File</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- form start -->
+                    <form id="file_attachment_form" method="post"
+                          action="{{route('document.upload')}}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+
+                            <div id="loader_inv" style="display: none; " class="text-center">
+                                <img src="{{ asset('dashboard/dist/gif/Eclipse_loading.gif')}}"
+                                     width="100px"
+                                     alt="Loader"
+                                     height="100px">
+                            </div>
+                            <div class="row hideWhenLoading">
 
 
+                                <div class="col-lg-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label>Add File</label>
+
+                                        <input type="file"
+                                               class="form-control"
+                                               id="file"
+                                               name="file"
+                                               required/>
+
+                                        <input type="hidden" class="form-control"
+                                               value="contracts" id="folder"
+                                               name="folder"
+                                               required>
+
+                                        <input type="hidden" class="form-control"
+                                               id="modelId"
+                                               value="{{$item->id}}"
+                                               name="modelId"
+                                               required/>
+
+                                        <input type="hidden" class="form-control"
+                                               id="modelCode"
+                                               value="{{$item->system_ref}}"
+                                               name="modelCode"
+                                               required/>
+
+                                        <input type="hidden"
+                                               class="form-control"
+                                               value="contracts"
+                                               id="file_type"
+                                               name="file_type"
+                                               required>
+
+                                        <input type="hidden" class="form-control"
+                                               id="form_type"
+                                               value="{{App\Http\Controllers\IndependentProducerController::class}}"
+                                               name="form_type"
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
 
         <!-- /.container-fluid -->
     </section>
@@ -513,9 +601,15 @@
 
 @endsection
 @push('custom-scripts')
+    <script src="{{ asset('js/fileAttachment.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('dashboard/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('dashboard/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('dashboard/plugins/toastr/toastr.min.js') }}"></script>
     <script>
         window.provinces = {!! json_encode($provinces->toArray() ) !!};
         let connection_points = [];
+
         function togglefunction(selected_value) {
 
             // const  = e?.target?.value ||
@@ -538,24 +632,17 @@
                 }
             });
 
-            const district =  $("#district").attr('data-selected-district')?.trim();
+            const district = $("#district").attr('data-selected-district')?.trim();
             $("#district").html(districtOptions);
             $("#district").val(district).change();
 
         }
 
         $(document).ready(function () {
-            $(document).on('change', '[name="province_id"]' , function(){ togglefunction(this.value) });
+            $(document).on('change', '[name="province_id"]', function () {
+                togglefunction(this.value)
+            });
             $('[name="province_id"]').change();
-
-
-
-
-
-
-
-
-
 
 
             var total_available_capacity = document.getElementById('total_available_capacity').value;
@@ -594,7 +681,7 @@
 
         function connectionPointsOnchange(e) {
 
-            const voltage =    e.selectedOptions[0].getAttribute('data-voltage')
+            const voltage = e.selectedOptions[0].getAttribute('data-voltage')
             $('[name=voltage_level]').val(voltage);
 
         }

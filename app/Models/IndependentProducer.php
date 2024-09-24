@@ -52,6 +52,7 @@ class IndependentProducer extends Model
         'status_id'
 
 
+
     ];
 
 protected $with =[

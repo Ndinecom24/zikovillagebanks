@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ConnectionPointsController;
 use App\Http\Controllers\DistrictsController;
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\IndependentProducerController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\ReportsController;
@@ -92,5 +93,8 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/ventures', [VentureController::class, 'index'])->name('venture.index');
     Route::post('/ventures/store', [VentureController::class, 'store'])->name('venture.store');
     Route::post('/ventures/update/{id}', [VentureController::class, 'update'])->name('venture.update');
+
+//file upload controller when editing
+    Route::post('/document/upload', [FilesController::class, 'uploadFile'])->name('document.upload');
 
 });
