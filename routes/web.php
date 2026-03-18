@@ -97,4 +97,9 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
 //file upload controller when editing
     Route::post('/document/upload', [FilesController::class, 'uploadFile'])->name('document.upload');
 
+    //livewire routes
+    Route::get('/module/index', \App\Http\Livewire\Modules\ModuleList::class)->name('module.index');
+    Route::get('/module/show/{id}', \App\Http\Livewire\Modules\ModuleShow::class)->name('module.show');
+
+
 });

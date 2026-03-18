@@ -86,12 +86,19 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{route('module.index')}}" class="nav-link ">
+                        <i class="far fa-circle nav-icon text-warning"></i>
+                        <p>Modules</p>
+                    </a>
+                </li>
 
 
 
 
 
-                <li class="nav-header ">USERS</li>
+
+                <li class="nav-header">USERS</li>
                 <li class="nav-item">
                     <a href="{{route('user.index')}}" class="nav-link ">
                         <i class="far fa-circle nav-icon text-warning"></i>
