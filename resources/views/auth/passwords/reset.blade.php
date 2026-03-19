@@ -1,65 +1,86 @@
-@extends('layouts.app')
+@extends('layouts.auth')
+
+@section('title', 'Reset Password')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <div class="auth-icon">
+                <i class="bi bi-key"></i>
+            </div>
+            <h2>Reset password</h2>
+            <p>Enter your new password below</p>
+        </div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
+        <form method="POST" action="{{ route('password.update') }}">
+            @csrf
+            <input type="hidden" name="token" value="{{ $token }}">
 
-                        <input type="hidden" name="token" value="{{ $token }}">
+            {{-- Email --}}
+            <div class="form-field">
+                <label for="email">{{ __('E-Mail Address') }}</label>
+                <div class="input-group-auth">
+                    <input id="email" type="email"
+                           class="{{ $errors->has('email') ? 'is-invalid' : '' }}"
+                           name="email"
+                           value="{{ $email ?? old('email') }}"
+                           placeholder="Enter your email address"
+                           required autocomplete="email" autofocus>
+                    <i class="bi bi-envelope input-icon"></i>
+                </div>
+                @error('email')
+                    <span class="invalid-feedback-auth">{{ $message }}</span>
+                @enderror
+            </div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+            {{-- Password --}}
+            <div class="form-field">
+                <label for="password">{{ __('New Password') }}</label>
+                <div class="input-group-auth">
+                    <input id="password" type="password"
+                           class="{{ $errors->has('password') ? 'is-invalid' : '' }}"
+                           name="password"
+                           placeholder="Enter new password"
+                           required autocomplete="new-password">
+                    <i class="bi bi-lock input-icon"></i>
+                    <button type="button" class="toggle-password" tabindex="-1">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                </div>
+                <div style="margin-top: 0.4rem; font-size: 0.75rem; color: #6b7280; line-height: 1.6;">
+                    Must contain: uppercase, lowercase, number, special character, min 8 chars
+                </div>
+                @error('password')
+                    <span class="invalid-feedback-auth">{{ $message }}</span>
+                @enderror
+            </div>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+            {{-- Confirm Password --}}
+            <div class="form-field">
+                <label for="password-confirm">{{ __('Confirm Password') }}</label>
+                <div class="input-group-auth">
+                    <input id="password-confirm" type="password"
+                           name="password_confirmation"
+                           placeholder="Confirm new password"
+                           required autocomplete="new-password">
+                    <i class="bi bi-lock-fill input-icon"></i>
+                    <button type="button" class="toggle-password" tabindex="-1">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
                 </div>
             </div>
-        </div>
+
+            {{-- Submit --}}
+            <div class="mt-2">
+                <button type="submit" class="btn-auth-primary">
+                    <i class="bi bi-check-circle"></i>
+                    {{ __('Reset Password') }}
+                </button>
+            </div>
+        </form>
     </div>
-</div>
+
+    <div class="auth-bottom-text">
+        Remember your password? <a href="{{ route('login') }}">Back to sign in</a>
+    </div>
 @endsection

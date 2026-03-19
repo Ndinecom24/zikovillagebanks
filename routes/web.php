@@ -27,8 +27,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::group([ 'middleware' => 'auth'  ],   function () {
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-    Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/', \App\Http\Livewire\Dashboard\Dashboard::class);
+    Route::get('home', \App\Http\Livewire\Dashboard\Dashboard::class)->name('home');
     Route::get('blank', [App\Http\Controllers\HomeController::class, 'blank'])->name('blank');
 
 
@@ -103,5 +103,10 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/module/show/{id}', \App\Http\Livewire\Modules\ModuleShow::class)->name('module.show');
 //offices
     Route::get('/office/index', \App\Http\Livewire\Office\ResponsibleOffice::class)->name('office.index');
+
+    // Roles & Permissions Management
+    Route::get('/roles', \App\Http\Livewire\Roles\RoleList::class)->name('roles.index');
+    Route::get('/permissions', \App\Http\Livewire\Permissions\PermissionList::class)->name('permissions.index');
+    Route::get('/user-roles', \App\Http\Livewire\Users\UserRoleManager::class)->name('user-roles.index');
 
 });

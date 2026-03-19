@@ -1,88 +1,104 @@
-@extends('layouts.app')
+@extends('layouts.auth')
+
+@section('title', 'Login')
 
 @section('content')
-<div class="container" >
-    <div class="row justify-content-center" >
-        <div class="col-md-8">
-
-            <div class="row justify-content-center ">
-             <img src="{{asset('dashboard/dist/img/ZESCO_removebg.png')}}" width="50%">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <div class="auth-icon">
+                <i class="bi bi-box-arrow-in-right"></i>
             </div>
-            @if ($errors->any())
-                <div class="alert alert-danger">
+            <h2>Welcome back</h2>
+            <p>Sign in to IPP Management System</p>
+        </div>
+
+        {{-- Error Messages --}}
+        @if ($errors->any())
+            <div class="auth-alert auth-alert-danger">
+                <i class="bi bi-exclamation-circle alert-icon"></i>
+                <div>
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
-            @endif
-
-            @if(session()->has('error'))
-                <div class="alert alert-danger alert-dismissible">
-                    <p class="lead"> {{session()->get('error')}}</p>
-                </div>
-            @endif
-            <div class="card" >
-                <div class="card-header">{{ __('Login to E-Forms') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-                        <div class="form-group row">
-                            <label for="staff_no" class="col-md-4 col-form-label text-md-right">{{ __('Man Number') }}</label>
-                            <div class="col-md-6">
-                                <input id="staff_no" type="text" class="form-control @error('staff_no') is-invalid @enderror" name="staff_no" value="{{ old('staff_no') }}" required autocomplete="staff_no" autofocus>
-                                @error('staff_no')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-{{--                        <div class="form-group row">--}}
-{{--                            <div class="col-md-6 offset-md-4">--}}
-{{--                                <div class="form-check">--}}
-{{--                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>--}}
-{{--                                    <label class="form-check-label" for="remember">--}}
-{{--                                        {{ __('Remember Me') }}--}}
-{{--                                    </label>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-{{--                                    <a class="btn btn-link" href="{{ route('register') }}">Click Here to Register--}}
-{{--                                    </a>--}}
-                            </div>
-                        </div>
-                    </form>
-                </div>
             </div>
-        </div>
+        @endif
+
+        @if(session()->has('error'))
+            <div class="auth-alert auth-alert-danger">
+                <i class="bi bi-exclamation-circle alert-icon"></i>
+                <span>{{ session()->get('error') }}</span>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+
+            {{-- Man Number --}}
+            <div class="form-field">
+                <label for="staff_no">{{ __('Man Number') }}</label>
+                <div class="input-group-auth">
+                    <input id="staff_no" type="text"
+                           class="{{ $errors->has('staff_no') ? 'is-invalid' : '' }}"
+                           name="staff_no"
+                           value="{{ old('staff_no') }}"
+                           placeholder="Enter your man number"
+                           required autocomplete="staff_no" autofocus>
+                    <i class="bi bi-person input-icon"></i>
+                </div>
+                @error('staff_no')
+                    <span class="invalid-feedback-auth">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Password --}}
+            <div class="form-field">
+                <label for="password">{{ __('Password') }}</label>
+                <div class="input-group-auth">
+                    <input id="password" type="password"
+                           class="{{ $errors->has('password') ? 'is-invalid' : '' }}"
+                           name="password"
+                           placeholder="Enter your password"
+                           required autocomplete="current-password">
+                    <i class="bi bi-lock input-icon"></i>
+                    <button type="button" class="toggle-password" tabindex="-1">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                </div>
+                @error('password')
+                    <span class="invalid-feedback-auth">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Remember & Forgot --}}
+            <div class="auth-form-footer mb-0">
+                <div class="form-check-auth">
+                    <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                    <label for="remember">{{ __('Remember me') }}</label>
+                </div>
+                @if (Route::has('password.request'))
+                    <a class="auth-link" href="{{ route('password.request') }}">
+                        {{ __('Forgot password?') }}
+                    </a>
+                @endif
+            </div>
+
+            {{-- Submit --}}
+            <div class="mt-3">
+                <button type="submit" class="btn-auth-primary">
+                    <i class="bi bi-arrow-right-circle"></i>
+                    {{ __('Sign In') }}
+                </button>
+            </div>
+        </form>
     </div>
-</div>
+
+    {{-- Register Link --}}
+    @if (Route::has('register'))
+        <div class="auth-bottom-text">
+            Don't have an account? <a href="{{ route('register') }}">Create one</a>
+        </div>
+    @endif
 @endsection

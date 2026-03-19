@@ -1,49 +1,54 @@
-@extends('layouts.app')
+@extends('layouts.auth')
+
+@section('title', 'Confirm Password')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Confirm Password') }}</div>
-
-                <div class="card-body">
-                    {{ __('Please confirm your password before continuing.') }}
-
-                    <form method="POST" action="{{ route('password.confirm') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Confirm Password') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <div class="auth-icon">
+                <i class="bi bi-shield-lock"></i>
             </div>
+            <h2>Confirm password</h2>
+            <p>Please confirm your password before continuing</p>
         </div>
+
+        <form method="POST" action="{{ route('password.confirm') }}">
+            @csrf
+
+            {{-- Password --}}
+            <div class="form-field">
+                <label for="password">{{ __('Password') }}</label>
+                <div class="input-group-auth">
+                    <input id="password" type="password"
+                           class="{{ $errors->has('password') ? 'is-invalid' : '' }}"
+                           name="password"
+                           placeholder="Enter your password"
+                           required autocomplete="current-password">
+                    <i class="bi bi-lock input-icon"></i>
+                    <button type="button" class="toggle-password" tabindex="-1">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                </div>
+                @error('password')
+                    <span class="invalid-feedback-auth">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Submit --}}
+            <div class="mt-2">
+                <button type="submit" class="btn-auth-primary">
+                    <i class="bi bi-check-circle"></i>
+                    {{ __('Confirm Password') }}
+                </button>
+            </div>
+
+            @if (Route::has('password.request'))
+                <div class="text-center mt-2">
+                    <a class="auth-link" href="{{ route('password.request') }}">
+                        {{ __('Forgot Your Password?') }}
+                    </a>
+                </div>
+            @endif
+        </form>
     </div>
-</div>
 @endsection

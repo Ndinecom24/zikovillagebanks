@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee\PHCMSEmployee;
 use App\Models\PhrisUserDetails;
 use App\Models\User;
+use App\Rules\StrongPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -62,8 +63,8 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => ['required'],
             'staff_no' => ['required'],
-            'email' => ['required'],
-            'password' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', new StrongPassword],
         ]);
 
 
@@ -146,24 +147,27 @@ class UserController extends Controller
     public function changePassword(Request $request)
     {
         $user = auth()->user();
+
         $request->validate([
-            'password' => 'required|min:8|confirmed',
+            'old_password' => 'required',
+            'password' => ['required', 'confirmed', new StrongPassword],
         ]);
-        if ($request->password == $request->old_password) {
-            return redirect()->back()->withInput()->withErrors(['password' => "Sorry your old password is the same as the new one"]);
+
+        // Verify current password
+        if (!Hash::check($request->old_password, $user->password)) {
+            return redirect()->back()->withInput()->withErrors(['old_password' => 'The current password you entered is incorrect.']);
         }
-        if ($request->password == 'Zesco123' || $request->password == 'zesco123' || $request->password == 'zesco@123' ||
-            $request->password == 'Zesco@123' || $request->password == 'Zesco12345' || $request->password == 'zesco12345') {
-            return redirect()->back()->withInput()->withErrors(['password' => "Sorry your new password has been listed as too common hence not so much secure.Please change to another password."]);
+
+        // Ensure new password is different from old
+        if ($request->password === $request->old_password) {
+            return redirect()->back()->withInput()->withErrors(['password' => 'Your new password must be different from your current password.']);
         }
-        if ($user->password == Hash::make($request->password)) {
-            return redirect()->back()->withInput()->withErrors(['password' => "Sorry your old password you entered is wrong"]);
-        } else {
-            $user->password = Hash::make($request->password);
-            $user->password_changed = config('app.password_changed');
-            $user->save();
-            return redirect()->back()->with('message', 'User Password Updated Successfully');
-        }
+
+        $user->password = Hash::make($request->password);
+        $user->password_changed = config('app.password_changed');
+        $user->save();
+
+        return redirect()->back()->with('message', 'Your password has been updated successfully.');
     }
 
 }

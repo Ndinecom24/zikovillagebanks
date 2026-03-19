@@ -112,6 +112,26 @@
                         <p>Users</p>
                     </a>
                 </li>
+
+                <li class="nav-header">ACCESS CONTROL</li>
+                <li class="nav-item">
+                    <a href="{{ route('roles.index') }}" class="nav-link">
+                        <i class="fas fa-user-shield nav-icon text-warning"></i>
+                        <p>Roles</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('permissions.index') }}" class="nav-link">
+                        <i class="fas fa-key nav-icon text-warning"></i>
+                        <p>Permissions</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('user-roles.index') }}" class="nav-link">
+                        <i class="fas fa-users-cog nav-icon text-warning"></i>
+                        <p>User Roles</p>
+                    </a>
+                </li>
 {{--                <li class="nav-item">--}}
 {{--                    <a href="{{route('user.create')}}" class="nav-link ">--}}
 {{--                        <i class="far fa-circle nav-icon text-warning"></i>--}}
