@@ -93,6 +93,13 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{route('office.index')}}" class="nav-link ">
+                        <i class="far fa-circle nav-icon text-warning"></i>
+                        <p>Offices</p>
+                    </a>
+                </li>
+
 
 
 

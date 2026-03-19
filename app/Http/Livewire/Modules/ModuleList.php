@@ -6,9 +6,12 @@ namespace App\Http\Livewire\Modules;
 use App\Models\Module;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ModuleList extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $module_name;
     public $modules;
 

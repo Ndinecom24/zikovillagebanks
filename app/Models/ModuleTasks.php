@@ -23,4 +23,13 @@ class ModuleTasks extends Model
         ];
 
 
+    protected $with = [
+        'office',
+    ];
+
+    public function office()
+    {
+        return $this->hasOne(ResponsibleOffices::class, 'id', 'office_id');
+    }
+
 }

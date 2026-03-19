@@ -64,8 +64,6 @@
 
 
         <div class="row">
-
-
             <div class="col-sm-12 col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -78,7 +76,7 @@
                                             <b> Module :</b> {{$module_details->module_name}}<br>
                                             <b> Staff No :</b> {{$module_details->created_by_staff_no}}<br>
                                             <b> Created by :</b> {{$module_details->created_by}}<br>
-                                             <b> Created On : </b> {{$module_details->created_at}} <br>
+                                            <b> Created On : </b> {{$module_details->created_at}} <br>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -104,7 +102,7 @@
                                 {{--                                        @endcan--}}
                                 {{--                                        @can(config('chilolezo.permissions.users-edit'))--}}
                                 <a class="btn btn-outline-warning align-self-end"
-
+                                   wire:click="editModule({{$module_details->id}})"
                                    data-toggle="modal" data-target="#editModuleModal">Edit</a>
 
                             </div>
@@ -136,7 +134,7 @@
                                 <th>Task Name</th>
                                 <th>Task Description</th>
                                 <th>Responsible Office</th>
-                                <th>Module</th>
+
                                 <th>Created By</th>
                                 <th>Action</th>
                             </tr>
@@ -148,113 +146,159 @@
                                     <td>{{$task->id}}</td>
                                     <td>{{$task->task_name ?? '-'}}</td>
                                     <td>{{$task->task_description ?? '-'}}</td>
-                                    <td>{{$task->office_id ?? '-'}}</td>
-                                    <td>{{$task->module_id ?? '-'}}</td>
+                                    <td>{{$task->office->responsible_office ?? '-'}}</td>
+
                                     <td>{{$task->created_by ?? '-'}}</td>
 
 
                                     <td>
-                                        <div class="d-flex">
-                                            <a title="view this role"
-                                               class="btn btn-outline-success m-1"
-                                               href="">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                                data-toggle="modal" data-target="#editTaskModal"
+                                                wire:click="editTask({{ $task->id }})">Edit
+                                        </button>
 
-                                            <a title="remove this role user"
-                                               class="btn btn-outline-danger m-1"
-                                               data-toggle="modal">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        <a title="remove this role user"
+                                           class="btn btn-outline-danger m-1"
+                                           data-toggle="modal">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
 
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="text-center text-muted py-3">
-                                        No Tasks available.
-                                    </td>
-                                </tr>
-                            @endforelse
-                            </tbody>
+                    </td>
+                    </tr>
+
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-3">
+                                No Tasks available.
+                            </td>
+                        </tr>
+                        @endforelse
+                        </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div wire:ignore.self class="modal fade" id="editModuleModal" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Invoice Type</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div>
-                        <form wire:submit.prevent="update">
-                            <div class="form-group">
-                                <label for="unit_from">Module</label>
-                                <input required type="text" class="form-control" id="invoice_type"
-                                       wire:model.lazy="module_name">
-                            </div>
-
-                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+</div>
+<div wire:ignore.self class="modal fade" id="editTaskModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form wire:submit.prevent="updateTask">
+                        <div class="form-group">
+                            <label for="unit_from">Name</label>
+                            <input required type="text" class="form-control" id="invoice_type"
+                                   wire:model.lazy="task_name">
+                        </div>
 
-    <div wire:ignore.self class="modal fade" id="attach-task" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create Task</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div>
-                        <form wire:submit.prevent="update">
-                            <div class="form-group">
-                                <label for="unit_from">Name</label>
-                                <input required type="text" class="form-control" id="invoice_type"
-                                       wire:model.lazy="module_name">
-                            </div>
+                        <div class="form-group">
+                            <label for="unit_from">Responsible Office</label>
+                            <select required type="text" class="form-control" id="invoice_type"
+                                    wire:model.lazy="office_id">
+                                <option value="">--select--</option>
+                                @foreach ($offices as $item)
+                                    <option value="{{ $item->id }}">{{ $item->responsible_office }} </option>
+                                @endforeach
 
-                            <div class="form-group">
-                                <label for="unit_from">Responsible Office</label>
-                                <select required type="text" class="form-control" id="invoice_type"
-                                        wire:model.lazy="module_name">
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                    <option value="">4</option>
-                                </select>
-                            </div>
+                            </select>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="unit_from">Task Description</label>
-                                <textarea required type="text" class="form-control" col="4" id="invoice_type"
-                                       wire:model.lazy="module_name"> </textarea>
-                            </div>
+                        <div class="form-group">
+                            <label for="unit_from">Task Description</label>
+                            <textarea required type="text" class="form-control" col="4" id="invoice_type"
+                                      wire:model.lazy="task_description"> </textarea>
+                        </div>
 
-                            <button type="submit" class="btn btn-sm btn-primary">Submit</button>
-                        </form>
-                    </div>
+                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+<div wire:ignore.self class="modal fade" id="attach-task" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form wire:submit.prevent="createTask">
+                        <div class="form-group">
+                            <label for="unit_from">Name</label>
+                            <input required type="text" class="form-control" id="invoice_type"
+                                   wire:model.lazy="task_name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit_from">Responsible Office</label>
+                            <select required type="text" class="form-control" id="invoice_type"
+                                    wire:model.lazy="office_id">
+                                <option>--Select--</option>
+                                @foreach ($offices as $item)
+                                    <option value="{{ $item->id }}">{{ $item->responsible_office }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit_from">Task Description</label>
+                            <textarea required type="text" class="form-control" col="4" id="invoice_type"
+                                      wire:model.lazy="task_description"> </textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div wire:ignore.self class="modal fade" id="editModuleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Module</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form wire:submit.prevent="updateModule">
+                        <div class="form-group">
+                            <label for="unit_from">Module</label>
+                            <input required type="text" class="form-control" id="invoice_type"
+                                   wire:model.lazy="module_name">
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
