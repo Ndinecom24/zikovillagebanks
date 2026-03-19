@@ -229,7 +229,7 @@
                         <p>Welcome back, <span class="welcome-name">{{ Auth::user()->name }}</span> &mdash; here's your overview</p>
                     </div>
                     <div>
-                        <a href="{{ route('independent-producer.create') }}" class="btn-new-ipp">
+                        <a href="{{ route('independent-producer.index') }}" class="btn-new-ipp">
                             <i class="fas fa-plus mr-1"></i> New IPP
                         </a>
                     </div>
@@ -391,15 +391,11 @@
                                                 Action
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="{{ route('independent-producer.show', $item) }}">
+                                                <a class="dropdown-item" href="{{ route('independent-producer.show', $item->id) }}">
                                                     <i class="fas fa-eye mr-2 text-muted"></i> View
                                                 </a>
-                                                <a class="dropdown-item" href="{{ route('independent-producer.edit', $item->id) }}">
+                                                <a class="dropdown-item" href="{{ route('independent-producer.show', $item->id) }}">
                                                     <i class="fas fa-edit mr-2 text-muted"></i> Edit
-                                                </a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item text-danger" href="{{ route('independent-producer.destroy', $item->id) }}">
-                                                    <i class="fas fa-trash-alt mr-2"></i> Delete
                                                 </a>
                                             </div>
                                         </div>
@@ -411,7 +407,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-white border-top" style="border-radius: 0 0 12px 12px;">
-                    <a href="{{ route('independent-producer.create') }}" class="btn-new-ipp">
+                    <a href="{{ route('independent-producer.index') }}" class="btn-new-ipp">
                         <i class="fas fa-plus mr-1"></i> New IPP
                     </a>
                 </div>

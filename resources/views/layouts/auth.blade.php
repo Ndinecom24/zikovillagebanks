@@ -532,15 +532,15 @@
         {{-- Left Brand Panel --}}
         <div class="auth-brand-panel">
             <div class="brand-top">
-                <img src="{{ asset('img/ZESCO_removebg.png') }}" alt="ZESCO" class="brand-logo">
+                <img src="{{ asset('img/zesco_logo.png') }}" alt="ZESCO" class="brand-logo">
             </div>
             <div class="brand-content">
-                <h1>Independent Power<br><span>Producers</span> Management</h1>
+                <h1>Independent Power<br><span>Producers</span> Application Management</h1>
                 <p>Streamline the management and monitoring of independent power producers across Zambia's energy network.</p>
                 <div class="brand-features">
                     <div class="brand-feature">
                         <div class="feature-icon"><i class="bi bi-lightning-charge"></i></div>
-                        <span>Real-time producer monitoring</span>
+                        <span>Real-time Independent power producer applications monitoring</span>
                     </div>
                     <div class="brand-feature">
                         <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
@@ -561,7 +561,7 @@
         <div class="auth-form-panel">
             <div class="auth-form-container">
                 <div class="auth-mobile-logo">
-                    <img src="{{ asset('img/ZESCO_removebg.png') }}" alt="ZESCO">
+                    <img src="{{ asset('img/zesco_logo.png') }}" alt="ZESCO">
                 </div>
 
                 @yield('content')

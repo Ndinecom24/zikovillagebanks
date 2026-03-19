@@ -3,13 +3,9 @@
 use App\Http\Controllers\ConnectionPointsController;
 use App\Http\Controllers\DistrictsController;
 use App\Http\Controllers\FilesController;
-use App\Http\Controllers\IndependentProducerController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\ReportsController;
-use App\Http\Controllers\StatusController;
-use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\VentureController;
 use App\Models\ConnectionPoints;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,32 +28,15 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('blank', [App\Http\Controllers\HomeController::class, 'blank'])->name('blank');
 
 
-//routes for ipp CRUD
-    Route::group([
-        'prefix' => '/independent-producer',
-        'as' =>'independent-producer.',
-    ], function () {
-
-        Route::get('/index', [IndependentProducerController::class, 'index'])->name('index');
-        Route::get('/create', [IndependentProducerController::class, 'create'])->name('create');
-        // Route::get('/independent-producer/import',  [\App\Http\Controllers\IndependentProducerController::class, 'importexcel'])->name('import');
-        Route::get('/show/{item}', [IndependentProducerController::class, 'show'])->name('show');
-        Route::get('/edit/{item}', [IndependentProducerController::class, 'edit'])->name('edit');
-        Route::post('/update/{item}', [IndependentProducerController::class, 'update'])->name('update');
-        Route::get('/destroy/{item}', [IndependentProducerController::class, 'destroy'])->name('destroy');
-        Route::post('/store', [IndependentProducerController::class, 'store'])->name('store');
+//routes for ipp CRUD (Livewire)
+    Route::get('/independent-producer/index', \App\Http\Livewire\Producers\ProducerList::class)->name('independent-producer.index');
+    Route::get('/independent-producer/show/{id}', \App\Http\Livewire\Producers\ProducerShow::class)->name('independent-producer.show');
 
 
-    });
-
-
-    //routes for adding users
-    Route::get('/users/index', [UserController::class, 'index'])->name('user.index');
-    Route::post('store', [\App\Http\Controllers\UserController::class, 'store'])->name('user.store');
+    //routes for user management (Livewire)
+    Route::get('/users/index', \App\Http\Livewire\UserManagement\UserList::class)->name('user.index');
+    Route::get('/users/show/{id}', \App\Http\Livewire\UserManagement\UserShow::class)->name('user.show');
     Route::post('search', [\App\Http\Controllers\UserController::class, 'getStaffDetails'])->name('user.search');
-    Route::get('create', [\App\Http\Controllers\UserController::class, 'create'])->name('user.create');
-    Route::get('show', [\App\Http\Controllers\UserController::class, 'show'])->name('user.show');
-    Route::get('destroy/{item}', [UserController::class, 'destroy'])->name('user.delete');
     Route::post('change', [UserController::class, 'changePassword'])->name('user.change.password');
 
 
@@ -76,9 +55,8 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::post('/node/store', [ConnectionPointsController::class, 'store'])->name('node.store');
 
 
-    Route::get('/status/index', [StatusController::class, 'index'])->name('status.index');
-    Route::post('/status/store', [StatusController::class, 'store'])->name('status.store');
-    Route::post('/destroy/{id}', [StatusController::class, 'destroy'])->name('status.destroy');
+    // Statuses (Livewire)
+    Route::get('/status/index', \App\Http\Livewire\Statuses\StatusList::class)->name('status.index');
 
 
 
@@ -87,12 +65,9 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/reports', [ReportsController::class, 'pieChart'])->name('graphical.reports');
 //    Route::post('/graphical-reports', [ReportsController::class, 'pieChart'])->name('graphical.reports');
 
-    Route::get('/technology', [TechnologyController::class, 'index'])->name('technology.index');
-    Route::post('/technology/store', [TechnologyController::class, 'store'])->name('technology.store');
+    Route::get('/technology', \App\Http\Livewire\Technologies\TechnologyList::class)->name('technology.index');
 
-    Route::get('/ventures', [VentureController::class, 'index'])->name('venture.index');
-    Route::post('/ventures/store', [VentureController::class, 'store'])->name('venture.store');
-    Route::post('/ventures/update/{id}', [VentureController::class, 'update'])->name('venture.update');
+    Route::get('/ventures', \App\Http\Livewire\Ventures\VentureList::class)->name('venture.index');
 
 //file upload controller when editing
     Route::post('/document/upload', [FilesController::class, 'uploadFile'])->name('document.upload');

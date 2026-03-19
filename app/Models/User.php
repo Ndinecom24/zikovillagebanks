@@ -27,6 +27,7 @@ class User extends Authenticatable
         'staff_no',
         'directorate',
         'email',
+        'avatar',
         'job_title',
         'user_unit',
 
