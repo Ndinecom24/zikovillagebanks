@@ -41,31 +41,60 @@
                     </a>
                 </li>
 
-                {{-- SUBSTATIONS --}}
+                {{-- LOCATION & SUBSTATIONS --}}
                 <li class="nav-header zesco-nav-header">
-                    <span>SUBSTATIONS</span>
+                    <span>LOCATIONS & SUBSTATIONS</span>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('province.index') }}" class="nav-link {{ request()->routeIs('province.*') ? 'active' : '' }}">
-                        <i class="fas fa-plug nav-icon"></i>
+                        <i class="fas fa-map-marked-alt nav-icon"></i>
+                        <p>Provinces</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('district.index') }}" class="nav-link {{ request()->routeIs('district.*') ? 'active' : '' }}">
+                        <i class="fas fa-city nav-icon"></i>
+                        <p>Districts</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('connection-point.index') }}" class="nav-link {{ request()->routeIs('connection-point.*') ? 'active' : '' }}">
+                        <i class="fas fa-bolt nav-icon"></i>
                         <p>Connection Points</p>
                     </a>
                 </li>
 
                 {{-- REPORTS --}}
                 <li class="nav-header zesco-nav-header">
-                    <span>REPORTS</span>
+                    <span>REPORTS & FILES</span>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ \Illuminate\Support\Facades\URL::signedRoute('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-                        <i class="fas fa-file-alt nav-icon"></i>
-                        <p>Reports</p>
+                    <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                        <i class="fas fa-chart-bar nav-icon"></i>
+                        <p>Reports & Analytics</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ \Illuminate\Support\Facades\URL::signedRoute('graphical.reports') }}" class="nav-link {{ request()->routeIs('graphical.*') ? 'active' : '' }}">
-                        <i class="fas fa-chart-pie nav-icon"></i>
-                        <p>Graphical Summary</p>
+                    <a href="{{ route('files.index') }}" class="nav-link {{ request()->routeIs('files.*') ? 'active' : '' }}">
+                        <i class="fas fa-folder-open nav-icon"></i>
+                        <p>File Manager</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('documents.index') }}" class="nav-link {{ request()->routeIs('documents.*') ? 'active' : '' }}">
+                        <i class="fas fa-archive nav-icon"></i>
+                        <p>Document Manager</p>
+                    </a>
+                </li>
+
+                {{-- TASK MANAGEMENT --}}
+                <li class="nav-header zesco-nav-header">
+                    <span>TASK MANAGEMENT</span>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('task-manager.index') }}" class="nav-link {{ request()->routeIs('task-manager.*') ? 'active' : '' }}">
+                        <i class="fas fa-project-diagram nav-icon"></i>
+                        <p>Processes & Tasks</p>
                     </a>
                 </li>
 

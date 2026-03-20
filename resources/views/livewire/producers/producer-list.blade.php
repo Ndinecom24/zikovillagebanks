@@ -1,121 +1,9 @@
-<style>
-:root { --z-green: #14984f; --z-green-dark: #0d7a3e; --z-gold: #FFB223; --z-gold-dark: #e09a00; }
-
-.ip-page-header {
-    background: linear-gradient(135deg, #0d7a3e 0%, #14984f 60%, #00895A 100%);
-    border-radius: 12px; padding: 1.5rem 2rem; margin-bottom: 1.5rem;
-    color: #fff; position: relative; overflow: hidden;
-}
-.ip-page-header::before {
-    content: ''; position: absolute; top: -40%; right: -10%;
-    width: 300px; height: 300px;
-    background: radial-gradient(ellipse, rgba(255,255,255,0.07) 0%, transparent 70%);
-}
-.ip-page-header h1 { font-size: 1.35rem; font-weight: 700; margin: 0; }
-.ip-page-header p  { margin: 0.25rem 0 0; opacity: 0.85; font-size: 0.875rem; }
-
-.ip-card { border-radius: 12px; border: 1px solid #e9ecef; overflow: hidden; }
-.ip-card .card-header { background: #fff; border-bottom: 1px solid #e9ecef; padding: 1rem 1.5rem; }
-.ip-card .card-header h3 { font-size: 1rem; font-weight: 700; color: #1a2332; margin: 0; }
-
-.ip-search { position: relative; }
-.ip-search input {
-    padding: 0.5rem 0.85rem 0.5rem 2.5rem; border-radius: 8px;
-    border: 1.5px solid #e2e8f0; font-size: 0.85rem; width: 100%; transition: border-color 0.2s;
-}
-.ip-search input:focus { border-color: var(--z-green); box-shadow: 0 0 0 3px rgba(20,152,79,0.1); outline: none; }
-.ip-search .si { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
-
-.ip-table thead th {
-    font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.03em;
-    border-bottom: 2px solid #e2e8f0; cursor: pointer; user-select: none; white-space: nowrap;
-}
-.ip-table thead th:hover { color: var(--z-green); }
-.ip-table tbody tr { transition: background 0.15s; }
-.ip-table tbody tr:hover { background: #f0fdf4; }
-.ip-table td { font-size: 0.82rem; vertical-align: middle; }
-.sort-icon { font-size: 0.7rem; margin-left: 4px; opacity: 0.5; }
-.sort-icon.active { opacity: 1; color: var(--z-green); }
-
-.ip-action {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 30px; height: 30px; border-radius: 6px; border: none;
-    transition: all 0.2s; cursor: pointer; font-size: 0.78rem;
-}
-.ip-action-view   { background: rgba(59,130,246,0.1); color: #3b82f6; }
-.ip-action-view:hover { background: #3b82f6; color: #fff; }
-.ip-action-delete { background: rgba(220,38,38,0.1); color: #dc2626; }
-.ip-action-delete:hover { background: #dc2626; color: #fff; }
-
-.btn-zesco {
-    background: linear-gradient(135deg, var(--z-gold), #f59e0b);
-    color: #fff; border-radius: 8px; padding: 0.5rem 1.25rem;
-    font-weight: 600; font-size: 0.85rem; border: none;
-    transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.35rem;
-}
-.btn-zesco:hover { background: linear-gradient(135deg, var(--z-gold-dark), #d97706); box-shadow: 0 4px 12px rgba(255,178,35,0.35); color: #fff; }
-.btn-zesco-green {
-    background: linear-gradient(135deg, var(--z-green), var(--z-green-dark));
-    color: #fff; border-radius: 8px; padding: 0.5rem 1.25rem;
-    font-weight: 600; font-size: 0.85rem; border: none; transition: all 0.2s;
-}
-.btn-zesco-green:hover { background: linear-gradient(135deg, #0d7a3e, #065f30); color: #fff; }
-
-.ip-per-page, .ip-filter {
-    border-radius: 6px; border: 1.5px solid #e2e8f0;
-    padding: 0.35rem 0.5rem; font-size: 0.825rem; color: #374151;
-}
-.ip-per-page:focus, .ip-filter:focus { border-color: var(--z-green); outline: none; }
-
-.ip-loading {
-    position: absolute; inset: 0; background: rgba(255,255,255,0.7);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 10; border-radius: 12px;
-}
-
-.ip-count {
-    background: linear-gradient(135deg, var(--z-green), var(--z-green-dark));
-    color: #fff; font-size: 0.72rem; font-weight: 700;
-    padding: 0.2rem 0.6rem; border-radius: 20px;
-}
-
-.ip-status-badge {
-    display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
-    font-size: 0.72rem; font-weight: 600; white-space: nowrap;
-}
-
-.ip-modal .modal-content { border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-.ip-modal .modal-header-green {
-    background: linear-gradient(135deg, #004D2E 0%, #006B3F 60%, #00895A 100%);
-    padding: 1.25rem 1.5rem; color: #fff; border: none;
-}
-.ip-modal .modal-header-green h5 { font-weight: 700; margin: 0; font-size: 1.05rem; }
-.ip-modal .modal-header-green .close { color: #fff; opacity: 0.7; text-shadow: none; }
-
-.ip-input {
-    padding: 0.5rem 0.75rem; border-radius: 8px;
-    border: 1.5px solid #e2e8f0; font-size: 0.85rem; transition: border-color 0.2s;
-}
-.ip-input:focus { border-color: var(--z-green); box-shadow: 0 0 0 3px rgba(20,152,79,0.1); outline: none; }
-
-.ip-section-title {
-    font-size: 0.8rem; font-weight: 700; color: var(--z-green); text-transform: uppercase;
-    letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; margin-bottom: 1rem;
-}
-
-.ip-stat-card {
-    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-    border-radius: 10px; padding: 1rem; border: 1px solid #a7f3d0; text-align: center;
-}
-.ip-stat-num { font-size: 1.5rem; font-weight: 800; color: var(--z-green); line-height: 1; }
-.ip-stat-label { font-size: 0.72rem; color: #6b7280; font-weight: 600; margin-top: 0.2rem; }
-</style>
-
+﻿
 <div>
     <!-- Page Header -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="ip-page-header">
+            <div class="z-page-header">
                 <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap: 1rem;">
                     <div>
                         <h1><i class="fas fa-industry mr-2" style="color: var(--z-gold)"></i>Independent Power Producers</h1>
@@ -174,17 +62,17 @@
             @endif
 
             {{-- Filters Row --}}
-            <div class="card ip-card mb-3">
+            <div class="card z-card mb-3">
                 <div class="card-body" style="padding: 0.75rem 1.25rem;">
                     <div class="row align-items-center" style="gap: 0.5rem 0;">
                         <div class="col-md-3">
-                            <div class="ip-search">
+                            <div class="z-search">
                                 <i class="fas fa-search si"></i>
                                 <input type="text" wire:model.debounce.300ms="search" placeholder="Search IPPs...">
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <select wire:model="filterStatus" class="form-control ip-filter">
+                            <select wire:model="filterStatus" class="form-control z-filter-select">
                                 <option value="">All Statuses</option>
                                 @foreach($statuses as $s)
                                     <option value="{{ $s->status }}">{{ $s->status }}</option>
@@ -192,7 +80,7 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <select wire:model="filterProvince" class="form-control ip-filter">
+                            <select wire:model="filterProvince" class="form-control z-filter-select">
                                 <option value="">All Provinces</option>
                                 @foreach($provinces as $p)
                                     <option value="{{ $p->id }}">{{ $p->province }}</option>
@@ -200,7 +88,7 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <select wire:model="filterTechnology" class="form-control ip-filter">
+                            <select wire:model="filterTechnology" class="form-control z-filter-select">
                                 <option value="">All Technologies</option>
                                 <option value="SOLAR">Solar</option>
                                 <option value="WIND">Wind</option>
@@ -212,7 +100,7 @@
                             </select>
                         </div>
                         <div class="col-md-1">
-                            <select wire:model="perPage" class="form-control ip-per-page">
+                            <select wire:model="perPage" class="form-control z-per-page">
                                 <option value="10">10</option>
                                 <option value="15">15</option>
                                 <option value="25">25</option>
@@ -231,21 +119,21 @@
             </div>
 
             {{-- Table Card --}}
-            <div class="card ip-card" style="position: relative;">
-                <div wire:loading.flex class="ip-loading">
+            <div class="card z-card" style="position: relative;">
+                <div wire:loading.flex class="z-loading">
                     <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
                 </div>
 
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h3>
                         <i class="fas fa-bolt mr-2" style="color: var(--z-gold)"></i>Power Agreements
-                        <span class="ip-count ml-2">{{ $producers->total() }}</span>
+                        <span class="z-count ml-2">{{ $producers->total() }}</span>
                     </h3>
                 </div>
 
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover ip-table mb-0">
+                        <table class="table table-hover z-table mb-0">
                             <thead>
                                 <tr>
                                     <th wire:click="sortBy('system_ref')">
@@ -306,7 +194,7 @@
                                                 ];
                                                 $tc = $techColors[$item->engagement_number] ?? ['bg' => '#f8fafc', 'color' => '#475569', 'border' => '#e2e8f0', 'icon' => 'fa-bolt'];
                                             @endphp
-                                            <span class="ip-status-badge" style="background: {{ $tc['bg'] }}; color: {{ $tc['color'] }}; border: 1px solid {{ $tc['border'] }};">
+                                            <span class="z-badge" style="background: {{ $tc['bg'] }}; color: {{ $tc['color'] }}; border: 1px solid {{ $tc['border'] }};">
                                                 <i class="fas {{ $tc['icon'] }} mr-1" style="font-size: 0.65rem;"></i>{{ $item->engagement_number ?? '—' }}
                                             </span>
                                         </td>
@@ -323,7 +211,7 @@
                                         <td style="color: #6b7280;">{{ $item->province->province ?? '—' }}</td>
                                         <td>
                                             @if($item->status_of_engagement)
-                                                <span class="ip-status-badge" style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
+                                                <span class="z-badge" style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
                                                     {{ Str::limit($item->status_of_engagement, 20) }}
                                                 </span>
                                             @else
@@ -333,10 +221,10 @@
                                         <td style="color: #6b7280;">{{ Str::limit($item->contact_person_name, 18) ?? '—' }}</td>
                                         <td>
                                             <div class="d-flex" style="gap: 4px;">
-                                                <a href="{{ route('independent-producer.show', $item->id) }}" class="ip-action ip-action-view" title="View Details">
+                                                <a href="{{ route('independent-producer.show', $item->id) }}" class="z-action z-action-view" title="View Details">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <button wire:click="confirmDelete({{ $item->id }})" class="ip-action ip-action-delete" title="Delete">
+                                                <button wire:click="confirmDelete({{ $item->id }})" class="z-action z-action-delete" title="Delete">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </div>
@@ -372,10 +260,10 @@
 
     {{-- ===== CREATE MODAL ===== --}}
     @if($showCreateModal)
-    <div class="modal fade show ip-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
+    <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl" style="max-width: 900px;">
             <div class="modal-content">
-                <div class="modal-header-green d-flex align-items-center justify-content-between">
+                <div class="modal-header-zesco d-flex align-items-center justify-content-between">
                     <h5><i class="fas fa-plus-circle mr-2"></i> Register New IPP</h5>
                     <button type="button" class="close" wire:click="$set('showCreateModal', false)">
                         <span>&times;</span>
@@ -384,32 +272,32 @@
                 <div class="modal-body" style="padding: 1.5rem; max-height: 70vh; overflow-y: auto;">
 
                     {{-- Basic Info --}}
-                    <div class="ip-section-title"><i class="fas fa-info-circle mr-1"></i> Basic Information</div>
+                    <div class="z-section-title"><i class="fas fa-info-circle mr-1"></i> Basic Information</div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="small font-weight-bold">Name of IPP <span class="text-danger">*</span></label>
-                            <input type="text" wire:model.defer="name_of_ipp" class="form-control ip-input" placeholder="Company / Project Name">
+                            <input type="text" wire:model.defer="name_of_ipp" class="form-control z-input" placeholder="Company / Project Name">
                             @error('name_of_ipp') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Invoiced Services</label>
-                            <select wire:model.defer="invoiced_services" class="form-control ip-input">
+                            <select wire:model.defer="invoiced_services" class="form-control z-input">
                                 <option value="N/A">N/A</option>
                                 <option value="INVOICED">INVOICED</option>
                             </select>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Application Date</label>
-                            <input type="date" wire:model.defer="date_of_application" class="form-control ip-input">
+                            <input type="date" wire:model.defer="date_of_application" class="form-control z-input">
                         </div>
                     </div>
 
                     {{-- Technology --}}
-                    <div class="ip-section-title mt-2"><i class="fas fa-microchip mr-1"></i> Technology & Capacity</div>
+                    <div class="z-section-title mt-2"><i class="fas fa-microchip mr-1"></i> Technology & Capacity</div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="small font-weight-bold">Technology <span class="text-danger">*</span></label>
-                            <select wire:model.defer="engagement_number" class="form-control ip-input">
+                            <select wire:model.defer="engagement_number" class="form-control z-input">
                                 <option value="">-- Select --</option>
                                 <option value="SOLAR">Solar</option>
                                 <option value="WIND">Wind</option>
@@ -424,7 +312,7 @@
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Size of Plant</label>
                             <div class="input-group">
-                                <input type="number" step="any" wire:model.defer="size_of_plant" class="form-control ip-input" placeholder="0.00">
+                                <input type="number" step="any" wire:model.defer="size_of_plant" class="form-control z-input" placeholder="0.00">
                                 <div class="input-group-append">
                                     <span class="input-group-text" style="border-radius: 0 8px 8px 0; font-size: 0.82rem;">MW</span>
                                 </div>
@@ -432,20 +320,20 @@
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Total Avail. Capacity</label>
-                            <input type="number" step="any" wire:model.lazy="total_available_capacity" class="form-control ip-input" placeholder="0.00">
+                            <input type="number" step="any" wire:model.lazy="total_available_capacity" class="form-control z-input" placeholder="0.00">
                         </div>
                         <div class="col-md-2 mb-3">
                             <label class="small font-weight-bold">Avail. Capacity</label>
-                            <input type="text" wire:model="available_capacity" class="form-control ip-input" readonly style="background: #f8fafc;">
+                            <input type="text" wire:model="available_capacity" class="form-control z-input" readonly style="background: #f8fafc;">
                         </div>
                     </div>
 
                     {{-- Location --}}
-                    <div class="ip-section-title mt-2"><i class="fas fa-map-marker-alt mr-1"></i> Location & Connection</div>
+                    <div class="z-section-title mt-2"><i class="fas fa-map-marker-alt mr-1"></i> Location & Connection</div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="small font-weight-bold">Province <span class="text-danger">*</span></label>
-                            <select wire:model="province_id" class="form-control ip-input">
+                            <select wire:model="province_id" class="form-control z-input">
                                 <option value="">-- Select Province --</option>
                                 @foreach($provinces as $province)
                                     <option value="{{ $province->id }}">{{ $province->province }}</option>
@@ -455,7 +343,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="small font-weight-bold">District</label>
-                            <select wire:model="district_id" class="form-control ip-input">
+                            <select wire:model="district_id" class="form-control z-input">
                                 <option value="">-- Select District --</option>
                                 @foreach($districts as $d)
                                     <option value="{{ $d['id'] }}">{{ $d['district'] }}</option>
@@ -464,7 +352,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="small font-weight-bold">Proposed Connection Point</label>
-                            <select wire:model="proposed_connection_point" class="form-control ip-input">
+                            <select wire:model="proposed_connection_point" class="form-control z-input">
                                 <option value="">-- Select --</option>
                                 @foreach($connectionPoints as $cp)
                                     <option value="{{ $cp['substation'] }}">{{ $cp['substation'] }}</option>
@@ -475,36 +363,36 @@
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Voltage Level</label>
-                            <input type="text" wire:model="voltage_level" class="form-control ip-input" readonly style="background: #f8fafc;">
+                            <input type="text" wire:model="voltage_level" class="form-control z-input" readonly style="background: #f8fafc;">
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">LCOE / Tariff</label>
-                            <input type="text" wire:model.defer="ipp_tariff" class="form-control ip-input" placeholder="e.g. $0.06/kWh">
+                            <input type="text" wire:model.defer="ipp_tariff" class="form-control z-input" placeholder="e.g. $0.06/kWh">
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Preferred Connection Level</label>
-                            <input type="text" wire:model.defer="preferred_connection_level" class="form-control ip-input">
+                            <input type="text" wire:model.defer="preferred_connection_level" class="form-control z-input">
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Committed Capacity</label>
-                            <input type="number" step="any" wire:model.lazy="committed_capacity" class="form-control ip-input" placeholder="0.00">
+                            <input type="number" step="any" wire:model.lazy="committed_capacity" class="form-control z-input" placeholder="0.00">
                         </div>
                     </div>
 
                     {{-- Dates & Status --}}
-                    <div class="ip-section-title mt-2"><i class="fas fa-calendar-alt mr-1"></i> Dates & Status</div>
+                    <div class="z-section-title mt-2"><i class="fas fa-calendar-alt mr-1"></i> Dates & Status</div>
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Connection Date (Est.)</label>
-                            <input type="date" wire:model.defer="date_of_connection" class="form-control ip-input">
+                            <input type="date" wire:model.defer="date_of_connection" class="form-control z-input">
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Expiry Date</label>
-                            <input type="date" wire:model.defer="expiry_connection_point" class="form-control ip-input">
+                            <input type="date" wire:model.defer="expiry_connection_point" class="form-control z-input">
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Status of Engagement</label>
-                            <select wire:model.defer="status_of_engagement" class="form-control ip-input">
+                            <select wire:model.defer="status_of_engagement" class="form-control z-input">
                                 <option value="">-- Select Status --</option>
                                 @foreach($statuses as $status)
                                     <option value="{{ $status->status }}">{{ $status->status }}</option>
@@ -513,7 +401,7 @@
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="small font-weight-bold">Type of Venture</label>
-                            <select wire:model.defer="type_of_venture" class="form-control ip-input">
+                            <select wire:model.defer="type_of_venture" class="form-control z-input">
                                 <option value="">-- Select Venture --</option>
                                 @foreach($ventures as $venture)
                                     <option value="{{ $venture->id }}">{{ $venture->venture_type }}</option>
@@ -524,33 +412,33 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label class="small font-weight-bold">Comments / Updates</label>
-                            <textarea wire:model.defer="updates_on_engagements" class="form-control ip-input" rows="2" placeholder="Any comments on engagement..."></textarea>
+                            <textarea wire:model.defer="updates_on_engagements" class="form-control z-input" rows="2" placeholder="Any comments on engagement..."></textarea>
                         </div>
                     </div>
 
                     {{-- Contact --}}
-                    <div class="ip-section-title mt-2"><i class="fas fa-user-tie mr-1"></i> Contact Person</div>
+                    <div class="z-section-title mt-2"><i class="fas fa-user-tie mr-1"></i> Contact Person</div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="small font-weight-bold">Name</label>
-                            <input type="text" wire:model.defer="contact_person_name" class="form-control ip-input" placeholder="Full name">
+                            <input type="text" wire:model.defer="contact_person_name" class="form-control z-input" placeholder="Full name">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="small font-weight-bold">Email</label>
-                            <input type="email" wire:model.defer="contact_person_email" class="form-control ip-input" placeholder="email@example.com">
+                            <input type="email" wire:model.defer="contact_person_email" class="form-control z-input" placeholder="email@example.com">
                             @error('contact_person_email') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="small font-weight-bold">Phone</label>
-                            <input type="text" wire:model.defer="contact_person_phone" class="form-control ip-input" placeholder="+260...">
+                            <input type="text" wire:model.defer="contact_person_phone" class="form-control z-input" placeholder="+260...">
                         </div>
                     </div>
 
                     {{-- File Upload --}}
-                    <div class="ip-section-title mt-2"><i class="fas fa-paperclip mr-1"></i> Attachments</div>
+                    <div class="z-section-title mt-2"><i class="fas fa-paperclip mr-1"></i> Attachments</div>
                     <div class="row">
                         <div class="col-md-12 mb-2">
-                            <input type="file" wire:model="doc_files" multiple class="form-control ip-input">
+                            <input type="file" wire:model="doc_files" multiple class="form-control z-input">
                             <small class="text-muted">Upload contract documents (optional, multiple files supported)</small>
                         </div>
                     </div>
@@ -569,7 +457,7 @@
 
     {{-- ===== DELETE CONFIRMATION ===== --}}
     @if($deleteId)
-    <div class="modal fade show ip-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
+    <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
             <div class="modal-content">
                 <div style="padding: 2rem; text-align: center;">

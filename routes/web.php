@@ -1,12 +1,6 @@
 <?php
 
-use App\Http\Controllers\ConnectionPointsController;
-use App\Http\Controllers\DistrictsController;
-use App\Http\Controllers\FilesController;
-use App\Http\Controllers\ProvinceController;
-use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserController;
-use App\Models\ConnectionPoints;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +19,6 @@ Auth::routes();
 Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/', \App\Http\Livewire\Dashboard\Dashboard::class);
     Route::get('home', \App\Http\Livewire\Dashboard\Dashboard::class)->name('home');
-    Route::get('blank', [App\Http\Controllers\HomeController::class, 'blank'])->name('blank');
 
 
 //routes for ipp CRUD (Livewire)
@@ -42,17 +35,18 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
 
 
 
-    Route::get('/reports/index', [ReportsController::class, 'index'])->name('reports.index');
+    // Reports (Livewire)
+    Route::get('/reports', \App\Http\Livewire\Reports\ReportsDashboard::class)->name('reports.index');
 
-    Route::get('/province/index', [ProvinceController::class, 'index'])->name('province.index');
-    Route::post('/province/store', [ProvinceController::class, 'store'])->name('province.store');
-    Route::get('/province/show/{id}/{district}', [ProvinceController::class, 'show'])->name('province.show');
+    // Provinces (Livewire)
+    Route::get('/province/index', \App\Http\Livewire\Provinces\ProvinceList::class)->name('province.index');
+    Route::get('/province/show/{id}/{district?}', \App\Http\Livewire\Provinces\ProvinceShow::class)->name('province.show');
 
-    Route::post('/substations/show/{id}', [ProvinceController::class, 'editSubstations'])->name('substations.edit');
+    // Districts (Livewire)
+    Route::get('/districts', \App\Http\Livewire\Districts\DistrictList::class)->name('district.index');
 
-    Route::post('/districts/store', [DistrictsController::class, 'store'])->name('districts.store');
-
-    Route::post('/node/store', [ConnectionPointsController::class, 'store'])->name('node.store');
+    // Connection Points / Substations (Livewire)
+    Route::get('/connection-points', \App\Http\Livewire\ConnectionPoints\ConnectionPointList::class)->name('connection-point.index');
 
 
     // Statuses (Livewire)
@@ -62,15 +56,22 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
 
 
 
-    Route::get('/reports', [ReportsController::class, 'pieChart'])->name('graphical.reports');
-//    Route::post('/graphical-reports', [ReportsController::class, 'pieChart'])->name('graphical.reports');
+    // graphical.reports now redirects to the unified reports page
+    Route::get('/graphical-reports', function () { return redirect()->route('reports.index', ['activeTab' => 'charts']); })->name('graphical.reports');
 
     Route::get('/technology', \App\Http\Livewire\Technologies\TechnologyList::class)->name('technology.index');
 
     Route::get('/ventures', \App\Http\Livewire\Ventures\VentureList::class)->name('venture.index');
 
-//file upload controller when editing
-    Route::post('/document/upload', [FilesController::class, 'uploadFile'])->name('document.upload');
+// File Manager (Livewire)
+    Route::get('/files', \App\Http\Livewire\Files\FileManager::class)->name('files.index');
+
+    // Document Management / Data Bin (Livewire)
+    Route::get('/documents', \App\Http\Livewire\Documents\DocumentManager::class)->name('documents.index');
+
+    // Task Management (Livewire)
+    Route::get('/task-manager', \App\Http\Livewire\TaskManager\ProcessList::class)->name('task-manager.index');
+    Route::get('/task-manager/process/{id}', \App\Http\Livewire\TaskManager\ProcessShow::class)->name('task-manager.show');
 
     //livewire routes
     //modules

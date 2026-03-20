@@ -28,7 +28,7 @@
             --text-secondary: #5a6a7e;
             --text-muted: #8896a7;
             --border: #e2e8f0;
-            --border-focus: #006B3F;
+            --border-focus: #FFB223;
             --error: #dc3545;
             --error-bg: #fef2f2;
             --success: #10b981;
@@ -152,12 +152,13 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: rgba(255,255,255,0.12);
+            background: rgba(255,178,35,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             font-size: 1rem;
+            color: var(--zesco-gold);
         }
 
         .brand-bottom {
@@ -209,13 +210,14 @@
             width: 52px;
             height: 52px;
             border-radius: 14px;
-            background: linear-gradient(135deg, var(--zesco-green), var(--zesco-green-light));
+            background: linear-gradient(135deg, var(--zesco-gold), #f59e0b);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.25rem;
             color: #fff;
             font-size: 1.35rem;
+            box-shadow: 0 4px 12px rgba(255,178,35,0.25);
         }
 
         .auth-card-header h2 {
@@ -317,12 +319,12 @@
         .input-group-auth input:focus,
         .input-group-auth select:focus {
             border-color: var(--border-focus);
-            box-shadow: 0 0 0 3px rgba(0, 107, 63, 0.1);
+            box-shadow: 0 0 0 3px rgba(255, 178, 35, 0.15);
         }
 
         .input-group-auth input:focus ~ .input-icon,
         .input-group-auth select:focus ~ .input-icon {
-            color: var(--zesco-green);
+            color: var(--zesco-gold);
         }
 
         .input-group-auth input.is-invalid {
@@ -369,7 +371,7 @@
             width: 16px;
             height: 16px;
             border-radius: 4px;
-            accent-color: var(--zesco-green);
+            accent-color: var(--zesco-gold);
             cursor: pointer;
         }
 
@@ -401,8 +403,8 @@
         }
 
         .btn-auth-primary:hover {
-            background: linear-gradient(135deg, var(--zesco-green-dark), var(--zesco-green));
-            box-shadow: 0 4px 14px rgba(0, 107, 63, 0.35);
+            background: linear-gradient(135deg, var(--zesco-gold), #f59e0b);
+            box-shadow: 0 4px 14px rgba(255, 178, 35, 0.4);
             transform: translateY(-1px);
         }
 
@@ -436,15 +438,15 @@
 
         /* ===== Links ===== */
         .auth-link {
-            color: var(--zesco-green);
+            color: var(--zesco-gold);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.85rem;
             transition: color 0.2s;
         }
 
         .auth-link:hover {
-            color: var(--zesco-green-dark);
+            color: var(--zesco-green);
             text-decoration: underline;
         }
 
@@ -482,7 +484,7 @@
         }
 
         .auth-bottom-text a {
-            color: var(--zesco-green);
+            color: var(--zesco-gold);
             text-decoration: none;
             font-weight: 600;
         }

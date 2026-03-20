@@ -268,24 +268,27 @@ class ProducerList extends Component
         // Handle file uploads
         if (!empty($this->doc_files)) {
             foreach ($this->doc_files as $file) {
-                $filenameWithExt = preg_replace("/[^a-zA-Z]+/", "_", $file->getClientOriginalName());
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $size = number_format($file->getSize() * 0.000001, 2);
+                $originalName = $file->getClientOriginalName();
+                $safeBase = preg_replace("/[^a-zA-Z0-9_\-]/", "_", pathinfo($originalName, PATHINFO_FILENAME));
                 $extension = $file->getClientOriginalExtension();
-                $fileName = trim(preg_replace('/\s+/', ' ', $filename . '_' . time() . '.' . $extension));
+                $fileName = $safeBase . '_' . time() . '_' . Str::random(4) . '.' . $extension;
+                $size = number_format($file->getSize() / 1048576, 2);
                 $path = $file->storeAs('public/contracts', $fileName);
-                $uuid = Str::uuid()->toString();
 
                 FileUploads::create([
-                    'uuid' => $uuid,
+                    'uuid' => Str::uuid()->toString(),
                     'name' => $fileName,
+                    'original_name' => $originalName,
                     'size' => $size,
                     'path' => $path,
-                    'ext' => $file->extension(),
-                    'folder' => 'App\Http\Livewire\Producers\ProducerList',
+                    'ext' => strtolower($extension),
+                    'mime_type' => $file->getMimeType(),
+                    'folder' => 'contracts',
                     'model_id' => $ipp->id,
                     'modal_code' => $ipp->system_ref,
+                    'model_code' => $ipp->system_ref,
                     'type' => 'contracts',
+                    'uploaded_by' => auth()->id(),
                 ]);
             }
         }
