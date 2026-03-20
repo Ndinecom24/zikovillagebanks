@@ -43,10 +43,7 @@
 
             @if($editing)
                 {{-- ===== EDIT MODE ===== --}}
-                <div class="card z-card" style="position: relative;">
-                    <div wire:loading.flex class="z-loading">
-                        <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                    </div>
+                <div class="card z-card">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <h4><i class="fas fa-pen mr-2" style="color: var(--z-gold);"></i> Edit IPP Details</h4>
                         <div class="d-flex" style="gap: 0.5rem;">
@@ -54,7 +51,8 @@
                                 <i class="fas fa-times mr-1"></i> Cancel
                             </button>
                             <button wire:click="saveProducer" class="btn-zesco-green">
-                                <i class="fas fa-save mr-1"></i> Save Changes
+                                <span wire:loading wire:target="saveProducer" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                                <i wire:loading.remove wire:target="saveProducer" class="fas fa-save mr-1"></i> Save Changes
                             </button>
                         </div>
                     </div>
@@ -249,11 +247,7 @@
                 <div class="row">
                     {{-- Left Column: IPP Details --}}
                     <div class="col-lg-7">
-                        <div class="card z-card" style="position: relative;">
-                            <div wire:loading.flex class="z-loading">
-                                <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                            </div>
-
+                        <div class="card z-card">
                             <div class="card-header d-flex align-items-center justify-content-between">
                                 <h4><i class="fas fa-bolt mr-2" style="color: var(--z-gold);"></i> IPP Details</h4>
                                 @php

@@ -136,10 +136,12 @@
                                             <i class="fas fa-plus mr-1"></i> Task
                                         </button>
                                         <button wire:click="openModuleModal({{ $mod->id }})" class="z-action z-action-edit" title="Edit Module" style="width: 24px; height: 24px; font-size: 0.65rem;">
-                                            <i class="fas fa-pen"></i>
+                                            <span wire:loading wire:target="openModuleModal({{ $mod->id }})" class="spinner-border spinner-border-sm" role="status" style="width: 0.65rem; height: 0.65rem;"></span>
+                                            <i wire:loading.remove wire:target="openModuleModal({{ $mod->id }})" class="fas fa-pen"></i>
                                         </button>
                                         <button wire:click="confirmDelete('module', {{ $mod->id }})" class="z-action z-action-delete" title="Delete Module" style="width: 24px; height: 24px; font-size: 0.65rem;">
-                                            <i class="fas fa-trash-alt"></i>
+                                            <span wire:loading wire:target="confirmDelete('module', {{ $mod->id }})" class="spinner-border spinner-border-sm" role="status" style="width: 0.65rem; height: 0.65rem;"></span>
+                                            <i wire:loading.remove wire:target="confirmDelete('module', {{ $mod->id }})" class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -155,11 +157,7 @@
 
                 {{-- RIGHT: Tasks Panel --}}
                 <div class="col-lg-8">
-                    <div class="card z-card" style="position: relative;">
-                        <div wire:loading.flex class="z-loading">
-                            <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                        </div>
-
+                    <div class="card z-card">
                         <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.5rem;">
                             <h3 class="mb-0">
                                 <i class="fas fa-tasks mr-1"></i>
@@ -270,13 +268,16 @@
                                                 <td>
                                                     <div class="d-flex" style="gap: 4px;">
                                                         <button wire:click="viewTask({{ $task->id }})" class="z-action z-action-view" title="View Details">
-                                                            <i class="fas fa-eye"></i>
+                                                            <span wire:loading wire:target="viewTask({{ $task->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                            <i wire:loading.remove wire:target="viewTask({{ $task->id }})" class="fas fa-eye"></i>
                                                         </button>
                                                         <button wire:click="openTaskModal(null, {{ $task->id }})" class="z-action z-action-edit" title="Edit">
-                                                            <i class="fas fa-pen"></i>
+                                                            <span wire:loading wire:target="openTaskModal(null, {{ $task->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                            <i wire:loading.remove wire:target="openTaskModal(null, {{ $task->id }})" class="fas fa-pen"></i>
                                                         </button>
                                                         <button wire:click="confirmDelete('task', {{ $task->id }})" class="z-action z-action-delete" title="Delete">
-                                                            <i class="fas fa-trash-alt"></i>
+                                                            <span wire:loading wire:target="confirmDelete('task', {{ $task->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                            <i wire:loading.remove wire:target="confirmDelete('task', {{ $task->id }})" class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </div>
                                                 </td>

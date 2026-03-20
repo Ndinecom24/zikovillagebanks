@@ -377,5 +377,6 @@ class ProcessShow extends Component
             'offices' => $offices,
             'stats'   => $stats,
         ])->layout('layouts.main.master-livewire');
+        
     }
 }

@@ -100,14 +100,7 @@
             </div>
 
             {{-- IPP Data Table --}}
-            <div class="card ipp-table-card" style="position: relative;">
-                {{-- Livewire loading indicator --}}
-                <div wire:loading.flex class="lw-loading-overlay">
-                    <div class="spinner-border text-success" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
-
+            <div class="card ipp-table-card">
                 <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
                     <h3 class="mb-0"><i class="fas fa-table mr-2" style="color: var(--zesco-green)"></i>Independent Power Producers</h3>
                     <div class="d-flex align-items-center" style="gap: 0.75rem;">

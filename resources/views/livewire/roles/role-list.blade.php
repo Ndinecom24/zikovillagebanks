@@ -119,9 +119,9 @@
                                     <span class="badge badge-pill badge-info">{{ $role->users_count }}</span>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-xs btn-outline-info" wire:click="showDetails({{ $role->id }})" title="View">
+                                    <a href="{{ route('roles.show', $role->id) }}" class="btn btn-xs btn-outline-info" title="View">
                                         <i class="fas fa-eye"></i>
-                                    </button>
+                                    </a>
                                     <button class="btn btn-xs btn-outline-warning" wire:click="openPermissions({{ $role->id }})" data-toggle="modal" data-target="#permissionsModal" title="Permissions">
                                         <i class="fas fa-key"></i>
                                     </button>

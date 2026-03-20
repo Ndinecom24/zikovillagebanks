@@ -251,11 +251,7 @@
             ═══════════════════════════════════════════ --}}
             @if($activeTab === 'table')
 
-                <div class="card z-card" style="position: relative;">
-                    <div wire:loading.flex class="z-loading">
-                        <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                    </div>
-
+                <div class="card z-card">
                     <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
                             <h3>

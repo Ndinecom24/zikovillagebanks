@@ -57,4 +57,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /* ── Relationships ────────────────── */
+
+    /**
+     * Offices this user belongs to.
+     */
+    public function offices()
+    {
+        return $this->belongsToMany(ResponsibleOffices::class, 'office_user', 'user_id', 'office_id')
+                    ->withPivot('role_in_office')
+                    ->withTimestamps();
+    }
 }

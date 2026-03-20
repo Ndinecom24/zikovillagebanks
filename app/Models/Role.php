@@ -28,6 +28,14 @@ class Role extends Model
     }
 
     /**
+     * The offices that belong to the role.
+     */
+    public function offices()
+    {
+        return $this->belongsToMany(ResponsibleOffices::class, 'role_office', 'role_id', 'office_id')->withTimestamps();
+    }
+
+    /**
      * Check if role has a specific permission.
      */
     public function hasPermission(string $slug): bool
