@@ -1,321 +1,507 @@
-﻿
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
-<div>
-    <!-- Content Header -->
+﻿<div>
+    <!-- Page Header -->
     <div class="content-header">
         <div class="container-fluid">
-            <a href="{{ route('user.index') }}" class="z-back mb-2 d-inline-block">
-                <i class="fas fa-arrow-left"></i> Back to Users
-            </a>
-
-            {{-- Flash --}}
-            @if(session()->has('message'))
-                <div class="alert alert-success" style="border-radius: 10px; font-size: 0.9rem;">
-                    <i class="fas fa-check-circle mr-1"></i> {{ session('message') }}
-                </div>
-            @endif
-
-            {{-- Profile Header --}}
-            <div class="z-profile-header">
-                <div class="z-profile-header-bg">
-                    <div class="d-flex align-items-center justify-content-between">
+            <div class="z-page-header">
+                <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap: 1rem;">
+                    {{-- Avatar + Name --}}
+                    <div class="d-flex align-items-center" style="gap: 1rem;">
+                        <div style="position: relative;">
+                            @if($user->avatar && file_exists(storage_path('app/public/user_avatar/' . $user->avatar)))
+                                <img src="{{ asset('storage/user_avatar/' . $user->avatar) }}"
+                                     style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.3);"
+                                     alt="{{ $user->name }}">
+                            @else
+                                @php
+                                    $parts = explode(' ', trim($user->name));
+                                    $initials = strtoupper(substr($parts[0], 0, 1) . (isset($parts[1]) ? substr($parts[1], 0, 1) : ''));
+                                @endphp
+                                <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff;">
+                                    {{ $initials }}
+                                </div>
+                            @endif
+                            <label for="avatarUploadInput" title="Change photo"
+                                   style="position: absolute; bottom: -2px; right: -2px; width: 22px; height: 22px; border-radius: 50%; background: var(--z-gold); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.6rem; border: 2px solid #fff;">
+                                <i class="fas fa-camera"></i>
+                                <input type="file" wire:model="avatarUpload" accept="image/*" id="avatarUploadInput" style="display:none;">
+                            </label>
+                        </div>
                         <div>
-                            <h4 style="font-weight: 700; margin: 0; font-size: 1.1rem;">
-                                <i class="fas fa-user mr-1" style="color: var(--z-gold);"></i> User Profile
-                            </h4>
-                            <p style="margin: 0.25rem 0 0; opacity: 0.8; font-size: 0.85rem;">
-                                Staff No: {{ $user->staff_no ?? 'N/A' }}
+                            <h1 style="font-size: 1.35rem;">
+                                <i class="fas fa-user mr-2" style="color: var(--z-gold)"></i>
+                                {{ $user->name }}
+                            </h1>
+                            <p style="margin: 0;">
+                                <code style="background: rgba(255,255,255,0.15); padding: 0.15rem 0.5rem; border-radius: 4px;">{{ $user->staff_no ?? 'N/A' }}</code>
+                                &nbsp;{{ $user->job_title ?? 'No job title' }} &bull; {{ $user->directorate ?? 'No directorate' }}
                             </p>
                         </div>
-                        <div class="d-flex" style="gap: 0.5rem;">
-                            @if(!$editing)
-                                <button wire:click="toggleEdit" class="btn-zesco">
-                                    <i class="fas fa-edit"></i> Edit Profile
-                                </button>
-                            @endif
-                            <button wire:click="togglePasswordReset" class="btn-zesco-outline" style="border-color: rgba(255,255,255,0.4); color: #fff;">
-                                <i class="fas fa-key"></i> Reset Password
+                    </div>
+                    {{-- Action Buttons --}}
+                    <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                        @if(!$editing)
+                            <button wire:click="toggleEdit" class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #fff; border-radius: 8px; font-size: 0.82rem;">
+                                <span wire:loading wire:target="toggleEdit" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                                <i wire:loading.remove wire:target="toggleEdit" class="fas fa-edit mr-1"></i> Edit Profile
                             </button>
-                        </div>
+                        @endif
+                        <button wire:click="togglePasswordReset" class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #fff; border-radius: 8px; font-size: 0.82rem;">
+                            <i class="fas fa-key mr-1"></i> Reset Password
+                        </button>
+                        <a href="{{ route('user.index') }}" class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #fff; border-radius: 8px; font-size: 0.82rem;">
+                            <i class="fas fa-arrow-left mr-1"></i> Back to Users
+                        </a>
                     </div>
                 </div>
 
-                {{-- Avatar + Name bar --}}
-                <div style="position: relative;">
-                    <div class="z-profile-avatar-wrap">
-                        <img src="{{ asset('storage/user_avatar/' . ($user->avatar ?? '')) }}"
-                             class="z-profile-avatar"
-                             onerror="this.src='{{ asset('dashboard/dist/img/avatar.png') }}';">
-                        <label class="z-profile-avatar-upload" title="Change photo">
-                            <i class="fas fa-camera"></i>
-                            <input type="file" wire:model="avatarUpload" accept="image/*">
-                        </label>
+                {{-- Stats --}}
+                <div class="row mt-3">
+                    <div class="col-6 col-md-3">
+                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                            <div style="font-size: 1.15rem; font-weight: 800;">{{ $user->offices->count() }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Offices</div>
+                        </div>
                     </div>
-                    <div class="z-profile-info-bar">
-                        <h3 class="z-profile-name">{{ $user->name }}</h3>
-                        <div class="z-profile-meta">
-                            {{ $user->job_title ?? 'No job title' }} &bull; {{ $user->directorate ?? 'No directorate' }}
-                            @foreach($userRoles as $role)
-                                <span class="z-role-badge ml-2"><i class="fas fa-shield-alt"></i> {{ $role->name }}</span>
-                            @endforeach
+                    <div class="col-6 col-md-3">
+                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                            <div style="font-size: 1.15rem; font-weight: 800; color: #fbbf24;">{{ $userRoles->count() }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Direct Roles</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                            <div style="font-size: 1.15rem; font-weight: 800; color: #60a5fa;">{{ $officeRoles->count() }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Office Roles</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                            <div style="font-size: 1.15rem; font-weight: 800; color: #34d399;">{{ $user->total_login ?? 0 }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Total Logins</div>
                         </div>
                     </div>
                 </div>
             </div>
-            {{-- Avatar upload progress --}}
-            <div wire:loading wire:target="avatarUpload" class="mb-2">
-                <div class="alert alert-info" style="border-radius: 10px; font-size: 0.85rem;">
-                    <i class="fas fa-spinner fa-spin mr-1"></i> Uploading profile picture...
-                </div>
-            </div>
-            @error('avatarUpload')
-                <div class="alert alert-danger" style="border-radius: 10px; font-size: 0.85rem;">{{ $message }}</div>
-            @enderror
         </div>
     </div>
 
     <!-- Main Content -->
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
-                {{-- Left Column: Details --}}
-                <div class="col-lg-8">
 
-                    {{-- ===== VIEW MODE ===== --}}
-                    @if(!$editing)
-                    <div class="z-card">
-                        <div class="z-card-title">
-                            <i class="fas fa-id-card" style="color: var(--z-green);"></i> Personal Information
-                        </div>
-                        <div class="z-card-body">
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Full Name</div>
-                                <div class="z-detail-value">{{ $user->name ?? 'N/A' }}</div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Staff No</div>
-                                <div class="z-detail-value">{{ $user->staff_no ?? 'N/A' }}</div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Email</div>
-                                <div class="z-detail-value">{{ $user->email ?? 'N/A' }}</div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Mobile No</div>
-                                <div class="z-detail-value">{{ $user->mobile_no ?? 'N/A' }}</div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Job Title</div>
-                                <div class="z-detail-value">{{ $user->job_title ?? 'N/A' }}</div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Department / Unit</div>
-                                <div class="z-detail-value">{{ $user->user_unit ?? 'N/A' }}</div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Directorate</div>
-                                <div class="z-detail-value">{{ $user->directorate ?? 'N/A' }}</div>
-                            </div>
-                        </div>
+            {{-- Flash Messages --}}
+            @if(session()->has('message'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                    <i class="fas fa-check-circle mr-1"></i> {!! session('message') !!}
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            @endif
+            @error('avatarUpload')
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                    <i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            @enderror
+            <div wire:loading wire:target="avatarUpload">
+                <div class="alert alert-info" style="border-radius: 8px; font-size: 0.85rem;">
+                    <i class="fas fa-spinner fa-spin mr-1"></i> Uploading profile picture...
+                </div>
+            </div>
+
+            {{-- ══════════════════════════════════ --}}
+            {{-- TABS                               --}}
+            {{-- ══════════════════════════════════ --}}
+            <div class="card z-card mb-0" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+                <div class="card-body py-0 px-0">
+                    <ul class="nav nav-tabs" style="border: none; padding: 0 1rem;">
+                        <li class="nav-item">
+                            <a href="#" wire:click.prevent="$set('activeTab', 'profile')"
+                               class="nav-link {{ $activeTab === 'profile' ? 'active' : '' }}"
+                               style="border-radius: 8px 8px 0 0; font-size: 0.85rem; font-weight: 600;">
+                                <i class="fas fa-id-card mr-1"></i> Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" wire:click.prevent="$set('activeTab', 'offices')"
+                               class="nav-link {{ $activeTab === 'offices' ? 'active' : '' }}"
+                               style="border-radius: 8px 8px 0 0; font-size: 0.85rem; font-weight: 600;">
+                                <i class="fas fa-building mr-1"></i> Offices
+                                <span class="badge badge-success ml-1">{{ $user->offices->count() }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" wire:click.prevent="$set('activeTab', 'roles')"
+                               class="nav-link {{ $activeTab === 'roles' ? 'active' : '' }}"
+                               style="border-radius: 8px 8px 0 0; font-size: 0.85rem; font-weight: 600;">
+                                <i class="fas fa-shield-alt mr-1"></i> Roles
+                                <span class="badge badge-warning ml-1">{{ $userRoles->count() + $officeRoles->count() }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {{-- ══════════════════════════════════ --}}
+            {{-- PROFILE TAB                        --}}
+            {{-- ══════════════════════════════════ --}}
+            @if($activeTab === 'profile')
+                {{-- ── PERSONAL INFORMATION ── --}}
+                <div class="card z-card" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h3 class="mb-0" style="font-size: 1rem; font-weight: 700;">
+                            <i class="fas fa-id-card mr-1" style="color: var(--z-green)"></i>
+                            {{ $editing ? 'Edit Profile' : 'Personal Information' }}
+                        </h3>
+                        @if(!$editing)
+                            <button wire:click="toggleEdit" class="btn btn-sm" style="background: #f3f4f6; color: #374151; border-radius: 6px; font-size: 0.78rem;">
+                                <i class="fas fa-edit mr-1"></i> Edit
+                            </button>
+                        @endif
                     </div>
-                    @endif
-
-                    {{-- ===== EDIT MODE ===== --}}
-                    @if($editing)
-                    <div class="z-card">
-                        <div class="z-card-title">
-                            <i class="fas fa-edit" style="color: var(--z-gold);"></i> Edit Profile
-                        </div>
-                        <div class="z-card-body">
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="z-label">Full Name <span class="text-danger">*</span></label>
-                                    <input type="text" wire:model.defer="editName" class="form-control z-input">
-                                    @error('editName') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="z-label">Email <span class="text-danger">*</span></label>
-                                    <input type="email" wire:model.defer="editEmail" class="form-control z-input">
-                                    @error('editEmail') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label class="z-label">Mobile No</label>
-                                    <input type="text" wire:model.defer="editMobileNo" class="form-control z-input">
-                                    @error('editMobileNo') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="z-label">Job Title</label>
-                                    <input type="text" wire:model.defer="editJobTitle" class="form-control z-input">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="z-label">Department / Unit</label>
-                                    <input type="text" wire:model.defer="editUserUnit" class="form-control z-input">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="z-label">Directorate</label>
-                                    <input type="text" wire:model.defer="editDirectorate" class="form-control z-input">
-                                </div>
-                            </div>
-                            <div class="d-flex" style="gap: 0.5rem; margin-top: 1rem;">
-                                <button wire:click="saveProfile" class="btn-zesco-green" wire:loading.attr="disabled">
-                                    <i class="fas fa-check mr-1"></i> Save Changes
-                                </button>
-                                <button wire:click="cancelEdit" class="btn btn-light" style="border-radius: 8px;">
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-
-                    {{-- ===== PASSWORD RESET ===== --}}
-                    @if($showPasswordReset)
-                    <div class="z-card">
-                        <div class="z-card-title">
-                            <i class="fas fa-key" style="color: #dc2626;"></i> Reset User Password
-                        </div>
-                        <div class="z-card-body">
-                            <div class="z-pwd-section">
-                                <p style="font-size: 0.85rem; color: #92400e; margin: 0 0 1rem;">
-                                    <i class="fas fa-exclamation-triangle mr-1"></i>
-                                    This will reset the password for <strong>{{ $user->name }}</strong>. The user will be required to change their password on next login.
-                                </p>
-
-                                <div class="row mb-3">
+                    <div class="card-body p-0">
+                        @if($editing)
+                            <div style="padding: 1rem 1.25rem;">
+                                <div class="row">
                                     <div class="col-md-6">
-                                        <label class="z-label">New Password <span class="text-danger">*</span></label>
-                                        <input type="password" wire:model="newPassword" class="form-control z-input" placeholder="Enter new password" id="resetPwd">
-                                        @error('newPassword') <small class="text-danger">{{ $message }}</small> @enderror
-
-                                        {{-- Live requirements --}}
-                                        <div class="pwd-req mt-2" id="pwdReqGrid">
-                                            <span id="rr-length"><i class="bi bi-circle"></i> Min 8 chars</span>
-                                            <span id="rr-upper"><i class="bi bi-circle"></i> Uppercase</span>
-                                            <span id="rr-lower"><i class="bi bi-circle"></i> Lowercase</span>
-                                            <span id="rr-number"><i class="bi bi-circle"></i> Number</span>
-                                            <span id="rr-special"><i class="bi bi-circle"></i> Special char</span>
-                                            <span id="rr-match"><i class="bi bi-circle"></i> Passwords match</span>
+                                        <div class="form-group">
+                                            <label class="z-label">Full Name <span class="text-danger">*</span></label>
+                                            <input type="text" wire:model.defer="editName" class="form-control z-input">
+                                            @error('editName') <small class="text-danger">{{ $message }}</small> @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="z-label">Confirm Password <span class="text-danger">*</span></label>
-                                        <input type="password" wire:model="newPasswordConfirmation" class="form-control z-input" placeholder="Confirm password" id="resetPwdConfirm">
-                                        @error('newPasswordConfirmation') <small class="text-danger">{{ $message }}</small> @enderror
+                                        <div class="form-group">
+                                            <label class="z-label">Email <span class="text-danger">*</span></label>
+                                            <input type="email" wire:model.defer="editEmail" class="form-control z-input">
+                                            @error('editEmail') <small class="text-danger">{{ $message }}</small> @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="z-label">Mobile No</label>
+                                            <input type="text" wire:model.defer="editMobileNo" class="form-control z-input">
+                                            @error('editMobileNo') <small class="text-danger">{{ $message }}</small> @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="z-label">Job Title</label>
+                                            <input type="text" wire:model.defer="editJobTitle" class="form-control z-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="z-label">Department / Unit</label>
+                                            <input type="text" wire:model.defer="editUserUnit" class="form-control z-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="z-label">Directorate</label>
+                                            <input type="text" wire:model.defer="editDirectorate" class="form-control z-input">
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="d-flex" style="gap: 0.5rem;">
-                                    <button wire:click="resetUserPassword" class="btn btn-danger" style="border-radius: 8px; font-weight: 600;" wire:loading.attr="disabled">
-                                        <i class="fas fa-key mr-1"></i> Reset Password
+                                <div class="d-flex" style="gap: 0.5rem; margin-top: 0.25rem;">
+                                    <button wire:click="saveProfile" class="btn btn-sm z-btn-primary" wire:loading.attr="disabled">
+                                        <span wire:loading wire:target="saveProfile" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                                        <i wire:loading.remove wire:target="saveProfile" class="fas fa-check mr-1"></i> Save Changes
                                     </button>
-                                    <button wire:click="togglePasswordReset" class="btn btn-light" style="border-radius: 8px;">Cancel</button>
+                                    <button wire:click="cancelEdit" class="btn btn-sm" style="background: #f3f4f6; color: #374151; border-radius: 8px;">
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="table-responsive">
+                                <table class="table mb-0" style="font-size: 0.85rem;">
+                                    <tbody>
+                                        @php
+                                            $personalFields = [
+                                                ['label' => 'Full Name', 'value' => $user->name],
+                                                ['label' => 'Staff No', 'value' => $user->staff_no],
+                                                ['label' => 'Email', 'value' => $user->email],
+                                                ['label' => 'Mobile No', 'value' => $user->mobile_no],
+                                                ['label' => 'Job Title', 'value' => $user->job_title],
+                                                ['label' => 'Dept / Unit', 'value' => $user->user_unit],
+                                                ['label' => 'Directorate', 'value' => $user->directorate],
+                                            ];
+                                        @endphp
+                                        @foreach($personalFields as $field)
+                                            <tr>
+                                                <td style="padding: 0.6rem 1rem; font-weight: 600; color: #6b7280; width: 160px; border-top: none; border-bottom: 1px solid #f3f4f6;">{{ $field['label'] }}</td>
+                                                <td style="padding: 0.6rem 1rem; color: #111827; font-weight: 500; border-top: none; border-bottom: 1px solid #f3f4f6;">{{ $field['value'] ?? 'N/A' }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
                     </div>
-                    @endif
                 </div>
 
-                {{-- Right Column: Quick Info --}}
-                <div class="col-lg-4">
-                    {{-- Account Info --}}
-                    <div class="z-card">
-                        <div class="z-card-title">
-                            <i class="fas fa-info-circle" style="color: var(--z-green);"></i> Account Info
+                {{-- ── ACCOUNT INFORMATION ── --}}
+                <div class="card z-card">
+                    <div class="card-header">
+                        <h3 class="mb-0" style="font-size: 1rem; font-weight: 700;">
+                            <i class="fas fa-info-circle mr-1" style="color: var(--z-green)"></i> Account Information
+                        </h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0" style="font-size: 0.85rem;">
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 0.6rem 1rem; font-weight: 600; color: #6b7280; width: 160px; border-top: none; border-bottom: 1px solid #f3f4f6;">User ID</td>
+                                        <td style="padding: 0.6rem 1rem; color: #111827; font-weight: 500; border-top: none; border-bottom: 1px solid #f3f4f6;">#{{ $user->id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.6rem 1rem; font-weight: 600; color: #6b7280; border-top: none; border-bottom: 1px solid #f3f4f6;">Total Logins</td>
+                                        <td style="padding: 0.6rem 1rem; border-top: none; border-bottom: 1px solid #f3f4f6;">
+                                            <span class="badge badge-light" style="font-size: 0.82rem;">{{ $user->total_login ?? 0 }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.6rem 1rem; font-weight: 600; color: #6b7280; border-top: none; border-bottom: 1px solid #f3f4f6;">Password</td>
+                                        <td style="padding: 0.6rem 1rem; border-top: none; border-bottom: 1px solid #f3f4f6;">
+                                            @if($user->password_changed == config('constants.password_changed'))
+                                                <span style="color: #16a34a; font-weight: 600; font-size: 0.82rem;">
+                                                    <i class="fas fa-check-circle"></i> Changed
+                                                </span>
+                                            @else
+                                                <span style="color: #dc2626; font-weight: 600; font-size: 0.82rem;">
+                                                    <i class="fas fa-exclamation-circle"></i> Not Changed
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.6rem 1rem; font-weight: 600; color: #6b7280; border-top: none; border-bottom: 1px solid #f3f4f6;">Created</td>
+                                        <td style="padding: 0.6rem 1rem; color: #111827; font-weight: 500; border-top: none; border-bottom: 1px solid #f3f4f6;">{{ $user->created_at ? $user->created_at->format('M d, Y') : 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.6rem 1rem; font-weight: 600; color: #6b7280; border-top: none; border-bottom: 1px solid #f3f4f6;">Last Updated</td>
+                                        <td style="padding: 0.6rem 1rem; color: #111827; font-weight: 500; border-top: none; border-bottom: 1px solid #f3f4f6;">{{ $user->updated_at ? $user->updated_at->diffForHumans() : 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.6rem 1rem; font-weight: 600; color: #6b7280; border-top: none;">Roles</td>
+                                        <td style="padding: 0.6rem 1rem; border-top: none;">
+                                            @forelse($userRoles as $role)
+                                                <span class="badge" style="background: #fef3c7; color: #92400e; font-size: 0.72rem; margin-right: 0.2rem;">
+                                                    <i class="fas fa-shield-alt" style="font-size: 0.6rem;"></i> {{ $role->name }}
+                                                </span>
+                                            @empty
+                                                <span style="color: #d1d5db; font-size: 0.82rem;">&mdash;</span>
+                                            @endforelse
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="z-card-body">
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">User ID</div>
-                                <div class="z-detail-value">#{{ $user->id }}</div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Total Logins</div>
-                                <div class="z-detail-value">
-                                    <span class="badge badge-light" style="font-size: 0.85rem;">{{ $user->total_login ?? 0 }}</span>
+
+                        {{-- Password Reset Section (inline) --}}
+                        @if($showPasswordReset)
+                            <div style="border-top: 2px solid #fde68a; padding: 1rem 1.25rem; background: #fffbeb;">
+                                <h6 style="font-size: 0.88rem; font-weight: 700; color: #92400e; margin: 0 0 0.65rem;">
+                                    <i class="fas fa-key mr-1" style="color: #dc2626;"></i> Reset Password
+                                </h6>
+                                <p style="font-size: 0.78rem; color: #92400e; margin: 0 0 0.65rem; background: #fff; border: 1px solid #fde68a; border-radius: 6px; padding: 0.4rem 0.6rem;">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                                    Resetting for <strong>{{ $user->name }}</strong>. They must change it on next login.
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-2">
+                                            <label class="z-label">New Password <span class="text-danger">*</span></label>
+                                            <input type="password" wire:model="newPassword" class="form-control form-control-sm z-input" placeholder="Enter new password" id="resetPwd">
+                                            @error('newPassword') <small class="text-danger">{{ $message }}</small> @enderror
+                                            <div class="pwd-req mt-2" id="pwdReqGrid">
+                                                <span id="rr-length"><i class="bi bi-circle"></i> Min 8 chars</span>
+                                                <span id="rr-upper"><i class="bi bi-circle"></i> Uppercase</span>
+                                                <span id="rr-lower"><i class="bi bi-circle"></i> Lowercase</span>
+                                                <span id="rr-number"><i class="bi bi-circle"></i> Number</span>
+                                                <span id="rr-special"><i class="bi bi-circle"></i> Special char</span>
+                                                <span id="rr-match"><i class="bi bi-circle"></i> Passwords match</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-2">
+                                            <label class="z-label">Confirm Password <span class="text-danger">*</span></label>
+                                            <input type="password" wire:model="newPasswordConfirmation" class="form-control form-control-sm z-input" placeholder="Confirm password" id="resetPwdConfirm">
+                                            @error('newPasswordConfirmation') <small class="text-danger">{{ $message }}</small> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex" style="gap: 0.5rem;">
+                                    <button wire:click="resetUserPassword" class="btn btn-danger btn-sm" style="border-radius: 8px; font-weight: 600; font-size: 0.78rem;" wire:loading.attr="disabled">
+                                        <span wire:loading wire:target="resetUserPassword" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                                        <i wire:loading.remove wire:target="resetUserPassword" class="fas fa-key mr-1"></i> Reset
+                                    </button>
+                                    <button wire:click="togglePasswordReset" class="btn btn-sm" style="background: #fff; color: #374151; border-radius: 8px; font-size: 0.78rem; border: 1px solid #d1d5db;">
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Password Status</div>
-                                <div class="z-detail-value">
-                                    @if($user->password_changed == config('constants.password_changed'))
-                                        <span style="color: #16a34a; font-weight: 600; font-size: 0.82rem;">
-                                            <i class="fas fa-check-circle"></i> Changed
-                                        </span>
-                                    @else
-                                        <span style="color: #dc2626; font-weight: 600; font-size: 0.82rem;">
-                                            <i class="fas fa-exclamation-circle"></i> Not Changed
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Created</div>
-                                <div class="z-detail-value">{{ $user->created_at ? $user->created_at->format('M d, Y') : 'N/A' }}</div>
-                            </div>
-                            <div class="z-detail-row">
-                                <div class="z-detail-label">Last Updated</div>
-                                <div class="z-detail-value">{{ $user->updated_at ? $user->updated_at->diffForHumans() : 'N/A' }}</div>
-                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
+            {{-- ══════════════════════════════════ --}}
+            {{-- OFFICES TAB                        --}}
+            {{-- ══════════════════════════════════ --}}
+            @if($activeTab === 'offices')
+                <div class="card z-card" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h3 class="mb-0" style="font-size: 1rem; font-weight: 700;">
+                            <i class="fas fa-building mr-1" style="color: var(--z-green)"></i> Assigned Offices
+                        </h3>
+                        <span class="badge badge-success" style="font-size: 0.78rem;">{{ $user->offices->count() }} office{{ $user->offices->count() !== 1 ? 's' : '' }}</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" style="font-size: 0.85rem;">
+                                <thead style="background: #f8fafc;">
+                                    <tr>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">#</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Office Name</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Role in Office</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb; text-align: center;">Office Roles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($user->offices as $idx => $office)
+                                        <tr>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #94a3b8;">{{ $idx + 1 }}</td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle;">
+                                                <a href="{{ route('office.show', $office->id) }}" style="font-weight: 600; color: #1a2332; text-decoration: none;">
+                                                    <i class="fas fa-building mr-1" style="color: var(--z-green); font-size: 0.75rem;"></i>
+                                                    {{ $office->responsible_office }}
+                                                </a>
+                                            </td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #6b7280;">
+                                                @if($office->pivot->role_in_office)
+                                                    <i class="fas fa-tag mr-1" style="font-size: 0.65rem; color: #9ca3af;"></i>{{ $office->pivot->role_in_office }}
+                                                @else
+                                                    <span style="color: #d1d5db;">&mdash;</span>
+                                                @endif
+                                            </td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; text-align: center;">
+                                                @if($office->roles->count() > 0)
+                                                    <span class="badge badge-light" style="font-size: 0.72rem; cursor: help;" title="{{ $office->roles->pluck('name')->join(', ') }}">
+                                                        {{ $office->roles->count() }} role{{ $office->roles->count() > 1 ? 's' : '' }}
+                                                    </span>
+                                                @else
+                                                    <span style="color: #d1d5db;">&mdash;</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">
+                                                <i class="fas fa-building" style="font-size: 2rem; opacity: 0.3;"></i>
+                                                <p class="mt-2 mb-0">Not assigned to any office.</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
+            @endif
 
-                    {{-- Roles --}}
-                    <div class="z-card">
-                        <div class="z-card-title">
-                            <i class="fas fa-shield-alt" style="color: var(--z-gold);"></i> Assigned Roles
+            {{-- ══════════════════════════════════ --}}
+            {{-- ROLES TAB                          --}}
+            {{-- ══════════════════════════════════ --}}
+            @if($activeTab === 'roles')
+                <div class="card z-card" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <div class="card-body p-0">
+
+                        {{-- Direct Roles Section --}}
+                        <div class="card-header d-flex align-items-center justify-content-between" style="border-bottom: 1px solid #e5e7eb;">
+                            <h3 class="mb-0" style="font-size: 1rem; font-weight: 700;">
+                                <i class="fas fa-shield-alt mr-1" style="color: var(--z-gold)"></i> Direct Roles
+                            </h3>
+                            <a href="{{ route('user-roles.index') }}" class="btn btn-sm z-btn-primary" style="font-size: 0.78rem;">
+                                <i class="fas fa-cog mr-1"></i> Manage Roles
+                            </a>
                         </div>
-                        <div class="z-card-body">
+                        <div style="padding: 0.75rem 1rem;">
                             @forelse($userRoles as $role)
-                                <div class="d-flex align-items-center justify-content-between mb-2" style="padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6;">
-                                    <div>
-                                        <span class="z-role-badge"><i class="fas fa-shield-alt"></i> {{ $role->name }}</span>
-                                    </div>
-                                    <small style="color: #94a3b8;">{{ $role->description ?? '' }}</small>
+                                <div class="d-inline-flex align-items-center mr-2 mb-2"
+                                     style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 20px; padding: 0.3rem 0.75rem; font-size: 0.82rem; font-weight: 600; color: #92400e;">
+                                    <i class="fas fa-shield-alt mr-1" style="font-size: 0.65rem;"></i>
+                                    <a href="{{ route('roles.show', $role->id) }}" style="color: #92400e; text-decoration: none;">{{ $role->name }}</a>
                                 </div>
                             @empty
-                                <div class="text-center py-3" style="color: #94a3b8; font-size: 0.85rem;">
-                                    <i class="fas fa-shield-alt d-block mb-1" style="font-size: 1.5rem;"></i>
-                                    No roles assigned
+                                <div class="text-center text-muted py-3">
+                                    <i class="fas fa-shield-alt" style="font-size: 1.5rem; opacity: 0.3;"></i>
+                                    <p class="mt-2 mb-0" style="font-size: 0.85rem;">No direct roles assigned.</p>
+                                    <a href="{{ route('user-roles.index') }}" class="btn btn-sm z-btn-primary mt-2">
+                                        <i class="fas fa-user-tag mr-1"></i> Manage User Roles
+                                    </a>
                                 </div>
                             @endforelse
-                            <div class="mt-2">
-                                <a href="{{ route('user-roles.index') }}" class="btn-zesco-outline" style="font-size: 0.78rem; padding: 0.3rem 0.75rem;">
-                                    <i class="fas fa-cog"></i> Manage Roles
-                                </a>
-                            </div>
                         </div>
-                    </div>
 
-                    {{-- Quick Actions --}}
-                    <div class="z-card">
-                        <div class="z-card-title">
-                            <i class="fas fa-bolt" style="color: var(--z-gold);"></i> Quick Actions
+                        {{-- Divider --}}
+                        <div style="border-top: 2px solid #e5e7eb;"></div>
+
+                        {{-- Office-Based Roles Section --}}
+                        <div class="card-header d-flex align-items-center justify-content-between" style="border-bottom: 1px solid #e5e7eb;">
+                            <h3 class="mb-0" style="font-size: 1rem; font-weight: 700;">
+                                <i class="fas fa-building mr-1" style="color: #2563eb"></i> Office-Based Roles
+                            </h3>
+                            <span class="badge badge-primary" style="font-size: 0.78rem;">{{ $officeRoles->count() }}</span>
                         </div>
-                        <div class="z-card-body">
-                            <div class="d-flex flex-column" style="gap: 0.5rem;">
-                                <button wire:click="toggleEdit" class="btn-zesco-outline" style="width: 100%; justify-content: center;">
-                                    <i class="fas fa-edit"></i> {{ $editing ? 'Cancel Edit' : 'Edit Profile' }}
-                                </button>
-                                <button wire:click="togglePasswordReset" class="btn-zesco-outline" style="width: 100%; justify-content: center;">
-                                    <i class="fas fa-key"></i> {{ $showPasswordReset ? 'Cancel Reset' : 'Reset Password' }}
-                                </button>
-                                <a href="{{ route('user.index') }}" class="btn btn-light text-center" style="border-radius: 8px; font-weight: 600; font-size: 0.82rem;">
-                                    <i class="fas fa-arrow-left mr-1"></i> Back to List
-                                </a>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" style="font-size: 0.85rem;">
+                                <thead style="background: #f8fafc;">
+                                    <tr>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">#</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Role</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Source Office</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Path</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($officeRoles as $idx => $oRole)
+                                        <tr>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #94a3b8;">{{ $idx + 1 }}</td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle;">
+                                                <a href="{{ route('roles.show', $oRole->id) }}" style="font-weight: 600; color: #1e40af; text-decoration: none;">
+                                                    <i class="fas fa-shield-alt mr-1" style="font-size: 0.7rem; color: #2563eb;"></i>{{ $oRole->name }}
+                                                </a>
+                                            </td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle;">
+                                                <a href="{{ route('office.show', $oRole->source_office_id) }}" style="font-weight: 600; color: #1a2332; text-decoration: none;">
+                                                    <i class="fas fa-building mr-1" style="font-size: 0.7rem; color: var(--z-green);"></i>{{ $oRole->source_office }}
+                                                </a>
+                                            </td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #6b7280; font-size: 0.78rem;">
+                                                Office &rarr; Role
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">
+                                                <i class="fas fa-building" style="font-size: 1.5rem; opacity: 0.3;"></i>
+                                                <p class="mt-2 mb-0" style="font-size: 0.85rem;">No office-based roles.</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
+
                     </div>
                 </div>
-            </div>
+            @endif
+
         </div>
     </section>
-</div>
 
 {{-- Password requirements live checking --}}
 <script>
@@ -362,3 +548,5 @@ document.addEventListener('livewire:load', function () {
     });
 });
 </script>
+
+</div>

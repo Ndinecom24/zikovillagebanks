@@ -32,11 +32,7 @@
             @endif
 
             {{-- Table Card --}}
-            <div class="card z-card" style="position: relative;">
-                <div wire:loading.flex class="z-loading">
-                    <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                </div>
-
+            <div class="card z-card">
                 <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
                     <h3><i class="fas fa-list mr-2" style="color: var(--z-green)"></i>All Users</h3>
                     <div class="d-flex align-items-center" style="gap: 0.75rem;">
@@ -107,6 +103,8 @@
                                             <i class="fas fa-sort sort-icon"></i>
                                         @endif
                                     </th>
+                                    <th>Offices</th>
+                                    <th>Roles</th>
                                     <th style="width: 100px;">Actions</th>
                                 </tr>
                             </thead>
@@ -114,9 +112,16 @@
                                 @forelse($users as $u)
                                     <tr>
                                         <td>
-                                            <img src="{{ asset('storage/user_avatar/' . ($u->avatar ?? '')) }}"
-                                                 class="z-avatar-sm"
-                                                 onerror="this.src='{{ asset('dashboard/dist/img/avatar.png') }}';">
+                                            @if($u->avatar && file_exists(storage_path('app/public/user_avatar/' . $u->avatar)))
+                                                <img src="{{ asset('storage/user_avatar/' . $u->avatar) }}"
+                                                     class="z-avatar-sm" alt="{{ $u->name }}">
+                                            @else
+                                                @php
+                                                    $parts = explode(' ', trim($u->name ?? ''));
+                                                    $initials = strtoupper(substr($parts[0], 0, 1) . (isset($parts[1]) ? substr($parts[1], 0, 1) : ''));
+                                                @endphp
+                                                <div class="z-avatar-sm z-avatar-initials">{{ $initials }}</div>
+                                            @endif
                                         </td>
                                         <td>{{ $u->staff_no ?? '--' }}</td>
                                         <td><strong>{{ $u->name ?? '--' }}</strong></td>
@@ -127,19 +132,38 @@
                                             <span class="badge badge-light" style="font-size: 0.8rem;">{{ $u->total_login ?? 0 }}</span>
                                         </td>
                                         <td>
+                                            @if($u->offices_count > 0)
+                                                <span class="badge" style="background: #ecfdf5; color: #065f46; font-size: 0.78rem; font-weight: 600; border: 1px solid #a7f3d0;">
+                                                    <i class="fas fa-building mr-1" style="font-size: 0.65rem;"></i>{{ $u->offices_count }}
+                                                </span>
+                                            @else
+                                                <span style="color: #d1d5db; font-size: 0.8rem;">&mdash;</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($u->roles_count > 0)
+                                                <span class="badge" style="background: #fef3c7; color: #92400e; font-size: 0.78rem; font-weight: 600; border: 1px solid #fde68a;">
+                                                    <i class="fas fa-shield-alt mr-1" style="font-size: 0.65rem;"></i>{{ $u->roles_count }}
+                                                </span>
+                                            @else
+                                                <span style="color: #d1d5db; font-size: 0.8rem;">&mdash;</span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             <div class="d-flex" style="gap: 4px;">
                                                 <a href="{{ route('user.show', $u->id) }}" class="z-action z-action-view" title="View">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 <button wire:click="confirmDelete({{ $u->id }})" class="z-action z-action-delete" title="Delete">
-                                                    <i class="fas fa-trash-alt"></i>
+                                                    <span wire:loading wire:target="confirmDelete({{ $u->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                    <i wire:loading.remove wire:target="confirmDelete({{ $u->id }})" class="fas fa-trash-alt"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="text-center py-4" style="color: #94a3b8;">
+                                        <td colspan="10" class="text-center py-4" style="color: #94a3b8;">
                                             <i class="fas fa-users fa-2x mb-2 d-block"></i>
                                             No users found.
                                         </td>

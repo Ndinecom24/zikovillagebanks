@@ -118,11 +118,7 @@
 
                 {{-- ===== RIGHT PANEL — Substations ===== --}}
                 <div class="col-lg-9 col-md-8">
-                    <div class="card z-card" style="position: relative;">
-                        <div wire:loading.flex wire:target="createSubstation,saveEditSubstation,deleteSubstation" class="z-loading">
-                            <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                        </div>
-
+                    <div class="card z-card">
                         @if($selectedDistrictId && $selectedDistrict)
                             <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.5rem;">
                                 <h3>
@@ -171,7 +167,8 @@
                                                             <td>
                                                                 <div class="d-flex" style="gap: 3px;">
                                                                     <button wire:click="saveEditSubstation" class="z-action z-action-save" title="Save">
-                                                                        <i class="fas fa-check"></i>
+                                                                        <span wire:loading wire:target="saveEditSubstation" class="spinner-border spinner-border-sm" role="status"></span>
+                                                                        <i wire:loading.remove wire:target="saveEditSubstation" class="fas fa-check"></i>
                                                                     </button>
                                                                     <button wire:click="cancelEditSubstation" class="z-action z-action-cancel" title="Cancel">
                                                                         <i class="fas fa-times"></i>
@@ -202,10 +199,12 @@
                                                             <td>
                                                                 <div class="d-flex" style="gap: 3px;">
                                                                     <button wire:click="startEditSubstation({{ $cp->id }})" class="z-action z-action-edit" title="Edit">
-                                                                        <i class="fas fa-pen"></i>
+                                                                        <span wire:loading wire:target="startEditSubstation({{ $cp->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                                        <i wire:loading.remove wire:target="startEditSubstation({{ $cp->id }})" class="fas fa-pen"></i>
                                                                     </button>
                                                                     <button wire:click="confirmDeleteSubstation({{ $cp->id }})" class="z-action z-action-delete" title="Delete">
-                                                                        <i class="fas fa-trash-alt"></i>
+                                                                        <span wire:loading wire:target="confirmDeleteSubstation({{ $cp->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                                        <i wire:loading.remove wire:target="confirmDeleteSubstation({{ $cp->id }})" class="fas fa-trash-alt"></i>
                                                                     </button>
                                                                 </div>
                                                             </td>

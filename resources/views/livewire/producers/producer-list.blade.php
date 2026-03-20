@@ -119,11 +119,7 @@
             </div>
 
             {{-- Table Card --}}
-            <div class="card z-card" style="position: relative;">
-                <div wire:loading.flex class="z-loading">
-                    <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                </div>
-
+            <div class="card z-card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h3>
                         <i class="fas fa-bolt mr-2" style="color: var(--z-gold)"></i>Power Agreements
@@ -225,7 +221,8 @@
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 <button wire:click="confirmDelete({{ $item->id }})" class="z-action z-action-delete" title="Delete">
-                                                    <i class="fas fa-trash-alt"></i>
+                                                    <span wire:loading wire:target="confirmDelete({{ $item->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                    <i wire:loading.remove wire:target="confirmDelete({{ $item->id }})" class="fas fa-trash-alt"></i>
                                                 </button>
                                             </div>
                                         </td>

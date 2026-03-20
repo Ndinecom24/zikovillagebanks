@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Collection;
 
 class UserShow extends Component
 {
@@ -34,6 +35,9 @@ class UserShow extends Component
     public $newPassword = '';
     public $newPasswordConfirmation = '';
 
+    // Tabs
+    public $activeTab = 'profile';
+
     protected $listeners = ['refreshUser' => 'loadUser'];
 
     public function mount($id)
@@ -44,7 +48,13 @@ class UserShow extends Component
 
     public function loadUser()
     {
-        $this->user = User::findOrFail($this->userId);
+        $this->user = User::with([
+            'roles',
+            'offices' => function ($q) {
+                $q->orderBy('responsible_office');
+            },
+            'offices.roles',
+        ])->findOrFail($this->userId);
         $this->fillEditFields();
     }
 
@@ -162,10 +172,32 @@ class UserShow extends Component
         }
     }
 
+    /**
+     * Roles inherited through office → role_office pivot.
+     */
+    public function getOfficeRolesProperty(): Collection
+    {
+        try {
+            return $this->user->offices
+                ->flatMap(function ($office) {
+                    return $office->roles->map(function ($role) use ($office) {
+                        $role->source_office = $office->responsible_office;
+                        $role->source_office_id = $office->id;
+                        return $role;
+                    });
+                })
+                ->unique('id')
+                ->values();
+        } catch (\Exception $e) {
+            return collect();
+        }
+    }
+
     public function render()
     {
         return view('livewire.user-management.user-show', [
-            'userRoles' => $this->userRoles,
+            'userRoles'   => $this->userRoles,
+            'officeRoles' => $this->officeRoles,
         ])->layout('layouts.main.master-livewire');
     }
 }

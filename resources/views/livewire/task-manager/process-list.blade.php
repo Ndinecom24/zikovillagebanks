@@ -87,11 +87,7 @@
             </div>
 
             {{-- Process List --}}
-            <div class="card z-card" style="position: relative;">
-                <div wire:loading.flex class="z-loading">
-                    <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                </div>
-
+            <div class="card z-card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h3 class="mb-0"><i class="fas fa-list mr-1"></i> Processes <span class="z-count">{{ $processes->total() }}</span></h3>
                 </div>
@@ -165,10 +161,12 @@
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 <button wire:click="openFormModal({{ $proc->id }})" class="z-action z-action-edit" title="Edit">
-                                                    <i class="fas fa-pen"></i>
+                                                    <span wire:loading wire:target="openFormModal({{ $proc->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                    <i wire:loading.remove wire:target="openFormModal({{ $proc->id }})" class="fas fa-pen"></i>
                                                 </button>
                                                 <button wire:click="confirmDelete({{ $proc->id }})" class="z-action z-action-delete" title="Delete">
-                                                    <i class="fas fa-trash-alt"></i>
+                                                    <span wire:loading wire:target="confirmDelete({{ $proc->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                    <i wire:loading.remove wire:target="confirmDelete({{ $proc->id }})" class="fas fa-trash-alt"></i>
                                                 </button>
                                             </div>
                                         </td>

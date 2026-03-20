@@ -118,11 +118,7 @@
 
             {{-- RIGHT CONTENT — Documents --}}
             <div class="col-lg-9 col-md-8">
-                <div class="card z-card" style="position: relative;">
-                    <div wire:loading.flex class="z-loading">
-                        <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                    </div>
-
+                <div class="card z-card">
                     {{-- Header --}}
                     <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
                         <div>
@@ -201,10 +197,12 @@
                                             </div>
                                             <div class="dm-folder-actions">
                                                 <button wire:click="openRenameFolderModal({{ $sf->id }})" class="z-action z-action-edit" title="Rename" style="width: 26px; height: 26px; font-size: 0.7rem;">
-                                                    <i class="fas fa-pen"></i>
+                                                    <span wire:loading wire:target="openRenameFolderModal({{ $sf->id }})" class="spinner-border spinner-border-sm" role="status" style="width: 0.6rem; height: 0.6rem;"></span>
+                                                    <i wire:loading.remove wire:target="openRenameFolderModal({{ $sf->id }})" class="fas fa-pen"></i>
                                                 </button>
                                                 <button wire:click="confirmDeleteFolder({{ $sf->id }})" class="z-action z-action-delete" title="Delete Folder" style="width: 26px; height: 26px; font-size: 0.7rem;">
-                                                    <i class="fas fa-trash-alt"></i>
+                                                    <span wire:loading wire:target="confirmDeleteFolder({{ $sf->id }})" class="spinner-border spinner-border-sm" role="status" style="width: 0.6rem; height: 0.6rem;"></span>
+                                                    <i wire:loading.remove wire:target="confirmDeleteFolder({{ $sf->id }})" class="fas fa-trash-alt"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -291,13 +289,15 @@
                                             <td>
                                                 <div class="d-flex" style="gap: 4px;">
                                                     <button wire:click="viewDocument({{ $doc->id }})" class="z-action z-action-view" title="Details">
-                                                        <i class="fas fa-eye"></i>
+                                                        <span wire:loading wire:target="viewDocument({{ $doc->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                        <i wire:loading.remove wire:target="viewDocument({{ $doc->id }})" class="fas fa-eye"></i>
                                                     </button>
                                                     <a href="{{ $doc->download_url }}" target="_blank" class="z-action z-action-edit" title="Download" style="text-decoration: none;">
                                                         <i class="fas fa-download"></i>
                                                     </a>
                                                     <button wire:click="confirmDeleteDocument({{ $doc->id }})" class="z-action z-action-delete" title="Delete">
-                                                        <i class="fas fa-trash-alt"></i>
+                                                        <span wire:loading wire:target="confirmDeleteDocument({{ $doc->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                        <i wire:loading.remove wire:target="confirmDeleteDocument({{ $doc->id }})" class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </div>
                                             </td>

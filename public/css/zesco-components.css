@@ -1,29 +1,39 @@
 /* ========================================================================
-   ZESCO IPP MANAGEMENT SYSTEM - CENTRAL COMPONENT STYLES (IMPROVED)
+   ZESCO IPP MANAGEMENT SYSTEM - CENTRAL COMPONENT STYLES (UPDATED)
    ========================================================================
    All shared Livewire component styles in one place.
-   Theme: ZESCO Green (#38c172) + ZESCO Orange (#f6993f) — balanced, brighter.
+   Theme: Orange (#f6993f) primary, Green (#38c172) secondary.
    ======================================================================== */
 
 /* ====================================================================
-   1. DESIGN TOKENS (UPDATED COLORS)
+   1. DESIGN TOKENS (TAILWIND INSPIRED)
    ==================================================================== */
 :root {
-    /* Primary - Brighter Green */
+    /* Primary - Orange */
+    --z-orange: #f6993f;
+    --z-orange-dark: #e07c2c;
+    --z-orange-light: #ffb35c;
+
+    /* Secondary - Green */
     --z-green: #38c172;
     --z-green-dark: #2d9e5f;
     --z-green-darker: #1f7a49;
     --z-green-light: #5dd48c;
 
-    /* Accent - Orange (for headers & highlights) */
-    --z-orange: #f6993f;
-    --z-orange-dark: #e07c2c;
-    --z-orange-light: #ffb35c;
+    /* Gray scale */
+    --z-gray: #6c757d;
+    --z-gray-dark: #343a40;
+    --z-light: #f8f9fa;
 
-    /* Gold - kept as complementary accent */
-    --z-gold: #FFB223;
-    --z-gold-dark: #e09a00;
-    --z-gold-light: #FFC554;
+    /* Other colors */
+    --z-blue: #3490dc;
+    --z-indigo: #6574cd;
+    --z-purple: #9561e2;
+    --z-pink: #f66d9b;
+    --z-red: #e3342f;
+    --z-yellow: #ffed4a;
+    --z-teal: #4dc0b5;
+    --z-cyan: #6cb2eb;
 
     /* Surface & Text */
     --z-surface: #ffffff;
@@ -35,20 +45,11 @@
     --z-border: #e2e8f0;
     --z-border-light: #e9ecef;
 
-    /* Accents */
-    --z-blue: #3b82f6;
-    --z-blue-dark: #2563eb;
-    --z-purple: #8b5cf6;
-    --z-red: #dc2626;
-    --z-red-light: #fef2f2;
-    --z-cyan: #06b6d4;
-    --z-yellow: #ffed4a; /* optional extra accent */
-
     /* Shadows */
     --z-shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
     --z-shadow-md: 0 4px 12px rgba(0,0,0,0.08);
     --z-shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
-    --z-shadow-gold: 0 4px 12px rgba(255,178,35,0.35);
+    --z-shadow-orange: 0 4px 12px rgba(246,153,63,0.35);
     --z-shadow-green: 0 4px 12px rgba(56,193,114,0.25);
 }
 
@@ -71,7 +72,7 @@
     right: -10%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(ellipse, rgba(255,178,35,0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(246,153,63,0.08) 0%, transparent 70%);
     pointer-events: none;
 }
 .z-page-header::after {
@@ -89,7 +90,7 @@
     font-weight: 700;
     margin: 0;
 }
-.z-page-header h1 i { color: var(--z-gold); }
+.z-page-header h1 i { color: var(--z-orange); }
 .z-page-header p {
     margin: 0.25rem 0 0;
     opacity: 0.85;
@@ -97,7 +98,7 @@
 }
 
 /* ====================================================================
-   3. CARDS (Card header now orange)
+   3. CARDS (Card header orange)
    ==================================================================== */
 .z-card {
     border-radius: 12px;
@@ -133,9 +134,9 @@
     white-space: nowrap;
     padding: 0.65rem 0.75rem;
 }
-.z-table thead th:hover { color: var(--z-gold); }
+.z-table thead th:hover { color: var(--z-orange); }
 .z-table tbody tr { transition: background 0.15s; }
-.z-table tbody tr:hover { background: #fffbeb; }
+.z-table tbody tr:hover { background: #fff7ed; } /* Light orange background */
 .z-table tbody td {
     font-size: 0.82rem;
     padding: 0.55rem 0.75rem;
@@ -150,7 +151,7 @@
 }
 .sort-icon.active {
     opacity: 1;
-    color: var(--z-gold);
+    color: var(--z-orange);
 }
 
 /* ====================================================================
@@ -169,8 +170,8 @@
     transition: border-color 0.2s;
 }
 .z-search input:focus {
-    border-color: var(--z-gold);
-    box-shadow: 0 0 0 3px rgba(255,178,35,0.12);
+    border-color: var(--z-orange);
+    box-shadow: 0 0 0 3px rgba(246,153,63,0.12);
     outline: none;
 }
 .z-search .si {
@@ -195,8 +196,8 @@
     transition: border-color 0.2s;
 }
 .z-filter-select:focus {
-    border-color: var(--z-gold);
-    box-shadow: 0 0 0 3px rgba(255,178,35,0.12);
+    border-color: var(--z-orange);
+    box-shadow: 0 0 0 3px rgba(246,153,63,0.12);
     outline: none;
 }
 .z-per-page {
@@ -207,7 +208,7 @@
     color: #374151;
 }
 .z-per-page:focus {
-    border-color: var(--z-gold);
+    border-color: var(--z-orange);
     outline: none;
 }
 
@@ -226,23 +227,23 @@
     cursor: pointer;
     font-size: 0.82rem;
 }
-.z-action-view   { background: rgba(59,130,246,0.1);  color: var(--z-blue); }
+.z-action-view   { background: rgba(52,144,220,0.1);  color: var(--z-blue); }
 .z-action-view:hover { background: var(--z-blue); color: #fff; }
-.z-action-edit   { background: rgba(255,178,35,0.12); color: var(--z-gold-dark); }
-.z-action-edit:hover { background: var(--z-gold); color: #fff; }
-.z-action-delete { background: rgba(220,38,38,0.1);   color: var(--z-red); }
+.z-action-edit   { background: rgba(246,153,63,0.12); color: var(--z-orange-dark); }
+.z-action-edit:hover { background: var(--z-orange); color: #fff; }
+.z-action-delete { background: rgba(227,52,47,0.1);   color: var(--z-red); }
 .z-action-delete:hover { background: var(--z-red); color: #fff; }
 .z-action-save   { background: rgba(56,193,114,0.1);   color: var(--z-green); }
 .z-action-save:hover { background: var(--z-green); color: #fff; }
-.z-action-cancel { background: rgba(107,114,128,0.1);  color: #6b7280; }
-.z-action-cancel:hover { background: #6b7280; color: #fff; }
+.z-action-cancel { background: rgba(108,117,125,0.1);  color: var(--z-gray); }
+.z-action-cancel:hover { background: var(--z-gray); color: #fff; }
 
 /* ====================================================================
    8. BUTTONS
    ==================================================================== */
-/* Primary CTA — Gold */
+/* Primary CTA — Orange */
 .btn-zesco {
-    background: linear-gradient(135deg, var(--z-gold), #f59e0b);
+    background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark));
     color: #fff;
     border-radius: 8px;
     padding: 0.5rem 1.25rem;
@@ -256,12 +257,12 @@
     text-decoration: none;
 }
 .btn-zesco:hover {
-    background: linear-gradient(135deg, var(--z-gold-dark), #d97706);
-    box-shadow: var(--z-shadow-gold);
+    background: linear-gradient(135deg, var(--z-orange-dark), #d97706);
+    box-shadow: var(--z-shadow-orange);
     color: #fff;
 }
 
-/* Secondary — Green (updated) */
+/* Secondary — Green */
 .btn-zesco-green {
     background: linear-gradient(135deg, var(--z-green), var(--z-green-dark));
     color: #fff;
@@ -301,10 +302,10 @@
     background: var(--z-green);
     color: #fff;
 }
-.btn-zesco-outline-gold {
+.btn-zesco-outline-orange {
     background: transparent;
-    color: var(--z-gold-dark);
-    border: 1.5px solid var(--z-gold);
+    color: var(--z-orange);
+    border: 1.5px solid var(--z-orange);
     border-radius: 8px;
     padding: 0.4rem 1rem;
     font-weight: 600;
@@ -315,16 +316,29 @@
     gap: 0.3rem;
     text-decoration: none;
 }
-.btn-zesco-outline-gold:hover {
-    background: var(--z-gold);
+.btn-zesco-outline-orange:hover {
+    background: var(--z-orange);
     color: #fff;
 }
 
 /* ====================================================================
-   9. BADGES & PILLS (updated green badge)
+   9. BADGES & PILLS (orange and green)
    ==================================================================== */
-/* Generic green badge (new green) */
-.z-badge {
+/* Generic orange badge */
+.z-badge-orange {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #fff7ed;
+    color: var(--z-orange-dark);
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid #fed7aa;
+}
+/* Green badge */
+.z-badge-green {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -336,31 +350,18 @@
     font-weight: 600;
     border: 1px solid #b8e4c6;
 }
-/* Gold badge */
-.z-badge-gold {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    background: #fffbeb;
-    color: #92400e;
-    padding: 0.25rem 0.65rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border: 1px solid #fde68a;
-}
 /* Blue badge */
 .z-badge-blue {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    background: #eff6ff;
-    color: #1e40af;
+    background: #eef2ff;
+    color: var(--z-blue);
     padding: 0.2rem 0.6rem;
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 600;
-    border: 1px solid #bfdbfe;
+    border: 1px solid #c3ddfd;
 }
 /* Purple badge */
 .z-badge-purple {
@@ -368,7 +369,7 @@
     align-items: center;
     gap: 0.2rem;
     background: #f5f3ff;
-    color: #5b21b6;
+    color: var(--z-purple);
     padding: 0.2rem 0.55rem;
     border-radius: 12px;
     font-size: 0.75rem;
@@ -381,7 +382,7 @@
     align-items: center;
     gap: 0.2rem;
     background: #fef2f2;
-    color: #991b1b;
+    color: var(--z-red);
     padding: 0.2rem 0.55rem;
     border-radius: 12px;
     font-size: 0.75rem;
@@ -389,9 +390,9 @@
     border: 1px solid #fecaca;
 }
 
-/* Count pill */
+/* Count pill (orange) */
 .z-count {
-    background: linear-gradient(135deg, var(--z-gold), var(--z-gold-dark));
+    background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark));
     color: #fff;
     font-size: 0.72rem;
     font-weight: 700;
@@ -406,8 +407,8 @@
     padding: 0.15rem 0.5rem;
     border-radius: 12px;
 }
-.z-info-count-blue   { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
-.z-info-count-gold   { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.z-info-count-blue   { background: #eef2ff; color: var(--z-blue); border: 1px solid #c3ddfd; }
+.z-info-count-orange { background: #fff7ed; color: var(--z-orange-dark); border: 1px solid #fed7aa; }
 .z-info-count-green  { background: #e6f7ec; color: var(--z-green-darker); border: 1px solid #b8e4c6; }
 
 /* ====================================================================
@@ -444,13 +445,13 @@
     margin: 0;
     font-size: 1.05rem;
 }
-.z-modal .modal-header-gold {
-    background: linear-gradient(135deg, #b45309 0%, var(--z-gold-dark) 60%, var(--z-gold) 100%);
+.z-modal .modal-header-orange {
+    background: linear-gradient(135deg, var(--z-orange-dark) 0%, var(--z-orange) 100%);
     padding: 1.25rem 1.5rem;
     color: #fff;
     border: none;
 }
-.z-modal .modal-header-gold h5 {
+.z-modal .modal-header-orange h5 {
     font-weight: 700;
     margin: 0;
     font-size: 1.05rem;
@@ -467,8 +468,8 @@
     transition: border-color 0.2s;
 }
 .z-input:focus {
-    border-color: var(--z-gold);
-    box-shadow: 0 0 0 3px rgba(255,178,35,0.1);
+    border-color: var(--z-orange);
+    box-shadow: 0 0 0 3px rgba(246,153,63,0.1);
     outline: none;
 }
 
@@ -476,12 +477,12 @@
 .z-edit-input {
     padding: 0.35rem 0.65rem;
     border-radius: 6px;
-    border: 1.5px solid var(--z-gold);
+    border: 1.5px solid var(--z-orange);
     font-size: 0.85rem;
     max-width: 200px;
 }
 .z-edit-input:focus {
-    box-shadow: 0 0 0 3px rgba(255,178,35,0.15);
+    box-shadow: 0 0 0 3px rgba(246,153,63,0.15);
     outline: none;
 }
 
@@ -489,12 +490,12 @@
 .z-edit-select {
     padding: 0.35rem 0.5rem;
     border-radius: 6px;
-    border: 1.5px solid var(--z-gold);
+    border: 1.5px solid var(--z-orange);
     font-size: 0.85rem;
     max-width: 180px;
 }
 .z-edit-select:focus {
-    box-shadow: 0 0 0 3px rgba(255,178,35,0.15);
+    box-shadow: 0 0 0 3px rgba(246,153,63,0.15);
     outline: none;
 }
 
@@ -516,7 +517,7 @@
 }
 
 /* ====================================================================
-   14. STAT CARDS (updated green)
+   14. STAT CARDS
    ==================================================================== */
 .z-stat-card {
     border-radius: 12px;
@@ -551,9 +552,9 @@
     margin-top: 0.25rem;
 }
 .z-stat-green  { background: linear-gradient(135deg, var(--z-green), var(--z-green-dark)); }
-.z-stat-gold   { background: linear-gradient(135deg, #FFB223, #e09a00); }
-.z-stat-blue   { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-.z-stat-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.z-stat-orange { background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark)); }
+.z-stat-blue   { background: linear-gradient(135deg, var(--z-blue), #2779bd); }
+.z-stat-purple { background: linear-gradient(135deg, var(--z-purple), #7c3aed); }
 
 /* Smaller inline stat */
 .z-stat-num {
@@ -570,7 +571,7 @@
 }
 
 /* ====================================================================
-   15. TABS
+   15. TABS (Orange active)
    ==================================================================== */
 .z-tabs {
     display: flex;
@@ -597,11 +598,11 @@
     justify-content: center;
     gap: 0.4rem;
 }
-.z-tab:hover { color: var(--z-gold); background: #fffbeb; }
+.z-tab:hover { color: var(--z-orange); background: #fff7ed; }
 .z-tab.active {
     color: #fff;
-    background: linear-gradient(135deg, var(--z-gold), var(--z-gold-dark));
-    box-shadow: 0 2px 8px rgba(255,178,35,0.3);
+    background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark));
+    box-shadow: 0 2px 8px rgba(246,153,63,0.3);
 }
 
 /* ====================================================================
@@ -620,15 +621,15 @@
     font-size: 0.82rem;
     font-weight: 600;
 }
-.z-tech-chip:hover { border-color: var(--z-gold); background: #fffbeb; }
-.z-tech-chip.active { border-color: var(--z-gold); background: #fffbeb; color: #92400e; }
+.z-tech-chip:hover { border-color: var(--z-orange); background: #fff7ed; }
+.z-tech-chip.active { border-color: var(--z-orange); background: #fff7ed; color: var(--z-orange-dark); }
 .z-tech-chip .chip-count {
     font-size: 0.7rem;
     font-weight: 700;
     padding: 0.15rem 0.5rem;
     border-radius: 10px;
-    background: rgba(255,178,35,0.15);
-    color: var(--z-gold-dark);
+    background: rgba(246,153,63,0.15);
+    color: var(--z-orange-dark);
 }
 .z-tech-chip .chip-icon {
     width: 28px;
@@ -656,10 +657,10 @@
     padding: 0.5rem 0.75rem;
     vertical-align: middle;
 }
-.z-break-table tbody tr:hover { background: #fffbeb; }
+.z-break-table tbody tr:hover { background: #fff7ed; }
 
 /* MW highlight */
-.z-mw { font-weight: 700; color: var(--z-gold-dark); }
+.z-mw { font-weight: 700; color: var(--z-orange-dark); }
 
 /* ====================================================================
    18. CHART CONTAINER
@@ -682,7 +683,7 @@
     align-items: center;
     gap: 0.5rem;
 }
-.z-section-title i { color: var(--z-gold); }
+.z-section-title i { color: var(--z-orange); }
 
 /* ====================================================================
    20. DELETE CONFIRMATION MODAL
@@ -691,7 +692,7 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: var(--z-red-light);
+    background: #fef2f2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -707,7 +708,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: var(--z-gold-dark);
+    color: var(--z-orange-dark);
     font-weight: 600;
     font-size: 0.85rem;
     text-decoration: none;
@@ -727,7 +728,7 @@
 /* Status pills */
 .z-status { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
 .z-status-active   { background: #e6f7ec; color: var(--z-green-darker); border: 1px solid #b8e4c6; }
-.z-status-inactive { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.z-status-inactive { background: #fef2f2; color: var(--z-red); border: 1px solid #fecaca; }
 
 /* ====================================================================
    22. USER PROFILE
@@ -738,7 +739,7 @@
     border-radius: 12px 12px 0 0;
 }
 .z-profile-header-bg {
-    background: linear-gradient(135deg, var(--z-green-darker) 0%, var(--z-green-dark) 40%, var(--z-green) 80%, var(--z-gold) 100%);
+    background: linear-gradient(135deg, var(--z-green-darker) 0%, var(--z-green-dark) 40%, var(--z-green) 80%, var(--z-orange) 100%);
     padding: 2rem 2rem 3rem;
     position: relative;
 }
@@ -749,7 +750,7 @@
     right: -10%;
     width: 250px;
     height: 250px;
-    background: radial-gradient(ellipse, rgba(255,178,35,0.12) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(246,153,63,0.12) 0%, transparent 70%);
     pointer-events: none;
 }
 .z-profile-avatar-wrap {
@@ -771,7 +772,7 @@
     width: 30px;
     height: 30px;
     border-radius: 8px;
-    background: var(--z-gold);
+    background: var(--z-orange);
     color: #fff;
     border: 2px solid #fff;
     font-size: 0.72rem;
@@ -781,7 +782,7 @@
     justify-content: center;
     transition: background 0.2s;
 }
-.z-profile-avatar-upload:hover { background: var(--z-gold-dark); }
+.z-profile-avatar-upload:hover { background: var(--z-orange-dark); }
 .z-profile-info-bar {
     background: var(--z-surface);
     padding: 1.25rem 2rem 1rem;
@@ -794,13 +795,13 @@
 }
 .z-profile-meta { font-size: 0.82rem; color: var(--z-text-muted); }
 .z-role-badge {
-    background: rgba(255,178,35,0.15);
-    color: var(--z-gold-dark);
+    background: rgba(246,153,63,0.15);
+    color: var(--z-orange-dark);
     font-size: 0.72rem;
     font-weight: 700;
     padding: 0.2rem 0.6rem;
     border-radius: 20px;
-    border: 1px solid rgba(255,178,35,0.3);
+    border: 1px solid rgba(246,153,63,0.3);
 }
 .z-profile-card-title {
     font-size: 0.82rem;
@@ -813,7 +814,7 @@
     gap: 0.5rem;
     margin-bottom: 1.25rem;
 }
-.z-profile-card-title i { color: var(--z-gold); }
+.z-profile-card-title i { color: var(--z-orange); }
 
 /* Detail rows */
 .z-detail-row {
@@ -826,10 +827,10 @@
 
 /* Password section */
 .z-pwd-section {
-    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    background: linear-gradient(135deg, #fff7ed, #ffedd5);
     border-radius: 12px;
     padding: 1.5rem;
-    border: 1px solid #fde68a;
+    border: 1px solid #fed7aa;
 }
 .z-pwd-req {
     display: grid;
@@ -856,10 +857,10 @@
     border-left: 3px solid transparent;
     font-size: 0.85rem;
 }
-.z-sidebar-item:hover { background: #fffbeb; }
+.z-sidebar-item:hover { background: #fff7ed; }
 .z-sidebar-item.active {
-    background: #fffbeb;
-    border-left-color: var(--z-gold);
+    background: #fff7ed;
+    border-left-color: var(--z-orange);
     font-weight: 600;
 }
 .z-sidebar-btn {
@@ -874,14 +875,14 @@
     cursor: pointer;
     font-size: 0.72rem;
 }
-.z-sbtn-edit   { background: rgba(255,178,35,0.12); color: var(--z-gold-dark); }
-.z-sbtn-edit:hover { background: var(--z-gold); color: #fff; }
-.z-sbtn-del    { background: rgba(220,38,38,0.1); color: var(--z-red); }
+.z-sbtn-edit   { background: rgba(246,153,63,0.12); color: var(--z-orange-dark); }
+.z-sbtn-edit:hover { background: var(--z-orange); color: #fff; }
+.z-sbtn-del    { background: rgba(227,52,47,0.1); color: var(--z-red); }
 .z-sbtn-del:hover { background: var(--z-red); color: #fff; }
 .z-sbtn-save   { background: rgba(56,193,114,0.1); color: var(--z-green); }
 .z-sbtn-save:hover { background: var(--z-green); color: #fff; }
-.z-sbtn-cancel { background: rgba(107,114,128,0.1); color: #6b7280; }
-.z-sbtn-cancel:hover { background: #6b7280; color: #fff; }
+.z-sbtn-cancel { background: rgba(108,117,125,0.1); color: var(--z-gray); }
+.z-sbtn-cancel:hover { background: var(--z-gray); color: #fff; }
 
 .z-sidebar-edit {
     display: flex;
@@ -891,7 +892,7 @@
 }
 .z-sidebar-edit input {
     flex: 1;
-    border: 1.5px solid var(--z-gold);
+    border: 1.5px solid var(--z-orange);
     border-radius: 6px;
     padding: 0.3rem 0.6rem;
     font-size: 0.82rem;
@@ -907,15 +908,15 @@
 .z-sidebar-actions:focus-within { opacity: 1; }
 
 .z-edit-cell input {
-    border: 1.5px solid var(--z-gold);
+    border: 1.5px solid var(--z-orange);
     border-radius: 6px;
     padding: 0.3rem 0.5rem;
     font-size: 0.82rem;
     width: 100%;
 }
 .z-edit-cell input:focus {
-    border-color: var(--z-gold-dark);
-    box-shadow: 0 0 0 3px rgba(255,178,35,0.12);
+    border-color: var(--z-orange-dark);
+    box-shadow: 0 0 0 3px rgba(246,153,63,0.12);
     outline: none;
 }
 
@@ -932,29 +933,29 @@
 .z-section-divider {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--z-gold-dark);
+    color: var(--z-orange-dark);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #fde68a;
+    border-bottom: 2px solid #fed7aa;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
-.z-section-divider i { color: var(--z-gold); }
+.z-section-divider i { color: var(--z-orange); }
 
 .z-tech-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    background: rgba(255,178,35,0.12);
-    color: var(--z-gold-dark);
+    background: rgba(246,153,63,0.12);
+    color: var(--z-orange-dark);
     padding: 0.2rem 0.6rem;
     border-radius: 12px;
     font-size: 0.78rem;
     font-weight: 700;
-    border: 1px solid rgba(255,178,35,0.3);
+    border: 1px solid rgba(246,153,63,0.3);
 }
 
 .z-file-card {
@@ -965,7 +966,7 @@
     background: var(--z-surface);
 }
 .z-file-card:hover {
-    border-color: var(--z-gold);
+    border-color: var(--z-orange);
     box-shadow: var(--z-shadow-sm);
 }
 
@@ -1005,11 +1006,11 @@
     right: -10%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(ellipse, rgba(255,178,35,0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(246,153,63,0.08) 0%, transparent 70%);
 }
 .dashboard-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; }
 .dashboard-header p { margin: 0.25rem 0 0; opacity: 0.85; font-size: 0.9rem; }
-.dashboard-header .welcome-name { color: var(--z-gold); font-weight: 700; }
+.dashboard-header .welcome-name { color: var(--z-orange); font-weight: 700; }
 
 /* Tech cards */
 .tech-card {
@@ -1031,12 +1032,12 @@
 .tech-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--z-shadow-lg);
-    border-color: var(--z-gold);
+    border-color: var(--z-orange);
 }
 .tech-card.active {
-    border-color: var(--z-gold);
-    box-shadow: 0 4px 16px rgba(255,178,35,0.2);
-    background: #fffbeb;
+    border-color: var(--z-orange);
+    box-shadow: 0 4px 16px rgba(246,153,63,0.2);
+    background: #fff7ed;
 }
 .tech-card .tech-icon {
     width: 52px;
@@ -1059,15 +1060,15 @@
 }
 .tech-card .tech-count { font-size: 1.5rem; font-weight: 700; color: var(--z-text); }
 .tech-card .tech-arrow { color: #cbd5e1; transition: all 0.2s; }
-.tech-card:hover .tech-arrow { color: var(--z-gold); transform: translateX(4px); }
+.tech-card:hover .tech-arrow { color: var(--z-orange); transform: translateX(4px); }
 
-/* Icon Gradients (updated wind to use new green) */
-.bg-solar      { background: linear-gradient(135deg, #FFB223, #d97706); }
+/* Icon Gradients */
+.bg-solar      { background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark)); }
 .bg-wind       { background: linear-gradient(135deg, var(--z-green), var(--z-green-dark)); }
-.bg-geothermal { background: linear-gradient(135deg, #ef4444, #dc2626); }
-.bg-hybrid     { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-.bg-biomass    { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-.bg-waste      { background: linear-gradient(135deg, #6b7280, #4b5563); }
+.bg-geothermal { background: linear-gradient(135deg, var(--z-red), #dc2626); }
+.bg-hybrid     { background: linear-gradient(135deg, var(--z-blue), #2779bd); }
+.bg-biomass    { background: linear-gradient(135deg, var(--z-purple), #7c3aed); }
+.bg-waste      { background: linear-gradient(135deg, var(--z-gray), #4b5563); }
 
 /* Summary Bar */
 .summary-bar {
@@ -1082,7 +1083,7 @@
     align-items: center;
 }
 .summary-item { display: flex; align-items: center; gap: 0.5rem; }
-.summary-item .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--z-gold); }
+.summary-item .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--z-orange); }
 .summary-item .summary-label { font-size: 0.8rem; color: #6c757d; }
 .summary-item .summary-value { font-weight: 700; color: var(--z-text); }
 
@@ -1101,7 +1102,7 @@
 
 /* Dashboard button aliases */
 .btn-new-ipp {
-    background: linear-gradient(135deg, var(--z-gold), #f59e0b);
+    background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark));
     color: #fff;
     border-radius: 8px;
     padding: 0.5rem 1.25rem;
@@ -1113,16 +1114,16 @@
     text-decoration: none !important;
 }
 .btn-new-ipp:hover {
-    background: linear-gradient(135deg, var(--z-gold-dark), #d97706);
-    box-shadow: var(--z-shadow-gold);
+    background: linear-gradient(135deg, var(--z-orange-dark), #d97706);
+    box-shadow: var(--z-shadow-orange);
     transform: translateY(-1px);
     color: #fff;
 }
 
 /* Action btn (dashboard) */
 .action-btn {
-    border: 1.5px solid var(--z-gold);
-    color: var(--z-gold-dark);
+    border: 1.5px solid var(--z-orange);
+    color: var(--z-orange-dark);
     background: transparent;
     border-radius: 6px;
     padding: 0.25rem 0.75rem;
@@ -1130,7 +1131,7 @@
     font-weight: 600;
     transition: all 0.2s;
 }
-.action-btn:hover { background: var(--z-gold); color: #fff; }
+.action-btn:hover { background: var(--z-orange); color: #fff; }
 
 /* lw-table (dashboard) */
 .lw-table thead th {
@@ -1142,13 +1143,13 @@
     user-select: none;
     white-space: nowrap;
 }
-.lw-table thead th:hover { color: var(--z-gold); }
-.lw-table tbody tr:hover { background: #fffbeb; }
+.lw-table thead th:hover { color: var(--z-orange); }
+.lw-table tbody tr:hover { background: #fff7ed; }
 
 /* Status badge (dashboard) */
 .status-badge {
-    background: rgba(255,178,35,0.15);
-    color: #b45309;
+    background: rgba(246,153,63,0.15);
+    color: var(--z-orange-dark);
     padding: 0.2rem 0.6rem;
     border-radius: 6px;
     font-size: 0.8rem;
@@ -1174,8 +1175,8 @@
     width: 100%;
 }
 .lw-search-box input:focus {
-    border-color: var(--z-gold);
-    box-shadow: 0 0 0 3px rgba(255,178,35,0.12);
+    border-color: var(--z-orange);
+    box-shadow: 0 0 0 3px rgba(246,153,63,0.12);
     outline: none;
 }
 .lw-search-box .search-icon {
@@ -1186,7 +1187,7 @@
 /* Filter tag */
 .filter-tag {
     display: inline-flex; align-items: center; gap: 0.35rem;
-    background: #fffbeb; border: 1px solid #fde68a; color: #92400e;
+    background: #fff7ed; border: 1px solid #fed7aa; color: var(--z-orange-dark);
     padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.825rem; font-weight: 600;
 }
 .filter-tag .remove-filter { cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
@@ -1197,7 +1198,7 @@
     border-radius: 6px; border: 1.5px solid var(--z-border);
     padding: 0.35rem 0.5rem; font-size: 0.825rem; color: #374151;
 }
-.per-page-select:focus { border-color: var(--z-gold); outline: none; }
+.per-page-select:focus { border-color: var(--z-orange); outline: none; }
 
 /* Loading overlay (dashboard) */
 .lw-loading-overlay {
@@ -1209,7 +1210,7 @@
 /* ====================================================================
    27. TIMELINE
    ==================================================================== */
-.timeline-container { position: relative; border-left: 3px solid #fde68a; }
+.timeline-container { position: relative; border-left: 3px solid #fed7aa; }
 .timeline-step { padding-left: 2.5rem; position: relative; }
 .timeline-icon {
     position: absolute; left: -1.5rem; top: 0;
@@ -1220,12 +1221,12 @@
 }
 .timeline-arrow {
     position: absolute; left: -0.6rem; top: 3.5rem;
-    height: 10px; width: 5px; background: var(--z-gold); z-index: 0;
+    height: 10px; width: 5px; background: var(--z-orange); z-index: 0;
 }
 .timeline-arrow::after {
     content: ""; position: absolute; left: -0.25rem; top: 100%;
     border-width: 7px; border-style: solid;
-    border-color: var(--z-gold) transparent transparent transparent;
+    border-color: var(--z-orange) transparent transparent transparent;
 }
 .timeline-content { margin-left: 2.5rem; }
 
@@ -1242,7 +1243,7 @@
 }
 
 /* ====================================================================
-   29. DOCUMENT MANAGEMENT MODULE (updated green)
+   29. DOCUMENT MANAGEMENT MODULE
    ==================================================================== */
 
 /* --- Folder Tree (sidebar) --- */
@@ -1332,14 +1333,14 @@
 }
 .dm-folder-card {
     background: #fffbf0;
-    border: 1px solid #fde68a;
+    border: 1px solid #fed7aa;
     border-radius: 10px;
     padding: 0;
     transition: box-shadow 0.15s, transform 0.1s;
     overflow: hidden;
 }
 .dm-folder-card:hover {
-    box-shadow: 0 2px 8px rgba(255, 178, 35, 0.15);
+    box-shadow: 0 2px 8px rgba(246,153,63,0.15);
     transform: translateY(-1px);
 }
 .dm-folder-card-body {
@@ -1349,7 +1350,7 @@
 }
 .dm-folder-icon {
     font-size: 2rem;
-    color: var(--z-gold);
+    color: var(--z-orange);
     margin-bottom: 0.35rem;
 }
 .dm-folder-name {
@@ -1374,7 +1375,7 @@
 }
 
 /* ====================================================================
-   30. TASK MANAGEMENT MODULE (updated green)
+   30. TASK MANAGEMENT MODULE
    ==================================================================== */
 
 /* --- Module list items (sidebar) --- */

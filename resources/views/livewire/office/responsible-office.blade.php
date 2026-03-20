@@ -74,6 +74,9 @@
                                     <td >{{$item->office_status}}</td>
 
                                     <td>
+                                        <a href="{{ route('office.show', $item->id) }}" class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-eye mr-1"></i>View
+                                        </a>
                                         <button type="button" class="btn btn-sm btn-outline-primary"
                                                 data-toggle="modal" data-target="#editTeamModal"
                                                 wire:click="edit({{ $item->id }})">Edit</button>

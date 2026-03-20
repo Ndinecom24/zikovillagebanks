@@ -154,7 +154,7 @@ class UserList extends Component
 
     public function render()
     {
-        $query = User::query();
+        $query = User::withCount(['offices', 'roles']);
 
         if (!empty($this->search)) {
             $term = '%' . trim($this->search) . '%';

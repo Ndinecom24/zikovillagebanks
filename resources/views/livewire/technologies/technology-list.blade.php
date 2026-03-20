@@ -29,11 +29,7 @@
             @endif
 
             {{-- Table Card --}}
-            <div class="card z-card" style="position: relative;">
-                <div wire:loading.flex class="z-loading">
-                    <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                </div>
-
+            <div class="card z-card">
                 <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
                     <h3>
                         <i class="fas fa-list mr-2" style="color: var(--z-green)"></i>All Technologies
@@ -116,20 +112,24 @@
                                             <div class="d-flex" style="gap: 4px;">
                                                 @if($editId === $item->id)
                                                     <button wire:click="saveEdit" class="z-action z-action-save" title="Save">
-                                                        <i class="fas fa-check"></i>
+                                                        <span wire:loading wire:target="saveEdit" class="spinner-border spinner-border-sm" role="status"></span>
+                                                        <i wire:loading.remove wire:target="saveEdit" class="fas fa-check"></i>
                                                     </button>
                                                     <button wire:click="cancelEdit" class="z-action z-action-cancel" title="Cancel">
                                                         <i class="fas fa-times"></i>
                                                     </button>
                                                 @else
                                                     <button wire:click="showDetails({{ $item->id }})" class="z-action z-action-view" title="View Details">
-                                                        <i class="fas fa-eye"></i>
+                                                        <span wire:loading wire:target="showDetails({{ $item->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                        <i wire:loading.remove wire:target="showDetails({{ $item->id }})" class="fas fa-eye"></i>
                                                     </button>
                                                     <button wire:click="startEdit({{ $item->id }})" class="z-action z-action-edit" title="Edit">
-                                                        <i class="fas fa-pen"></i>
+                                                        <span wire:loading wire:target="startEdit({{ $item->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                        <i wire:loading.remove wire:target="startEdit({{ $item->id }})" class="fas fa-pen"></i>
                                                     </button>
                                                     <button wire:click="confirmDelete({{ $item->id }})" class="z-action z-action-delete" title="Delete">
-                                                        <i class="fas fa-trash-alt"></i>
+                                                        <span wire:loading wire:target="confirmDelete({{ $item->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                        <i wire:loading.remove wire:target="confirmDelete({{ $item->id }})" class="fas fa-trash-alt"></i>
                                                     </button>
                                                 @endif
                                             </div>

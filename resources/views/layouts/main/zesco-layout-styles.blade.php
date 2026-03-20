@@ -1,19 +1,29 @@
-{{-- ===== ZESCO Modern Layout Styles ===== --}}
+{{-- ===== ZESCO Modern Layout Styles (Improved) ===== --}}
 <style>
 /* ====================================================================
-   ZESCO DESIGN TOKENS
+   ZESCO DESIGN TOKENS (Updated)
    ==================================================================== */
 :root {
-    --z-green: #14984f;
-    --z-green-dark: #0d7a3e;
-    --z-green-darker: #004D2E;
-    --z-green-light: #00895A;
-    --z-gold: #FFB223;
-    --z-gold-dark: #e09a00;
+    /* Primary - Green (brand) */
+    --z-green: #38c172;
+    --z-green-dark: #2d9e5f;
+    --z-green-darker: #1f7a49;
+    --z-green-light: #5dd48c;
+
+    /* Accent - Orange (for highlights, active states) */
+    --z-orange: #f6993f;
+    --z-orange-dark: #e07c2c;
+    --z-orange-light: #ffb35c;
+
+    /* Sidebar background (dark green) */
     --z-sidebar-bg: #0f1f17;
-    --z-sidebar-hover: rgba(20, 152, 79, 0.12);
-    --z-sidebar-active: rgba(20, 152, 79, 0.18);
+    --z-sidebar-hover: rgba(56, 193, 114, 0.12);
+    --z-sidebar-active: rgba(56, 193, 114, 0.18);
+
+    /* Text & Surface */
     --z-text-muted: #94a3b8;
+    --z-surface: #ffffff;
+    --z-border-light: #e9ecef;
 }
 
 /* ====================================================================
@@ -28,7 +38,7 @@
 /* Brand link */
 .zesco-brand-link {
     background: linear-gradient(135deg, var(--z-green-darker) 0%, var(--z-green-dark) 100%) !important;
-    border-bottom: 2px solid var(--z-gold) !important;
+    border-bottom: 2px solid var(--z-orange) !important;  /* Orange accent */
     padding: 0.95rem 1rem !important;
     display: flex !important;
     align-items: center !important;
@@ -61,7 +71,7 @@
     height: 38px;
     border-radius: 10px;
     overflow: hidden;
-    border: 2px solid rgba(255,178,35,0.4);
+    border: 2px solid rgba(246,153,63,0.4);  /* Orange border */
     flex-shrink: 0;
 }
 .zesco-sidebar-avatar img {
@@ -85,7 +95,7 @@
 
 /* Section headers */
 .zesco-nav-header {
-    color: var(--z-gold) !important;
+    color: var(--z-orange) !important;  /* Orange headers */
     font-size: 0.68rem !important;
     font-weight: 700 !important;
     letter-spacing: 0.08em !important;
@@ -133,13 +143,13 @@
     transform: translateY(-50%);
     width: 3px;
     height: 24px;
-    background: var(--z-gold);
+    background: var(--z-orange);  /* Orange active indicator */
     border-radius: 0 3px 3px 0;
 }
 
 /* Nav icons */
 .zesco-sidebar .nav-sidebar .nav-icon {
-    color: var(--z-green) !important;
+    color: var(--z-green) !important;  /* Green icons */
     font-size: 0.95rem;
     width: 1.8rem !important;
     text-align: center;
@@ -147,7 +157,7 @@
 }
 .zesco-sidebar .nav-sidebar .nav-link:hover .nav-icon,
 .zesco-sidebar .nav-sidebar .nav-link.active .nav-icon {
-    color: var(--z-gold) !important;
+    color: var(--z-orange) !important;  /* Orange on hover/active */
 }
 
 /* Sidebar scrollbar */
@@ -176,7 +186,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--z-green) 0%, var(--z-gold) 100%);
+    background: linear-gradient(90deg, var(--z-green) 0%, var(--z-orange) 100%); /* Green to orange gradient */
 }
 
 /* Toggle button */
@@ -192,7 +202,7 @@
     margin-right: 0.25rem;
 }
 .zesco-nav-toggle:hover {
-    background: rgba(20,152,79,0.08) !important;
+    background: rgba(56,193,114,0.08) !important;
     color: var(--z-green) !important;
 }
 
@@ -286,7 +296,7 @@
     transition: all 0.15s !important;
 }
 .zesco-menu-item:hover {
-    background: rgba(20,152,79,0.06) !important;
+    background: rgba(56,193,114,0.06) !important;
     color: var(--z-green) !important;
 }
 .zesco-menu-logout {
@@ -314,7 +324,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--z-green) 0%, var(--z-gold) 100%);
+    background: linear-gradient(90deg, var(--z-green) 0%, var(--z-orange) 100%); /* Green to orange gradient */
 }
 .zesco-footer-brand {
     color: var(--z-green-dark);

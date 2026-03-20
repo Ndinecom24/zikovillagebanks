@@ -18,6 +18,8 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- ZESCO Component Styles (central) -->
     <link rel="stylesheet" href="{{ asset('css/zesco-components.css') }}">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
     @include('layouts.main.zesco-layout-styles')
     @stack('custom-styles')

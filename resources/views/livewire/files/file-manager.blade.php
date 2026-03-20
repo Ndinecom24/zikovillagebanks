@@ -55,11 +55,7 @@
         </div>
 
         {{-- ===== Main Card ===== --}}
-        <div class="card z-card" style="position: relative;">
-            <div wire:loading.flex class="z-loading">
-                <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-            </div>
-
+        <div class="card z-card">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
                 <h3 class="mb-0"><i class="fas fa-list mr-1"></i> All Files
                     <span class="z-count">{{ $files->total() }}</span>
@@ -180,13 +176,15 @@
                                     <td>
                                         <div class="d-flex" style="gap: 4px;">
                                             <button wire:click="viewFile({{ $file->id }})" class="z-action z-action-view" title="Details">
-                                                <i class="fas fa-eye"></i>
+                                                <span wire:loading wire:target="viewFile({{ $file->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                <i wire:loading.remove wire:target="viewFile({{ $file->id }})" class="fas fa-eye"></i>
                                             </button>
                                             <a href="{{ $file->download_url }}" target="_blank" class="z-action z-action-edit" title="Download" style="text-decoration: none;">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             <button wire:click="confirmDelete({{ $file->id }})" class="z-action z-action-delete" title="Delete">
-                                                <i class="fas fa-trash-alt"></i>
+                                                <span wire:loading wire:target="confirmDelete({{ $file->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                <i wire:loading.remove wire:target="confirmDelete({{ $file->id }})" class="fas fa-trash-alt"></i>
                                             </button>
                                         </div>
                                     </td>
