@@ -2,7 +2,7 @@
 
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link zesco-brand-link">
-        <img src="{{ asset('dashboard/dist/img/zesco1.png') }}" alt="Zesco Logo"
+        <img src="{{ asset('img/zesco_logo.png') }}" alt="Zesco Logo"
              class="brand-image img-rounded"
              style="opacity: .9">
         <span class="brand-text">REMS</span>
@@ -16,7 +16,7 @@
                 <div class="zesco-sidebar-avatar">
                     <img src="{{ asset('storage/user_avatar/' . Auth::user()->avatar) }}"
                          alt="User"
-                         onerror="this.src='{{ asset('dashboard/dist/img/avatar.png') }}';">
+                         onerror="this.onerror=null; this.src='{{ asset('img/default-avatar.svg') }}';">
                 </div>
                 <div class="ml-2" style="overflow: hidden;">
                     <div class="zesco-sidebar-username">{{ Auth::user()->name }}</div>

@@ -28,7 +28,7 @@
                 <div class="zesco-navbar-avatar">
                     <img src="{{ asset('storage/user_avatar/' . Auth::user()->avatar) }}"
                          alt="User"
-                         onerror="this.src='{{ asset('dashboard/dist/img/avatar.png') }}';">
+                         onerror="this.onerror=null; this.src='{{ asset('img/default-avatar.svg') }}';">
                     <span class="zesco-avatar-status"></span>
                 </div>
                 <div class="d-none d-md-block text-left" style="line-height: 1.2;">
@@ -42,7 +42,7 @@
                         <div class="zesco-menu-avatar">
                             <img src="{{ asset('storage/user_avatar/' . Auth::user()->avatar) }}"
                                  alt="User"
-                                 onerror="this.src='{{ asset('dashboard/dist/img/avatar.png') }}';">
+                                 onerror="this.onerror=null; this.src='{{ asset('img/default-avatar.svg') }}';">
                         </div>
                         <div class="ml-2">
                             <strong>{{ Auth::user()->name }}</strong>
