@@ -87,4 +87,10 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/permissions', \App\Http\Livewire\Permissions\PermissionList::class)->name('permissions.index');
     Route::get('/user-roles', \App\Http\Livewire\Users\UserRoleManager::class)->name('user-roles.index');
 
+
+    //clients
+    Route::get('/clients', \App\Http\Livewire\Clients\Clients::class)->name('clients.index');
+    Route::get('/clients/create', \App\Http\Livewire\Clients\ClientCreate::class)->name('clients.create');
+    Route::get('/clients/show/{id}', \App\Http\Livewire\Clients\ClientShow::class)->name('clients.show');
+
 });

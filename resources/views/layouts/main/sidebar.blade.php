@@ -40,6 +40,13 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('clients.index') }}" class="nav-link {{ request()->routeIs('clients.*') || request()->is('/') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Clients</p>
+                    </a>
+                </li>
+
 
                 {{-- LOCATION & SUBSTATIONS --}}
                 <li class="nav-header zesco-nav-header">
