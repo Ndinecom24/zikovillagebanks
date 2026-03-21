@@ -1,6 +1,6 @@
 <div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
-
+<div class="containerFluid">
     <div>
         {{-- Do your work, then step back. --}}
         <div class="row">
@@ -12,8 +12,71 @@
                         <h3 class="mb-0" style="font-size: 0.9rem;"><i class="fas fa-home mr-1"></i> Fill in Details</h3>
 
                     </div>
-                    <div class="card-body p-0" style="max-height: 450px; overflow-y: auto;">
+                    <div class="card-body p-0" >
+                        <div class="dm-tree-item ">
+                            <div class="form-row mt-2">
+                                <div class="form-group col-md-3">
+                                    <label>Company Name</label>
+                                    {{$client->company_name}}
 
+
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>TPIN #</label>
+                                    {{$client->tpin}}
+
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Phone #</label>
+                                    {{$client->phone}}
+
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Email</label>
+                                    {{$client->email}}
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label>Address</label>
+                                    {{$client->address_line_1}}
+
+                                </div>
+
+
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>Country</label>
+                                    {{$client->country}}
+
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label>City</label>
+                                    {{$client->city}}
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Province</label>
+                                    {{$client->province}}
+
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label>Is client active</label>
+                                    <span>   {{$client->country}}</span>
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
@@ -47,37 +110,29 @@
                             <table class="table z-table mb-0">
                                 <thead>
                                 <tr>
-                                    <th style="width: 40px;">#</th>
-                                    <th wire:click="sortBy('original_name')" style="min-width: 250px; cursor: pointer;">
+
+                                    <th style="min-width: 250px; cursor: pointer;">
                                         File Name
-                                        <i class="fas fa-sort sort-icon"></i>
                                     </th>
-                                    <th>Category</th>
-                                    <th wire:click="sortBy('file_extension')" style="cursor: pointer;">
-                                        Format
-                                        <i class="fas fa-sort sort-icon "></i>
-                                    </th>
+
 
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @forelse($documents as $doc)
+                                    <tr>
+                                    <td>{{$doc->type}}</td>
+{{--                                    <td>{{$doc->type}}</td>--}}
+                                    </tr>
+                                @empty
+                                    <tr>No documents yet</tr>
 
-                                <tr>
-                                    <td colspan="8" class="text-center py-4" style="color: #94a3b8;">
-                                        <i class="fas fa-folder-open fa-2x d-block mb-2"></i>
-                                        No documents in this
-                                    </td>
-                                </tr>
-
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>
 
                         {{-- Pagination --}}
-
-                        <div class="d-flex justify-content-center mt-3">
-
-                        </div>
 
                     </div>
                 </div>
@@ -85,5 +140,5 @@
         </div>
 
     </div>
-
+</div>
 </div>

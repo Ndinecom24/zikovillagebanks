@@ -107,25 +107,25 @@
                     <table class="table z-table mb-0">
                         <thead>
                         <tr>
-                            <th style="width: 40px;">#</th>
-                            <th wire:click="sortBy('name')" style="min-width: 280px;">
+
+                            <th  style="min-width: 280px;">
                                 Company Name
                                 <i class="fas fa-sort sort-icon {{ $sortField === 'name' ? 'active' : '' }}"></i>
                             </th>
-                            <th wire:click="sortBy('type')">
+                            <th >
                                 TPIN
                                 <i class="fas fa-sort sort-icon {{ $sortField === 'type' ? 'active' : '' }}"></i>
                             </th>
-                            <th wire:click="sortBy('ext')">
+                            <th>
                                 Email
                                 <i class="fas fa-sort sort-icon {{ $sortField === 'ext' ? 'active' : '' }}"></i>
                             </th>
-                            <th wire:click="sortBy('size')">
+                            <th >
                                 Address
                                 <i class="fas fa-sort sort-icon {{ $sortField === 'size' ? 'active' : '' }}"></i>
                             </th>
                             <th>Country</th>
-                            <th wire:click="sortBy('created_at')">
+                            <th >
                                 Status
                                 <i class="fas fa-sort sort-icon {{ $sortField === 'created_at' ? 'active' : '' }}"></i>
                             </th>
@@ -145,12 +145,16 @@
                                 <td>
                                     {{ $item->email }}
                                 </td>
-                                <td style="font-size: 0.82rem; color: #6b7280;">{{ $item->address_line }}</td>
+                                <td style="font-size: 0.82rem; color: #6b7280;">{{ $item->address_line_1 }}</td>
                                 <td>
                                     {{ $item->country }}
                                 </td>
                                 <td style="font-size: 0.78rem; color: #6b7280;">
                                     {{ $item->is_active }}
+                                </td>
+
+                                <td style="font-size: 0.78rem; color: #6b7280;">
+                                   <a class="btn btn-info" href="{{route('clients.show', $item->id)}}">view</a>
                                 </td>
 
                             </tr>

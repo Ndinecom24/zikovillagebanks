@@ -14,9 +14,9 @@
         <div class="zesco-sidebar-user">
             <div class="d-flex align-items-center">
                 <div class="zesco-sidebar-avatar">
-                    <img src="{{ asset('storage/user_avatar/' . Auth::user()->avatar) }}"
-                         alt="User"
-                         onerror="this.src='{{ asset('dashboard/dist/img/avatar.png') }}';">
+{{--                    <img src="{{ asset('storage/user_avatar/' . Auth::user()->avatar) }}"--}}
+{{--                         alt="User"--}}
+{{--                         onerror="this.src='{{ asset('dashboard/dist/img/avatar.png') }}';">--}}
                 </div>
                 <div class="ml-2" style="overflow: hidden;">
                     <div class="zesco-sidebar-username">{{ Auth::user()->name }}</div>

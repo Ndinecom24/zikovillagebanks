@@ -91,5 +91,6 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     //clients
     Route::get('/clients', \App\Http\Livewire\Clients\Clients::class)->name('clients.index');
     Route::get('/clients/create', \App\Http\Livewire\Clients\ClientCreate::class)->name('clients.create');
+    Route::get('/clients/show/{id}', \App\Http\Livewire\Clients\ClientShow::class)->name('clients.show');
 
 });

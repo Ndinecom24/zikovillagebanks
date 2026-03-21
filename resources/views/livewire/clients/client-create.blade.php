@@ -1,71 +1,193 @@
 <div>
-    {{-- Do your work, then step back. --}}
-    <div class="row">
-        {{-- LEFT SIDEBAR — Folder Tree --}}
-        <div class="col-lg-9 col-md-8">
-            {{-- Folder Tree Card --}}
-            <div class="card z-card">
-                <div class="card-header d-flex align-items-center justify-content-between py-2">
-                    <h3 class="mb-0" style="font-size: 0.9rem;"><i class="fas fa-sitemap mr-1"></i> Fill in details</h3>
 
+    <div class="container-fluid">
+        @if(session()->has('message'))
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <p>{{session()->get('message')}}</p>
+                    </div>
                 </div>
-                <div class="card-body p-0" style="max-height: 450px; overflow-y: auto;">
-                    <div class="dm-folder-tree">
-                        {{-- Root --}}
-                        <div wire:click="goToRoot" class="dm-tree-item ">
-                            <div class="form-row mt-2">
-                                <div class="form-group col-md-4">
-                                    <label>Company Name</label>
-                                    <input class="form-control" name="contract_type" required>
+            </div>
+        @endif
+        @if(session()->has('error'))
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <p>{{session()->get('error')}}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if(session()->has('info'))
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <p>{{ $info }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger">
+                        <strong></strong> There were some problems with your input.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
 
 
+
+
+
+        {{-- Do your work, then step back. --}}
+        <div class="row">
+            {{-- LEFT SIDEBAR — Folder Tree --}}
+            <div class="col-lg-9 col-md-8">
+                {{-- Folder Tree Card --}}
+                <div class="card z-card">
+                    <div class="card-header d-flex align-items-center justify-content-between py-2">
+                        <h3 class="mb-0" style="font-size: 0.9rem;"><i class="fas fa-sitemap mr-1"></i> Fill in details
+                        </h3>
+
+                    </div>
+                    <div class="card-body p-0">
+                        <form wire:submit.prevent="createClient" enctype="multipart/form-data">
+                            <div class="dm-folder-tree">
+                                {{-- Root --}}
+                                <div class="dm-tree-item ">
+                                    <div class="form-row mt-2">
+                                        <div class="form-group col-md-3">
+                                            <label>Company Name</label>
+                                            <input class="form-control" wire:model="company_name" required>
+
+
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>TPIN #</label>
+                                            <input type="number" class="form-control" wire:model="tpin" required>
+
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Phone #</label>
+                                            <input type="text" class="form-control" wire:model="phone" required>
+
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" wire:model="email" required>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label>Address</label>
+                                            <textarea class="form-control" wire:model="address_line_1"
+                                                      rows="2"></textarea>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+                                            <label>Country</label>
+                                            <input type="text" class="form-control" wire:model="country" required>
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label>City</label>
+                                            <input type="text" class="form-control" wire:model="city" required>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Province</label>
+                                            <input type="text" step="any" class="form-control" wire:model="province"
+                                                   required>
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label>Is client active</label>
+                                            <select class="form-control"
+                                                    wire:model="documents.{{ $index }}.filetype">
+                                                <option value="">-- Select --</option>
+                                                <option value="1">Yes</option>
+                                                <option value="0">No</option>
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+
+                                    <h5><strong>Client Documents</strong></h5>
+
+                                    @foreach($documents as $index => $doc)
+                                        <div class="document-row mb-3">
+                                            <div class="form-row">
+
+                                                <div class="form-group col-md-4">
+                                                    <label>Document Name</label>
+                                                    <select class="form-control"
+                                                            wire:model="documents.{{ $index }}.filetype">
+                                                        <option value="">-- Select --</option>
+                                                        <option value="ZRA Tax Certificate">ZRA Tax Certificate</option>
+                                                        <option value="Pacra Company Certificate">Pacra Company
+                                                            Certificate
+                                                        </option>
+                                                        <option value="Feasibility Study Rights">Feasibility Study
+                                                            Rights
+                                                        </option>
+                                                        <option value="Grid Connection Certificate">Grid Connection
+                                                            Certificate
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <label>Upload File</label>
+                                                    <input type="file" class="form-control"
+                                                           wire:model="documents.{{ $index }}.file">
+                                                </div>
+
+                                                <div class="form-group col-md-2 d-flex align-items-end">
+                                                    <button type="button"
+                                                            class="btn btn-danger"
+                                                            wire:click="removeRow({{ $index }})">
+                                                        Remove
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                    <button type="button" class="btn btn-info" wire:click="addRow">
+                                        Add File
+                                    </button>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label>Phone #</label>
-                                    <input type="text" class="form-control" name="customer_name" value="" readonly>
+                            </div>
 
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Email</label>
-                                    <select class="form-control" name="agreement_type">
-                                        <option>Domestic</option>
-                                        <option>International</option>
-                                        <option>Imports</option>
-                                        <option>Exports</option>
-                                    </select>
+                            <div class="card-footer">
+                                <div class="card-body text-center">
+                                    <button type="submit"
+                                            class="btn btn-success btn-rounded px-4 rounded-pill shadow-sm m-1">
+                                        <i class="fa fa-check-circle mr-1"></i> Submit
+                                        <div wire:loading wire:target="createClient"
+                                             class="spinner-border spinner-border-sm ml-2"></div>
+                                    </button>
                                 </div>
                             </div>
-
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label>Client Address</label>
-                                    <textarea class="form-control" name="contract_period_description" rows="3"></textarea>
-                                </div>
-
-
-                            </div>
-                            <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label>County</label>
-                                <input type="number" step="any" class="form-control" name="contracted_capacity">
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <label>City</label>
-                                <select class="form-control" name="industry_type" required>
-                                    <option selected disabled hidden>--Select industry type--</option>
-
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Province</label>
-                                <input type="number" step="any" class="form-control" name="contracted_capacity">
-                            </div>
-
-                            </div>
-
-                        </div>
-
+                        </form>
                     </div>
                 </div>
             </div>
@@ -75,86 +197,12 @@
         </div>
 
         {{-- RIGHT CONTENT — Documents --}}
-        <div class="col-lg-3 col-md-4 mb-3">
+        {{--        <div class="col-lg-3 col-md-4 mb-3">--}}
 
-            <div class="card z-card" style="position: relative;">
-                <div  class="z-loading">
-                    <div class="spinner-border text-success"><span class="sr-only">Loading...</span></div>
-                </div>
-
-                {{-- Header --}}
-                <div class="card-header d-flex align-items-center justify-content-between flex-wrap"
-                     style="gap: 0.75rem;">
-                    <div>
-                        {{-- Breadcrumbs --}}
-                        <div class="dm-breadcrumb mb-1">
-                            <span wire:click="goToRoot" class="dm-breadcrumb-link"><i
-                                    class="fas fa-home"></i> Root</span>
-
-                        </div>
-                        <h3 class="mb-0">
-                            <i class="fas fa-folder-open mr-1"></i>
-
-                        </h3>
-                    </div>
-                    <div class="d-flex" style="gap: 0.5rem;">
-
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    {{-- Filters --}}
-                    <div class="d-flex flex-wrap align-items-center mb-3" style="gap: 0.75rem;">
-                        <div class="z-search" style="flex: 1; min-width: 200px; max-width: 320px;">
-                            <i class="fas fa-search si"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search documents...">
-                        </div>
-
-                    </div>
-
-                    {{-- Subfolders (if any) --}}
-
-                    {{-- Documents Table --}}
-                    <div class="z-section-title mb-2"><i class="fas fa-file-alt mr-1"></i> Documents</div>
-                    <div class="table-responsive">
-                        <table class="table z-table mb-0">
-                            <thead>
-                            <tr>
-                                <th style="width: 40px;">#</th>
-                                <th wire:click="sortBy('original_name')" style="min-width: 250px; cursor: pointer;">
-                                    File Name
-                                    <i class="fas fa-sort sort-icon"></i>
-                                </th>
-                                <th>Category</th>
-                                <th wire:click="sortBy('file_extension')" style="cursor: pointer;">
-                                    Format
-                                    <i class="fas fa-sort sort-icon "></i>
-                                </th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <tr>
-                                <td colspan="8" class="text-center py-4" style="color: #94a3b8;">
-                                    <i class="fas fa-folder-open fa-2x d-block mb-2"></i>
-                                    No documents in this
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Pagination --}}
-
-                    <div class="d-flex justify-content-center mt-3">
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        {{--          --}}
+        {{--        </div>--}}
     </div>
-
 </div>
+
+
+
