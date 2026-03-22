@@ -55,15 +55,15 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-{{--<!-- jQuery -->--}}
-{{--<script src="{{ asset('dashboard/plugins/jquery/jquery.min.js')}}"></script>--}}
-{{--<!-- Bootstrap -->--}}
-{{--<script src="{{ asset('dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>--}}
-{{--<!-- overlayScrollbars -->--}}
-{{--<script src="{{ asset('dashboard/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>--}}
-{{--<!-- AdminLTE App -->--}}
-{{--<script src="{{ asset('dashboard/dist/js/adminlte.js')}}"></script>--}}
-{{--<script src="{{ asset('dashboard/plugins/sweetalert2/sweetalert2.all.min.js')}}"></script>--}}
+<!-- jQuery -->
+<script src="{{ asset('dashboard/plugins/jquery/jquery.min.js')}}"></script>
+<!-- Bootstrap -->
+<script src="{{ asset('dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- overlayScrollbars -->
+<script src="{{ asset('dashboard/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset('dashboard/dist/js/adminlte.js')}}"></script>
+<script src="{{ asset('dashboard/plugins/sweetalert2/sweetalert2.all.min.js')}}"></script>
 
 <!-- PAGE PLUGINS -->
 <script>
@@ -140,5 +140,14 @@
 </script>
 @stack('custom-scripts')
 @livewireScripts
+
+<script>
+    // Re-initialize AdminLTE Treeview after Livewire DOM updates
+    document.addEventListener('livewire:load', function () {
+        $('[data-widget="treeview"]').each(function () {
+            $(this).Treeview('init');
+        });
+    });
+</script>
 </body>
 </html>

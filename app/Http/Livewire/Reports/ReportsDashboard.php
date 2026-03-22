@@ -151,7 +151,7 @@ class ReportsDashboard extends Component
             ->orderByDesc('total')
             ->get()
             ->map(function ($item) {
-                $item->venture_name = Venture::find($item->type_of_venture)->venture_type ?? 'Unknown';
+                $item->venture_name = $item->type_of_venture ?? 'Unknown';
                 return $item;
             });
 
@@ -205,7 +205,7 @@ class ReportsDashboard extends Component
             ->groupBy('type_of_venture')
             ->get()
             ->map(function ($item) {
-                $item->name = Venture::find($item->type_of_venture)->venture_type ?? 'Unknown';
+                $item->name = $item->type_of_venture ?? 'Unknown';
                 return $item;
             })
             ->toArray();

@@ -93,4 +93,8 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/clients/create', \App\Http\Livewire\Clients\ClientCreate::class)->name('clients.create');
     Route::get('/clients/show/{id}', \App\Http\Livewire\Clients\ClientShow::class)->name('clients.show');
 
+    // Client Task Action Centre
+    Route::get('/client-tasks', \App\Http\Livewire\Clients\ClientTaskList::class)->name('client-tasks.index');
+    Route::get('/client-tasks/{id}', \App\Http\Livewire\Clients\ClientTaskAction::class)->name('client-tasks.show');
+
 });

@@ -19,7 +19,8 @@ class ClientCreate extends Component
         $address_line_1,
         $country,
         $city,
-        $province, $tpin;
+        $province, $tpin,
+        $is_active;
     public $allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar', 'txt'];
     public $filetype = [];
 
@@ -99,7 +100,7 @@ class ClientCreate extends Component
             'province' => $this->province,
             'created_by' => $user->name,
             'created_by_staff_no' => $user->staff_no,
-            'is_active' => $user->staff_no,
+            'is_active' => $this->is_active ?? '1',
         ]);
 
         $this->uploadNewFiles($client->id);
@@ -153,6 +154,7 @@ class ClientCreate extends Component
             'country',
             'city',
             'province',
+            'is_active',
         ]);
 
         // reset documents properly

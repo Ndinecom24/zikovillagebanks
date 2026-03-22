@@ -28,4 +28,16 @@ class ClientDetails extends Model
             'created_by_staff_no',
             'phone_area_code'
         ];
+
+    /* ── Relationships ────────────────── */
+
+    public function clientProcesses()
+    {
+        return $this->hasMany(ClientProcess::class, 'client_id');
+    }
+
+    public function activeProcesses()
+    {
+        return $this->hasMany(ClientProcess::class, 'client_id')->where('status', 'in_progress');
+    }
 }
