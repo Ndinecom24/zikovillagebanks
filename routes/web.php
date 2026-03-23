@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 
-Route::group([ 'middleware' => 'auth'  ],   function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/', \App\Http\Livewire\Dashboard\Dashboard::class);
     Route::get('home', \App\Http\Livewire\Dashboard\Dashboard::class)->name('home');
 
@@ -31,8 +31,6 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/users/show/{id}', \App\Http\Livewire\UserManagement\UserShow::class)->name('user.show');
     Route::post('search', [\App\Http\Controllers\UserController::class, 'getStaffDetails'])->name('user.search');
     Route::post('change', [UserController::class, 'changePassword'])->name('user.change.password');
-
-
 
 
     // Reports (Livewire)
@@ -53,11 +51,10 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/status/index', \App\Http\Livewire\Statuses\StatusList::class)->name('status.index');
 
 
-
-
-
     // graphical.reports now redirects to the unified reports page
-    Route::get('/graphical-reports', function () { return redirect()->route('reports.index', ['activeTab' => 'charts']); })->name('graphical.reports');
+    Route::get('/graphical-reports', function () {
+        return redirect()->route('reports.index', ['activeTab' => 'charts']);
+    })->name('graphical.reports');
 
     Route::get('/technology', \App\Http\Livewire\Technologies\TechnologyList::class)->name('technology.index');
 
@@ -92,5 +89,14 @@ Route::group([ 'middleware' => 'auth'  ],   function () {
     Route::get('/clients', \App\Http\Livewire\Clients\Clients::class)->name('clients.index');
     Route::get('/clients/create', \App\Http\Livewire\Clients\ClientCreate::class)->name('clients.create');
     Route::get('/clients/show/{id}', \App\Http\Livewire\Clients\ClientShow::class)->name('clients.show');
+
+    //create quotation
+    Route::get('/quotation/create/{id}', \App\Http\Livewire\Quotation\QuotationCreate::class)->name('quote.create');
+    Route::get('/quotation/show/{uuid}', \App\Http\Livewire\Quotation\QuotationShow::class)->name('quote.show');
+
+//daily rates model
+    Route::get('/daily-rates', \App\Http\Livewire\DailyExchangeRates\DailyRates::class)->name('daily.rate.index');
+ //PDF download
+    Route::get('system/quotation/PDF/{uuid}/download', [\App\Http\Controllers\QuotationPdfController::class, 'index'])->name('pdf.download');
 
 });

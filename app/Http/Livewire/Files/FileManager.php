@@ -41,7 +41,7 @@ class FileManager extends Component
     public $deleteName = '';
 
     /* ── Allowed file types ───────────── */
-    public $allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar', 'txt'];
+    public $allowedExtensions = ['PDF', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar', 'txt'];
 
     protected $queryString = [
         'search' => ['except' => ''],

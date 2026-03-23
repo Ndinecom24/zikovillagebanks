@@ -68,7 +68,7 @@ class Document extends Model
     {
         $ext = strtolower($this->file_extension);
         return match (true) {
-            in_array($ext, ['pdf']) => 'fas fa-file-pdf text-danger',
+            in_array($ext, ['PDF']) => 'fas fa-file-PDF text-danger',
             in_array($ext, ['doc', 'docx']) => 'fas fa-file-word text-primary',
             in_array($ext, ['xls', 'xlsx', 'csv']) => 'fas fa-file-excel text-success',
             in_array($ext, ['ppt', 'pptx']) => 'fas fa-file-powerpoint text-warning',
@@ -87,7 +87,7 @@ class Document extends Model
     public function getIsPreviewableAttribute(): bool
     {
         $ext = strtolower($this->file_extension);
-        return in_array($ext, ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']);
+        return in_array($ext, ['PDF', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']);
     }
 
     public function getDisplayNameAttribute(): string

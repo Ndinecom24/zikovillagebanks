@@ -1177,13 +1177,13 @@ DataTable.ext.buttons.excelHtml5 = {
 			addRow( data.header, rowPos );
 			$('row:last c', rels).attr( 's', '2' ); // bold
 		}
-	
+
 		dataStartRow = rowPos;
 
 		for ( var n=0, ie=data.body.length ; n<ie ; n++ ) {
 			addRow( data.body[n], rowPos );
 		}
-	
+
 		dataEndRow = rowPos;
 
 		if ( config.footer && data.footer ) {
@@ -1300,14 +1300,14 @@ DataTable.ext.buttons.excelHtml5 = {
 // PDF export - using pdfMake - http://pdfmake.org
 //
 DataTable.ext.buttons.pdfHtml5 = {
-	className: 'buttons-pdf buttons-html5',
+	className: 'buttons-PDF buttons-html5',
 
 	available: function () {
 		return window.FileReader !== undefined && _pdfMake();
 	},
 
 	text: function ( dt ) {
-		return dt.i18n( 'buttons.pdf', 'PDF' );
+		return dt.i18n( 'buttons.PDF', 'PDF' );
 	},
 
 	action: function ( e, dt, button, config ) {
@@ -1433,7 +1433,7 @@ DataTable.ext.buttons.pdfHtml5 = {
 
 	filename: '*',
 
-	extension: '.pdf',
+	extension: '.PDF',
 
 	exportOptions: {},
 

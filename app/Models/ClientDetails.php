@@ -26,6 +26,7 @@ class ClientDetails extends Model
             'is_active',
             'created_by',
             'created_by_staff_no',
-            'phone_area_code'
+            'phone_area_code',
+            'postal_code',
         ];
 }

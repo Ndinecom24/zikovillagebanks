@@ -86,7 +86,15 @@
 
             {{-- RIGHT CONTENT — Documents --}}
             <div class="col-lg-3 col-md-4 mb-3">
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-success" href="{{route('quote.create', $client->id)}}">Generate Quotation</a>
 
+    </div>
+    <div class="card-body ">
+
+    </div>
+</div>
                 <div class="card z-card" style="position: relative;">
 
 
