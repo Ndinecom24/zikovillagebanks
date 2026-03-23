@@ -329,8 +329,8 @@
                 <div class="ou-modal-body">
                     {{-- Search available users --}}
                     <div class="form-group">
-                        <label style="font-weight: 600; font-size: 0.82rem; color: #374151;">Search User</label>
-                        <input type="text" wire:model.debounce.300ms="userSearch"
+                        <label for="attachUserSearch" style="font-weight: 600; font-size: 0.82rem; color: #374151;">Search User</label>
+                        <input type="text" id="attachUserSearch" wire:model.debounce.300ms="userSearch"
                                class="form-control form-control-sm"
                                placeholder="Type name, email or staff no…"
                                style="border-radius: 8px; border-color: #d1d5db;">
@@ -339,8 +339,8 @@
                     {{-- User list --}}
                     <div style="max-height: 240px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem;">
                         @forelse($availableUsers as $au)
-                            <label class="ou-user-option {{ $selectedUserId == $au->id ? 'ou-user-option-selected' : '' }}"
-                                   wire:click="$set('selectedUserId', {{ $au->id }})">
+                            <div class="ou-user-option {{ $selectedUserId == $au->id ? 'ou-user-option-selected' : '' }}"
+                                 wire:click="$set('selectedUserId', {{ $au->id }})">
                                 <div class="d-flex align-items-center" style="gap: 0.5rem;">
                                     <div class="ou-avatar-sm">{{ strtoupper(substr($au->name, 0, 1)) }}</div>
                                     <div>
@@ -354,7 +354,7 @@
                                 @if($selectedUserId == $au->id)
                                     <i class="fas fa-check-circle" style="color: var(--z-green); font-size: 1.1rem;"></i>
                                 @endif
-                            </label>
+                            </div>
                         @empty
                             <div class="text-center text-muted py-3" style="font-size: 0.82rem;">
                                 @if($userSearch)
@@ -368,8 +368,8 @@
 
                     {{-- Role --}}
                     <div class="form-group">
-                        <label style="font-weight: 600; font-size: 0.82rem; color: #374151;">Role in Office</label>
-                        <select wire:model="selectedRole" class="form-control form-control-sm"
+                        <label for="attachUserRole" style="font-weight: 600; font-size: 0.82rem; color: #374151;">Role in Office</label>
+                        <select id="attachUserRole" wire:model="selectedRole" class="form-control form-control-sm"
                                 style="border-radius: 8px; border-color: #d1d5db;">
                             <option value="member">Member</option>
                             <option value="lead">Lead</option>
@@ -405,8 +405,8 @@
                         Update role for <strong>{{ $editUserName }}</strong>
                     </p>
                     <div class="form-group">
-                        <label style="font-weight: 600; font-size: 0.82rem; color: #374151;">Role in Office</label>
-                        <select wire:model="editRole" class="form-control form-control-sm"
+                        <label for="editUserRole" style="font-weight: 600; font-size: 0.82rem; color: #374151;">Role in Office</label>
+                        <select id="editUserRole" wire:model="editRole" class="form-control form-control-sm"
                                 style="border-radius: 8px; border-color: #d1d5db;">
                             <option value="member">Member</option>
                             <option value="lead">Lead</option>
