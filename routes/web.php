@@ -77,7 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/module/index', \App\Http\Livewire\Modules\ModuleList::class)->name('module.index');
     Route::get('/module/show/{id}', \App\Http\Livewire\Modules\ModuleShow::class)->name('module.show');
 //offices
-    Route::get('/office/index', \App\Http\Livewire\Office\ResponsibleOffice::class)->name('office.index');
+    Route::get('/office/index', \App\Http\Livewire\Office\OfficeList::class)->name('office.index');
     Route::get('/office/show/{id}', \App\Http\Livewire\Office\OfficeShow::class)->name('office.show');
 
     // Roles & Permissions Management

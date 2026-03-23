@@ -34,6 +34,7 @@
     --z-yellow: #ffed4a;
     --z-teal: #4dc0b5;
     --z-cyan: #6cb2eb;
+    --z-gold: #f6993f;
 
     /* Surface & Text */
     --z-surface: #ffffff;
@@ -1418,4 +1419,208 @@
     font-size: 0.72rem;
     font-weight: 600;
     white-space: nowrap;
+}
+
+/* ====================================================================
+   10. OFFICE-UNIT (ou-*) COMPONENTS
+   ====================================================================
+   Custom modal, avatar, role-badge, and user-option styles used by
+   office-show, role-show, and similar detail pages.
+   ==================================================================== */
+
+/* --- Modal Backdrop & Container --- */
+.ou-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    animation: ouFadeIn 0.2s ease;
+    padding: 1rem;
+}
+
+@keyframes ouFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes ouSlideUp {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ou-modal {
+    background: #fff;
+    border-radius: 14px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0,0,0,0.04);
+    animation: ouSlideUp 0.25s ease;
+}
+
+.ou-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 14px 14px 0 0;
+}
+
+.ou-modal-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.ou-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.35rem;
+    line-height: 1;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+}
+
+.ou-modal-close:hover {
+    color: #374151;
+    background: #f3f4f6;
+}
+
+.ou-modal-body {
+    padding: 1.25rem;
+}
+
+.ou-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 0 0 14px 14px;
+}
+
+/* --- Avatar circles --- */
+.ou-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--z-green), var(--z-green-dark));
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.ou-avatar-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--z-green-light), var(--z-green));
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* --- Role badges --- */
+.ou-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ou-role-manager {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+}
+
+.ou-role-lead {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+}
+
+.ou-role-member {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+}
+
+/* --- User option (selectable list item inside modal) --- */
+.ou-user-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.85rem;
+    margin: 0;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.15s;
+}
+
+.ou-user-option:last-child {
+    border-bottom: none;
+}
+
+.ou-user-option:hover {
+    background: #f0fdf4;
+}
+
+.ou-user-option-selected {
+    background: #ecfdf5;
+    border-left: 3px solid var(--z-green);
+}
+
+.ou-user-option-selected:hover {
+    background: #dcfce7;
+}
+
+/* --- z-btn-primary (green action button) --- */
+.z-btn-primary {
+    background: linear-gradient(135deg, var(--z-green), var(--z-green-dark));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 0.4rem 1rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.z-btn-primary:hover {
+    background: linear-gradient(135deg, var(--z-green-dark), var(--z-green-darker));
+    box-shadow: var(--z-shadow-green);
+    color: #fff;
+}
+.z-btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
 }
