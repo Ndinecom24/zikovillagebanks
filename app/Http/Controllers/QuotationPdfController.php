@@ -290,23 +290,15 @@ class QuotationPdfController extends Controller
             1
         );
 
-
         $this->fpdf->Ln();
-
-        //-------------------------------------------------------------------------------------------------------
-
 
         if (sizeOf($quotationItems) >= 1) {
             $this->fpdf->Ln();
-
-
             $this->fpdf->SetFont('Arial', 'B', $text_size);
             $this->fpdf->Cell($this->column_size_10, $this->row_h_7, 'SN', 1, 0);
             $this->fpdf->Cell($this->column_size_100, $this->row_h_7, 'DESCRIPTION', 1, 0);
             $this->fpdf->Cell($this->column_size_40, $this->row_h_7, 'QTY', 1, 0);
             $this->fpdf->Cell($this->column_size_40, $this->row_h_7, 'AMOUNT', 1, 0, 'C');
-
-
 
             foreach ($quotationItems as $item) {
                 $id = 0;
@@ -362,9 +354,14 @@ class QuotationPdfController extends Controller
         $cell_height_bd = 5; // Height for cells
 
         $this->fpdf->Ln();
+
+// Bold part
         $this->fpdf->SetFont('Arial', 'B', $label_size);
-        $this->fpdf->Cell($this->column_one_size, 5, 'WITH HOLDING TAX @ 15% PAYABLE DIRECTLY TO ZRA', 0, 0);
-        $this->fpdf->Ln();
+        $this->fpdf->Cell(50, 5, 'NOTE:', 0, 0);
+
+// Normal part
+        $this->fpdf->SetFont('Arial', '', $label_size);
+        $this->fpdf->Cell(0, 5, ' WITH HOLDING TAX @ 15% PAYABLE DIRECTLY TO ZRA', 0, 1);
 
         // Titles for ZRA and Bank Information
         $this->fpdf->SetFont('Arial', 'B', $text_size);

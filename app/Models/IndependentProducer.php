@@ -81,7 +81,7 @@ protected $with =[
         return $this->belongsTo(Districts::class,'district_id','id');
     }
     public function  ventures(){
-        return $this->belongsTo(Venture::class,'type_of_venture','id');
+        return $this->belongsTo(Venture::class,'type_of_venture','venture_type');
     }
 
 

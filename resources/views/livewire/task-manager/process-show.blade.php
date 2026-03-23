@@ -256,7 +256,14 @@
                                                 <td>
                                                     @if($task->offices->count() > 0)
                                                         @foreach($task->offices->take(2) as $off)
-                                                            <span class="z-badge" style="font-size: 0.65rem; margin-bottom: 2px;">{{ Str::limit($off->responsible_office, 15) }}</span>
+                                                            <div style="margin-bottom: 2px;">
+                                                                <span class="z-badge" style="font-size: 0.65rem;">{{ Str::limit($off->responsible_office, 15) }}</span>
+                                                                @if($off->users->count() > 0)
+                                                                    <span style="font-size: 0.58rem; color: #64748b;" title="{{ $off->users->pluck('name')->join(', ') }}">
+                                                                        <i class="fas fa-users" style="font-size: 0.5rem;"></i> {{ $off->users->count() }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
                                                         @endforeach
                                                         @if($task->offices->count() > 2)
                                                             <span style="font-size: 0.65rem; color: #94a3b8;">+{{ $task->offices->count() - 2 }} more</span>
@@ -453,8 +460,9 @@
                             </div>
                         </div>
 
-                        {{-- Office Assignment (multi-select) --}}
-                        <div class="z-section-title"><i class="fas fa-building mr-1"></i> Assign to Offices</div>
+                        {{-- Office Assignment (multi-select) — Predefine which offices handle this task --}}
+                        <div class="z-section-title"><i class="fas fa-building mr-1"></i> Pre-assign Responsible Offices</div>
+                        <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.5rem;">Define which offices will be responsible for this task when assigned to clients. Users within each office will carry out the work.</p>
                         <div class="form-group mb-3">
                             <label class="z-label">Select Offices <small class="text-muted">(hold Ctrl to select multiple)</small></label>
                             <select wire:model.defer="taskOfficeIds" class="form-control z-input" multiple style="min-height: 120px;">
@@ -550,52 +558,73 @@
                                 <div class="z-detail-value">{{ $detailTask->created_at->format('M d, Y H:i') }}</div>
                             </div>
 
-                            {{-- Assigned Offices --}}
+                            {{-- Pre-assigned Responsible Offices --}}
                             <div class="col-md-12 mt-2">
-                                <div class="z-section-title"><i class="fas fa-building mr-1"></i> Assigned Offices</div>
+                                <div class="z-section-title"><i class="fas fa-building mr-1"></i> Pre-assigned Responsible Offices</div>
+                                <p style="font-size: 0.72rem; color: #94a3b8; margin-top: -0.3rem; margin-bottom: 0.5rem;">These offices and their personnel are responsible for this task when it is assigned to a client.</p>
                                 @if($detailTask->offices->count() > 0)
-                                    <div class="table-responsive">
-                                        <table class="table z-table mb-0" style="font-size: 0.82rem;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Office</th>
-                                                    <th style="width: 140px;">Assignment Status</th>
-                                                    <th style="width: 120px;">Assigned At</th>
-                                                    <th style="width: 160px;">Change Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($detailTask->offices as $off)
-                                                    <tr>
-                                                        <td style="font-weight: 600;">{{ $off->responsible_office }}</td>
-                                                        <td>
-                                                            @php $pivotStatus = $off->pivot->status ?? 'pending'; @endphp
-                                                            <span class="tm-status-badge" style="font-size: 0.7rem;
-                                                                background: {{ $pivotStatus === 'completed' ? '#10b981' : ($pivotStatus === 'acknowledged' ? '#3b82f6' : '#f59e0b') }}20;
-                                                                color: {{ $pivotStatus === 'completed' ? '#10b981' : ($pivotStatus === 'acknowledged' ? '#3b82f6' : '#f59e0b') }};
-                                                                border: 1px solid {{ $pivotStatus === 'completed' ? '#10b981' : ($pivotStatus === 'acknowledged' ? '#3b82f6' : '#f59e0b') }}40;">
-                                                                {{ ucfirst($pivotStatus) }}
-                                                            </span>
-                                                        </td>
-                                                        <td style="font-size: 0.75rem; color: #6b7280;">
-                                                            {{ $off->pivot->assigned_at ? \Carbon\Carbon::parse($off->pivot->assigned_at)->format('M d, Y') : '—' }}
-                                                        </td>
-                                                        <td>
-                                                            <select wire:change="updateAssignmentStatus({{ $detailTask->id }}, {{ $off->id }}, $event.target.value)"
-                                                                    class="form-control form-control-sm z-input" style="font-size: 0.75rem; padding: 2px 6px; height: auto;">
-                                                                <option value="pending" {{ $pivotStatus === 'pending' ? 'selected' : '' }}>Pending</option>
-                                                                <option value="acknowledged" {{ $pivotStatus === 'acknowledged' ? 'selected' : '' }}>Acknowledged</option>
-                                                                <option value="completed" {{ $pivotStatus === 'completed' ? 'selected' : '' }}>Completed</option>
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                    @foreach($detailTask->offices as $off)
+                                        <div style="border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 0.5rem; overflow: hidden;">
+                                            {{-- Office header row --}}
+                                            <div style="padding: 0.55rem 0.75rem; background: #f8fafc; display: flex; align-items: center; justify-content: space-between;">
+                                                <div class="d-flex align-items-center" style="gap: 0.4rem;">
+                                                    <div style="width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #6366f1, #4f46e5); display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-building" style="color: #fff; font-size: 0.55rem;"></i>
+                                                    </div>
+                                                    <span style="font-size: 0.82rem; font-weight: 600; color: #1a2332;">{{ $off->responsible_office }}</span>
+                                                </div>
+                                                <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                                                    @php $pivotStatus = $off->pivot->status ?? 'pending'; @endphp
+                                                    <span class="tm-status-badge" style="font-size: 0.68rem;
+                                                        background: {{ $pivotStatus === 'completed' ? '#10b981' : ($pivotStatus === 'acknowledged' ? '#3b82f6' : '#f59e0b') }}20;
+                                                        color: {{ $pivotStatus === 'completed' ? '#10b981' : ($pivotStatus === 'acknowledged' ? '#3b82f6' : '#f59e0b') }};
+                                                        border: 1px solid {{ $pivotStatus === 'completed' ? '#10b981' : ($pivotStatus === 'acknowledged' ? '#3b82f6' : '#f59e0b') }}40;">
+                                                        {{ ucfirst($pivotStatus) }}
+                                                    </span>
+                                                    <select wire:change="updateAssignmentStatus({{ $detailTask->id }}, {{ $off->id }}, $event.target.value)"
+                                                            class="form-control form-control-sm z-input" style="font-size: 0.72rem; padding: 2px 6px; height: auto; width: 130px; border-radius: 6px;">
+                                                        <option value="pending" {{ $pivotStatus === 'pending' ? 'selected' : '' }}>Pending</option>
+                                                        <option value="acknowledged" {{ $pivotStatus === 'acknowledged' ? 'selected' : '' }}>Acknowledged</option>
+                                                        <option value="completed" {{ $pivotStatus === 'completed' ? 'selected' : '' }}>Completed</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            {{-- Users in this office --}}
+                                            <div style="padding: 0.5rem 0.75rem;">
+                                                @if($off->users && $off->users->count() > 0)
+                                                    <div style="font-size: 0.62rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem;">
+                                                        <i class="fas fa-users mr-1"></i>Personnel in this Office ({{ $off->users->count() }})
+                                                    </div>
+                                                    <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                                        @foreach($off->users as $offUser)
+                                                            <div style="display: inline-flex; align-items: center; gap: 0.3rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 0.15rem 0.5rem 0.15rem 0.2rem; font-size: 0.72rem;">
+                                                                <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, var(--z-green), var(--z-green-dark)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.45rem; font-weight: 700; flex-shrink: 0;">
+                                                                    {{ strtoupper(substr($offUser->name ?? 'U', 0, 1)) }}
+                                                                </div>
+                                                                <span style="font-weight: 600; color: #374151;">{{ $offUser->name }}</span>
+                                                                @if($offUser->pivot && $offUser->pivot->role_in_office)
+                                                                    <span style="color: #94a3b8; font-size: 0.62rem;">&middot; {{ $offUser->pivot->role_in_office }}</span>
+                                                                @endif
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @else
+                                                    <div style="text-align: center; padding: 0.4rem; color: #cbd5e1; font-size: 0.75rem; font-style: italic;">
+                                                        <i class="fas fa-user-slash mr-1"></i> No users assigned to this office yet
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div style="font-size: 0.68rem; color: #94a3b8; margin-top: 0.3rem;">
+                                        @if($off->pivot->assigned_at ?? false)
+                                            <i class="fas fa-clock mr-1"></i> Last assigned: {{ \Carbon\Carbon::parse($off->pivot->assigned_at)->format('M d, Y') }}
+                                        @endif
                                     </div>
                                 @else
                                     <div class="text-center py-3" style="color: #94a3b8; font-size: 0.85rem;">
-                                        <i class="fas fa-building d-block mb-1"></i> No offices assigned to this task.
+                                        <i class="fas fa-building d-block mb-1"></i> No offices pre-assigned to this task.
+                                        <div style="font-size: 0.75rem; margin-top: 0.25rem;">Edit this task to assign responsible offices.</div>
                                     </div>
                                 @endif
                             </div>

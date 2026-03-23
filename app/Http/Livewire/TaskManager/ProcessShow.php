@@ -69,7 +69,7 @@ class ProcessShow extends Component
 
     private function loadProcess()
     {
-        $this->process = Process::with(['modules.tasks.offices', 'creator'])->findOrFail($this->processId);
+        $this->process = Process::with(['modules.tasks.offices.users', 'creator'])->findOrFail($this->processId);
     }
 
     public function updatingTaskSearch()        { $this->resetPage(); }
@@ -254,7 +254,7 @@ class ProcessShow extends Component
 
     public function viewTask($taskId)
     {
-        $this->detailTask = ProcessTask::with(['module.process', 'offices', 'creator'])->findOrFail($taskId);
+        $this->detailTask = ProcessTask::with(['module.process', 'offices.users', 'creator'])->findOrFail($taskId);
         $this->showTaskDetail = true;
     }
 

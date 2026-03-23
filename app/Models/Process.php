@@ -31,6 +31,11 @@ class Process extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function clientProcesses()
+    {
+        return $this->hasMany(ClientProcess::class, 'process_id');
+    }
+
     /* ── Helpers ──────────────────────── */
 
     public function totalTaskCount(): int

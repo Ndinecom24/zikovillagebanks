@@ -33,6 +33,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('change', [UserController::class, 'changePassword'])->name('user.change.password');
 
 
+
+
     // Reports (Livewire)
     Route::get('/reports', \App\Http\Livewire\Reports\ReportsDashboard::class)->name('reports.index');
 
@@ -98,5 +100,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/daily-rates', \App\Http\Livewire\DailyExchangeRates\DailyRates::class)->name('daily.rate.index');
  //PDF download
     Route::get('system/quotation/PDF/{uuid}/download', [\App\Http\Controllers\QuotationPdfController::class, 'index'])->name('pdf.download');
+
+    // Client Task Action Centre
+    Route::get('/client-tasks', \App\Http\Livewire\Clients\ClientTaskList::class)->name('client-tasks.index');
+    Route::get('/client-tasks/{id}', \App\Http\Livewire\Clients\ClientTaskAction::class)->name('client-tasks.show');
 
 });
