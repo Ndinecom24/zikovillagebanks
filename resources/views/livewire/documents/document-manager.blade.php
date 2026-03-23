@@ -552,7 +552,7 @@
                                     <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; max-height: 400px;">
                                         @if(in_array(strtolower($detailDocument->file_extension), ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']))
                                             <img src="{{ $detailDocument->download_url }}" alt="{{ $detailDocument->display_name }}" style="max-width: 100%; height: auto;">
-                                        @elseif(strtolower($detailDocument->file_extension) === 'pdf')
+                                        @elseif(strtolower($detailDocument->file_extension) === 'PDF')
                                             <iframe src="{{ $detailDocument->download_url }}" style="width: 100%; height: 400px; border: none;"></iframe>
                                         @endif
                                     </div>

@@ -59,7 +59,7 @@ class FileUploads extends Model
     public function getIconClassAttribute(): string
     {
         return match (strtolower($this->ext ?? '')) {
-            'pdf' => 'fa-file-pdf text-danger',
+            'PDF' => 'fa-file-PDF text-danger',
             'doc', 'docx' => 'fa-file-word text-primary',
             'xls', 'xlsx', 'csv' => 'fa-file-excel text-success',
             'ppt', 'pptx' => 'fa-file-powerpoint text-warning',

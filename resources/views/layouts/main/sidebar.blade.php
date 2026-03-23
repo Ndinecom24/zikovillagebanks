@@ -181,6 +181,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('daily.rate.index') }}" class="nav-link {{ request()->routeIs('daily-rates.*') ? 'active' : '' }}">
+                                <i class="fas fa-toggle-on nav-icon"></i>
+                                <p>Daily Rates</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('venture.index') }}"
                                class="nav-link {{ request()->routeIs('venture.*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>

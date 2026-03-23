@@ -16,7 +16,7 @@ class Clients extends Component
     public $filterType;
     public $filterExt;
     public $perPage;
-    public $allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar', 'txt'];
+    public $allowedExtensions = ['PDF', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar', 'txt'];
     public $clientList;
 
     /* ── Allowed file types ───────────── */

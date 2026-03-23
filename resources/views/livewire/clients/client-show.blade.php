@@ -105,8 +105,17 @@
                 </div>
             </div>
 
-            {{-- ========== RIGHT — Documents ========== --}}
-            <div class="col-lg-4 col-md-5">
+            {{-- RIGHT CONTENT — Documents --}}
+            <div class="col-lg-3 col-md-4 mb-3">
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-success" href="{{route('quote.create', $client->id)}}">Generate Quotation</a>
+
+    </div>
+    <div class="card-body ">
+
+    </div>
+</div>
                 <div class="card z-card" style="position: relative;">
                     <div class="card-header d-flex align-items-center justify-content-between py-2">
                         <div class="d-flex align-items-center" style="gap: 0.5rem;">
