@@ -26,7 +26,7 @@
         <li class="nav-item dropdown zesco-user-dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" data-toggle="dropdown" href="#" style="gap: 0.5rem;">
                 <div class="zesco-navbar-avatar">
-                    <img src="{{ asset('storage/user_avatar/' . Auth::user()->avatar) }}"
+                    <img src="{{ Auth::user()->avatar ? asset('storage/user_avatar/' . Auth::user()->avatar) : asset('img/default-avatar.svg') }}"
                          alt="User"
                          onerror="this.onerror=null; this.src='{{ asset('img/default-avatar.svg') }}';">
                     <span class="zesco-avatar-status"></span>
@@ -40,7 +40,7 @@
                 <div class="zesco-user-menu-header">
                     <div class="d-flex align-items-center">
                         <div class="zesco-menu-avatar">
-                            <img src="{{ asset('storage/user_avatar/' . Auth::user()->avatar) }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/user_avatar/' . Auth::user()->avatar) : asset('img/default-avatar.svg') }}"
                                  alt="User"
                                  onerror="this.onerror=null; this.src='{{ asset('img/default-avatar.svg') }}';">
                         </div>

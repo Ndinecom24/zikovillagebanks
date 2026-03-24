@@ -27,6 +27,7 @@ class UserController extends Controller
 
         $user->update([
             'password' => Hash::make($request->password),
+            'password_changed' => config('constants.password_changed'),
         ]);
 
         return back()->with('success', 'Password changed successfully.');

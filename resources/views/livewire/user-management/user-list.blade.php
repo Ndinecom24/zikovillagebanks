@@ -1,5 +1,4 @@
-﻿<div>
-    <div>
+<div>
     <!-- Page Header -->
     <div class="content-header">
         <div class="container-fluid">
@@ -348,6 +347,4 @@
             </div>
         </div>
     @endif
-    
-</div>
 </div>

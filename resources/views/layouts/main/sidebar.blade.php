@@ -16,7 +16,7 @@
         <div class="zesco-sidebar-user">
             <div class="d-flex align-items-center">
                 <div class="zesco-sidebar-avatar">
-                    <img src="{{ asset('storage/user_avatar/' . Auth::user()->avatar) }}"
+                    <img src="{{ Auth::user()->avatar ? asset('storage/user_avatar/' . Auth::user()->avatar) : asset('img/default-avatar.svg') }}"
                          alt="User"
                          onerror="this.onerror=null; this.src='{{ asset('img/default-avatar.svg') }}';">
                 </div>

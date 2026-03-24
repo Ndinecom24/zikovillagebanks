@@ -1,4 +1,4 @@
-﻿<div>
+<div>
     <!-- Page Header -->
     <div class="content-header">
         <div class="container-fluid">
@@ -622,52 +622,53 @@
         </div>
     </section>
 
-</div>
 
-@push('custom-scripts')
-    <script>
-        document.addEventListener('livewire:load', function() {
-            function checkReqs() {
-                var pwd = document.getElementById('resetPwd');
-                var confirm = document.getElementById('resetPwdConfirm');
-                if (!pwd || !confirm) return;
+    @push('custom-scripts')
+        <script>
+            document.addEventListener('livewire:load', function() {
+                function checkReqs() {
+                    var pwd = document.getElementById('resetPwd');
+                    var confirm = document.getElementById('resetPwdConfirm');
+                    if (!pwd || !confirm) return;
 
-                var p = pwd.value,
-                    c = confirm.value;
-                var checks = {
-                    'rr-length': p.length >= 8,
-                    'rr-upper': /[A-Z]/.test(p),
-                    'rr-lower': /[a-z]/.test(p),
-                    'rr-number': /[0-9]/.test(p),
-                    'rr-special': /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(p),
-                    'rr-match': p.length > 0 && p === c
-                };
-                for (var key in checks) {
-                    var el = document.getElementById(key);
-                    if (el) {
-                        if (checks[key]) {
-                            el.classList.add('met');
-                            el.querySelector('i').className = 'bi bi-check-circle-fill';
-                        } else {
-                            el.classList.remove('met');
-                            el.querySelector('i').className = 'bi bi-circle';
+                    var p = pwd.value,
+                        c = confirm.value;
+                    var checks = {
+                        'rr-length': p.length >= 8,
+                        'rr-upper': /[A-Z]/.test(p),
+                        'rr-lower': /[a-z]/.test(p),
+                        'rr-number': /[0-9]/.test(p),
+                        'rr-special': /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(p),
+                        'rr-match': p.length > 0 && p === c
+                    };
+                    for (var key in checks) {
+                        var el = document.getElementById(key);
+                        if (el) {
+                            if (checks[key]) {
+                                el.classList.add('met');
+                                el.querySelector('i').className = 'bi bi-check-circle-fill';
+                            } else {
+                                el.classList.remove('met');
+                                el.querySelector('i').className = 'bi bi-circle';
+                            }
                         }
                     }
                 }
-            }
-            // Attach after Livewire updates
-            Livewire.hook('message.processed', function() {
-                var pwd = document.getElementById('resetPwd');
-                var confirm = document.getElementById('resetPwdConfirm');
-                if (pwd) {
-                    pwd.removeEventListener('input', checkReqs);
-                    pwd.addEventListener('input', checkReqs);
-                }
-                if (confirm) {
-                    confirm.removeEventListener('input', checkReqs);
-                    confirm.addEventListener('input', checkReqs);
-                }
+                // Attach after Livewire updates
+                Livewire.hook('message.processed', function() {
+                    var pwd = document.getElementById('resetPwd');
+                    var confirm = document.getElementById('resetPwdConfirm');
+                    if (pwd) {
+                        pwd.removeEventListener('input', checkReqs);
+                        pwd.addEventListener('input', checkReqs);
+                    }
+                    if (confirm) {
+                        confirm.removeEventListener('input', checkReqs);
+                        confirm.addEventListener('input', checkReqs);
+                    }
+                });
             });
-        });
-    </script>
-@endpush
+        </script>
+    @endpush
+
+</div>
