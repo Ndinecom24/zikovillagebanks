@@ -8,9 +8,11 @@ use App\Models\ClientTaskProgress;
 use App\Models\ConnectionPoints;
 use App\Models\Districts;
 use App\Models\Province;
+use App\Models\TechnicalApplications;
 use App\Models\Technology;
 use App\Models\Venture;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -38,20 +40,29 @@ class ClientTaskAction extends Component
     public $province_id;
     public $district_id;
     public $connection_point_id;
-    public $installed_capacity;
+    public $installed_capacity, $client_id;
 
     public $districts = [];
     public $connection_points = [];
+    public $project_name, $technology_id, $proposed_generation_capacity, $proposed_generation_capacity_units, $application_comments;
 
     /* ── Lifecycle ──────────────────────── */
+    protected $rules = [
+        'project_name' => 'required',
+        'province_id' => 'required|numeric',
+        'connection_point_id' => 'required|numeric',
+        'technology_id' => 'required|numeric',
+        'district_id' => 'required|numeric',
 
+    ];
     public function mount($id)
     {
         $this->progressId = $id;
         $this->loadProgress();
         $this->newStatus  = $this->progress->status;
         $this->newRemarks = $this->progress->remarks ?? '';
-
+        // ✅ SET CLIENT ID HERE
+        $this->client_id = optional($this->progress->clientProcess->client)->id;
         $this->ventures = Venture::all();
         $this->technologies = Technology::all();
         $this->provinces = Province::all();
@@ -60,6 +71,7 @@ class ClientTaskAction extends Component
         $this->districts = [];
         $this->connection_points = [];
     }
+
 
     public function updatedProvinceId($value)
     {
@@ -343,6 +355,35 @@ class ClientTaskAction extends Component
 
     public function createApplication()
     {
+        // Validate form data
+        $this->validate();
+        DB::beginTransaction();
+        // Generate a new invoice number format for the billing month
+        try {
 
+            $user = Auth::user();
+
+            TechnicalApplications::create([
+                'project_name' => $this->project_name,
+                'client_id' => $this->client_id,
+                'province_id' => $this->province_id,
+                'connection_point_id' => $this->connection_point_id,
+                'technology_id' => $this->technology_id,
+                'district_id' => $this->district_id,
+                'proposed_generation_capacity' => $this->proposed_generation_capacity,
+                'proposed_generation_capacity_units' => $this->proposed_generation_capacity_units,
+                'application_comments' => $this->application_comments,
+                'created_by' => $user->name,
+                'created_by_staff_no' => $user->staff_no,
+            ]);
+            DB::commit();
+            // Redirect to invoice display page with a success message
+            return redirect()->back()->with('message', 'GIS Application Saved successfully');
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            session()->flash('error', $e->getMessage());
+        }
     }
 }
