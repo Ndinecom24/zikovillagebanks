@@ -105,4 +105,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/client-tasks', \App\Http\Livewire\Clients\ClientTaskList::class)->name('client-tasks.index');
     Route::get('/client-tasks/{id}', \App\Http\Livewire\Clients\ClientTaskAction::class)->name('client-tasks.show');
 
+    //banks
+    Route::get('/banks', \App\Http\Livewire\Banks\BankIndex::class)->name('bank.list');
+    //quotation list
+    Route::get('/quotations', \App\Http\Livewire\Quotation\QuotationList::class)->name('quote.list');
+
 });

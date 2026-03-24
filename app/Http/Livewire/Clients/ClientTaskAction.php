@@ -5,6 +5,11 @@ namespace App\Http\Livewire\Clients;
 use App\Models\ClientTaskComment;
 use App\Models\ClientTaskFile;
 use App\Models\ClientTaskProgress;
+use App\Models\ConnectionPoints;
+use App\Models\Districts;
+use App\Models\Province;
+use App\Models\Technology;
+use App\Models\Venture;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -29,6 +34,14 @@ class ClientTaskAction extends Component
     public $uploadFiles = [];
     public $fileDescription = '';
     public $showUploadModal = false;
+    public $ventures, $technologies, $provinces;
+    public $province_id;
+    public $district_id;
+    public $connection_point_id;
+    public $installed_capacity;
+
+    public $districts = [];
+    public $connection_points = [];
 
     /* ── Lifecycle ──────────────────────── */
 
@@ -38,6 +51,46 @@ class ClientTaskAction extends Component
         $this->loadProgress();
         $this->newStatus  = $this->progress->status;
         $this->newRemarks = $this->progress->remarks ?? '';
+
+        $this->ventures = Venture::all();
+        $this->technologies = Technology::all();
+        $this->provinces = Province::all();
+
+        // start empty (important)
+        $this->districts = [];
+        $this->connection_points = [];
+    }
+
+    public function updatedProvinceId($value)
+    {
+        $this->districts = Districts::where('province_id', $value)->get();
+
+        // reset dependent fields
+        $this->district_id = null;
+        $this->connection_point_id = null;
+        $this->connection_points = [];
+        $this->installed_capacity = null;
+    }
+
+    public function updatedDistrictId($value)
+    {
+        $this->connection_points = ConnectionPoints::where('district_id', $value)->get();
+
+        // reset dependent fields
+        $this->connection_point_id = null;
+        $this->installed_capacity = null;
+    }
+
+    public function updatedConnectionPointId($value)
+    {
+        $point = ConnectionPoints::find($value);
+
+        if ($point) {
+            // choose which capacity you want
+            $this->installed_capacity = $point->installed_capacity;
+            // OR:
+            // $this->available_capacity = $point->substation_capacity;
+        }
     }
 
     private function loadProgress()
@@ -286,5 +339,10 @@ class ClientTaskAction extends Component
     public function render()
     {
         return view('livewire.clients.client-task-action');
+    }
+
+    public function createApplication()
+    {
+
     }
 }

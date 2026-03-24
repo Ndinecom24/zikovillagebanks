@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-6 col-md-3">
                         <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
-                            <div style="font-size: 1.15rem; font-weight: 800;">{{ \App\Models\IndependentProducer::sum('size_of_plant') ?? 0 }} MW</div>
+                            <div style="font-size: 1.15rem; font-weight: 800;"> MW</div>
                             <div style="font-size: 0.72rem; opacity: 0.8;">Total Capacity</div>
                         </div>
                     </div>

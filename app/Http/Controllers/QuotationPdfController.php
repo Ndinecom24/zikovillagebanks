@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banks;
 use App\Models\ClientDetails;
 use App\Models\GisQuotations;
 use App\Models\GisQuotationsItems;
@@ -42,10 +43,8 @@ class QuotationPdfController extends Controller
     public $column_size_50 = 50;
 
 
-
     public $column_size_55 = 55;
     public $column_size_100 = 100;
-
 
 
     // Row height properties for PDF layout
@@ -73,7 +72,7 @@ class QuotationPdfController extends Controller
         $quotationItems = GisQuotationsItems::where('quotation_id', $quotationDetals->id)->get();
         $client = ClientDetails::where('id', $quotationDetals->client_id)->first();
 
-
+        $bank = Banks::where('id', $quotationDetals->bank_id)->first();
         // Get active energy details from the invoice
 
         // Supplier information
@@ -181,7 +180,7 @@ class QuotationPdfController extends Controller
 
 
         $this->fpdf->SetFont('Arial', 'B', $text_size);
-        $this->fpdf->Cell($this->column_one_size, $this->row_h_7, 'Reference:' . $quotationDetals->quotation_no, 1, 0);
+        $this->fpdf->Cell($this->column_one_size, $this->row_h_7, 'Reference: ' . $quotationDetals->quotation_no, 1, 0);
         $this->fpdf->SetFont('Arial', '', $text_size);
         $this->fpdf->Cell($this->column_two_size, $this->row_h_7, 'ZESCO TPIN', 1, 0, 'C');
         $this->fpdf->Cell($this->column_two_size, $this->row_h_7, '1001750872', 1, 0, 'C');
@@ -284,6 +283,7 @@ class QuotationPdfController extends Controller
 // Normal part
         $this->fpdf->SetFont('Arial', '', $label_size);
         $this->fpdf->Cell(0, 5, ' WITH HOLDING TAX @ 15% PAYABLE DIRECTLY TO ZRA', 0, 1, 'L');
+        $this->fpdf->Ln();
 
         // Titles for ZRA and Bank Information
         $this->fpdf->SetFont('Arial', 'B', $text_size);
@@ -292,42 +292,58 @@ class QuotationPdfController extends Controller
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Beneficiary: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "ACCOUNT NAME: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, "ZESCO LIMITED", 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->account_name, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Bank: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "ACCOUNT NUMBER: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'r', 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->account_no, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Branch Name: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "BRANCH : ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'f', 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->branch, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Account No: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "CURRENCY: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'f', 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->currency, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Branch Code: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "BANK: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'h', 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->bank_name, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Swift Code: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "SWIFT ADDRESS: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'g', 0, 1, 'L');
-
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->swift_address, 0, 1, 'L');
 
         $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+
+        $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
+        $this->fpdf->Cell(30, $cell_height_bd, "FRANCIS NAMAKANDA ", 0, 0, 'L');
+        $this->fpdf->SetFont('Arial', '', $label_size_bd);
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, '', 0, 1, 'L');
+
+        $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
+        $this->fpdf->Cell(30, $cell_height_bd, "DIRECTOR - PLANNING AND PROJECTS ", 0, 0, 'L');
+        $this->fpdf->SetFont('Arial', '', $label_size_bd);
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, '', 0, 1, 'L');
+
 
 
         $filename = $quotationDetals->quotation_no . "_" . $transaction_date . "_" . $client->customer_name . "_BPPBS.PDF";
@@ -390,7 +406,6 @@ class QuotationPdfController extends Controller
                 $startX += $scaledFooterWidth + $spacing;
             }
         }
-
 
 
         return response()->streamDownload(function () use ($filename) {
