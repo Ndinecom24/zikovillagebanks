@@ -68,8 +68,8 @@ class ProcessTask extends Model
     public function getStatusColorAttribute(): string
     {
         return match ($this->status) {
-            'active'   => '#10b981',
-            'not_active' => '#3b82f6',
+            'active'      => '#10b981',
+            'not_active'  => '#3b82f6',
             'pending'     => '#f59e0b',
             default       => '#6b7280',
         };

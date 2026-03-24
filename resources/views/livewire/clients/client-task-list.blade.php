@@ -138,7 +138,7 @@
                         </div>
 
                         {{-- Clear --}}
-                        @if($search || $filterStatus || $filterClient || $filterProcess || $filterStage || $filterOffice || $filterPriority)
+                        @if($search || $filterStatus || $filterClient || $filterProcess || $filterStage || $filterOffice)
                             <div style="padding-bottom: 2px;">
                                 <button wire:click="clearFilters" class="btn btn-sm btn-outline-secondary" style="border-radius: 6px; font-size: 0.78rem;">
                                     <i class="fas fa-times mr-1"></i> Clear
@@ -265,7 +265,7 @@
                                     <tr>
                                         <td colspan="8" class="text-center py-4" style="color: #94a3b8;">
                                             <i class="fas fa-clipboard-list fa-2x d-block mb-2" style="opacity: 0.3;"></i>
-                                            @if($search || $filterStatus || $filterClient || $filterProcess || $filterStage || $filterOffice || $filterPriority)
+                                            @if($search || $filterStatus || $filterClient || $filterProcess || $filterStage || $filterOffice)
                                                 No tasks match your filters. Try adjusting or <a href="#" wire:click.prevent="clearFilters" style="color: var(--z-green);">clearing them</a>.
                                             @else
                                                 No client tasks found. Assign a process to a client to begin tracking.
