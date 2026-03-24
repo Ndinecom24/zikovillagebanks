@@ -241,7 +241,7 @@
                                     </div>
                                 </div>
 
-                                {{-- ── Module & Task detail (right column) ── --}}
+                                {{-- ── Stage & Task detail (right column) ── --}}
                                 <div class="col-md-9">
                                     @if($this->activeClientProcess)
                                         @php $acp = $this->activeClientProcess; @endphp
@@ -282,16 +282,16 @@
                                             </div>
                                         </div>
 
-                                        {{-- Module accordion --}}
+                                        {{-- Stage accordion --}}
                                         <div style="padding: 0.75rem 1rem; max-height: 500px; overflow-y: auto;">
-                                            @foreach($this->moduleProgress as $mp)
-                                                @php $mod = $mp->module; @endphp
+                                            @foreach($this->stageProgress as $mp)
+                                                @php $mod = $mp->stage; @endphp
                                                 <div style="border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 0.5rem; overflow: hidden; background: #fff;">
-                                                    {{-- Module header --}}
-                                                    <div wire:click="toggleModule({{ $mod->id }})"
-                                                         style="padding: 0.65rem 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: {{ $activeModuleId == $mod->id ? '#f0fdf4' : '#fafbfc' }}; transition: background 0.15s;"
+                                                    {{-- Stage header --}}
+                                                    <div wire:click="toggleStage({{ $mod->id }})"
+                                                         style="padding: 0.65rem 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: {{ $activeStageId == $mod->id ? '#f0fdf4' : '#fafbfc' }}; transition: background 0.15s;"
                                                          onmouseover="this.style.background='#f0fdf4'"
-                                                         onmouseout="this.style.background='{{ $activeModuleId == $mod->id ? '#f0fdf4' : '#fafbfc' }}'">
+                                                         onmouseout="this.style.background='{{ $activeStageId == $mod->id ? '#f0fdf4' : '#fafbfc' }}'">
                                                         <div class="d-flex align-items-center" style="gap: 0.55rem;">
                                                             <div style="width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.68rem; color: #fff; background: {{ $mp->percent === 100 ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #8b5cf6, #6d28d9)' }};">
                                                                 @if($mp->percent === 100)
@@ -306,17 +306,17 @@
                                                             </div>
                                                         </div>
                                                         <div class="d-flex align-items-center" style="gap: 0.6rem;">
-                                                            {{-- Module mini progress --}}
+                                                            {{-- Stage mini progress --}}
                                                             <div style="width: 60px; height: 4px; border-radius: 4px; background: #e2e8f0; overflow: hidden;">
                                                                 <div style="height: 100%; width: {{ $mp->percent }}%; background: {{ $mp->percent === 100 ? '#10b981' : '#8b5cf6' }}; border-radius: 4px;"></div>
                                                             </div>
                                                             <span style="font-size: 0.72rem; font-weight: 700; color: #64748b;">{{ $mp->percent }}%</span>
-                                                            <i class="fas fa-chevron-{{ $activeModuleId == $mod->id ? 'up' : 'down' }}" style="font-size: 0.65rem; color: #94a3b8;"></i>
+                                                            <i class="fas fa-chevron-{{ $activeStageId == $mod->id ? 'up' : 'down' }}" style="font-size: 0.65rem; color: #94a3b8;"></i>
                                                         </div>
                                                     </div>
 
                                                     {{-- Tasks list (expanded) --}}
-                                                    @if($activeModuleId == $mod->id)
+                                                    @if($activeStageId == $mod->id)
                                                         <div style="border-top: 1px solid #e2e8f0;">
                                                             @forelse($mp->tasks as $tp)
                                                                 @php
@@ -347,8 +347,8 @@
                                                                                     <span style="font-size: 0.62rem; font-weight: 600; color: {{ $tsCfg['color'] }}; background: {{ $tsCfg['bg'] }}; padding: 0.1rem 0.45rem; border-radius: 10px; white-space: nowrap;">
                                                                                         {{ $tsCfg['label'] }}
                                                                                     </span>
-                                                                                    @if($task && $task->priority)
-                                                                                        <span style="font-size: 0.58rem; font-weight: 600; padding: 0.05rem 0.35rem; border-radius: 6px; display: inline-block; color: {{ $task->priority_color }}; background: {{ $task->priority_color }}15;">{{ ucfirst($task->priority) }}</span>
+                                                                                    @if($task && $task->max_days)
+                                                                                        <span style="font-size: 0.58rem; font-weight: 600; padding: 0.05rem 0.35rem; border-radius: 6px; display: inline-block; color: var(--z-orange-dark); background: #fff7ed;"><i class="fas fa-clock mr-1" style="font-size: 0.5rem;"></i>{{ $task->max_days_label }}</span>
                                                                                     @endif
                                                                                 </div>
                                                                             </div>
@@ -458,7 +458,7 @@
                                                                 </div>
                                                             @empty
                                                                 <div class="text-center py-3" style="color: #94a3b8; font-size: 0.8rem;">
-                                                                    <i class="fas fa-inbox mr-1"></i> No tasks in this module
+                                                                    <i class="fas fa-inbox mr-1"></i> No tasks in this stage
                                                                 </div>
                                                             @endforelse
                                                         </div>
@@ -501,7 +501,7 @@
                 {{-- Modal body --}}
                 <div style="padding: 1.25rem;">
                     <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 1rem;">
-                        Select a process to assign to <strong>{{ $client->company_name }}</strong>. All modules and tasks from this process will be tracked.
+                        Select a process to assign to <strong>{{ $client->company_name }}</strong>. All stages and tasks from this process will be tracked.
                     </p>
                     @if(count($availableProcesses) === 0)
                         <div class="text-center py-3" style="background: #fafbfc; border-radius: 10px; border: 1px dashed #e2e8f0;">
@@ -514,7 +514,7 @@
                             <select wire:model="selectedProcessId" class="form-control" style="font-size: 0.85rem; border-radius: 8px; border: 1.5px solid #e2e8f0; padding: 0.5rem 0.75rem;">
                                 <option value="">— Choose a process —</option>
                                 @foreach($availableProcesses as $proc)
-                                    <option value="{{ $proc->id }}">{{ $proc->name }} ({{ $proc->modules->count() }} modules, {{ $proc->totalTaskCount() }} tasks)</option>
+                                    <option value="{{ $proc->id }}">{{ $proc->name }} ({{ $proc->stages->count() }} stages, {{ $proc->totalTaskCount() }} tasks)</option>
                                 @endforeach
                             </select>
                             @error('selectedProcessId')
@@ -534,13 +534,13 @@
                                         <div style="font-size: 0.72rem; color: #64748b; margin-bottom: 0.4rem;">{{ $previewProc->description }}</div>
                                     @endif
                                     <div style="font-size: 0.7rem; color: #94a3b8;">
-                                        <i class="fas fa-cubes mr-1"></i> {{ $previewProc->modules->count() }} modules &middot;
+                                        <i class="fas fa-cubes mr-1"></i> {{ $previewProc->stages->count() }} stages &middot;
                                         <i class="fas fa-tasks ml-1 mr-1"></i> {{ $previewProc->totalTaskCount() }} tasks
                                     </div>
                                     {{-- Show offices involved --}}
                                     @php
                                         $previewOffices = collect();
-                                        foreach($previewProc->modules as $pm) {
+                                        foreach($previewProc->stages as $pm) {
                                             foreach($pm->tasks as $pt) {
                                                 foreach($pt->offices as $po) {
                                                     if(!$previewOffices->contains('id', $po->id)) {
@@ -603,7 +603,7 @@
                         </div>
                         <div>
                             <h5 class="mb-0" style="font-size: 0.95rem; font-weight: 700; color: #1a2332;">Task Details</h5>
-                            <span style="font-size: 0.68rem; color: #64748b;">{{ $dt->module->name ?? '' }} &bull; {{ $dt->module->process->name ?? '' }}</span>
+                            <span style="font-size: 0.68rem; color: #64748b;">{{ $dt->stage->name ?? '' }} &bull; {{ $dt->stage->process->name ?? '' }}</span>
                         </div>
                     </div>
                     <button wire:click="closeTaskDetail" style="background: none; border: none; font-size: 1.1rem; color: #94a3b8; cursor: pointer; padding: 0.2rem;">&times;</button>
@@ -625,24 +625,19 @@
                             </span>
                         </div>
                         <div class="col-md-4">
-                            <div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem;">Priority</div>
-                            @if($dt->priority)
-                                <span style="font-size: 0.75rem; font-weight: 600; color: {{ $dt->priority_color }}; background: {{ $dt->priority_color }}15; padding: 0.2rem 0.55rem; border-radius: 8px; display: inline-block;">{{ ucfirst($dt->priority) }}</span>
+                            <div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem;">Order / Step</div>
+                            @if($dt)
+                                <span class="z-badge-orange" style="font-size: 0.78rem;">Step {{ $dt->order_number }}</span>
                             @else
                                 <span style="font-size: 0.78rem; color: #94a3b8;">—</span>
                             @endif
                         </div>
                         <div class="col-md-4">
-                            <div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem;">Due Date</div>
-                            @if($dt->due_date)
-                                <span style="font-size: 0.78rem; font-weight: 600; color: {{ $dt->is_overdue ? '#dc2626' : '#374151' }};">
-                                    {{ $dt->due_date->format('d M Y') }}
-                                    @if($dt->is_overdue)
-                                        <i class="fas fa-exclamation-circle text-danger ml-1" style="font-size: 0.68rem;"></i>
-                                    @endif
-                                </span>
+                            <div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem;">Max Duration</div>
+                            @if($dt && $dt->max_days)
+                                <span style="font-size: 0.78rem; font-weight: 600; color: var(--z-orange-dark);"><i class="fas fa-clock mr-1"></i>{{ $dt->max_days_label }}</span>
                             @else
-                                <span style="font-size: 0.78rem; color: #94a3b8;">No due date</span>
+                                <span style="font-size: 0.78rem; color: #94a3b8;">Not specified</span>
                             @endif
                         </div>
                     </div>

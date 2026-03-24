@@ -135,7 +135,7 @@ class ProcessList extends Component
     public function render()
     {
         $processes = Process::query()
-            ->withCount('modules')
+            ->withCount('stages')
             ->when($this->search, function ($q) {
                 $q->where(function ($q2) {
                     $q2->where('name', 'LIKE', '%' . $this->search . '%')
@@ -149,14 +149,14 @@ class ProcessList extends Component
         // Stats
         $totalProcesses  = Process::count();
         $activeProcesses = Process::where('status', 'active')->count();
-        $totalModules    = \App\Models\ProcessModule::count();
+        $totalStages     = \App\Models\ProcessStage::count();
         $totalTasks      = \App\Models\ProcessTask::count();
 
         return view('livewire.task-manager.process-list', [
             'processes'       => $processes,
             'totalProcesses'  => $totalProcesses,
             'activeProcesses' => $activeProcesses,
-            'totalModules'    => $totalModules,
+            'totalStages'     => $totalStages,
             'totalTasks'      => $totalTasks,
         ])->layout('layouts.main.master-livewire');
     }

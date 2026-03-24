@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\TaskManager;
 
 use App\Models\Process;
-use App\Models\ProcessModule;
+use App\Models\ProcessStage;
 use App\Models\ProcessTask;
 use App\Models\ResponsibleOffices;
 use Livewire\Component;
@@ -18,22 +18,22 @@ class ProcessShow extends Component
     public $processId;
     public $process;
 
-    /* ── Module CRUD ──────────────────── */
-    public $showModuleModal = false;
-    public $editingModuleId = null;
-    public $moduleName = '';
-    public $moduleDescription = '';
-    public $moduleOrder = 0;
-    public $moduleStatus = 'active';
+    /* ── Stage CRUD ──────────────────── */
+    public $showStageModal = false;
+    public $editingStageId = null;
+    public $stageName = '';
+    public $stageDescription = '';
+    public $stageOrder = 0;
+    public $stageStatus = 'active';
 
     /* ── Task CRUD ────────────────────── */
     public $showTaskModal = false;
     public $editingTaskId = null;
-    public $taskModuleId = '';
+    public $taskStageId = '';
     public $taskTitle = '';
     public $taskDescription = '';
-    public $taskPriority = 'medium';
-    public $taskDueDate = '';
+    public $taskOrderNumber = 1;
+    public $taskMaxDays = '';
     public $taskStatus = 'pending';
     public $taskOfficeIds = [];
 
@@ -55,9 +55,8 @@ class ProcessShow extends Component
     /* ── Filters (for tasks) ──────────── */
     public $taskSearch = '';
     public $taskFilterStatus = '';
-    public $taskFilterPriority = '';
     public $taskFilterOffice = '';
-    public $activeModuleId = null;
+    public $activeStageId = null;
 
     /* ── Lifecycle ────────────────────── */
 
@@ -69,12 +68,11 @@ class ProcessShow extends Component
 
     private function loadProcess()
     {
-        $this->process = Process::with(['modules.tasks.offices.users', 'creator'])->findOrFail($this->processId);
+        $this->process = Process::with(['stages.tasks.offices.users', 'creator'])->findOrFail($this->processId);
     }
 
     public function updatingTaskSearch()        { $this->resetPage(); }
     public function updatingTaskFilterStatus()  { $this->resetPage(); }
-    public function updatingTaskFilterPriority(){ $this->resetPage(); }
     public function updatingTaskFilterOffice()  { $this->resetPage(); }
 
     /* ══════════════════════════════════════
@@ -115,58 +113,58 @@ class ProcessShow extends Component
     }
 
     /* ══════════════════════════════════════
-       MODULE CRUD
+       STAGE CRUD
        ══════════════════════════════════════ */
 
-    public function openModuleModal($id = null)
+    public function openStageModal($id = null)
     {
         $this->resetValidation();
-        $this->reset(['editingModuleId', 'moduleName', 'moduleDescription', 'moduleOrder', 'moduleStatus']);
-        $this->moduleStatus = 'active';
+        $this->reset(['editingStageId', 'stageName', 'stageDescription', 'stageOrder', 'stageStatus']);
+        $this->stageStatus = 'active';
 
         if ($id) {
-            $mod = ProcessModule::findOrFail($id);
-            $this->editingModuleId   = $mod->id;
-            $this->moduleName        = $mod->name;
-            $this->moduleDescription = $mod->description;
-            $this->moduleOrder       = $mod->order;
-            $this->moduleStatus      = $mod->status;
+            $stg = ProcessStage::findOrFail($id);
+            $this->editingStageId   = $stg->id;
+            $this->stageName        = $stg->name;
+            $this->stageDescription = $stg->description;
+            $this->stageOrder       = $stg->order;
+            $this->stageStatus      = $stg->status;
         } else {
-            $this->moduleOrder = $this->process->modules()->count() + 1;
+            $this->stageOrder = $this->process->stages()->count() + 1;
         }
 
-        $this->showModuleModal = true;
+        $this->showStageModal = true;
     }
 
-    public function closeModuleModal()
+    public function closeStageModal()
     {
-        $this->showModuleModal = false;
-        $this->reset(['editingModuleId', 'moduleName', 'moduleDescription', 'moduleOrder', 'moduleStatus']);
+        $this->showStageModal = false;
+        $this->reset(['editingStageId', 'stageName', 'stageDescription', 'stageOrder', 'stageStatus']);
         $this->resetValidation();
     }
 
-    public function saveModule()
+    public function saveStage()
     {
         $this->validate([
-            'moduleName'        => 'required|string|max:255',
-            'moduleDescription' => 'nullable|string|max:1000',
-            'moduleOrder'       => 'required|integer|min:0',
-            'moduleStatus'      => 'required|in:active,inactive',
+            'stageName'        => 'required|string|max:255',
+            'stageDescription' => 'nullable|string|max:1000',
+            'stageOrder'       => 'required|integer|min:0',
+            'stageStatus'      => 'required|in:active,inactive',
         ]);
 
-        ProcessModule::updateOrCreate(
-            ['id' => $this->editingModuleId],
+        ProcessStage::updateOrCreate(
+            ['id' => $this->editingStageId],
             [
                 'process_id'  => $this->processId,
-                'name'        => $this->moduleName,
-                'description' => $this->moduleDescription,
-                'order'       => $this->moduleOrder,
-                'status'      => $this->moduleStatus,
+                'name'        => $this->stageName,
+                'description' => $this->stageDescription,
+                'order'       => $this->stageOrder,
+                'status'      => $this->stageStatus,
             ]
         );
 
-        $msg = $this->editingModuleId ? 'Module updated.' : 'Module created.';
-        $this->closeModuleModal();
+        $msg = $this->editingStageId ? 'Stage updated.' : 'Stage created.';
+        $this->closeStageModal();
         $this->loadProcess();
         session()->flash('message', $msg);
     }
@@ -175,25 +173,25 @@ class ProcessShow extends Component
        TASK CRUD
        ══════════════════════════════════════ */
 
-    public function openTaskModal($moduleId = null, $taskId = null)
+    public function openTaskModal($stageId = null, $taskId = null)
     {
         $this->resetValidation();
-        $this->reset(['editingTaskId', 'taskTitle', 'taskDescription', 'taskPriority', 'taskDueDate', 'taskStatus', 'taskOfficeIds', 'taskModuleId']);
-        $this->taskPriority = 'medium';
-        $this->taskStatus   = 'pending';
+        $this->reset(['editingTaskId', 'taskTitle', 'taskDescription', 'taskOrderNumber', 'taskMaxDays', 'taskStatus', 'taskOfficeIds', 'taskStageId']);
+        $this->taskStatus = 'pending';
 
         if ($taskId) {
             $task = ProcessTask::with('offices')->findOrFail($taskId);
-            $this->editingTaskId   = $task->id;
-            $this->taskModuleId    = $task->module_id;
-            $this->taskTitle       = $task->title;
-            $this->taskDescription = $task->description;
-            $this->taskPriority    = $task->priority;
-            $this->taskDueDate     = $task->due_date ? $task->due_date->format('Y-m-d') : '';
-            $this->taskStatus      = $task->status;
-            $this->taskOfficeIds   = $task->offices->pluck('id')->toArray();
-        } elseif ($moduleId) {
-            $this->taskModuleId = $moduleId;
+            $this->editingTaskId    = $task->id;
+            $this->taskStageId      = $task->stage_id;
+            $this->taskTitle        = $task->title;
+            $this->taskDescription  = $task->description;
+            $this->taskOrderNumber  = $task->order_number;
+            $this->taskMaxDays      = $task->max_days ?? '';
+            $this->taskStatus       = $task->status;
+            $this->taskOfficeIds    = $task->offices->pluck('id')->toArray();
+        } elseif ($stageId) {
+            $this->taskStageId     = $stageId;
+            $this->taskOrderNumber = ProcessTask::where('stage_id', $stageId)->max('order_number') + 1;
         }
 
         $this->showTaskModal = true;
@@ -202,18 +200,18 @@ class ProcessShow extends Component
     public function closeTaskModal()
     {
         $this->showTaskModal = false;
-        $this->reset(['editingTaskId', 'taskTitle', 'taskDescription', 'taskPriority', 'taskDueDate', 'taskStatus', 'taskOfficeIds', 'taskModuleId']);
+        $this->reset(['editingTaskId', 'taskTitle', 'taskDescription', 'taskOrderNumber', 'taskMaxDays', 'taskStatus', 'taskOfficeIds', 'taskStageId']);
         $this->resetValidation();
     }
 
     public function saveTask()
     {
         $this->validate([
-            'taskModuleId'    => 'required|exists:process_modules,id',
+            'taskStageId'     => 'required|exists:process_stages,id',
             'taskTitle'       => 'required|string|max:255',
             'taskDescription' => 'nullable|string|max:2000',
-            'taskPriority'    => 'required|in:low,medium,high',
-            'taskDueDate'     => 'nullable|date',
+            'taskOrderNumber' => 'required|integer|min:1',
+            'taskMaxDays'     => 'nullable|integer|min:1',
             'taskStatus'      => 'required|in:pending,in_progress,completed',
             'taskOfficeIds'   => 'nullable|array',
             'taskOfficeIds.*' => 'exists:responsible_offices,id',
@@ -222,13 +220,13 @@ class ProcessShow extends Component
         $task = ProcessTask::updateOrCreate(
             ['id' => $this->editingTaskId],
             [
-                'module_id'   => $this->taskModuleId,
-                'title'       => $this->taskTitle,
-                'description' => $this->taskDescription,
-                'priority'    => $this->taskPriority,
-                'due_date'    => $this->taskDueDate ?: null,
-                'status'      => $this->taskStatus,
-                'created_by'  => $this->editingTaskId
+                'stage_id'     => $this->taskStageId,
+                'order_number' => $this->taskOrderNumber,
+                'title'        => $this->taskTitle,
+                'description'  => $this->taskDescription,
+                'max_days'     => $this->taskMaxDays ?: null,
+                'status'       => $this->taskStatus,
+                'created_by'   => $this->editingTaskId
                     ? ProcessTask::find($this->editingTaskId)->created_by
                     : auth()->id(),
             ]
@@ -254,7 +252,7 @@ class ProcessShow extends Component
 
     public function viewTask($taskId)
     {
-        $this->detailTask = ProcessTask::with(['module.process', 'offices.users', 'creator'])->findOrFail($taskId);
+        $this->detailTask = ProcessTask::with(['stage.process', 'offices.users', 'creator'])->findOrFail($taskId);
         $this->showTaskDetail = true;
     }
 
@@ -273,7 +271,7 @@ class ProcessShow extends Component
         $this->loadProcess();
 
         if ($this->detailTask && $this->detailTask->id == $taskId) {
-            $this->detailTask = ProcessTask::with(['module.process', 'offices', 'creator'])->find($taskId);
+            $this->detailTask = ProcessTask::with(['stage.process', 'offices', 'creator'])->find($taskId);
         }
 
         session()->flash('message', 'Assignment status updated.');
@@ -288,8 +286,8 @@ class ProcessShow extends Component
         $this->deleteType = $type;
         $this->deleteId   = $id;
 
-        if ($type === 'module') {
-            $this->deleteName = ProcessModule::findOrFail($id)->name;
+        if ($type === 'stage') {
+            $this->deleteName = ProcessStage::findOrFail($id)->name;
         } elseif ($type === 'task') {
             $this->deleteName = ProcessTask::findOrFail($id)->title;
         }
@@ -297,8 +295,8 @@ class ProcessShow extends Component
 
     public function executeDelete()
     {
-        if ($this->deleteType === 'module') {
-            ProcessModule::findOrFail($this->deleteId)->delete();
+        if ($this->deleteType === 'stage') {
+            ProcessStage::findOrFail($this->deleteId)->delete();
         } elseif ($this->deleteType === 'task') {
             ProcessTask::findOrFail($this->deleteId)->delete();
         }
@@ -315,20 +313,19 @@ class ProcessShow extends Component
         $this->deleteName = '';
     }
 
-    /* ── Select active module tab ─────── */
+    /* ── Select active stage tab ──────── */
 
-    public function selectModule($moduleId)
+    public function selectStage($stageId)
     {
-        $this->activeModuleId = $moduleId;
+        $this->activeStageId = $stageId;
         $this->resetPage();
     }
 
     public function clearTaskFilters()
     {
-        $this->taskSearch         = '';
-        $this->taskFilterStatus   = '';
-        $this->taskFilterPriority = '';
-        $this->taskFilterOffice   = '';
+        $this->taskSearch       = '';
+        $this->taskFilterStatus = '';
+        $this->taskFilterOffice = '';
         $this->resetPage();
     }
 
@@ -344,8 +341,8 @@ class ProcessShow extends Component
 
         // Build filtered tasks query
         $tasksQuery = ProcessTask::query()
-            ->whereIn('module_id', $this->process->modules->pluck('id'))
-            ->when($this->activeModuleId, fn($q) => $q->where('module_id', $this->activeModuleId))
+            ->whereIn('stage_id', $this->process->stages->pluck('id'))
+            ->when($this->activeStageId, fn($q) => $q->where('stage_id', $this->activeStageId))
             ->when($this->taskSearch, function ($q) {
                 $q->where(function ($q2) {
                     $q2->where('title', 'LIKE', '%' . $this->taskSearch . '%')
@@ -353,23 +350,22 @@ class ProcessShow extends Component
                 });
             })
             ->when($this->taskFilterStatus, fn($q) => $q->where('status', $this->taskFilterStatus))
-            ->when($this->taskFilterPriority, fn($q) => $q->where('priority', $this->taskFilterPriority))
             ->when($this->taskFilterOffice, function ($q) {
                 $q->whereHas('offices', fn($q2) => $q2->where('responsible_offices.id', $this->taskFilterOffice));
             })
-            ->with(['module', 'offices', 'creator'])
-            ->orderBy('created_at', 'desc');
+            ->with(['stage', 'offices', 'creator'])
+            ->orderBy('stage_id')
+            ->orderBy('order_number');
 
         $tasks = $tasksQuery->paginate(15);
 
         // Stats for this process
-        $allTaskIds = ProcessTask::whereIn('module_id', $this->process->modules->pluck('id'));
+        $allTaskIds = ProcessTask::whereIn('stage_id', $this->process->stages->pluck('id'));
         $stats = [
             'totalTasks'     => (clone $allTaskIds)->count(),
             'pendingTasks'   => (clone $allTaskIds)->where('status', 'pending')->count(),
             'inProgressTasks'=> (clone $allTaskIds)->where('status', 'in_progress')->count(),
             'completedTasks' => (clone $allTaskIds)->where('status', 'completed')->count(),
-            'overdueTasks'   => (clone $allTaskIds)->where('due_date', '<', now())->where('status', '!=', 'completed')->count(),
         ];
 
         return view('livewire.task-manager.process-show', [

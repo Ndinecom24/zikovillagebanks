@@ -21,9 +21,17 @@ class Process extends Model
 
     /* ── Relationships ────────────────── */
 
+    public function stages()
+    {
+        return $this->hasMany(ProcessStage::class, 'process_id')->orderBy('order');
+    }
+
+    /**
+     * @deprecated Use stages() instead.
+     */
     public function modules()
     {
-        return $this->hasMany(ProcessModule::class, 'process_id')->orderBy('order');
+        return $this->stages();
     }
 
     public function creator()
@@ -40,12 +48,12 @@ class Process extends Model
 
     public function totalTaskCount(): int
     {
-        return ProcessTask::whereIn('module_id', $this->modules()->pluck('id'))->count();
+        return ProcessTask::whereIn('stage_id', $this->stages()->pluck('id'))->count();
     }
 
     public function completedTaskCount(): int
     {
-        return ProcessTask::whereIn('module_id', $this->modules()->pluck('id'))
+        return ProcessTask::whereIn('stage_id', $this->stages()->pluck('id'))
             ->where('status', 'completed')
             ->count();
     }

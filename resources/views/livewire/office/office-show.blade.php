@@ -247,10 +247,10 @@
                                 <tr>
                                     <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">#</th>
                                     <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Task</th>
-                                    <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Process / Module</th>
-                                    <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Priority</th>
+                                    <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Process / Stage</th>
+                                    <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Order</th>
                                     <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Status</th>
-                                    <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Due Date</th>
+                                    <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Max Days</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -264,17 +264,15 @@
                                             @endif
                                         </td>
                                         <td style="padding: 0.6rem 1rem; vertical-align: middle;">
-                                            @if($task->module && $task->module->process)
-                                                <div style="font-size: 0.78rem; font-weight: 600; color: #374151;">{{ $task->module->process->name }}</div>
-                                                <div style="font-size: 0.72rem; color: #6b7280;">{{ $task->module->name }}</div>
+                                            @if($task->stage && $task->stage->process)
+                                                <div style="font-size: 0.78rem; font-weight: 600; color: #374151;">{{ $task->stage->process->name }}</div>
+                                                <div style="font-size: 0.72rem; color: #6b7280;">{{ $task->stage->name }}</div>
                                             @else
                                                 <span style="color: #94a3b8;">—</span>
                                             @endif
                                         </td>
                                         <td style="padding: 0.6rem 1rem; vertical-align: middle;">
-                                            <span class="tm-priority-badge" style="background: {{ $task->priority_color }}20; color: {{ $task->priority_color }}; border: 1px solid {{ $task->priority_color }}40;">
-                                                {{ ucfirst($task->priority) }}
-                                            </span>
+                                            <span class="z-badge-orange" style="font-size: 0.78rem; padding: 0.1rem 0.4rem;">{{ $task->order_number }}</span>
                                         </td>
                                         <td style="padding: 0.6rem 1rem; vertical-align: middle;">
                                             <span class="tm-status-badge" style="background: {{ $task->status_color }}20; color: {{ $task->status_color }}; border: 1px solid {{ $task->status_color }}40;">
@@ -282,13 +280,8 @@
                                             </span>
                                         </td>
                                         <td style="padding: 0.6rem 1rem; vertical-align: middle; font-size: 0.82rem;">
-                                            @if($task->due_date)
-                                                <span class="{{ $task->is_overdue ? 'text-danger font-weight-bold' : 'text-muted' }}">
-                                                    {{ $task->due_date->format('M d, Y') }}
-                                                </span>
-                                                @if($task->is_overdue)
-                                                    <div style="font-size: 0.65rem; color: #dc2626;"><i class="fas fa-exclamation-circle"></i> Overdue</div>
-                                                @endif
+                                            @if($task->max_days)
+                                                <span style="font-weight: 600; color: var(--z-orange-dark);"><i class="fas fa-clock mr-1" style="font-size: 0.7rem;"></i>{{ $task->max_days_label }}</span>
                                             @else
                                                 <span style="color: #94a3b8;">—</span>
                                             @endif

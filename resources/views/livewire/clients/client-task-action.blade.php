@@ -4,7 +4,7 @@
         $cp   = $progress->clientProcess;
         $client = $cp->client ?? null;
         $process = $cp->process ?? null;
-        $module  = $task->module ?? null;
+        $stage   = $task->stage ?? null;
 
         $statusConfig = [
             'pending'     => ['icon' => 'far fa-circle',       'color' => '#f59e0b', 'bg' => '#fffbeb',  'label' => 'Pending',     'textColor' => '#92400e'],
@@ -37,9 +37,9 @@
                                 <span style="opacity: 0.7;">&bull;</span>
                                 <span>{{ $process->name }}</span>
                             @endif
-                            @if($module)
+                            @if($stage)
                                 <span style="opacity: 0.7;">&bull;</span>
-                                <span>{{ $module->name }}</span>
+                                <span>{{ $stage->name }}</span>
                             @endif
                         </p>
                     </div>
@@ -162,24 +162,15 @@
                                     </div>
                                 @endif
                                 <div class="col-md-4 mb-2">
-                                    <div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem;">Priority</div>
-                                    @if($task->priority)
-                                        <span style="font-size: 0.78rem; font-weight: 600; color: {{ $task->priority_color }}; background: {{ $task->priority_color }}15; padding: 0.15rem 0.5rem; border-radius: 8px;">{{ ucfirst($task->priority) }}</span>
-                                    @else
-                                        <span style="color: #94a3b8;">—</span>
-                                    @endif
+                                    <div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem;">Order / Step</div>
+                                    <span class="z-badge-orange" style="font-size: 0.78rem;">Step {{ $task->order_number }}</span>
                                 </div>
                                 <div class="col-md-4 mb-2">
-                                    <div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem;">Due Date</div>
-                                    @if($task->due_date)
-                                        <span style="font-size: 0.82rem; font-weight: 600; color: {{ $task->is_overdue ? '#dc2626' : '#374151' }};">
-                                            {{ $task->due_date->format('d M Y') }}
-                                            @if($task->is_overdue)
-                                                <i class="fas fa-exclamation-circle text-danger ml-1" style="font-size: 0.7rem;"></i>
-                                            @endif
-                                        </span>
+                                    <div style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.2rem;">Max Duration</div>
+                                    @if($task->max_days)
+                                        <span style="font-size: 0.82rem; font-weight: 600; color: var(--z-orange-dark);"><i class="fas fa-clock mr-1"></i>{{ $task->max_days_label }}</span>
                                     @else
-                                        <span style="color: #94a3b8;">No due date</span>
+                                        <span style="color: #94a3b8;">Not specified</span>
                                     @endif
                                 </div>
                                 <div class="col-md-4 mb-2">
@@ -444,28 +435,28 @@
                                 </div>
                             @endif
 
-                            {{-- Module --}}
-                            @if($module)
+                            {{-- Stage --}}
+                            @if($stage)
                                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.6rem 0.75rem;">
-                                    <div style="font-size: 0.6rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.15rem;">Module</div>
+                                    <div style="font-size: 0.6rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.15rem;">Stage</div>
                                     <div class="d-flex align-items-center" style="gap: 0.35rem;">
                                         <div style="width: 20px; height: 20px; border-radius: 6px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.55rem; font-weight: 700;">
-                                            {{ $module->order ?? '?' }}
+                                            {{ $stage->order ?? '?' }}
                                         </div>
-                                        <span style="font-size: 0.82rem; font-weight: 600; color: #1a2332;">{{ $module->name }}</span>
+                                        <span style="font-size: 0.82rem; font-weight: 600; color: #1a2332;">{{ $stage->name }}</span>
                                     </div>
                                 </div>
                             @endif
                         </div>
                     </div>
 
-                    {{-- Sibling tasks in same module --}}
+                    {{-- Sibling tasks in same stage --}}
                     <div class="card z-card mb-3">
                         <div class="card-header py-2">
                             <h3 class="mb-0" style="font-size: 0.9rem; font-weight: 600;">
                                 <i class="fas fa-list-check mr-1" style="color: var(--z-green);"></i>
-                                Module Tasks
-                                @if($module)
+                                Stage Tasks
+                                @if($stage)
                                     <span class="z-count">{{ $this->siblingTasks->count() }}</span>
                                 @endif
                             </h3>

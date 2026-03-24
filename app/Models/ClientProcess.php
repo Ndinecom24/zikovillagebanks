@@ -67,15 +67,23 @@ class ClientProcess extends Model
         return (int) round(($this->completedTasks() / $total) * 100);
     }
 
-    public function getCurrentModuleAttribute()
+    public function getCurrentStageAttribute()
     {
-        // Find the first module that has incomplete tasks
+        // Find the first stage that has incomplete tasks
         $firstIncomplete = $this->taskProgress()
             ->where('status', '!=', 'completed')
-            ->with('processTask.module')
+            ->with('processTask.stage')
             ->orderBy('id')
             ->first();
 
-        return $firstIncomplete?->processTask?->module;
+        return $firstIncomplete?->processTask?->stage;
+    }
+
+    /**
+     * @deprecated Use getCurrentStageAttribute() instead.
+     */
+    public function getCurrentModuleAttribute()
+    {
+        return $this->getCurrentStageAttribute();
     }
 }
