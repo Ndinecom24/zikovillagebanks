@@ -99,7 +99,7 @@ class ClientTaskAction extends Component
             'clientProcess.client',
             'clientProcess.process',
             'clientProcess.taskProgress',
-            'processTask.module.process',
+            'processTask.stage.process',
             'processTask.offices.users',
             'processTask.creator',
             'completedByUser',
@@ -308,16 +308,16 @@ class ClientTaskAction extends Component
         }
     }
 
-    /* ── Computed: sibling tasks in same module ── */
+    /* ── Computed: sibling tasks in same stage ── */
     public function getSiblingTasksProperty()
     {
         $task = $this->progress->processTask;
-        if (!$task || !$task->module_id) return collect();
+        if (!$task || !$task->stage_id) return collect();
 
-        $moduleTaskIds = \App\Models\ProcessTask::where('module_id', $task->module_id)->pluck('id');
+        $stageTaskIds = \App\Models\ProcessTask::where('stage_id', $task->stage_id)->pluck('id');
 
         return ClientTaskProgress::where('client_process_id', $this->progress->client_process_id)
-            ->whereIn('process_task_id', $moduleTaskIds)
+            ->whereIn('process_task_id', $stageTaskIds)
             ->with('processTask')
             ->get();
     }

@@ -58,13 +58,14 @@
    2. PAGE HEADER (Green Gradient)
    ==================================================================== */
 .z-page-header {
-    background: linear-gradient(135deg, var(--z-green-darker) 0%, var(--z-green-dark) 40%, var(--z-green) 100%);
+    background: linear-gradient(135deg, #f0fdf4 0%, #e6f7ec 50%, #f0fdf4 100%);
     border-radius: 12px;
     padding: 1.5rem 2rem;
     margin-bottom: 1.5rem;
-    color: #fff;
+    color: var(--z-text);
     position: relative;
     overflow: hidden;
+    border: 1px solid #d1e7dd;
 }
 .z-page-header::before {
     content: '';
@@ -90,11 +91,12 @@
     font-size: 1.35rem;
     font-weight: 700;
     margin: 0;
+    color: var(--z-green-darker);
 }
 .z-page-header h1 i { color: var(--z-orange); }
 .z-page-header p {
     margin: 0.25rem 0 0;
-    opacity: 0.85;
+    color: var(--z-text-secondary);
     font-size: 0.875rem;
 }
 
@@ -109,14 +111,14 @@
     box-shadow: var(--z-shadow-sm);
 }
 .z-card .card-header {
-    background: var(--z-orange);  /* Orange header */
+    background: #fafbfc;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     padding: 1rem 1.5rem;
 }
 .z-card .card-header h3 {
     font-size: 1rem;
     font-weight: 700;
-    color: #fff;  /* White text on orange */
+    color: var(--z-orange-dark);
     margin: 0;
 }
 
@@ -1379,24 +1381,24 @@
    30. TASK MANAGEMENT MODULE
    ==================================================================== */
 
-/* --- Module list items (sidebar) --- */
-.tm-module-item {
+/* --- Stage list items (sidebar) --- */
+.tm-stage-item {
     padding: 10px 14px;
     border-bottom: 1px solid #f1f5f9;
     transition: background 0.15s;
     cursor: default;
 }
-.tm-module-item:hover {
+.tm-stage-item:hover {
     background: #f7fafc;
 }
-.tm-module-item:last-child {
+.tm-stage-item:last-child {
     border-bottom: none;
 }
-.tm-module-item.tm-module-active {
+.tm-stage-item.tm-stage-active {
     background: #e6f7ec;
     border-left: 3px solid var(--z-green);
 }
-.tm-module-order {
+.tm-stage-order {
     display: inline-flex;
     align-items: center;
     justify-content: center;

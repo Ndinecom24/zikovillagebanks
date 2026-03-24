@@ -32,8 +32,8 @@
                 <div class="row mt-3">
                     <div class="col-6 col-md-2">
                         <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
-                            <div style="font-size: 1.15rem; font-weight: 800;">{{ $process->modules->count() }}</div>
-                            <div style="font-size: 0.72rem; opacity: 0.8;">Modules</div>
+                            <div style="font-size: 1.15rem; font-weight: 800;">{{ $process->stages->count() }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Stages</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-2">
@@ -60,12 +60,6 @@
                             <div style="font-size: 0.72rem; opacity: 0.8;">Completed</div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-2">
-                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
-                            <div style="font-size: 1.15rem; font-weight: 800; color: #f87171;">{{ $stats['overdueTasks'] }}</div>
-                            <div style="font-size: 0.72rem; opacity: 0.8;">Overdue</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -84,18 +78,18 @@
             @endif
 
             <div class="row">
-                {{-- LEFT: Modules Panel --}}
+                {{-- LEFT: Stages Panel --}}
                 <div class="col-lg-4 mb-3">
                     <div class="card z-card">
                         <div class="card-header d-flex align-items-center justify-content-between py-2">
-                            <h3 class="mb-0" style="font-size: 0.95rem;"><i class="fas fa-cubes mr-1"></i> Modules <span class="z-count">{{ $process->modules->count() }}</span></h3>
-                            <button wire:click="openModuleModal()" class="btn-zesco" style="font-size: 0.75rem; padding: 4px 12px;">
+                            <h3 class="mb-0" style="font-size: 0.95rem;"><i class="fas fa-cubes mr-1"></i> Stages <span class="z-count">{{ $process->stages->count() }}</span></h3>
+                            <button wire:click="openStageModal()" class="btn-zesco" style="font-size: 0.75rem; padding: 4px 12px;">
                                 <i class="fas fa-plus mr-1"></i> Add
                             </button>
                         </div>
                         <div class="card-body p-0" style="max-height: 600px; overflow-y: auto;">
                             {{-- "All Tasks" tab --}}
-                            <div wire:click="selectModule(null)" class="tm-module-item {{ is_null($activeModuleId) ? 'tm-module-active' : '' }}">
+                            <div wire:click="selectStage(null)" class="tm-stage-item {{ is_null($activeStageId) ? 'tm-stage-active' : '' }}">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
                                         <i class="fas fa-layer-group mr-1" style="color: var(--z-gold);"></i>
@@ -105,13 +99,13 @@
                                 </div>
                             </div>
 
-                            @forelse($process->modules as $mod)
-                                <div class="tm-module-item {{ $activeModuleId == $mod->id ? 'tm-module-active' : '' }}">
-                                    <div wire:click="selectModule({{ $mod->id }})" style="cursor: pointer;">
+                            @forelse($process->stages as $mod)
+                                <div class="tm-stage-item {{ $activeStageId == $mod->id ? 'tm-stage-active' : '' }}">
+                                    <div wire:click="selectStage({{ $mod->id }})" style="cursor: pointer;">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div style="min-width: 0; flex: 1;">
                                                 <div class="d-flex align-items-center" style="gap: 0.4rem;">
-                                                    <span class="tm-module-order">{{ $mod->order }}</span>
+                                                    <span class="tm-stage-order">{{ $mod->order }}</span>
                                                     <span style="font-weight: 600; font-size: 0.85rem; color: #1a2332;">{{ Str::limit($mod->name, 28) }}</span>
                                                 </div>
                                                 @if($mod->description)
@@ -135,20 +129,20 @@
                                         <button wire:click="openTaskModal({{ $mod->id }})" class="btn btn-sm btn-outline-success" style="border-radius: 6px; font-size: 0.68rem; padding: 2px 8px;" title="Add Task">
                                             <i class="fas fa-plus mr-1"></i> Task
                                         </button>
-                                        <button wire:click="openModuleModal({{ $mod->id }})" class="z-action z-action-edit" title="Edit Module" style="width: 24px; height: 24px; font-size: 0.65rem;">
-                                            <span wire:loading wire:target="openModuleModal({{ $mod->id }})" class="spinner-border spinner-border-sm" role="status" style="width: 0.65rem; height: 0.65rem;"></span>
-                                            <i wire:loading.remove wire:target="openModuleModal({{ $mod->id }})" class="fas fa-pen"></i>
+                                        <button wire:click="openStageModal({{ $mod->id }})" class="z-action z-action-edit" title="Edit Stage" style="width: 24px; height: 24px; font-size: 0.65rem;">
+                                            <span wire:loading wire:target="openStageModal({{ $mod->id }})" class="spinner-border spinner-border-sm" role="status" style="width: 0.65rem; height: 0.65rem;"></span>
+                                            <i wire:loading.remove wire:target="openStageModal({{ $mod->id }})" class="fas fa-pen"></i>
                                         </button>
-                                        <button wire:click="confirmDelete('module', {{ $mod->id }})" class="z-action z-action-delete" title="Delete Module" style="width: 24px; height: 24px; font-size: 0.65rem;">
-                                            <span wire:loading wire:target="confirmDelete('module', {{ $mod->id }})" class="spinner-border spinner-border-sm" role="status" style="width: 0.65rem; height: 0.65rem;"></span>
-                                            <i wire:loading.remove wire:target="confirmDelete('module', {{ $mod->id }})" class="fas fa-trash-alt"></i>
+                                        <button wire:click="confirmDelete('stage', {{ $mod->id }})" class="z-action z-action-delete" title="Delete Stage" style="width: 24px; height: 24px; font-size: 0.65rem;">
+                                            <span wire:loading wire:target="confirmDelete('stage', {{ $mod->id }})" class="spinner-border spinner-border-sm" role="status" style="width: 0.65rem; height: 0.65rem;"></span>
+                                            <i wire:loading.remove wire:target="confirmDelete('stage', {{ $mod->id }})" class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
                                 </div>
                             @empty
                                 <div class="p-4 text-center" style="color: #94a3b8;">
                                     <i class="fas fa-cubes fa-2x d-block mb-2"></i>
-                                    No modules yet. Add one to get started.
+                                    No stages yet. Add one to get started.
                                 </div>
                             @endforelse
                         </div>
@@ -161,11 +155,11 @@
                         <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.5rem;">
                             <h3 class="mb-0">
                                 <i class="fas fa-tasks mr-1"></i>
-                                {{ $activeModuleId ? ($process->modules->firstWhere('id', $activeModuleId)->name ?? 'Module') . ' — Tasks' : 'All Tasks' }}
+                                {{ $activeStageId ? ($process->stages->firstWhere('id', $activeStageId)->name ?? 'Stage') . ' — Tasks' : 'All Tasks' }}
                                 <span class="z-count">{{ $tasks->total() }}</span>
                             </h3>
-                            @if($process->modules->count() > 0)
-                                <button wire:click="openTaskModal({{ $activeModuleId }})" class="btn-zesco" style="font-size: 0.8rem;">
+                            @if($process->stages->count() > 0)
+                                <button wire:click="openTaskModal({{ $activeStageId }})" class="btn-zesco" style="font-size: 0.8rem;">
                                     <i class="fas fa-plus mr-1"></i> New Task
                                 </button>
                             @endif
@@ -184,19 +178,13 @@
                                     <option value="in_progress">In Progress</option>
                                     <option value="completed">Completed</option>
                                 </select>
-                                <select wire:model="taskFilterPriority" class="form-control z-filter-select" style="max-width: 140px;">
-                                    <option value="">All Priorities</option>
-                                    <option value="high">High</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="low">Low</option>
-                                </select>
                                 <select wire:model="taskFilterOffice" class="form-control z-filter-select" style="max-width: 180px;">
                                     <option value="">All Offices</option>
                                     @foreach($offices as $off)
                                         <option value="{{ $off->id }}">{{ Str::limit($off->responsible_office, 25) }}</option>
                                     @endforeach
                                 </select>
-                                @if($taskSearch || $taskFilterStatus || $taskFilterPriority || $taskFilterOffice)
+                                @if($taskSearch || $taskFilterStatus || $taskFilterOffice)
                                     <button wire:click="clearTaskFilters" class="btn btn-sm btn-outline-secondary" style="border-radius: 6px;">
                                         <i class="fas fa-times mr-1"></i> Clear
                                     </button>
@@ -208,12 +196,11 @@
                                 <table class="table z-table mb-0">
                                     <thead>
                                         <tr>
-                                            <th style="width: 36px;">#</th>
+                                            <th style="width: 50px;">Order</th>
                                             <th style="min-width: 200px;">Task</th>
-                                            <th>Module</th>
-                                            <th style="width: 80px;">Priority</th>
+                                            <th>Stage</th>
+                                            <th style="width: 90px;">Max Days</th>
                                             <th style="width: 100px;">Status</th>
-                                            <th style="width: 100px;">Due Date</th>
                                             <th>Offices</th>
                                             <th style="width: 120px;">Actions</th>
                                         </tr>
@@ -221,7 +208,11 @@
                                     <tbody>
                                         @forelse($tasks as $idx => $task)
                                             <tr>
-                                                <td style="color: #94a3b8;">{{ $tasks->firstItem() + $idx }}</td>
+                                                <td>
+                                                    <span class="z-badge-orange" style="font-size: 0.72rem; padding: 0.15rem 0.5rem;">
+                                                        {{ $task->order_number }}
+                                                    </span>
+                                                </td>
                                                 <td>
                                                     <div style="font-weight: 600; color: #1a2332;">{{ $task->title }}</div>
                                                     @if($task->description)
@@ -229,29 +220,19 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <span class="z-badge" style="font-size: 0.72rem;">{{ Str::limit($task->module->name ?? '—', 18) }}</span>
+                                                    <span class="z-badge" style="font-size: 0.72rem;">{{ Str::limit($task->stage->name ?? '—', 18) }}</span>
                                                 </td>
-                                                <td>
-                                                    <span class="tm-priority-badge" style="background: {{ $task->priority_color }}20; color: {{ $task->priority_color }}; border: 1px solid {{ $task->priority_color }}40;">
-                                                        {{ ucfirst($task->priority) }}
-                                                    </span>
+                                                <td style="font-size: 0.82rem;">
+                                                    @if($task->max_days)
+                                                        <span style="font-weight: 600; color: var(--z-orange-dark);"><i class="fas fa-clock mr-1" style="font-size: 0.7rem;"></i>{{ $task->max_days_label }}</span>
+                                                    @else
+                                                        <span style="color: #94a3b8;">—</span>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     <span class="tm-status-badge" style="background: {{ $task->status_color }}20; color: {{ $task->status_color }}; border: 1px solid {{ $task->status_color }}40;">
                                                         {{ str_replace('_', ' ', ucfirst($task->status)) }}
                                                     </span>
-                                                </td>
-                                                <td style="font-size: 0.78rem; color: #6b7280;">
-                                                    @if($task->due_date)
-                                                        <span class="{{ $task->is_overdue ? 'text-danger font-weight-bold' : '' }}">
-                                                            {{ $task->due_date->format('M d, Y') }}
-                                                        </span>
-                                                        @if($task->is_overdue)
-                                                            <div style="font-size: 0.65rem; color: #dc2626;"><i class="fas fa-exclamation-circle"></i> Overdue</div>
-                                                        @endif
-                                                    @else
-                                                        <span style="color: #94a3b8;">—</span>
-                                                    @endif
                                                 </td>
                                                 <td>
                                                     @if($task->offices->count() > 0)
@@ -291,10 +272,10 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8" class="text-center py-4" style="color: #94a3b8;">
+                                                <td colspan="7" class="text-center py-4" style="color: #94a3b8;">
                                                     <i class="fas fa-tasks fa-2x d-block mb-2"></i>
-                                                    @if($process->modules->count() === 0)
-                                                        Create a module first, then add tasks.
+                                                    @if($process->stages->count() === 0)
+                                                        Create a stage first, then add tasks.
                                                     @else
                                                         No tasks found. Click "New Task" to create one.
                                                     @endif
@@ -355,37 +336,37 @@
         </div>
     @endif
 
-    {{-- ===== MODULE MODAL ===== --}}
-    @if($showModuleModal)
+    {{-- ===== STAGE MODAL ===== --}}
+    @if($showStageModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
             <div class="modal-dialog">
                 <div class="modal-content z-modal">
                     <div class="modal-header modal-header-gold">
-                        <h5><i class="fas fa-cube mr-2"></i> {{ $editingModuleId ? 'Edit' : 'New' }} Module</h5>
-                        <button wire:click="closeModuleModal" type="button" class="close text-white"><span>&times;</span></button>
+                        <h5><i class="fas fa-cube mr-2"></i> {{ $editingStageId ? 'Edit' : 'New' }} Stage</h5>
+                        <button wire:click="closeStageModal" type="button" class="close text-white"><span>&times;</span></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <label class="z-label">Module Name <span class="text-danger">*</span></label>
-                            <input type="text" wire:model.defer="moduleName" class="form-control z-input" placeholder="e.g. Application Review, Due Diligence...">
-                            @error('moduleName') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
+                            <label class="z-label">Stage Name <span class="text-danger">*</span></label>
+                            <input type="text" wire:model.defer="stageName" class="form-control z-input" placeholder="e.g. Application Review, Due Diligence...">
+                            @error('stageName') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
                         </div>
                         <div class="form-group mb-3">
                             <label class="z-label">Description</label>
-                            <textarea wire:model.defer="moduleDescription" class="form-control z-input" rows="2" placeholder="Brief description..."></textarea>
+                            <textarea wire:model.defer="stageDescription" class="form-control z-input" rows="2" placeholder="Brief description..."></textarea>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="z-label">Order <span class="text-danger">*</span></label>
-                                    <input type="number" wire:model.defer="moduleOrder" class="form-control z-input" min="0">
-                                    @error('moduleOrder') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
+                                    <input type="number" wire:model.defer="stageOrder" class="form-control z-input" min="0">
+                                    @error('stageOrder') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="z-label">Status</label>
-                                    <select wire:model.defer="moduleStatus" class="form-control z-input">
+                                    <select wire:model.defer="stageStatus" class="form-control z-input">
                                         <option value="active">Active</option>
                                         <option value="inactive">Inactive</option>
                                     </select>
@@ -394,9 +375,9 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="border-top: 1px solid #e9ecef;">
-                        <button wire:click="closeModuleModal" class="btn btn-light" style="border-radius: 8px;">Cancel</button>
-                        <button wire:click="saveModule" class="btn-zesco-green">
-                            <i class="fas fa-save mr-1"></i> {{ $editingModuleId ? 'Update' : 'Create' }}
+                        <button wire:click="closeStageModal" class="btn btn-light" style="border-radius: 8px;">Cancel</button>
+                        <button wire:click="saveStage" class="btn-zesco-green">
+                            <i class="fas fa-save mr-1"></i> {{ $editingStageId ? 'Update' : 'Create' }}
                         </button>
                     </div>
                 </div>
@@ -421,14 +402,14 @@
                                 @error('taskTitle') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="z-label">Module <span class="text-danger">*</span></label>
-                                <select wire:model.defer="taskModuleId" class="form-control z-input">
-                                    <option value="">-- Select Module --</option>
-                                    @foreach($process->modules as $mod)
+                                <label class="z-label">Stage <span class="text-danger">*</span></label>
+                                <select wire:model.defer="taskStageId" class="form-control z-input">
+                                    <option value="">-- Select Stage --</option>
+                                    @foreach($process->stages as $mod)
                                         <option value="{{ $mod->id }}">{{ $mod->order }}. {{ $mod->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('taskModuleId') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
+                                @error('taskStageId') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -439,16 +420,16 @@
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label class="z-label">Priority</label>
-                                <select wire:model.defer="taskPriority" class="form-control z-input">
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </select>
+                                <label class="z-label">Order Number <span class="text-danger">*</span></label>
+                                <input type="number" wire:model.defer="taskOrderNumber" class="form-control z-input" min="1" placeholder="e.g. 1, 2, 3...">
+                                @error('taskOrderNumber') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
+                                <small class="text-muted">Sequential order within the stage</small>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="z-label">Due Date</label>
-                                <input type="date" wire:model.defer="taskDueDate" class="form-control z-input">
+                                <label class="z-label">Max Days</label>
+                                <input type="number" wire:model.defer="taskMaxDays" class="form-control z-input" min="1" placeholder="e.g. 14">
+                                @error('taskMaxDays') <span class="text-danger" style="font-size: 0.78rem;">{{ $message }}</span> @enderror
+                                <small class="text-muted">Maximum time period in days</small>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="z-label">Status</label>
@@ -505,17 +486,15 @@
                             <div class="col-md-12 mb-3">
                                 <h4 style="font-weight: 700; color: #1a2332; margin: 0;">{{ $detailTask->title }}</h4>
                                 <div style="font-size: 0.82rem; color: #6b7280; margin-top: 0.25rem;">
-                                    Module: <strong>{{ $detailTask->module->name ?? '—' }}</strong>
-                                    &bull; Process: <strong>{{ $detailTask->module->process->name ?? '—' }}</strong>
+                                    Stage: <strong>{{ $detailTask->stage->name ?? '—' }}</strong>
+                                    &bull; Process: <strong>{{ $detailTask->stage->process->name ?? '—' }}</strong>
                                 </div>
                             </div>
 
                             <div class="col-md-4 mb-2">
-                                <div class="z-detail-label">Priority</div>
+                                <div class="z-detail-label">Order</div>
                                 <div class="z-detail-value">
-                                    <span class="tm-priority-badge" style="background: {{ $detailTask->priority_color }}20; color: {{ $detailTask->priority_color }}; border: 1px solid {{ $detailTask->priority_color }}40;">
-                                        {{ ucfirst($detailTask->priority) }}
-                                    </span>
+                                    <span class="z-badge-orange" style="font-size: 0.82rem;">Step {{ $detailTask->order_number }}</span>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-2">
@@ -527,17 +506,12 @@
                                 </div>
                             </div>
                             <div class="col-md-4 mb-2">
-                                <div class="z-detail-label">Due Date</div>
+                                <div class="z-detail-label">Max Duration</div>
                                 <div class="z-detail-value">
-                                    @if($detailTask->due_date)
-                                        <span class="{{ $detailTask->is_overdue ? 'text-danger font-weight-bold' : '' }}">
-                                            {{ $detailTask->due_date->format('M d, Y') }}
-                                        </span>
-                                        @if($detailTask->is_overdue)
-                                            <span class="text-danger ml-1" style="font-size: 0.72rem;"><i class="fas fa-exclamation-circle"></i> Overdue</span>
-                                        @endif
+                                    @if($detailTask->max_days)
+                                        <span style="color: var(--z-orange-dark); font-weight: 600;"><i class="fas fa-clock mr-1"></i>{{ $detailTask->max_days_label }}</span>
                                     @else
-                                        <span class="text-muted">No due date</span>
+                                        <span class="text-muted">Not specified</span>
                                     @endif
                                 </div>
                             </div>
@@ -656,8 +630,8 @@
                         <p style="font-size: 0.85rem; color: #6b7280;">
                             Are you sure you want to delete<br>
                             <strong>"{{ Str::limit($deleteName, 40) }}"</strong>?<br>
-                            @if($deleteType === 'module')
-                                <small class="text-danger">All tasks inside this module will also be deleted.</small>
+                            @if($deleteType === 'stage')
+                                <small class="text-danger">All tasks inside this stage will also be deleted.</small>
                             @else
                                 <small class="text-danger">This action cannot be undone.</small>
                             @endif

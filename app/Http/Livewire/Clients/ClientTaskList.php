@@ -6,7 +6,7 @@ use App\Models\ClientDetails;
 use App\Models\ClientProcess;
 use App\Models\ClientTaskProgress;
 use App\Models\Process;
-use App\Models\ProcessModule;
+use App\Models\ProcessStage;
 use App\Models\ResponsibleOffices;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,9 +22,8 @@ class ClientTaskList extends Component
     public $filterStatus = '';
     public $filterClient = '';
     public $filterProcess = '';
-    public $filterModule = '';
+    public $filterStage = '';
     public $filterOffice = '';
-    public $filterPriority = '';
     public $perPage = 20;
 
     protected $queryString = [
@@ -32,9 +31,8 @@ class ClientTaskList extends Component
         'filterStatus'   => ['except' => ''],
         'filterClient'   => ['except' => ''],
         'filterProcess'  => ['except' => ''],
-        'filterModule'   => ['except' => ''],
+        'filterStage'    => ['except' => ''],
         'filterOffice'   => ['except' => ''],
-        'filterPriority' => ['except' => ''],
         'perPage'        => ['except' => 20],
     ];
 
@@ -43,15 +41,14 @@ class ClientTaskList extends Component
     public function updatingFilterStatus()   { $this->resetPage(); }
     public function updatingFilterClient()   { $this->resetPage(); }
     public function updatingFilterProcess()  { $this->resetPage(); }
-    public function updatingFilterModule()   { $this->resetPage(); }
+    public function updatingFilterStage()    { $this->resetPage(); }
     public function updatingFilterOffice()   { $this->resetPage(); }
-    public function updatingFilterPriority() { $this->resetPage(); }
 
     public function clearFilters()
     {
         $this->reset([
             'search', 'filterStatus', 'filterClient', 'filterProcess',
-            'filterModule', 'filterOffice', 'filterPriority',
+            'filterStage', 'filterOffice',
         ]);
         $this->resetPage();
     }
@@ -85,9 +82,9 @@ class ClientTaskList extends Component
             ->get();
     }
 
-    public function getModulesProperty()
+    public function getStagesProperty()
     {
-        $query = ProcessModule::select('id', 'name', 'process_id')->orderBy('order');
+        $query = ProcessStage::select('id', 'name', 'process_id')->orderBy('order');
         if ($this->filterProcess) {
             $query->where('process_id', $this->filterProcess);
         }
@@ -107,7 +104,7 @@ class ClientTaskList extends Component
             ->with([
                 'clientProcess.client',
                 'clientProcess.process',
-                'processTask.module',
+                'processTask.stage',
                 'processTask.offices',
                 'completedByUser',
             ]);
@@ -144,10 +141,10 @@ class ClientTaskList extends Component
             });
         }
 
-        // Module filter
-        if ($this->filterModule) {
+        // Stage filter
+        if ($this->filterStage) {
             $query->whereHas('processTask', function ($q) {
-                $q->where('module_id', $this->filterModule);
+                $q->where('stage_id', $this->filterStage);
             });
         }
 
@@ -155,13 +152,6 @@ class ClientTaskList extends Component
         if ($this->filterOffice) {
             $query->whereHas('processTask.offices', function ($q) {
                 $q->where('responsible_offices.id', $this->filterOffice);
-            });
-        }
-
-        // Priority filter
-        if ($this->filterPriority) {
-            $query->whereHas('processTask', function ($q) {
-                $q->where('priority', $this->filterPriority);
             });
         }
 

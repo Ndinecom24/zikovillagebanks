@@ -37,15 +37,15 @@
 
 /* Brand link */
 .zesco-brand-link {
-    background: linear-gradient(135deg, var(--z-green-darker) 0%, var(--z-green-dark) 100%) !important;
-    border-bottom: 2px solid var(--z-orange) !important;
+    background: linear-gradient(135deg, var(--z-orange-dark) 0%, var(--z-orange) 100%) !important;
+    border-bottom: 2px solid var(--z-orange-light) !important;
     padding: 0.85rem 1rem !important;
     display: flex !important;
     align-items: center !important;
     transition: all 0.3s ease !important;
 }
 .zesco-brand-link:hover {
-    background: linear-gradient(135deg, var(--z-green-dark) 0%, var(--z-green) 100%) !important;
+    background: linear-gradient(135deg, var(--z-orange) 0%, var(--z-orange-light) 100%) !important;
 }
 .zesco-brand-link .brand-image {
     max-height: 34px;

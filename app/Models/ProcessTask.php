@@ -13,24 +13,33 @@ class ProcessTask extends Model
     protected $table = 'process_tasks';
 
     protected $fillable = [
-        'module_id',
+        'stage_id',
+        'order_number',
         'title',
         'description',
-        'priority',
-        'due_date',
+        'max_days',
         'status',
         'created_by',
     ];
 
     protected $casts = [
-        'due_date' => 'date:Y-m-d',
+        'order_number' => 'integer',
+        'max_days'     => 'integer',
     ];
 
     /* ── Relationships ────────────────── */
 
+    public function stage()
+    {
+        return $this->belongsTo(ProcessStage::class, 'stage_id');
+    }
+
+    /**
+     * @deprecated Use stage() instead.
+     */
     public function module()
     {
-        return $this->belongsTo(ProcessModule::class, 'module_id');
+        return $this->stage();
     }
 
     public function offices()
@@ -47,27 +56,20 @@ class ProcessTask extends Model
 
     /* ── Helpers ──────────────────────── */
 
-    public function getIsOverdueAttribute(): bool
+    /**
+     * Human-readable duration label, e.g. "14 days".
+     */
+    public function getMaxDaysLabelAttribute(): string
     {
-        if (!$this->due_date) return false;
-        return $this->due_date->isPast() && $this->status !== 'completed';
-    }
-
-    public function getPriorityColorAttribute(): string
-    {
-        return match ($this->priority) {
-            'high'   => '#dc2626',
-            'medium' => '#f59e0b',
-            'low'    => '#10b981',
-            default  => '#6b7280',
-        };
+        if (!$this->max_days) return '—';
+        return $this->max_days . ' ' . ($this->max_days === 1 ? 'day' : 'days');
     }
 
     public function getStatusColorAttribute(): string
     {
         return match ($this->status) {
-            'completed'   => '#10b981',
-            'in_progress' => '#3b82f6',
+            'active'   => '#10b981',
+            'not_active' => '#3b82f6',
             'pending'     => '#f59e0b',
             default       => '#6b7280',
         };

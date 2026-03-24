@@ -6,7 +6,7 @@
                 <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap: 1rem;">
                     <div>
                         <h1><i class="fas fa-project-diagram mr-2" style="color: var(--z-gold)"></i>Task Management</h1>
-                        <p>Manage processes, modules, tasks and office assignments</p>
+                        <p>Manage processes, stages, tasks and office assignments</p>
                     </div>
                     <div>
                         <button wire:click="openFormModal()" class="btn-zesco">
@@ -31,8 +31,8 @@
                     </div>
                     <div class="col-6 col-md-3">
                         <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
-                            <div style="font-size: 1.15rem; font-weight: 800;">{{ $totalModules }}</div>
-                            <div style="font-size: 0.72rem; opacity: 0.8;">Modules</div>
+                            <div style="font-size: 1.15rem; font-weight: 800;">{{ $totalStages }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Stages</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
@@ -103,7 +103,7 @@
                                         <i class="fas fa-sort sort-icon {{ $sortField === 'name' ? 'active' : '' }}"></i>
                                     </th>
                                     <th>Description</th>
-                                    <th style="width: 100px;">Modules</th>
+                                    <th style="width: 100px;">Stages</th>
                                     <th style="width: 100px;">Tasks</th>
                                     <th style="width: 120px;">Progress</th>
                                     <th wire:click="sortBy('status')" style="cursor: pointer; width: 100px;">
@@ -132,7 +132,7 @@
                                         </td>
                                         <td style="font-size: 0.82rem; color: #6b7280;">{{ Str::limit($proc->description, 60) }}</td>
                                         <td class="text-center">
-                                            <span class="z-badge">{{ $proc->modules_count }}</span>
+                                            <span class="z-badge">{{ $proc->stages_count }}</span>
                                         </td>
                                         <td class="text-center">
                                             <span class="z-badge-blue">{{ $taskCount }}</span>
@@ -245,7 +245,7 @@
                         <p style="font-size: 0.85rem; color: #6b7280;">
                             Are you sure you want to delete<br>
                             <strong>"{{ Str::limit($deleteName, 40) }}"</strong>?<br>
-                            <small class="text-danger">All modules and tasks inside will also be deleted.</small>
+                            <small class="text-danger">All stages and tasks inside will also be deleted.</small>
                         </p>
                         <div class="d-flex justify-content-center" style="gap: 0.75rem;">
                             <button wire:click="cancelDelete" class="btn btn-light" style="border-radius: 8px;">Cancel</button>

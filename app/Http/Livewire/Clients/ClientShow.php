@@ -24,7 +24,7 @@ class ClientShow extends Component
     /* ── Active tracking state ────────── */
     public $clientProcesses = [];
     public $activeClientProcessId = null;
-    public $activeModuleId = null;
+    public $activeStageId = null;
     public $taskRemarks = [];
 
     /* ── Task detail view ─────────────── */
@@ -49,7 +49,7 @@ class ClientShow extends Component
     private function loadClientProcesses()
     {
         $this->clientProcesses = ClientProcess::where('client_id', $this->clientId)
-            ->with(['process.modules.tasks.offices.users', 'taskProgress'])
+            ->with(['process.stages.tasks.offices.users', 'taskProgress'])
             ->orderByDesc('created_at')
             ->get();
     }
@@ -62,7 +62,7 @@ class ClientShow extends Component
 
         $this->availableProcesses = Process::where('status', 'active')
             ->whereNotIn('id', $assignedIds)
-            ->with('modules.tasks.offices')
+            ->with('stages.tasks.offices')
             ->get();
     }
 
@@ -89,7 +89,7 @@ class ClientShow extends Component
             'selectedProcessId' => 'required|exists:processes,id',
         ]);
 
-        $process = Process::with('modules.tasks')->findOrFail($this->selectedProcessId);
+        $process = Process::with('stages.tasks')->findOrFail($this->selectedProcessId);
 
         // Create the client-process link
         $clientProcess = ClientProcess::create([
@@ -101,8 +101,8 @@ class ClientShow extends Component
         ]);
 
         // Generate task progress rows for every task in this process
-        foreach ($process->modules as $module) {
-            foreach ($module->tasks as $task) {
+        foreach ($process->stages as $stage) {
+            foreach ($stage->tasks as $task) {
                 ClientTaskProgress::create([
                     'client_process_id' => $clientProcess->id,
                     'process_task_id'   => $task->id,
@@ -126,12 +126,12 @@ class ClientShow extends Component
     public function selectProcess($clientProcessId)
     {
         $this->activeClientProcessId = $clientProcessId;
-        $this->activeModuleId = null;
+        $this->activeStageId = null;
     }
 
-    public function toggleModule($moduleId)
+    public function toggleStage($stageId)
     {
-        $this->activeModuleId = ($this->activeModuleId == $moduleId) ? null : $moduleId;
+        $this->activeStageId = ($this->activeStageId == $stageId) ? null : $stageId;
     }
 
     public function updateTaskStatus($progressId, $newStatus)
@@ -190,7 +190,7 @@ class ClientShow extends Component
 
     public function openTaskDetail($progressId)
     {
-        $this->detailProgress = ClientTaskProgress::with(['processTask.module', 'processTask.offices.users', 'completedByUser', 'comments.user', 'files.uploader'])
+        $this->detailProgress = ClientTaskProgress::with(['processTask.stage', 'processTask.offices.users', 'completedByUser', 'comments.user', 'files.uploader'])
             ->findOrFail($progressId);
         $this->showTaskDetail = true;
     }
@@ -211,28 +211,28 @@ class ClientShow extends Component
         return collect($this->clientProcesses)->firstWhere('id', $this->activeClientProcessId);
     }
 
-    public function getModuleProgressProperty()
+    public function getStageProgressProperty()
     {
         $cp = $this->activeClientProcess;
         if (!$cp) return collect();
 
-        $modules = $cp->process->modules;
+        $stages = $cp->process->stages;
 
-        return $modules->map(function ($module) use ($cp) {
-            $taskIds   = $module->tasks->pluck('id');
+        return $stages->map(function ($stage) use ($cp) {
+            $taskIds   = $stage->tasks->pluck('id');
             $progress  = $cp->taskProgress->whereIn('process_task_id', $taskIds);
             $total     = $progress->count();
             $completed = $progress->where('status', 'completed')->count();
             $inProg    = $progress->where('status', 'in_progress')->count();
 
             return (object) [
-                'module'      => $module,
+                'stage'       => $stage,
                 'total'       => $total,
                 'completed'   => $completed,
                 'in_progress' => $inProg,
                 'percent'     => $total > 0 ? (int) round(($completed / $total) * 100) : 0,
-                'tasks'       => $progress->map(function ($tp) use ($module) {
-                    $tp->task = $module->tasks->firstWhere('id', $tp->process_task_id);
+                'tasks'       => $progress->map(function ($tp) use ($stage) {
+                    $tp->task = $stage->tasks->firstWhere('id', $tp->process_task_id);
                     return $tp;
                 }),
             ];

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class PHCMSEmployee extends Model
 {
     use HasFactory;
-    protected $connection = 'oracle_isd';
+   // protected $connection = 'oracle_isd';
     protected $table = 'ipa_phris_view';
     protected $primaryKey = 'con_per_no';
 

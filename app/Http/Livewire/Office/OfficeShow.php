@@ -203,9 +203,9 @@ class OfficeShow extends Component
                 // Default: show pending and in_progress only
                 $q->whereIn('status', ['pending', 'in_progress']);
             })
-            ->with(['module.process', 'offices'])
+            ->with(['stage.process', 'offices'])
             ->orderByRaw("CASE WHEN status = 'in_progress' THEN 0 WHEN status = 'pending' THEN 1 ELSE 2 END")
-            ->orderBy('due_date')
+            ->orderBy('order_number')
             ->get();
 
         return view('livewire.office.office-show', [

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,9 +34,9 @@
             --error-bg: #fef2f2;
             --success: #10b981;
             --success-bg: #ecfdf5;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
-            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
             --radius: 12px;
             --radius-sm: 8px;
         }
@@ -79,7 +80,7 @@
             right: -30%;
             width: 80%;
             height: 200%;
-            background: radial-gradient(ellipse, rgba(255,255,255,0.06) 0%, transparent 70%);
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -90,7 +91,7 @@
             left: -20%;
             width: 60%;
             height: 60%;
-            background: radial-gradient(ellipse, rgba(255,178,35,0.1) 0%, transparent 70%);
+            background: radial-gradient(ellipse, rgba(255, 178, 35, 0.1) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -128,7 +129,7 @@
 
         .brand-content p {
             font-size: 1.05rem;
-            color: rgba(255,255,255,0.75);
+            color: rgba(255, 255, 255, 0.75);
             line-height: 1.7;
             max-width: 420px;
         }
@@ -144,7 +145,7 @@
             display: flex;
             align-items: center;
             gap: 0.875rem;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.85);
             font-size: 0.925rem;
         }
 
@@ -152,7 +153,7 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: rgba(255,178,35,0.2);
+            background: rgba(255, 178, 35, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -164,7 +165,7 @@
         .brand-bottom {
             position: relative;
             z-index: 1;
-            color: rgba(255,255,255,0.45);
+            color: rgba(255, 255, 255, 0.45);
             font-size: 0.8rem;
         }
 
@@ -217,7 +218,7 @@
             margin-bottom: 1.25rem;
             color: #fff;
             font-size: 1.35rem;
-            box-shadow: 0 4px 12px rgba(255,178,35,0.25);
+            box-shadow: 0 4px 12px rgba(255, 178, 35, 0.25);
         }
 
         .auth-card-header h2 {
@@ -268,7 +269,7 @@
             margin: 0;
         }
 
-        .auth-alert ul li + li {
+        .auth-alert ul li+li {
             margin-top: 0.25rem;
         }
 
@@ -322,8 +323,8 @@
             box-shadow: 0 0 0 3px rgba(255, 178, 35, 0.15);
         }
 
-        .input-group-auth input:focus ~ .input-icon,
-        .input-group-auth select:focus ~ .input-icon {
+        .input-group-auth input:focus~.input-icon,
+        .input-group-auth select:focus~.input-icon {
             color: var(--zesco-gold);
         }
 
@@ -519,16 +520,34 @@
         }
 
         /* ===== Utility ===== */
-        .mt-1 { margin-top: 0.5rem; }
-        .mt-2 { margin-top: 1rem; }
-        .mt-3 { margin-top: 1.5rem; }
-        .mb-0 { margin-bottom: 0; }
-        .text-center { text-align: center; }
-        .d-none { display: none; }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .d-none {
+            display: none;
+        }
     </style>
 
     @yield('styles')
 </head>
+
 <body>
     <div class="auth-wrapper">
         {{-- Left Brand Panel --}}
@@ -537,20 +556,30 @@
                 <img src="{{ asset('img/zesco_logo.png') }}" alt="ZESCO" class="brand-logo">
             </div>
             <div class="brand-content">
-                <h1>Independent Power<br><span>Producers</span> Application Management</h1>
-                <p>Streamline the management and monitoring of independent power producers across Zambia's energy network.</p>
+                <h1>RENEWABLE <span>ENERGY</span>  <br> MANAGEMENT SYSTEM</h1>
+                <p>Effortlessly manage, track, and streamline the integration of independent power producers into
+                    Zambia's energy network.</p>
+
                 <div class="brand-features">
                     <div class="brand-feature">
                         <div class="feature-icon"><i class="bi bi-lightning-charge"></i></div>
-                        <span>Real-time Independent power producer applications monitoring</span>
+                        <span>Real-time monitoring of IPP applications</span>
                     </div>
                     <div class="brand-feature">
-                        <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
-                        <span>Comprehensive analytics & reporting</span>
+                        <div class="feature-icon"><i class="bi bi-graph-up"></i></div>
+                        <span>Advanced analytics and reporting for informed decision-making</span>
                     </div>
                     <div class="brand-feature">
-                        <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
-                        <span>Secure document management</span>
+                        <div class="feature-icon"><i class="bi bi-diagram-3"></i></div>
+                        <span>Comprehensive project management for renewable energy initiatives</span>
+                    </div>
+                    <div class="brand-feature">
+                        <div class="feature-icon"><i class="bi bi-folder2-open"></i></div>
+                        <span>Secure and organized document management</span>
+                    </div>
+                    <div class="brand-feature">
+                        <div class="feature-icon"><i class="bi bi-people"></i></div>
+                        <span>Simplified client interactions and application portal</span>
                     </div>
                 </div>
             </div>
@@ -577,9 +606,9 @@
 
     <script>
         // Toggle password visibility
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.toggle-password').forEach(function (btn) {
-                btn.addEventListener('click', function () {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toggle-password').forEach(function(btn) {
+                btn.addEventListener('click', function() {
                     var input = this.closest('.input-group-auth').querySelector('input');
                     var icon = this.querySelector('i');
                     if (input.type === 'password') {
@@ -596,4 +625,5 @@
 
     @yield('scripts')
 </body>
+
 </html>

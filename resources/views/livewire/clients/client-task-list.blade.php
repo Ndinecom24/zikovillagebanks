@@ -115,25 +115,14 @@
                             </select>
                         </div>
 
-                        {{-- Module --}}
+                        {{-- Stage --}}
                         <div style="min-width: 140px;">
-                            <label style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.15rem; display: block;">Module</label>
-                            <select wire:model="filterModule" class="form-control z-filter-select">
-                                <option value="">All Modules</option>
-                                @foreach($this->modules as $m)
+                            <label style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.15rem; display: block;">Stage</label>
+                            <select wire:model="filterStage" class="form-control z-filter-select">
+                                <option value="">All Stages</option>
+                                @foreach($this->stages as $m)
                                     <option value="{{ $m->id }}">{{ Str::limit($m->name, 22) }}</option>
                                 @endforeach
-                            </select>
-                        </div>
-
-                        {{-- Priority --}}
-                        <div style="min-width: 110px;">
-                            <label style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 0.15rem; display: block;">Priority</label>
-                            <select wire:model="filterPriority" class="form-control z-filter-select">
-                                <option value="">All</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
                             </select>
                         </div>
 
@@ -149,7 +138,7 @@
                         </div>
 
                         {{-- Clear --}}
-                        @if($search || $filterStatus || $filterClient || $filterProcess || $filterModule || $filterOffice || $filterPriority)
+                        @if($search || $filterStatus || $filterClient || $filterProcess || $filterStage || $filterOffice || $filterPriority)
                             <div style="padding-bottom: 2px;">
                                 <button wire:click="clearFilters" class="btn btn-sm btn-outline-secondary" style="border-radius: 6px; font-size: 0.78rem;">
                                     <i class="fas fa-times mr-1"></i> Clear
@@ -166,8 +155,9 @@
                                     <th style="width: 36px;">#</th>
                                     <th style="min-width: 200px;">Task</th>
                                     <th style="min-width: 130px;">Client</th>
-                                    <th>Process / Module</th>
-                                    <th style="width: 80px;">Priority</th>
+                                    <th>Process / Stage</th>
+                                    <th style="width: 50px;">Order</th>
+                                    <th style="width: 90px;">Max Days</th>
                                     <th style="width: 105px;">Status</th>
                                     <th>Offices</th>
                                     <th style="width: 100px;">Actions</th>
@@ -220,15 +210,20 @@
                                             @if($cp && $cp->process)
                                                 <div style="font-size: 0.72rem; font-weight: 600; color: #374151;">{{ Str::limit($cp->process->name, 20) }}</div>
                                             @endif
-                                            @if($task && $task->module)
-                                                <span class="z-badge" style="font-size: 0.62rem;">{{ Str::limit($task->module->name, 18) }}</span>
+                                            @if($task && $task->stage)
+                                                <span class="z-badge" style="font-size: 0.62rem;">{{ Str::limit($task->stage->name, 18) }}</span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if($task && $task->priority)
-                                                <span class="tm-priority-badge" style="background: {{ $task->priority_color }}20; color: {{ $task->priority_color }}; border: 1px solid {{ $task->priority_color }}40; font-size: 0.72rem;">
-                                                    {{ ucfirst($task->priority) }}
-                                                </span>
+                                            @if($task)
+                                                <span class="z-badge-orange" style="font-size: 0.72rem; padding: 0.1rem 0.4rem;">{{ $task->order_number }}</span>
+                                            @else
+                                                <span style="color: #94a3b8;">—</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($task && $task->max_days)
+                                                <span style="font-size: 0.78rem; font-weight: 600; color: var(--z-orange-dark);"><i class="fas fa-clock mr-1" style="font-size: 0.65rem;"></i>{{ $task->max_days_label }}</span>
                                             @else
                                                 <span style="color: #94a3b8;">—</span>
                                             @endif
@@ -270,7 +265,7 @@
                                     <tr>
                                         <td colspan="8" class="text-center py-4" style="color: #94a3b8;">
                                             <i class="fas fa-clipboard-list fa-2x d-block mb-2" style="opacity: 0.3;"></i>
-                                            @if($search || $filterStatus || $filterClient || $filterProcess || $filterModule || $filterOffice || $filterPriority)
+                                            @if($search || $filterStatus || $filterClient || $filterProcess || $filterStage || $filterOffice || $filterPriority)
                                                 No tasks match your filters. Try adjusting or <a href="#" wire:click.prevent="clearFilters" style="color: var(--z-green);">clearing them</a>.
                                             @else
                                                 No client tasks found. Assign a process to a client to begin tracking.
