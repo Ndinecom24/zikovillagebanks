@@ -109,14 +109,14 @@
     box-shadow: var(--z-shadow-sm);
 }
 .z-card .card-header {
-    background: var(--z-orange);  /* Orange header */
+    background: #fafbfc;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     padding: 1rem 1.5rem;
 }
 .z-card .card-header h3 {
     font-size: 1rem;
     font-weight: 700;
-    color: #fff;  /* White text on orange */
+    color: var(--z-orange-dark);
     margin: 0;
 }
 

@@ -40,6 +40,16 @@ class UserShow extends Component
 
     protected $listeners = ['refreshUser' => 'loadUser'];
 
+    // Prevent Livewire from dehydrating/hydrating the user model
+    // so it doesn't break requests; we reload it in render() instead
+    protected $rules = [];
+
+    public function switchTab($tab)
+    {
+        $this->activeTab = $tab;
+        $this->loadUser();
+    }
+
     public function mount($id)
     {
         $this->userId = $id;

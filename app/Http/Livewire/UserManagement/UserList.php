@@ -4,6 +4,7 @@ namespace App\Http\Livewire\UserManagement;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -59,8 +60,9 @@ class UserList extends Component
         $this->staffFound = false;
 
         try {
-            $employee = \App\Models\Employee\PHCMSEmployee::on('oracle_isd')
-                ->where('con_per_no', $this->staffNo)
+            $employee = \App\Models\Employee\PHCMSEmployee::
+                where('con_per_no', $this->staffNo)
+                ->whereNull('alt_per_no')
                 ->first();
 
             if ($employee) {
@@ -75,6 +77,8 @@ class UserList extends Component
                 $this->addError('staffNo', 'Employee not found. You can enter details manually.');
             }
         } catch (\Exception $e) {
+
+        dd($e->getMessage());
             $this->addError('staffNo', 'Could not connect to HR system. Enter details manually.');
         }
 
@@ -105,30 +109,61 @@ class UserList extends Component
 
     public function createUser()
     {
-        $this->validate([
-            'staffNo' => 'required|string|max:100',
-            'staffName' => 'required|string|max:255',
-            'staffEmail' => 'required|email|unique:users,email',
+        $rules = [
+            'staffName'  => 'required|string|max:255',
+            'staffEmail' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->whereNull('deleted_at'),
+            ],
             'password' => ['required', new \App\Rules\StrongPassword],
+        ];
+
+        // Only validate staff_no uniqueness when one is provided
+        if (!empty($this->staffNo)) {
+            $rules['staffNo'] = [
+                'string',
+                'max:50',
+                Rule::unique('users', 'staff_no')->whereNull('deleted_at'),
+            ];
+        }
+
+        $this->validate($rules, [
+            'staffName.required'  => 'Full name is required.',
+            'staffEmail.required' => 'Email address is required.',
+            'staffEmail.email'    => 'Please enter a valid email address.',
+            'staffEmail.unique'   => 'A user with this email already exists.',
+            'staffNo.unique'      => 'A user with this staff number already exists.',
+            'password.required'   => 'A default password is required.',
         ]);
 
-        User::create([
-            'name' => $this->staffName,
-            'staff_no' => $this->staffNo,
-            'email' => $this->staffEmail,
-            'job_title' => $this->jobTitle,
-            'user_unit' => $this->userUnit,
-            'directorate' => $this->directorate,
-            'mobile_no' => $this->mobileNo,
-            'password' => Hash::make($this->password),
-            'password_changed' => config('constants.password_not_changed'),
-            'total_login' => 0,
-            'uuid' => \Illuminate\Support\Str::uuid()->toString(),
-        ]);
+        try {
+            User::create([
+                'name'             => $this->staffName,
+                'staff_no'         => $this->staffNo ?: null,
+                'email'            => $this->staffEmail,
+                'job_title'        => $this->jobTitle ?: null,
+                'user_unit'        => $this->userUnit ?: null,
+                'directorate'      => $this->directorate ?: null,
+                'mobile_no'        => $this->mobileNo ?: null,
+                'password'         => Hash::make($this->password),
+                'password_changed' => config('constants.password_not_changed', 0),
+                'total_login'      => 0,
+                'uuid'             => \Illuminate\Support\Str::uuid()->toString(),
+            ]);
 
-        $this->showCreateModal = false;
-        $this->resetCreateForm();
-        session()->flash('message', 'User created successfully.');
+            $this->showCreateModal = false;
+            $this->resetCreateForm();
+            session()->flash('message', 'User created successfully.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->errorInfo[1] == 1062) {
+                $this->addError('staffEmail', 'A user with this email or staff number already exists.');
+            } else {
+                $this->addError('staffEmail', 'Database error: unable to create user. Please try again.');
+            }
+        } catch (\Exception $e) {
+            $this->addError('staffEmail', 'Failed to create user. Please try again or contact support.');
+        }
     }
 
     // ---------- DELETE ----------

@@ -1,8 +1,5 @@
-﻿
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
-<div>
+﻿<div>
+    <div>
     <!-- Page Header -->
     <div class="content-header">
         <div class="container-fluid">
@@ -25,7 +22,7 @@
         <div class="container-fluid">
 
             {{-- Flash --}}
-            @if(session()->has('message'))
+            @if (session()->has('message'))
                 <div class="alert alert-success" style="border-radius: 10px; font-size: 0.9rem;">
                     <i class="fas fa-check-circle mr-1"></i> {{ session('message') }}
                 </div>
@@ -33,7 +30,8 @@
 
             {{-- Table Card --}}
             <div class="card z-card">
-                <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap"
+                    style="gap: 0.75rem;">
                     <h3><i class="fas fa-list mr-2" style="color: var(--z-green)"></i>All Users</h3>
                     <div class="d-flex align-items-center" style="gap: 0.75rem;">
                         <div class="z-search">
@@ -57,48 +55,54 @@
                                     <th style="width: 50px;"></th>
                                     <th wire:click="sortBy('staff_no')">
                                         Staff No
-                                        @if($sortField === 'staff_no')
-                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @if ($sortField === 'staff_no')
+                                            <i
+                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
                                         @else
                                             <i class="fas fa-sort sort-icon"></i>
                                         @endif
                                     </th>
                                     <th wire:click="sortBy('name')">
                                         Name
-                                        @if($sortField === 'name')
-                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @if ($sortField === 'name')
+                                            <i
+                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
                                         @else
                                             <i class="fas fa-sort sort-icon"></i>
                                         @endif
                                     </th>
                                     <th wire:click="sortBy('email')">
                                         Email
-                                        @if($sortField === 'email')
-                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @if ($sortField === 'email')
+                                            <i
+                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
                                         @else
                                             <i class="fas fa-sort sort-icon"></i>
                                         @endif
                                     </th>
                                     <th wire:click="sortBy('directorate')">
                                         Directorate
-                                        @if($sortField === 'directorate')
-                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @if ($sortField === 'directorate')
+                                            <i
+                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
                                         @else
                                             <i class="fas fa-sort sort-icon"></i>
                                         @endif
                                     </th>
                                     <th wire:click="sortBy('job_title')">
                                         Job Title
-                                        @if($sortField === 'job_title')
-                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @if ($sortField === 'job_title')
+                                            <i
+                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
                                         @else
                                             <i class="fas fa-sort sort-icon"></i>
                                         @endif
                                     </th>
                                     <th wire:click="sortBy('total_login')">
                                         Logins
-                                        @if($sortField === 'total_login')
-                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @if ($sortField === 'total_login')
+                                            <i
+                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
                                         @else
                                             <i class="fas fa-sort sort-icon"></i>
                                         @endif
@@ -112,13 +116,16 @@
                                 @forelse($users as $u)
                                     <tr>
                                         <td>
-                                            @if($u->avatar && file_exists(storage_path('app/public/user_avatar/' . $u->avatar)))
+                                            @if ($u->avatar && file_exists(storage_path('app/public/user_avatar/' . $u->avatar)))
                                                 <img src="{{ asset('storage/user_avatar/' . $u->avatar) }}"
-                                                     class="z-avatar-sm" alt="{{ $u->name }}">
+                                                    class="z-avatar-sm" alt="{{ $u->name }}">
                                             @else
                                                 @php
                                                     $parts = explode(' ', trim($u->name ?? ''));
-                                                    $initials = strtoupper(substr($parts[0], 0, 1) . (isset($parts[1]) ? substr($parts[1], 0, 1) : ''));
+                                                    $initials = strtoupper(
+                                                        substr($parts[0], 0, 1) .
+                                                            (isset($parts[1]) ? substr($parts[1], 0, 1) : ''),
+                                                    );
                                                 @endphp
                                                 <div class="z-avatar-sm z-avatar-initials">{{ $initials }}</div>
                                             @endif
@@ -129,21 +136,26 @@
                                         <td>{{ $u->directorate ?? '--' }}</td>
                                         <td>{{ $u->job_title ?? '--' }}</td>
                                         <td>
-                                            <span class="badge badge-light" style="font-size: 0.8rem;">{{ $u->total_login ?? 0 }}</span>
+                                            <span class="badge badge-light"
+                                                style="font-size: 0.8rem;">{{ $u->total_login ?? 0 }}</span>
                                         </td>
                                         <td>
-                                            @if($u->offices_count > 0)
-                                                <span class="badge" style="background: #ecfdf5; color: #065f46; font-size: 0.78rem; font-weight: 600; border: 1px solid #a7f3d0;">
-                                                    <i class="fas fa-building mr-1" style="font-size: 0.65rem;"></i>{{ $u->offices_count }}
+                                            @if ($u->offices_count > 0)
+                                                <span class="badge"
+                                                    style="background: #ecfdf5; color: #065f46; font-size: 0.78rem; font-weight: 600; border: 1px solid #a7f3d0;">
+                                                    <i class="fas fa-building mr-1"
+                                                        style="font-size: 0.65rem;"></i>{{ $u->offices_count }}
                                                 </span>
                                             @else
                                                 <span style="color: #d1d5db; font-size: 0.8rem;">&mdash;</span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if($u->roles_count > 0)
-                                                <span class="badge" style="background: #fef3c7; color: #92400e; font-size: 0.78rem; font-weight: 600; border: 1px solid #fde68a;">
-                                                    <i class="fas fa-shield-alt mr-1" style="font-size: 0.65rem;"></i>{{ $u->roles_count }}
+                                            @if ($u->roles_count > 0)
+                                                <span class="badge"
+                                                    style="background: #fef3c7; color: #92400e; font-size: 0.78rem; font-weight: 600; border: 1px solid #fde68a;">
+                                                    <i class="fas fa-shield-alt mr-1"
+                                                        style="font-size: 0.65rem;"></i>{{ $u->roles_count }}
                                                 </span>
                                             @else
                                                 <span style="color: #d1d5db; font-size: 0.8rem;">&mdash;</span>
@@ -151,12 +163,17 @@
                                         </td>
                                         <td>
                                             <div class="d-flex" style="gap: 4px;">
-                                                <a href="{{ route('user.show', $u->id) }}" class="z-action z-action-view" title="View">
+                                                <a href="{{ route('user.show', $u->id) }}"
+                                                    class="z-action z-action-view" title="View">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <button wire:click="confirmDelete({{ $u->id }})" class="z-action z-action-delete" title="Delete">
-                                                    <span wire:loading wire:target="confirmDelete({{ $u->id }})" class="spinner-border spinner-border-sm" role="status"></span>
-                                                    <i wire:loading.remove wire:target="confirmDelete({{ $u->id }})" class="fas fa-trash-alt"></i>
+                                                <button wire:click="confirmDelete({{ $u->id }})"
+                                                    class="z-action z-action-delete" title="Delete">
+                                                    <span wire:loading wire:target="confirmDelete({{ $u->id }})"
+                                                        class="spinner-border spinner-border-sm" role="status"></span>
+                                                    <i wire:loading.remove
+                                                        wire:target="confirmDelete({{ $u->id }})"
+                                                        class="fas fa-trash-alt"></i>
                                                 </button>
                                             </div>
                                         </td>
@@ -174,9 +191,11 @@
                     </div>
                 </div>
 
-                <div class="card-footer bg-white border-top d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
+                <div class="card-footer bg-white border-top d-flex align-items-center justify-content-between flex-wrap"
+                    style="gap: 0.75rem;">
                     <span style="font-size: 0.82rem; color: #6b7280;">
-                        Showing {{ $users->firstItem() ?? 0 }} - {{ $users->lastItem() ?? 0 }} of {{ $users->total() }}
+                        Showing {{ $users->firstItem() ?? 0 }} - {{ $users->lastItem() ?? 0 }} of
+                        {{ $users->total() }}
                     </span>
                     {{ $users->links() }}
                 </div>
@@ -185,108 +204,150 @@
         </div>
     </section>
 
-    {{-- ===== CREATE USER MODAL ===== --}}
-    @if($showCreateModal)
-    <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header-zesco d-flex align-items-center justify-content-between">
-                    <h5><i class="fas fa-user-plus mr-2"></i> Add New User</h5>
-                    <button type="button" class="close" wire:click="$set('showCreateModal', false)">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{-- Staff search --}}
-                    <div class="row mb-3">
-                        <div class="col-md-5">
-                            <label class="z-label">Employee Staff No</label>
-                            <div class="input-group">
-                                <input type="text" wire:model.defer="staffNo" class="form-control z-input" placeholder="e.g. 12345">
-                                <div class="input-group-append">
-                                    <button wire:click="lookupStaff" class="btn btn-zesco-green" type="button" wire:loading.attr="disabled">
-                                        <i class="fas fa-search"></i> Lookup
-                                    </button>
+    {{-- ===== CREATE USER MODAL --}}
+    @if ($showCreateModal)
+        <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header-zesco d-flex align-items-center justify-content-between">
+                        <h5><i class="fas fa-user-plus mr-2"></i> Add New User</h5>
+                        <button type="button" class="close" wire:click="$set('showCreateModal', false)">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <form wire:submit.prevent="createUser">
+                        <div class="modal-body">
+                            {{-- Error banner --}}
+                            @if ($errors->any())
+                                <div class="alert alert-danger"
+                                    style="border-radius: 8px; font-size: 0.85rem; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem;">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>
+                                    Please fix the errors below before submitting.
+                                </div>
+                            @endif
+
+                            {{-- Staff search --}}
+                            <div class="row mb-3">
+                                <div class="col-md-5">
+                                    <label for="staffNo" class="z-label">Employee Staff No</label>
+                                    <div class="input-group">
+                                        <input type="text" id="staffNo" wire:model.defer="staffNo"
+                                            class="form-control z-input" placeholder="e.g. 12345">
+                                        <div class="input-group-append">
+                                            <button wire:click.prevent="lookupStaff" class="btn btn-zesco-green"
+                                                type="button" wire:loading.attr="disabled">
+                                                <i class="fas fa-search"></i> Lookup
+                                            </button>
+                                        </div>
+                                    </div>
+                                    @error('staffNo')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="col-md-7">
+                                    <label for="staffName" class="z-label">Staff Name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="staffName" wire:model.defer="staffName"
+                                        class="form-control z-input" placeholder="Full name"
+                                        {{ $staffFound ? 'readonly' : '' }}>
+                                    @error('staffName')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
-                            @error('staffNo') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                        <div class="col-md-7">
-                            <label class="z-label">Staff Name <span class="text-danger">*</span></label>
-                            <input type="text" wire:model.defer="staffName" class="form-control z-input" placeholder="Full name"
-                                   {{ $staffFound ? 'readonly' : '' }}>
-                            @error('staffName') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="z-label">Job Title</label>
-                            <input type="text" wire:model.defer="jobTitle" class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="z-label">Department / Unit</label>
-                            <input type="text" wire:model.defer="userUnit" class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
-                        </div>
-                    </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="jobTitle" class="z-label">Job Title</label>
+                                    <input type="text" id="jobTitle" wire:model.defer="jobTitle"
+                                        class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="userUnit" class="z-label">Department / Unit</label>
+                                    <input type="text" id="userUnit" wire:model.defer="userUnit"
+                                        class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
+                                </div>
+                            </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label class="z-label">Directorate</label>
-                            <input type="text" wire:model.defer="directorate" class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="z-label">Mobile No</label>
-                            <input type="text" wire:model.defer="mobileNo" class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="z-label">Email <span class="text-danger">*</span></label>
-                            <input type="email" wire:model.defer="staffEmail" class="form-control z-input" placeholder="email@zesco.co.zm"
-                                   {{ $staffFound ? 'readonly' : '' }}>
-                            @error('staffEmail') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                    </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="directorate" class="z-label">Directorate</label>
+                                    <input type="text" id="directorate" wire:model.defer="directorate"
+                                        class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="mobileNo" class="z-label">Mobile No</label>
+                                    <input type="text" id="mobileNo" wire:model.defer="mobileNo"
+                                        class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="staffEmail" class="z-label">Email <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" id="staffEmail" wire:model.defer="staffEmail"
+                                        class="form-control z-input" placeholder="email@zesco.co.zm"
+                                        {{ $staffFound ? 'readonly' : '' }}>
+                                    @error('staffEmail')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="z-label">Default Password <span class="text-danger">*</span></label>
-                            <input type="password" wire:model.defer="password" class="form-control z-input" placeholder="Strong password">
-                            @error('password') <small class="text-danger">{{ $message }}</small> @enderror
-                            <small class="text-muted">Min 8 chars, upper + lower + number + special</small>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="password" class="z-label">Default Password <span
+                                            class="text-danger">*</span></label>
+                                    <input type="password" id="password" wire:model.defer="password"
+                                        class="form-control z-input" placeholder="Strong password">
+                                    @error('password')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                    <small class="text-muted">Min 8 chars, upper + lower + number + special</small>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button wire:click="$set('showCreateModal', false)" class="btn btn-light" style="border-radius: 8px;">Cancel</button>
-                    <button wire:click="createUser" class="btn-zesco-green" wire:loading.attr="disabled">
-                        <i class="fas fa-check-circle mr-1"></i> Create User
-                    </button>
+                        <div class="modal-footer">
+                            <button type="button" wire:click="$set('showCreateModal', false)" class="btn btn-light"
+                                style="border-radius: 8px;">Cancel</button>
+                            <button type="submit" class="btn-zesco-green" wire:loading.attr="disabled"
+                                wire:target="createUser">
+                                <span wire:loading.remove wire:target="createUser"><i
+                                        class="fas fa-check-circle mr-1"></i> Create User</span>
+                                <span wire:loading wire:target="createUser"><i
+                                        class="fas fa-spinner fa-spin mr-1"></i> Creating...</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
     @endif
 
     {{-- ===== DELETE CONFIRMATION MODAL ===== --}}
-    @if($deleteId)
-    <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
-            <div class="modal-content">
-                <div style="padding: 2rem; text-align: center;">
-                    <div style="width: 56px; height: 56px; border-radius: 50%; background: #fef2f2; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #dc2626;"></i>
-                    </div>
-                    <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Delete User?</h5>
-                    <p style="color: #6b7280; font-size: 0.9rem;">Are you sure you want to delete <strong>{{ $deleteName }}</strong>? This action cannot be undone.</p>
-                    <div class="d-flex justify-content-center" style="gap: 0.75rem; margin-top: 1.5rem;">
-                        <button wire:click="$set('deleteId', null)" class="btn btn-light px-4" style="border-radius: 8px;">Cancel</button>
-                        <button wire:click="deleteUser" class="btn btn-danger px-4" style="border-radius: 8px; font-weight: 600;">
-                            <i class="fas fa-trash-alt mr-1"></i> Delete
-                        </button>
+    @if ($deleteId)
+        <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+                <div class="modal-content">
+                    <div style="padding: 2rem; text-align: center;">
+                        <div
+                            style="width: 56px; height: 56px; border-radius: 50%; background: #fef2f2; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #dc2626;"></i>
+                        </div>
+                        <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Delete User?</h5>
+                        <p style="color: #6b7280; font-size: 0.9rem;">Are you sure you want to delete
+                            <strong>{{ $deleteName }}</strong>? This action cannot be undone.</p>
+                        <div class="d-flex justify-content-center" style="gap: 0.75rem; margin-top: 1.5rem;">
+                            <button wire:click="$set('deleteId', null)" class="btn btn-light px-4"
+                                style="border-radius: 8px;">Cancel</button>
+                            <button wire:click="deleteUser" class="btn btn-danger px-4"
+                                style="border-radius: 8px; font-weight: 600;">
+                                <i class="fas fa-trash-alt mr-1"></i> Delete
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     @endif
+    
+</div>
 </div>
