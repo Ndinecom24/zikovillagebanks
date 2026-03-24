@@ -61,7 +61,7 @@
                     <a href="{{ route('clients.index') }}"
                        class="nav-link {{ request()->routeIs('clients.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-tie"></i>
-                        <p>Clients</p>
+                        <p>Clients (IPP)</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -69,6 +69,14 @@
                        class="nav-link {{ request()->routeIs('client-tasks.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-clipboard-list"></i>
                         <p>Task Action Centre</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('quote.list') }}"
+                       class="nav-link {{ request()->routeIs('quotations.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>Quotations</p>
                     </a>
                 </li>
 
@@ -213,6 +221,14 @@
                                class="nav-link {{ request()->routeIs('office.*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Offices</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('bank.list') }}"
+                               class="nav-link {{ request()->routeIs('banks.*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Banks</p>
                             </a>
                         </li>
                     </ul>

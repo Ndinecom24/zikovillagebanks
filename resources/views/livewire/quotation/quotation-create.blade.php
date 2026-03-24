@@ -25,19 +25,19 @@
 
                     <div class="mb-2">
                         <small class="text-muted">Company Name</small>
-                        <div class="text-orange">{{ $client->customer_name }}</div>
+                        <div class="text-orange">{{ $client->company_name }}</div>
                     </div>
                     <div class="mb-2">
-                        <small class="text-muted">Industry Type</small>
-                        <div class="text-orange">{{ $client->industry->industry_type ?? 'N/A' }}</div>
+                        <small class="text-muted">Phone No.</small>
+                        <div class="text-orange">{{ $client->phone ?? 'N/A' }}</div>
                     </div>
                     <div class="mb-2">
-                        <small class="text-muted">Contract No</small>
-                        <div class="text-orange"></div>
+                        <small class="text-muted">Email</small>
+                        <div class="text-orange">{{$client->email}}</div>
                     </div>
                     <div class="mb-2">
                         <small class="text-muted">Contract Period</small>
-                        <div class="text-orange">yrs</div>
+                        <div class="text-orange">{{$client->address_line_1}}</div>
                     </div>
 
 

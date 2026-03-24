@@ -27,6 +27,12 @@ class GisQuotations extends Model
         'uuid',
         'created_by',
         'created_by_staff_no',
+        'bank_id',
 
     ];
+
+    public function clients()
+    {
+        return $this->belongsTo(ClientDetails::class, 'client_id', 'id');
+    }
 }

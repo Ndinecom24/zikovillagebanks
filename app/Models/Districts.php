@@ -14,26 +14,14 @@ class Districts extends Model
 
         'province_id',
         'district',
-
-
     ];
-
 
     public function  province(){
         return $this->belongsTo(Province::class,'province_id','id');
     }
 
-//    protected $with = [
-//
-//        'connectionPoint'
-//    ];
     public function connectionPoint(){
         return $this->hasMany( ConnectionPoints::class, 'district_id','id');
     }
-
-//    public function independentProducer(){
-//
-//        return $this->belongsTo(IndependentProducer::class, 'district_id','id');
-//    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banks;
 use App\Models\ClientDetails;
 use App\Models\GisQuotations;
 use App\Models\GisQuotationsItems;
@@ -42,10 +43,8 @@ class QuotationPdfController extends Controller
     public $column_size_50 = 50;
 
 
-
     public $column_size_55 = 55;
     public $column_size_100 = 100;
-
 
 
     // Row height properties for PDF layout
@@ -73,7 +72,7 @@ class QuotationPdfController extends Controller
         $quotationItems = GisQuotationsItems::where('quotation_id', $quotationDetals->id)->get();
         $client = ClientDetails::where('id', $quotationDetals->client_id)->first();
 
-
+        $bank = Banks::where('id', $quotationDetals->bank_id)->first();
         // Get active energy details from the invoice
 
         // Supplier information
@@ -150,17 +149,17 @@ class QuotationPdfController extends Controller
         }
 
         // Add footer images
-        foreach ($footerImages as $footerImagePath) {
-            if (file_exists($footerImagePath)) {
-                list($footerWidth, $footerHeight) = getimagesize($footerImagePath);
-                $footerScaleFactor = min($maxFooterHeight / $footerHeight, 1);
-                $scaledFooterWidth = $footerWidth * $footerScaleFactor;
-                $scaledFooterHeight = $footerHeight * $footerScaleFactor;
-                $footerY = $pageHeight - $scaledFooterHeight - 25;
-                $this->fpdf->Image($footerImagePath, $startX, $footerY, $scaledFooterWidth, $scaledFooterHeight);
-                $startX += $scaledFooterWidth + $spacing;
-            }
-        }
+//        foreach ($footerImages as $footerImagePath) {
+//            if (file_exists($footerImagePath)) {
+//                list($footerWidth, $footerHeight) = getimagesize($footerImagePath);
+//                $footerScaleFactor = min($maxFooterHeight / $footerHeight, 1);
+//                $scaledFooterWidth = $footerWidth * $footerScaleFactor;
+//                $scaledFooterHeight = $footerHeight * $footerScaleFactor;
+//                $footerY = $pageHeight - $scaledFooterHeight - 25;
+//                $this->fpdf->Image($footerImagePath, $startX, $footerY, $scaledFooterWidth, $scaledFooterHeight);
+//                $startX += $scaledFooterWidth + $spacing;
+//            }
+//        }
 
         // Add line image to footer
         if (file_exists($lineImage)) {
@@ -180,86 +179,8 @@ class QuotationPdfController extends Controller
         $this->fpdf->Ln();
 
 
-        // Empty line spacer
-        $this->fpdf->Cell(189, 5, '', 0, 1);
-
-
-        //make a dummy empty cell as a vertical spacer
-//-------------------------------------------------------------------------------------------------------
-        $this->fpdf->Cell(189, 5, '', 0, 1);//end of line
-//-------------------------------------------------------------------------------------------------------
-
-
-        //-------------------------------------------------------------------------------------------------------
-        // ADD A NEW PAGE
-        //-------------------------------------------------------------------------------------------------------
-
-
-        //-------------------------------------------------------------------------------------------------------
-        //SET THE IMAGES
-        //-------------------------------------------------------------------------------------------------------
-
-        if (file_exists($filepath)) {
-            $this->fpdf->Image($filepath, 90, 0, 30);
-            // Arial bold 15
-            $this->fpdf->SetFont('Arial', 'B', 15);
-            // Move to the right
-            // $this->fpdf->Cell(80);
-            // Line break
-            $this->fpdf->Ln(20);
-        }
-        if (file_exists($watermarkPath)) {
-            // Get page dimensions
-            $pageWidth = $this->fpdf->GetPageWidth();
-            $pageHeight = $this->fpdf->GetPageHeight();
-
-            // Get image dimensions
-            list($imageWidth, $imageHeight) = getimagesize($watermarkPath);
-
-            // Calculate scaling factor to fit the image within the page
-            $scaleFactor = min($pageWidth / $imageWidth, $pageHeight / $imageHeight);
-
-            // Calculate dimensions of scaled image
-            $scaledWidth = $imageWidth * $scaleFactor;
-            $scaledHeight = $imageHeight * $scaleFactor;
-
-            // Calculate coordinates to place the image in the center
-            $x = ($pageWidth - $scaledWidth) / 2;
-            $y = ($pageHeight - $scaledHeight) / 2;
-
-            // Add the watermark image
-            $this->fpdf->Image($watermarkPath, $x, $y, $scaledWidth, $scaledHeight, 'PNG');
-        }
-
-        $maxFooterHeight = 15; // Adjust as needed
-        $startX = 10; // Starting X position
-        $spacing = 2; // Spacing between images
-        foreach ($footerImages as $footerImagePath) {
-            if (file_exists($footerImagePath)) {
-                // Get image dimensions
-                list($footerWidth, $footerHeight) = getimagesize($footerImagePath);
-
-                // Calculate scaling factor to fit the image within the footer
-                $footerScaleFactor = min($maxFooterHeight / $footerHeight, 1);
-
-                // Scale image dimensions
-                $scaledFooterWidth = $footerWidth * $footerScaleFactor;
-                $scaledFooterHeight = $footerHeight * $footerScaleFactor;
-
-                // Calculate Y position (aligned to bottom)
-                $footerY = $pageHeight - $scaledFooterHeight - 10;
-
-                // Add the image
-                $this->fpdf->Image($footerImagePath, $startX, $footerY, $scaledFooterWidth, $scaledFooterHeight);
-
-                // Update X position for next image
-                $startX += $scaledFooterWidth + $spacing;
-            }
-        }
-
-
         $this->fpdf->SetFont('Arial', 'B', $text_size);
-        $this->fpdf->Cell($this->column_one_size, $this->row_h_7, 'Reference:' . $quotationDetals->quotation_no, 1, 0);
+        $this->fpdf->Cell($this->column_one_size, $this->row_h_7, 'Reference: ' . $quotationDetals->quotation_no, 1, 0);
         $this->fpdf->SetFont('Arial', '', $text_size);
         $this->fpdf->Cell($this->column_two_size, $this->row_h_7, 'ZESCO TPIN', 1, 0, 'C');
         $this->fpdf->Cell($this->column_two_size, $this->row_h_7, '1001750872', 1, 0, 'C');
@@ -361,7 +282,8 @@ class QuotationPdfController extends Controller
 
 // Normal part
         $this->fpdf->SetFont('Arial', '', $label_size);
-        $this->fpdf->Cell(0, 5, ' WITH HOLDING TAX @ 15% PAYABLE DIRECTLY TO ZRA', 0, 1);
+        $this->fpdf->Cell(0, 5, ' WITH HOLDING TAX @ 15% PAYABLE DIRECTLY TO ZRA', 0, 1, 'L');
+        $this->fpdf->Ln();
 
         // Titles for ZRA and Bank Information
         $this->fpdf->SetFont('Arial', 'B', $text_size);
@@ -370,45 +292,121 @@ class QuotationPdfController extends Controller
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Beneficiary: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "ACCOUNT NAME: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, "ZESCO LIMITED", 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->account_name, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Bank: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "ACCOUNT NUMBER: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'r', 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->account_no, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Branch Name: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "BRANCH : ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'f', 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->branch, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Account No: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "CURRENCY: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'f', 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->currency, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Branch Code: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "BANK: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'h', 0, 1, 'L');
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->bank_name, 0, 1, 'L');
 
 
         $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
-        $this->fpdf->Cell(30, $cell_height_bd, "Swift Code: ", 0, 0, 'L');
+        $this->fpdf->Cell(30, $cell_height_bd, "SWIFT ADDRESS: ", 0, 0, 'L');
         $this->fpdf->SetFont('Arial', '', $label_size_bd);
-        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, 'g', 0, 1, 'L');
-
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, $bank->swift_address, 0, 1, 'L');
 
         $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+        $this->fpdf->Ln();
+
+        $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
+        $this->fpdf->Cell(30, $cell_height_bd, "FRANCIS NAMAKANDA ", 0, 0, 'L');
+        $this->fpdf->SetFont('Arial', '', $label_size_bd);
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, '', 0, 1, 'L');
+
+        $this->fpdf->SetFont('Arial', 'B', $label_size_bd);
+        $this->fpdf->Cell(30, $cell_height_bd, "DIRECTOR - PLANNING AND PROJECTS ", 0, 0, 'L');
+        $this->fpdf->SetFont('Arial', '', $label_size_bd);
+        $this->fpdf->Cell($bank_column_width - 30, $cell_height_bd, '', 0, 1, 'L');
+
 
 
         $filename = $quotationDetals->quotation_no . "_" . $transaction_date . "_" . $client->customer_name . "_BPPBS.PDF";
+        //-------------------------------------------------------------------------------------------------------
+
+        if (file_exists($filepath)) {
+            $this->fpdf->Image($filepath, 90, 0, 30);
+            // Arial bold 15
+            $this->fpdf->SetFont('Arial', 'B', 15);
+            // Move to the right
+            // $this->fpdf->Cell(80);
+            // Line break
+            $this->fpdf->Ln(20);
+        }
+        if (file_exists($watermarkPath)) {
+            // Get page dimensions
+            $pageWidth = $this->fpdf->GetPageWidth();
+            $pageHeight = $this->fpdf->GetPageHeight();
+
+            // Get image dimensions
+            list($imageWidth, $imageHeight) = getimagesize($watermarkPath);
+
+            // Calculate scaling factor to fit the image within the page
+            $scaleFactor = min($pageWidth / $imageWidth, $pageHeight / $imageHeight);
+
+            // Calculate dimensions of scaled image
+            $scaledWidth = $imageWidth * $scaleFactor;
+            $scaledHeight = $imageHeight * $scaleFactor;
+
+            // Calculate coordinates to place the image in the center
+            $x = ($pageWidth - $scaledWidth) / 2;
+            $y = ($pageHeight - $scaledHeight) / 2;
+
+            // Add the watermark image
+            $this->fpdf->Image($watermarkPath, $x, $y, $scaledWidth, $scaledHeight, 'PNG');
+        }
+
+        $maxFooterHeight = 15; // Adjust as needed
+        $startX = 10; // Starting X position
+        $spacing = 2; // Spacing between images
+        foreach ($footerImages as $footerImagePath) {
+            if (file_exists($footerImagePath)) {
+                // Get image dimensions
+                list($footerWidth, $footerHeight) = getimagesize($footerImagePath);
+
+                // Calculate scaling factor to fit the image within the footer
+                $footerScaleFactor = min($maxFooterHeight / $footerHeight, 1);
+
+                // Scale image dimensions
+                $scaledFooterWidth = $footerWidth * $footerScaleFactor;
+                $scaledFooterHeight = $footerHeight * $footerScaleFactor;
+
+                // Calculate Y position (aligned to bottom)
+                $footerY = $pageHeight - $scaledFooterHeight - 10;
+
+                // Add the image
+                $this->fpdf->Image($footerImagePath, $startX, $footerY, $scaledFooterWidth, $scaledFooterHeight);
+
+                // Update X position for next image
+                $startX += $scaledFooterWidth + $spacing;
+            }
+        }
+
 
         return response()->streamDownload(function () use ($filename) {
             echo $this->fpdf->Output($filename, 'D');
