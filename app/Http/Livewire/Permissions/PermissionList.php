@@ -25,14 +25,12 @@ class PermissionList extends Component
     public $deleteName;
 
     // Available groups for dropdown
-    public $groups = [
-        'IPP Management',
-        'User Management',
-        'Reports',
-        'Configuration',
-        'Substations',
-        'General',
-    ];
+    public $groups = [];
+
+    public function mount()
+    {
+        $this->groups = config('chilolezo.permission_groups');
+    }
 
     public function updatingSearch()
     {
