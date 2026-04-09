@@ -11,6 +11,7 @@ use App\Models\VillageBanking\Loan;
 use App\Models\VillageBanking\Penalty;
 use App\Models\VillageBanking\Repayment;
 use App\Models\VillageBanking\InsuranceContribution;
+use App\Models\VillageBanking\VillageBankConfiguration;
 use App\Traits\HasVillageBankScope;
 
 class ShareoutCalculator extends Component
@@ -26,6 +27,7 @@ class ShareoutCalculator extends Component
     public $totalPenalties      = 0;
     public $totalLoansOutstanding = 0;
     public $totalPool           = 0;
+    public $compoundRate        = 5;
     public $allocations         = [];
     public $previewed           = false;
 
@@ -59,7 +61,7 @@ class ShareoutCalculator extends Component
 
     public function updatedCircleId()
     {
-        $this->reset('totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'allocations', 'previewed', 'existingShareout', 'successMessage');
+        $this->reset('totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'compoundRate', 'allocations', 'previewed', 'existingShareout', 'successMessage');
 
         if ($this->circleId) {
             $this->existingShareout = Shareout::where('circle_id', $this->circleId)->first();
@@ -74,87 +76,120 @@ class ShareoutCalculator extends Component
             'circleId' => 'required|exists:circles,id',
         ]);
 
-        $circle = Circle::with(['members', 'months'])->findOrFail($this->circleId);
-        $monthIds = $circle->months->pluck('id');
+        $circle = Circle::with(['members', 'months', 'villageBank'])->findOrFail($this->circleId);
+        $months = $circle->months->sortBy('month_number');
+        $monthIds = $months->pluck('id');
+        $totalMonths = $months->count();
 
-        // 1. Total share contributions
+        // ── Determine compound rate from village bank configuration ──
+        $config = VillageBankConfiguration::forBank($circle->village_bank_id);
+        $monthlyRate = $config->reducing_balance_rate > 0
+            ? $config->reducing_balance_rate / 100
+            : 0.05; // default 5% per month
+        $this->compoundRate = round($monthlyRate * 100, 2);
+        $maxLoanMultiplier = $config->max_loan_multiplier ?? 3;
+
+        // Month-number lookup: month_id → month_number
+        $monthNumberMap = $months->pluck('month_number', 'id');
+
+        // 1. Original totals
         $this->totalContributions = ShareDeclaration::whereIn('month_id', $monthIds)->sum('amount');
-
-        // 2. Total insurance contributions
         $this->totalInsurance = InsuranceContribution::whereIn('month_id', $monthIds)->sum('amount');
 
-        // 3. Total interest earned from loans (repayments - principal)
+        // 2. Penalties
         $loanIds = Loan::whereIn('month_id', $monthIds)->pluck('id');
-        $totalRepaid = Repayment::whereIn('loan_id', $loanIds)->sum('amount_paid');
-        $totalLent   = Loan::whereIn('month_id', $monthIds)->sum('amount');
-        $this->totalInterest = max(0, $totalRepaid - $totalLent);
-
-        // 4. Total penalties collected
         $this->totalPenalties = Penalty::whereIn('loan_id', $loanIds)->sum('amount');
 
-        // 5. Total outstanding loans (amounts not yet repaid)
-        $this->totalLoansOutstanding = Loan::whereIn('month_id', $monthIds)
-            ->where('outstanding_balance', '>', 0)
-            ->sum('outstanding_balance');
-
-        // 6. Total profit (interest + penalties)
-        $totalProfit = $this->totalInterest + $this->totalPenalties;
-
-        // Split profit proportionally between shares pool and insurance pool
-        $combinedPool = $this->totalContributions + $this->totalInsurance;
-        $sharesProfitPool    = $combinedPool > 0 ? $totalProfit * ($this->totalContributions / $combinedPool) : 0;
-        $insuranceProfitPool = $combinedPool > 0 ? $totalProfit * ($this->totalInsurance / $combinedPool) : 0;
-
-        // 7. Total pool
-        $this->totalPool = $this->totalContributions + $this->totalInsurance + $totalProfit;
-
-        // 8. Per-member allocations
+        // 3. Per-member compound calculations
         $this->allocations = [];
         $members = $circle->members;
 
         foreach ($members as $member) {
-            // Member's share contributions
-            $memberContribution = ShareDeclaration::where('user_id', $member->id)
-                ->whereIn('month_id', $monthIds)
-                ->sum('amount');
+            // ── Share declarations: compound each deposit from its month ──
+            $shareDecls = ShareDeclaration::where('user_id', $member->id)
+                ->whereIn('month_id', $monthIds)->get();
 
-            // Member's insurance contributions
-            $memberInsurance = InsuranceContribution::where('user_id', $member->id)
-                ->whereIn('month_id', $monthIds)
-                ->sum('amount');
+            $memberContribution = 0;
+            $investmentCompounded = 0;
 
-            // Ratios
-            $sharesRatio    = $this->totalContributions > 0 ? $memberContribution / $this->totalContributions : 0;
-            $insuranceRatio = $this->totalInsurance > 0 ? $memberInsurance / $this->totalInsurance : 0;
+            foreach ($shareDecls as $decl) {
+                $monthNum = $monthNumberMap[$decl->month_id] ?? 1;
+                $monthsRemaining = max(0, $totalMonths - $monthNum);
+                $compounded = $decl->amount * pow(1 + $monthlyRate, $monthsRemaining);
+                $memberContribution += $decl->amount;
+                $investmentCompounded += $compounded;
+            }
 
-            // Profit splits
-            $sharesProfit    = round($sharesProfitPool * $sharesRatio, 2);
-            $insuranceProfit = round($insuranceProfitPool * $insuranceRatio, 2);
-            $totalProfitShare = $sharesProfit + $insuranceProfit;
+            // ── Insurance contributions: compound each deposit ──
+            $insDecls = InsuranceContribution::where('user_id', $member->id)
+                ->whereIn('month_id', $monthIds)->get();
 
-            // Outstanding loan deduction for this member
+            $memberInsurance = 0;
+            $insuranceCompounded = 0;
+
+            foreach ($insDecls as $decl) {
+                $monthNum = $monthNumberMap[$decl->month_id] ?? 1;
+                $monthsRemaining = max(0, $totalMonths - $monthNum);
+                $compounded = $decl->amount * pow(1 + $monthlyRate, $monthsRemaining);
+                $memberInsurance += $decl->amount;
+                $insuranceCompounded += $compounded;
+            }
+
+            // ── Profit = compounded value − original deposits ──
+            $sharesProfit = round($investmentCompounded - $memberContribution, 2);
+            $insuranceProfit = round($insuranceCompounded - $memberInsurance, 2);
+
+            // ── Penalty share (proportional to contribution) ──
+            $penaltyShare = $this->totalContributions > 0
+                ? round($this->totalPenalties * ($memberContribution / $this->totalContributions), 2)
+                : 0;
+
+            // ── Outstanding loans ──
             $loanDeduction = Loan::whereIn('month_id', $monthIds)
                 ->where('borrower_id', $member->id)
                 ->where('outstanding_balance', '>', 0)
                 ->sum('outstanding_balance');
 
-            // Net shareout = shares + insurance + profit - loans
-            $netShareout = round($memberContribution + $memberInsurance + $totalProfitShare - $loanDeduction, 2);
+            // ── Credit limit = investment × multiplier ──
+            $creditLimit = round($memberContribution * $maxLoanMultiplier, 2);
+
+            // ── Net shareout ──
+            $grossShareout = round($investmentCompounded + $insuranceCompounded + $penaltyShare, 2);
+            $netShareout = round($grossShareout - $loanDeduction, 2);
+            $action = $netShareout >= 0 ? 'Receiving' : 'Pay back';
 
             $this->allocations[] = [
-                'user_id'            => $member->id,
-                'name'               => $member->name,
-                'email'              => $member->email,
-                'contribution_total' => round($memberContribution, 2),
-                'insurance_total'    => round($memberInsurance, 2),
-                'shares_profit'      => $sharesProfit,
-                'insurance_profit'   => $insuranceProfit,
-                'loan_deduction'     => round($loanDeduction, 2),
-                'profit_share'       => round($totalProfitShare, 2),
-                'ratio'              => round($sharesRatio * 100, 2),
-                'payout_amount'      => $netShareout,
+                'user_id'               => $member->id,
+                'name'                  => $member->name,
+                'email'                 => $member->email ?? '',
+                'contribution_total'    => round($memberContribution, 2),
+                'investment_compounded' => round($investmentCompounded, 2),
+                'insurance_total'       => round($memberInsurance, 2),
+                'insurance_compounded'  => round($insuranceCompounded, 2),
+                'shares_profit'         => $sharesProfit,
+                'insurance_profit'      => $insuranceProfit,
+                'penalty_share'         => $penaltyShare,
+                'loan_deduction'        => round($loanDeduction, 2),
+                'credit_limit'          => $creditLimit,
+                'profit_share'          => round($sharesProfit + $insuranceProfit + $penaltyShare, 2),
+                'payout_amount'         => $netShareout,
+                'action'                => $action,
             ];
         }
+
+        // 4. Compute totals from allocations
+        $this->totalInterest = round(
+            array_sum(array_column($this->allocations, 'shares_profit'))
+            + array_sum(array_column($this->allocations, 'insurance_profit')), 2
+        );
+        $this->totalLoansOutstanding = round(
+            array_sum(array_column($this->allocations, 'loan_deduction')), 2
+        );
+        $this->totalPool = round(
+            array_sum(array_column($this->allocations, 'investment_compounded'))
+            + array_sum(array_column($this->allocations, 'insurance_compounded'))
+            + $this->totalPenalties, 2
+        );
 
         // Sort by payout descending
         usort($this->allocations, fn ($a, $b) => $b['payout_amount'] <=> $a['payout_amount']);
@@ -184,19 +219,24 @@ class ShareoutCalculator extends Component
             'total_penalties'        => $this->totalPenalties,
             'total_loans_outstanding' => $this->totalLoansOutstanding,
             'total_pool'             => $this->totalPool,
+            'compound_rate'          => $this->compoundRate,
         ]);
 
         foreach ($this->allocations as $alloc) {
             ShareoutAllocation::create([
-                'shareout_id'        => $shareout->id,
-                'user_id'            => $alloc['user_id'],
-                'contribution_total' => $alloc['contribution_total'],
-                'insurance_total'    => $alloc['insurance_total'],
-                'shares_profit'      => $alloc['shares_profit'],
-                'insurance_profit'   => $alloc['insurance_profit'],
-                'loan_deduction'     => $alloc['loan_deduction'],
-                'profit_share'       => $alloc['profit_share'],
-                'payout_amount'      => $alloc['payout_amount'],
+                'shareout_id'           => $shareout->id,
+                'user_id'               => $alloc['user_id'],
+                'contribution_total'    => $alloc['contribution_total'],
+                'investment_compounded' => $alloc['investment_compounded'],
+                'insurance_total'       => $alloc['insurance_total'],
+                'insurance_compounded'  => $alloc['insurance_compounded'],
+                'shares_profit'         => $alloc['shares_profit'],
+                'insurance_profit'      => $alloc['insurance_profit'],
+                'loan_deduction'        => $alloc['loan_deduction'],
+                'credit_limit'          => $alloc['credit_limit'],
+                'profit_share'          => $alloc['profit_share'],
+                'payout_amount'         => $alloc['payout_amount'],
+                'action'                => $alloc['action'],
             ]);
         }
 
@@ -204,7 +244,7 @@ class ShareoutCalculator extends Component
         Circle::where('id', $this->circleId)->update(['status' => 'completed']);
 
         $this->successMessage = 'Shareout finalised successfully! K' . number_format($this->totalPool, 2) . ' distributed to ' . count($this->allocations) . ' members.';
-        $this->reset('circleId', 'totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'allocations', 'previewed', 'existingShareout');
+        $this->reset('circleId', 'totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'compoundRate', 'allocations', 'previewed', 'existingShareout');
     }
 
     public function render()

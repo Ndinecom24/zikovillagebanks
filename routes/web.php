@@ -70,6 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
         /* ── Shareout ───────────────────────────────────── */
         Route::get('/shareout', \App\Http\Livewire\VillageBanking\Shareout\ShareoutCalculator::class)->name('shareout.index')->middleware('permission:view-shareout');
         Route::get('/shareout/{shareoutId}', \App\Http\Livewire\VillageBanking\Shareout\ShareoutShow::class)->name('shareout.show')->middleware('permission:view-shareout');
+    Route::get('/shareout/{shareoutId}/member/{allocationId}', \App\Http\Livewire\VillageBanking\Shareout\ShareoutMemberDetail::class)->name('shareout.member')->middleware('permission:view-shareout');
 
         /* ── Reports ────────────────────────────────────── */
         Route::get('/reports', \App\Http\Livewire\VillageBanking\Reports\ReportsHub::class)->name('reports.index')->middleware('permission:view-reports');

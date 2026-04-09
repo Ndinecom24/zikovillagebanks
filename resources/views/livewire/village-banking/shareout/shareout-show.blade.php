@@ -111,6 +111,9 @@
         .ss-dist-bar-label{font-size:.6rem;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3);}
         .ss-dist-amount{font-size:.76rem;font-weight:800;color:var(--ss-blue);min-width:85px;text-align:right;flex-shrink:0;}
 
+        .ss-view-link{display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .6rem;border-radius:6px;font-size:.68rem;font-weight:700;text-decoration:none;color:var(--ss-navy);background:rgba(30,58,95,.06);border:1px solid rgba(30,58,95,.1);transition:all .15s;}
+        .ss-view-link:hover{background:rgba(30,58,95,.12);color:var(--ss-navy);text-decoration:none;transform:translateY(-1px);}
+
         @keyframes ssSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
         .ss-animate{animation:ssSlide .3s ease;}
         @media(max-width:768px){.ss-content{padding:0 .75rem 1.5rem;}.ss-summary{grid-template-columns:1fr 1fr;}}
@@ -244,6 +247,10 @@
                                 <span class="ss-info-label"><i class="fas fa-clock"></i> Time</span>
                                 <span class="ss-info-value">{{ $shareout->created_at->format('H:i') }}</span>
                             </div>
+                            <div class="ss-info-row">
+                                <span class="ss-info-label"><i class="fas fa-percentage"></i> Compound Rate</span>
+                                <span class="ss-info-value">{{ $shareout->compound_rate ?? 5 }}% / month</span>
+                            </div>
                             @if($bank)
                             <div class="ss-info-row">
                                 <span class="ss-info-label"><i class="fas fa-university"></i> Village Bank</span>
@@ -328,6 +335,8 @@
                                         <th>Insurance Profit</th>
                                         <th>Loans</th>
                                         <th>Net Shareout</th>
+                                        <th>Action</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -362,6 +371,18 @@
                                                 @endif
                                             </td>
                                             <td style="color:var(--ss-blue);font-weight:800;">K{{ number_format($alloc->payout_amount, 2) }}</td>
+                                            <td>
+                                                @if(($alloc->action ?? 'Receiving') === 'Receiving' || $alloc->payout_amount >= 0)
+                                                    <span style="background:#f0fdf4;color:#166534;padding:.2rem .5rem;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid #bbf7d0;">Receiving</span>
+                                                @else
+                                                    <span style="background:#fef2f2;color:#991b1b;padding:.2rem .5rem;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid #fecaca;">Pay back</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('shareout.member', ['shareoutId' => $shareout->id, 'allocationId' => $alloc->id]) }}" class="ss-view-link">
+                                                    <i class="fas fa-external-link-alt"></i> Details
+                                                </a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -374,6 +395,8 @@
                                         <td style="color:var(--ss-green);">K{{ number_format($allocations->sum('insurance_profit'), 2) }}</td>
                                         <td style="color:var(--ss-red);">-K{{ number_format($allocations->sum('loan_deduction'), 2) }}</td>
                                         <td style="color:var(--ss-blue);">K{{ number_format($allocations->sum('payout_amount'), 2) }}</td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 </tfoot>
                             </table>

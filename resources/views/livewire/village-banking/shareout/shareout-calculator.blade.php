@@ -185,6 +185,11 @@
                     {{-- Preview results --}}
                     @if ($previewed)
                         {{-- Pool breakdown --}}
+                        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;">
+                            <span style="background:rgba(217,119,6,.08);color:var(--sc-amber);padding:.3rem .65rem;border-radius:8px;font-size:.72rem;font-weight:700;border:1px solid rgba(217,119,6,.15);">
+                                <i class="fas fa-percentage" style="margin-right:.25rem;"></i> {{ $compoundRate }}% / month compound interest
+                            </span>
+                        </div>
                         <div class="sc-pool" style="grid-template-columns:repeat(3,1fr);">
                             <div class="sc-pool-item">
                                 <div>
@@ -254,6 +259,7 @@
                                             <th>Insurance Profit</th>
                                             <th>Loans</th>
                                             <th>Net Shareout</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -285,10 +291,17 @@
                                                     @endif
                                                 </td>
                                                 <td style="color:var(--sc-blue);font-weight:800;">K{{ number_format($alloc['payout_amount'], 2) }}</td>
+                                                <td>
+                                                    @if($alloc['action'] === 'Receiving')
+                                                        <span style="background:#f0fdf4;color:#166534;padding:.2rem .5rem;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid #bbf7d0;">Receiving</span>
+                                                    @else
+                                                        <span style="background:#fef2f2;color:#991b1b;padding:.2rem .5rem;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid #fecaca;">Pay back</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8">
+                                                <td colspan="9">
                                                     <div class="sc-empty">
                                                         <i class="fas fa-users"></i>
                                                         <p>No members found in this circle</p>
@@ -307,6 +320,7 @@
                                                 <td style="color:var(--sc-green);">K{{ number_format(array_sum(array_column($allocations, 'insurance_profit')), 2) }}</td>
                                                 <td style="color:var(--sc-red);">-K{{ number_format(array_sum(array_column($allocations, 'loan_deduction')), 2) }}</td>
                                                 <td style="color:var(--sc-blue);">K{{ number_format(array_sum(array_column($allocations, 'payout_amount')), 2) }}</td>
+                                                <td></td>
                                             </tr>
                                         </tfoot>
                                     @endif
@@ -323,10 +337,10 @@
                         <div class="sc-card-header"><div class="sc-card-title"><i class="fas fa-lightbulb"></i> How Shareout Works</div></div>
                         <div class="sc-steps">
                             <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Select a circle to calculate shareout for</div></div>
-                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Contributions from all months are totalled</div></div>
-                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Interest = total repayments &minus; total loans issued</div></div>
-                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Penalties collected are added to the pool</div></div>
-                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Pool is split proportionally to each member's share</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Each deposit compounds monthly at the configured rate</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Earlier deposits earn more (longer compounding period)</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Penalties are added and distributed proportionally</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Outstanding loans are deducted from gross shareout</div></div>
                             <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Once finalised, the circle is marked <strong>Completed</strong></div></div>
                         </div>
                     </div>

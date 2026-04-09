@@ -23,6 +23,7 @@ class Shareout extends Model
         'total_penalties',
         'total_loans_outstanding',
         'total_pool',
+        'compound_rate',
     ];
 
     protected $casts = [
@@ -32,6 +33,7 @@ class Shareout extends Model
         'total_penalties'         => 'decimal:2',
         'total_loans_outstanding' => 'decimal:2',
         'total_pool'              => 'decimal:2',
+        'compound_rate'           => 'decimal:2',
     ];
 
     /* ── Relationships ────────────────── */
