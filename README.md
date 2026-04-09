@@ -1,66 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Ziko Village Banks
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive **Village Banking Management System** built with Laravel, enabling communities to manage savings groups, loans, share declarations, and financial operations digitally.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Village Bank Management** — Create and manage multiple village banks with configurable settings
+- **Member Management** — Register members, manage roles (Chairperson, Secretary, Treasurer, Committee Member, Member), and track membership
+- **Share Declarations** — Members declare and track monthly share contributions
+- **Loan Management** — Loan requests, approvals, pairing, repayment tracking, and forced loans
+- **Circles** — Organize members into circles within a village bank
+- **Insurance / Social Fund** — Configurable insurance contributions per member
+- **Polls & Voting** — Create polls for democratic decision-making within the bank
+- **Rules Management** — Define and manage village bank rules with member acknowledgements
+- **Phase & Month Management** — Track banking cycles with phases and monthly periods
+- **Shareout Calculator** — Calculate and distribute end-of-cycle shareouts
+- **Reports & Analytics** — Financial reports, membership reports, loan reports, and analytics dashboards
+- **Subscription & Licensing** — Multi-tier subscription plans with license management
+- **Role-Based Access Control** — Granular permissions system with role-based access
+- **Activity Logging** — Track user actions across the system
+- **Single Session Enforcement** — Prevent concurrent logins
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Layer | Technology |
+|-------|-----------|
+| Backend | Laravel 9.x |
+| Reactive UI | Livewire 2.x |
+| Frontend Theme | AdminLTE 3 + Bootstrap 4 |
+| Database | Oracle / MySQL |
+| Dev Environment | Laragon (Windows) |
+| Spreadsheet Import | Maatwebsite Excel |
+| Image Processing | Intervention Image |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Prerequisites
 
-### Premium Partners
+- PHP 8.0+
+- Composer
+- Node.js & NPM
+- MySQL 8.x or Oracle database
+- Laragon (recommended for Windows) or any local server
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+### Setup
 
-## Contributing
+```bash
+# Clone the repository
+git clone https://github.com/Ndinecom24/zikovillagebanks.git
+cd zikovillagebanks
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Install PHP dependencies
+composer install
 
-## Code of Conduct
+# Install JS dependencies
+npm install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Copy environment file
+cp .env.example .env
 
-## Security Vulnerabilities
+# Generate application key
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Configure your database in .env, then run migrations
+php artisan migrate
+
+# Seed the database (roles, permissions, plans)
+php artisan db:seed
+
+# Compile assets
+npm run dev
+
+# Start the development server
+php artisan serve
+```
+
+---
+
+## Project Structure
+
+```
+app/
+├── Http/Livewire/          # Livewire components (UI logic)
+│   ├── VillageBanking/     # Core banking components (Circles, Loans, Members, etc.)
+│   ├── VillageBanks/       # Village bank CRUD
+│   ├── Subscription/       # Licensing & subscription management
+│   ├── RoleBasedAccess/    # Roles & permissions management
+│   ├── UserManagement/     # User profiles & role assignment
+│   └── ActivityLogs/       # Activity log viewer
+├── Models/
+│   ├── VillageBanking/     # Core domain models (VillageBank, Loan, Member, etc.)
+│   ├── Subscription/       # License, Plan, Payment models
+│   └── RoleBasedAccess/    # Role & Permission models
+├── Services/               # Business logic services
+├── Middleware/              # CheckLicense, EnsureVillageBankSelected, SingleSession
+└── Traits/                 # LogsActivity, ScopedToVillageBank
+resources/views/
+├── livewire/               # Blade templates for Livewire components
+└── layouts/                # Application layout templates
+routes/
+└── web.php                 # Application routes
+technical-docs/             # Detailed technical documentation
+```
+
+---
+
+## Documentation
+
+Comprehensive technical documentation is available in the [`technical-docs/`](technical-docs/) directory:
+
+1. [System Architecture](technical-docs/01-system-architecture.md)
+2. [Authentication & Authorisation](technical-docs/02-authentication-and-authorisation.md)
+3. [Database Schema](technical-docs/03-database-schema.md)
+4. [Livewire Components](technical-docs/04-livewire-components.md)
+5. [Routes & Navigation](technical-docs/05-routes-and-navigation.md)
+6. [Models & Relationships](technical-docs/06-models-and-relationships.md)
+7. [Village Banking Operations](technical-docs/07-village-banking-operations.md)
+8. [Loan Management](technical-docs/08-loan-management.md)
+9. [Subscription & Licensing](technical-docs/09-subscription-and-licensing.md)
+10. [Configuration Reference](technical-docs/10-configuration-reference.md)
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is proprietary software developed by **Ndinecom**.
