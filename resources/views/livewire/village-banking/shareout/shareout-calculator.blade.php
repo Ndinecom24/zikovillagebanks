@@ -260,6 +260,7 @@
                                             <th>Loans</th>
                                             <th>Net Shareout</th>
                                             <th>Action</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -298,6 +299,11 @@
                                                         <span style="background:#fef2f2;color:#991b1b;padding:.2rem .5rem;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid #fecaca;">Pay back</span>
                                                     @endif
                                                 </td>
+                                                <td>
+                                                    <button wire:click="viewMember({{ $alloc['user_id'] }})" style="display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .6rem;border-radius:6px;font-size:.68rem;font-weight:700;color:var(--sc-navy);background:rgba(30,58,95,.06);border:1px solid rgba(30,58,95,.1);cursor:pointer;transition:all .15s;" onmouseover="this.style.background='rgba(30,58,95,.12)'" onmouseout="this.style.background='rgba(30,58,95,.06)'">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </button>
+                                                </td>
                                             </tr>
                                         @empty
                                             <tr>
@@ -320,6 +326,7 @@
                                                 <td style="color:var(--sc-green);">K{{ number_format(array_sum(array_column($allocations, 'insurance_profit')), 2) }}</td>
                                                 <td style="color:var(--sc-red);">-K{{ number_format(array_sum(array_column($allocations, 'loan_deduction')), 2) }}</td>
                                                 <td style="color:var(--sc-blue);">K{{ number_format(array_sum(array_column($allocations, 'payout_amount')), 2) }}</td>
+                                                <td></td>
                                                 <td></td>
                                             </tr>
                                         </tfoot>
@@ -388,6 +395,205 @@
             </div>
         </div>
     </section>
+
+    {{-- ████ MEMBER DETAIL MODAL ████ --}}
+    @if($showMemberModal && $memberDetail)
+    <div style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;">
+        {{-- Backdrop --}}
+        <div wire:click="closeMemberModal" style="position:absolute;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);"></div>
+
+        {{-- Modal --}}
+        <div style="position:relative;width:95%;max-width:920px;max-height:90vh;overflow-y:auto;background:#fff;border-radius:var(--sc-radius);box-shadow:0 25px 60px rgba(0,0,0,.2);animation:scSlide .25s ease;">
+
+            {{-- Header --}}
+            <div style="position:sticky;top:0;z-index:2;background:linear-gradient(135deg,var(--sc-navy) 0%,var(--sc-navy-light) 100%);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-radius:var(--sc-radius) var(--sc-radius) 0 0;">
+                <div>
+                    @php
+                        $md = $memberDetail;
+                        $mdParts = explode(' ', trim($md['name']));
+                        $mdInitials = strtoupper(substr($mdParts[0],0,1) . (isset($mdParts[1]) ? substr($mdParts[1],0,1) : ''));
+                        $mdReceiving = ($md['action'] ?? 'Receiving') === 'Receiving';
+                    @endphp
+                    <div style="display:flex;align-items:center;gap:.75rem;">
+                        <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.75rem;color:#fff;">{{ $mdInitials }}</div>
+                        <div>
+                            <div style="color:#fff;font-weight:800;font-size:1rem;">{{ $md['name'] }}</div>
+                            <div style="color:rgba(255,255,255,.55);font-size:.78rem;">{{ $md['email'] ?? '' }} &middot; {{ $compoundRate }}% / month compound</div>
+                        </div>
+                    </div>
+                </div>
+                <button wire:click="closeMemberModal" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            {{-- Summary row --}}
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;padding:1rem 1.5rem;background:#fafbfd;border-bottom:1px solid var(--sc-border);">
+                <div style="text-align:center;">
+                    <div style="font-size:.55rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);">Investment</div>
+                    <div style="font-size:1rem;font-weight:800;color:var(--sc-blue);">K{{ number_format($md['investment_compounded'], 2) }}</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:.55rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);">Insurance</div>
+                    <div style="font-size:1rem;font-weight:800;color:var(--sc-purple);">K{{ number_format($md['insurance_compounded'], 2) }}</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:.55rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);">Loans Owed</div>
+                    <div style="font-size:1rem;font-weight:800;color:var(--sc-red);">K{{ number_format($md['loan_deduction'], 2) }}</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:.55rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);">Net Shareout</div>
+                    <div style="font-size:1rem;font-weight:800;color:{{ $mdReceiving ? 'var(--sc-green)' : 'var(--sc-red)' }};">K{{ number_format($md['payout_amount'], 2) }}</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:.55rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);">Action</div>
+                    <div style="margin-top:.15rem;">
+                        @if($mdReceiving)
+                            <span style="background:#f0fdf4;color:#166534;padding:.2rem .6rem;border-radius:6px;font-size:.72rem;font-weight:700;border:1px solid #bbf7d0;">Receiving</span>
+                        @else
+                            <span style="background:#fef2f2;color:#991b1b;padding:.2rem .6rem;border-radius:6px;font-size:.72rem;font-weight:700;border:1px solid #fecaca;">Pay back</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding:1.25rem 1.5rem;">
+
+                {{-- Waterfall breakdown --}}
+                <div style="background:#fafbfd;border:1px solid var(--sc-border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.25rem;">
+                    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);margin-bottom:.65rem;"><i class="fas fa-stream" style="color:var(--sc-amber);margin-right:.3rem;"></i> NET SHAREOUT WATERFALL</div>
+                    @php
+                        $wfRows = [
+                            ['Investment (original)', $md['contribution_total'], 'var(--sc-blue)', ''],
+                            ['Investment Profit', $md['shares_profit'], 'var(--sc-green)', '+'],
+                            ['Insurance (original)', $md['insurance_total'], 'var(--sc-purple)', ''],
+                            ['Insurance Return', $md['insurance_profit'], 'var(--sc-green)', '+'],
+                        ];
+                        $gross = $md['investment_compounded'] + $md['insurance_compounded'];
+                    @endphp
+                    @foreach($wfRows as $wf)
+                        <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:1px solid #eef1f6;">
+                            <span style="font-size:.82rem;color:var(--sc-text);">{{ $wf[0] }}</span>
+                            <span style="font-size:.82rem;font-weight:700;color:{{ $wf[2] }};">{{ $wf[3] }}K{{ number_format($wf[1], 2) }}</span>
+                        </div>
+                    @endforeach
+                    <div style="display:flex;justify-content:space-between;padding:.45rem 0;border-top:2px dashed var(--sc-border);margin-top:.3rem;">
+                        <span style="font-size:.84rem;font-weight:700;color:var(--sc-text);">Gross Shareout</span>
+                        <span style="font-size:.92rem;font-weight:800;color:var(--sc-amber);">K{{ number_format($gross, 2) }}</span>
+                    </div>
+                    @if($md['loan_deduction'] > 0)
+                    <div style="display:flex;justify-content:space-between;padding:.35rem 0;">
+                        <span style="font-size:.82rem;color:var(--sc-text);">Outstanding Loans</span>
+                        <span style="font-size:.82rem;font-weight:700;color:var(--sc-red);">&minus;K{{ number_format($md['loan_deduction'], 2) }}</span>
+                    </div>
+                    @endif
+                    <div style="display:flex;justify-content:space-between;padding:.55rem 0;border-top:3px solid var(--sc-text);margin-top:.3rem;">
+                        <span style="font-size:.9rem;font-weight:800;color:var(--sc-text);">Net Shareout</span>
+                        <span style="font-size:1.05rem;font-weight:800;color:{{ $mdReceiving ? 'var(--sc-green)' : 'var(--sc-red)' }};">K{{ number_format($md['payout_amount'], 2) }}</span>
+                    </div>
+                </div>
+
+                {{-- Investment Growth --}}
+                @if(count($memberInvestments))
+                <div style="margin-bottom:1.25rem;">
+                    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);margin-bottom:.5rem;"><i class="fas fa-chart-line" style="color:var(--sc-blue);margin-right:.3rem;"></i> INVESTMENT GROWTH ({{ $compoundRate }}% / month)</div>
+                    <table class="sc-table" style="font-size:.8rem;">
+                        <thead><tr><th>#</th><th>Month</th><th>Deposited</th><th>Months</th><th>Final Value</th><th>Profit</th></tr></thead>
+                        <tbody>
+                            @foreach($memberInvestments as $i => $inv)
+                            <tr>
+                                <td style="color:var(--sc-faint);">{{ $i+1 }}</td>
+                                <td style="font-weight:600;">{{ $inv['month_label'] }}</td>
+                                <td>K{{ number_format($inv['original_amount'], 2) }}</td>
+                                <td style="color:var(--sc-muted);">{{ $inv['months_active'] }}</td>
+                                <td style="font-weight:700;color:var(--sc-blue);">K{{ number_format($inv['final_value'], 2) }}</td>
+                                <td style="font-weight:700;color:var(--sc-green);">+K{{ number_format($inv['profit'], 2) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot><tr>
+                            <td colspan="2" style="text-align:right;">TOTAL</td>
+                            <td>K{{ number_format(array_sum(array_column($memberInvestments, 'original_amount')), 2) }}</td>
+                            <td></td>
+                            <td style="color:var(--sc-blue);">K{{ number_format(array_sum(array_column($memberInvestments, 'final_value')), 2) }}</td>
+                            <td style="color:var(--sc-green);">+K{{ number_format(array_sum(array_column($memberInvestments, 'profit')), 2) }}</td>
+                        </tr></tfoot>
+                    </table>
+                </div>
+                @endif
+
+                {{-- Insurance Growth --}}
+                @if(count($memberInsurance))
+                <div style="margin-bottom:1.25rem;">
+                    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);margin-bottom:.5rem;"><i class="fas fa-shield-alt" style="color:var(--sc-purple);margin-right:.3rem;"></i> INSURANCE GROWTH ({{ $compoundRate }}% / month)</div>
+                    <table class="sc-table" style="font-size:.8rem;">
+                        <thead><tr><th>#</th><th>Month</th><th>Deposited</th><th>Months</th><th>Final Value</th><th>Return</th></tr></thead>
+                        <tbody>
+                            @foreach($memberInsurance as $i => $ins)
+                            <tr>
+                                <td style="color:var(--sc-faint);">{{ $i+1 }}</td>
+                                <td style="font-weight:600;">{{ $ins['month_label'] }}</td>
+                                <td>K{{ number_format($ins['original_amount'], 2) }}</td>
+                                <td style="color:var(--sc-muted);">{{ $ins['months_active'] }}</td>
+                                <td style="font-weight:700;color:var(--sc-purple);">K{{ number_format($ins['final_value'], 2) }}</td>
+                                <td style="font-weight:700;color:var(--sc-green);">+K{{ number_format($ins['profit'], 2) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot><tr>
+                            <td colspan="2" style="text-align:right;">TOTAL</td>
+                            <td>K{{ number_format(array_sum(array_column($memberInsurance, 'original_amount')), 2) }}</td>
+                            <td></td>
+                            <td style="color:var(--sc-purple);">K{{ number_format(array_sum(array_column($memberInsurance, 'final_value')), 2) }}</td>
+                            <td style="color:var(--sc-green);">+K{{ number_format(array_sum(array_column($memberInsurance, 'profit')), 2) }}</td>
+                        </tr></tfoot>
+                    </table>
+                </div>
+                @endif
+
+                {{-- Loan History --}}
+                @if(count($memberLoans))
+                <div>
+                    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);margin-bottom:.5rem;"><i class="fas fa-hand-holding-usd" style="color:var(--sc-red);margin-right:.3rem;"></i> LOAN HISTORY</div>
+                    <table class="sc-table" style="font-size:.8rem;">
+                        <thead><tr><th>#</th><th>Month</th><th>Amount</th><th>Rate</th><th>Total Payable</th><th>Repaid</th><th>Outstanding</th></tr></thead>
+                        <tbody>
+                            @foreach($memberLoans as $i => $loan)
+                            <tr>
+                                <td style="color:var(--sc-faint);">{{ $i+1 }}</td>
+                                <td style="font-weight:600;">{{ $loan['month_label'] }}</td>
+                                <td>K{{ number_format($loan['amount'], 2) }}</td>
+                                <td style="color:var(--sc-muted);">{{ $loan['interest_rate'] }}%</td>
+                                <td style="font-weight:700;">K{{ number_format($loan['total_payable'], 2) }}</td>
+                                <td style="font-weight:700;color:var(--sc-green);">K{{ number_format($loan['repaid'], 2) }}</td>
+                                <td style="font-weight:700;color:{{ $loan['outstanding'] > 0 ? 'var(--sc-red)' : 'var(--sc-green)' }};">K{{ number_format($loan['outstanding'], 2) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot><tr>
+                            <td colspan="2" style="text-align:right;">TOTAL</td>
+                            <td>K{{ number_format(array_sum(array_column($memberLoans, 'amount')), 2) }}</td>
+                            <td></td>
+                            <td>K{{ number_format(array_sum(array_column($memberLoans, 'total_payable')), 2) }}</td>
+                            <td style="color:var(--sc-green);">K{{ number_format(array_sum(array_column($memberLoans, 'repaid')), 2) }}</td>
+                            <td style="color:var(--sc-red);">K{{ number_format(array_sum(array_column($memberLoans, 'outstanding')), 2) }}</td>
+                        </tr></tfoot>
+                    </table>
+                </div>
+                @endif
+
+                @if(!count($memberInvestments) && !count($memberInsurance) && !count($memberLoans))
+                <div style="text-align:center;padding:2rem;color:var(--sc-muted);">
+                    <i class="fas fa-info-circle" style="font-size:1.5rem;opacity:.15;display:block;margin-bottom:.5rem;"></i>
+                    <p style="font-size:.84rem;">No detailed transaction records found for this member.</p>
+                </div>
+                @endif
+            </div>
+
+        </div>
+    </div>
+    @endif
+
     @else
         @include('livewire.partials.unauthorized')
     @endcan

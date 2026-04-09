@@ -37,6 +37,13 @@ class ShareoutCalculator extends Component
     /* ── Feedback ─────────── */
     public $successMessage = '';
 
+    /* ── Member Detail Modal ── */
+    public $showMemberModal    = false;
+    public $memberDetail       = null;
+    public $memberInvestments  = [];
+    public $memberInsurance    = [];
+    public $memberLoans        = [];
+
     /* ── Computed: circles ── */
     public function getCirclesProperty()
     {
@@ -245,6 +252,90 @@ class ShareoutCalculator extends Component
 
         $this->successMessage = 'Shareout finalised successfully! K' . number_format($this->totalPool, 2) . ' distributed to ' . count($this->allocations) . ' members.';
         $this->reset('circleId', 'totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'compoundRate', 'allocations', 'previewed', 'existingShareout');
+    }
+
+    /* ── View member detail (preview modal) ── */
+
+    public function viewMember($userId)
+    {
+        // Find the allocation for this member
+        $alloc = collect($this->allocations)->firstWhere('user_id', $userId);
+        if (!$alloc) return;
+
+        $this->memberDetail = $alloc;
+
+        $circle      = Circle::with('months')->findOrFail($this->circleId);
+        $months      = $circle->months->sortBy('month_number');
+        $totalMonths = $months->count();
+        $rate        = $this->compoundRate / 100;
+        $monthIds    = $months->pluck('id');
+        $monthNumMap = $months->pluck('month_number', 'id');
+        $monthLabels = $months->pluck('label', 'id')->map(fn($l, $id) => $l ?? "Month {$monthNumMap[$id]}");
+
+        // Investment growth
+        $shareDecls = ShareDeclaration::where('user_id', $userId)
+            ->whereIn('month_id', $monthIds)->get();
+
+        $this->memberInvestments = [];
+        foreach ($shareDecls as $decl) {
+            $monthNum = $monthNumMap[$decl->month_id] ?? 1;
+            $monthsActive = max(0, $totalMonths - $monthNum);
+            $finalValue = round($decl->amount * pow(1 + $rate, $monthsActive), 2);
+            $this->memberInvestments[] = [
+                'month_label'     => $monthLabels[$decl->month_id] ?? "Month {$monthNum}",
+                'original_amount' => round($decl->amount, 2),
+                'months_active'   => $monthsActive,
+                'final_value'     => $finalValue,
+                'profit'          => round($finalValue - $decl->amount, 2),
+            ];
+        }
+
+        // Insurance growth
+        $insDecls = InsuranceContribution::where('user_id', $userId)
+            ->whereIn('month_id', $monthIds)->get();
+
+        $this->memberInsurance = [];
+        foreach ($insDecls as $decl) {
+            $monthNum = $monthNumMap[$decl->month_id] ?? 1;
+            $monthsActive = max(0, $totalMonths - $monthNum);
+            $finalValue = round($decl->amount * pow(1 + $rate, $monthsActive), 2);
+            $this->memberInsurance[] = [
+                'month_label'     => $monthLabels[$decl->month_id] ?? "Month {$monthNum}",
+                'original_amount' => round($decl->amount, 2),
+                'months_active'   => $monthsActive,
+                'final_value'     => $finalValue,
+                'profit'          => round($finalValue - $decl->amount, 2),
+            ];
+        }
+
+        // Loan history
+        $loans = Loan::where('borrower_id', $userId)
+            ->whereIn('month_id', $monthIds)
+            ->with(['month', 'repayments'])
+            ->orderBy('created_at')->get();
+
+        $this->memberLoans = [];
+        foreach ($loans as $loan) {
+            $this->memberLoans[] = [
+                'month_label'   => $loan->month->label ?? "Month {$loan->month->month_number}",
+                'amount'        => round($loan->amount, 2),
+                'interest_rate' => $loan->interest_rate,
+                'total_payable' => round($loan->total_payable, 2),
+                'repaid'        => round($loan->repayments->sum('amount_paid'), 2),
+                'outstanding'   => round($loan->outstanding_balance, 2),
+            ];
+        }
+
+        $this->showMemberModal = true;
+    }
+
+    public function closeMemberModal()
+    {
+        $this->showMemberModal = false;
+        $this->memberDetail = null;
+        $this->memberInvestments = [];
+        $this->memberInsurance = [];
+        $this->memberLoans = [];
     }
 
     public function render()
