@@ -69,8 +69,7 @@
 
 ## Key Design Decisions
 
-<!-- TODO: Document why Livewire over traditional controllers, Oracle vs MySQL, etc. -->
-
+<!-- TODO: Document why Livewire over traditional controllers, Oracle vs MySQL, etc. 
 ---
 
 *Last updated: April 2026*

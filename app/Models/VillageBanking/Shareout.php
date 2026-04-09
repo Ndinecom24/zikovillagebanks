@@ -18,16 +18,20 @@ class Shareout extends Model
     protected $fillable = [
         'circle_id',
         'total_contributions',
+        'total_insurance',
         'total_interest',
         'total_penalties',
+        'total_loans_outstanding',
         'total_pool',
     ];
 
     protected $casts = [
-        'total_contributions' => 'decimal:2',
-        'total_interest'      => 'decimal:2',
-        'total_penalties'     => 'decimal:2',
-        'total_pool'          => 'decimal:2',
+        'total_contributions'     => 'decimal:2',
+        'total_insurance'         => 'decimal:2',
+        'total_interest'          => 'decimal:2',
+        'total_penalties'         => 'decimal:2',
+        'total_loans_outstanding' => 'decimal:2',
+        'total_pool'              => 'decimal:2',
     ];
 
     /* ── Relationships ────────────────── */

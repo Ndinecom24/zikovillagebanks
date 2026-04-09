@@ -18,12 +18,20 @@ class ShareoutAllocation extends Model
         'shareout_id',
         'user_id',
         'contribution_total',
+        'insurance_total',
+        'shares_profit',
+        'insurance_profit',
+        'loan_deduction',
         'profit_share',
         'payout_amount',
     ];
 
     protected $casts = [
         'contribution_total' => 'decimal:2',
+        'insurance_total'    => 'decimal:2',
+        'shares_profit'      => 'decimal:2',
+        'insurance_profit'   => 'decimal:2',
+        'loan_deduction'     => 'decimal:2',
         'profit_share'       => 'decimal:2',
         'payout_amount'      => 'decimal:2',
     ];

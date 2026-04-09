@@ -185,13 +185,20 @@
                     {{-- Preview results --}}
                     @if ($previewed)
                         {{-- Pool breakdown --}}
-                        <div class="sc-pool">
+                        <div class="sc-pool" style="grid-template-columns:repeat(3,1fr);">
                             <div class="sc-pool-item">
                                 <div>
-                                    <div class="sc-pool-label">Contributions</div>
+                                    <div class="sc-pool-label">Total Shares</div>
                                     <div class="sc-pool-value" style="color:var(--sc-blue);">K{{ number_format($totalContributions, 2) }}</div>
                                 </div>
                                 <div class="sc-pool-icon" style="background:rgba(37,99,235,.08);color:var(--sc-blue);"><i class="fas fa-piggy-bank"></i></div>
+                            </div>
+                            <div class="sc-pool-item">
+                                <div>
+                                    <div class="sc-pool-label">Total Insurance</div>
+                                    <div class="sc-pool-value" style="color:var(--sc-purple);">K{{ number_format($totalInsurance, 2) }}</div>
+                                </div>
+                                <div class="sc-pool-icon" style="background:rgba(124,58,237,.08);color:var(--sc-purple);"><i class="fas fa-shield-alt"></i></div>
                             </div>
                             <div class="sc-pool-item">
                                 <div>
@@ -206,6 +213,13 @@
                                     <div class="sc-pool-value" style="color:var(--sc-red);">K{{ number_format($totalPenalties, 2) }}</div>
                                 </div>
                                 <div class="sc-pool-icon" style="background:rgba(220,38,38,.08);color:var(--sc-red);"><i class="fas fa-gavel"></i></div>
+                            </div>
+                            <div class="sc-pool-item">
+                                <div>
+                                    <div class="sc-pool-label">Loans Outstanding</div>
+                                    <div class="sc-pool-value" style="color:var(--sc-red);">K{{ number_format($totalLoansOutstanding, 2) }}</div>
+                                </div>
+                                <div class="sc-pool-icon" style="background:rgba(220,38,38,.08);color:var(--sc-red);"><i class="fas fa-hand-holding-usd"></i></div>
                             </div>
                             <div class="sc-pool-item">
                                 <div>
@@ -234,10 +248,12 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Member</th>
-                                            <th>Contributions</th>
-                                            <th>Share %</th>
-                                            <th>Profit Share</th>
-                                            <th>Payout</th>
+                                            <th>Total Shares</th>
+                                            <th>Insurance</th>
+                                            <th>Shares Profit</th>
+                                            <th>Insurance Profit</th>
+                                            <th>Loans</th>
+                                            <th>Net Shareout</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -258,18 +274,21 @@
                                                     </div>
                                                 </td>
                                                 <td style="font-weight:700;">K{{ number_format($alloc['contribution_total'], 2) }}</td>
-                                                <td>
-                                                    <div class="sc-progress-wrap">
-                                                        <div class="sc-progress-bar"><div class="sc-progress-fill" style="width:{{ $alloc['ratio'] }}%;"></div></div>
-                                                        <span class="sc-progress-pct">{{ $alloc['ratio'] }}%</span>
-                                                    </div>
+                                                <td style="font-weight:700;color:var(--sc-purple);">K{{ number_format($alloc['insurance_total'], 2) }}</td>
+                                                <td style="color:var(--sc-green);font-weight:700;">K{{ number_format($alloc['shares_profit'], 2) }}</td>
+                                                <td style="color:var(--sc-green);font-weight:700;">K{{ number_format($alloc['insurance_profit'], 2) }}</td>
+                                                <td style="color:var(--sc-red);font-weight:700;">
+                                                    @if($alloc['loan_deduction'] > 0)
+                                                        -K{{ number_format($alloc['loan_deduction'], 2) }}
+                                                    @else
+                                                        K0.00
+                                                    @endif
                                                 </td>
-                                                <td style="color:var(--sc-green);font-weight:700;">K{{ number_format($alloc['profit_share'], 2) }}</td>
                                                 <td style="color:var(--sc-blue);font-weight:800;">K{{ number_format($alloc['payout_amount'], 2) }}</td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6">
+                                                <td colspan="8">
                                                     <div class="sc-empty">
                                                         <i class="fas fa-users"></i>
                                                         <p>No members found in this circle</p>
@@ -283,8 +302,10 @@
                                             <tr>
                                                 <td colspan="2" style="text-align:right;">TOTALS</td>
                                                 <td>K{{ number_format(array_sum(array_column($allocations, 'contribution_total')), 2) }}</td>
-                                                <td>100%</td>
-                                                <td style="color:var(--sc-green);">K{{ number_format(array_sum(array_column($allocations, 'profit_share')), 2) }}</td>
+                                                <td style="color:var(--sc-purple);">K{{ number_format(array_sum(array_column($allocations, 'insurance_total')), 2) }}</td>
+                                                <td style="color:var(--sc-green);">K{{ number_format(array_sum(array_column($allocations, 'shares_profit')), 2) }}</td>
+                                                <td style="color:var(--sc-green);">K{{ number_format(array_sum(array_column($allocations, 'insurance_profit')), 2) }}</td>
+                                                <td style="color:var(--sc-red);">-K{{ number_format(array_sum(array_column($allocations, 'loan_deduction')), 2) }}</td>
                                                 <td style="color:var(--sc-blue);">K{{ number_format(array_sum(array_column($allocations, 'payout_amount')), 2) }}</td>
                                             </tr>
                                         </tfoot>
@@ -341,11 +362,12 @@
                         <div class="sc-card-header"><div class="sc-card-title"><i class="fas fa-chart-pie"></i> Pool Formula</div></div>
                         <div class="sc-card-body" style="font-size:.82rem;color:var(--sc-muted);line-height:1.7;">
                             <div style="background:#fafbfd;border-radius:10px;padding:.85rem 1rem;border:1px solid var(--sc-border);font-family:monospace;font-size:.78rem;color:var(--sc-text);">
-                                <strong>Pool</strong> = Contributions + Interest + Penalties<br>
-                                <strong>Payout<sub>i</sub></strong> = Contribution<sub>i</sub> + (Profit &times; Ratio<sub>i</sub>)<br>
-                                <strong>Ratio<sub>i</sub></strong> = Contribution<sub>i</sub> / Total Contributions
+                                <strong>Pool</strong> = Shares + Insurance + Interest + Penalties<br>
+                                <strong>Net Shareout<sub>i</sub></strong> = Shares<sub>i</sub> + Insurance<sub>i</sub> + ShareProfit<sub>i</sub> + InsProfit<sub>i</sub> &minus; Loans<sub>i</sub><br>
+                                <strong>ShareProfit<sub>i</sub></strong> = SharesProfitPool × (Shares<sub>i</sub> / TotalShares)<br>
+                                <strong>InsProfit<sub>i</sub></strong> = InsProfitPool × (Insurance<sub>i</sub> / TotalInsurance)
                             </div>
-                            <p style="margin-top:.75rem;">Each member receives their original contributions plus a proportional share of profits (interest + penalties).</p>
+                            <p style="margin-top:.75rem;">Each member receives their shares + insurance contributions, plus proportional profit from each pool, minus any outstanding loan balances.</p>
                         </div>
                     </div>
                 </div>

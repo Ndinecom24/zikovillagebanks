@@ -129,9 +129,11 @@
         $lowPayout   = $this->lowestPayout;
 
         // Pool split percentages for bar chart
-        $cPct = $shareout->total_pool > 0 ? round(($shareout->total_contributions / $shareout->total_pool) * 100) : 0;
-        $iPct = $shareout->total_pool > 0 ? round(($shareout->total_interest / $shareout->total_pool) * 100) : 0;
-        $pPct = max(0, 100 - $cPct - $iPct);
+        $poolBase = $shareout->total_contributions + $shareout->total_insurance + $shareout->total_interest + $shareout->total_penalties;
+        $sPct = $poolBase > 0 ? round(($shareout->total_contributions / $poolBase) * 100) : 0;
+        $nPct = $poolBase > 0 ? round(($shareout->total_insurance / $poolBase) * 100) : 0;
+        $iPct = $poolBase > 0 ? round(($shareout->total_interest / $poolBase) * 100) : 0;
+        $pPct = max(0, 100 - $sPct - $nPct - $iPct);
     @endphp
 
     <section class="content ss-page">
@@ -183,8 +185,12 @@
                         <div class="ss-card-header"><div class="ss-card-title"><i class="fas fa-chart-pie"></i> Pool Breakdown</div></div>
                         <div class="ss-pool-breakdown">
                             <div class="ss-pool-row">
-                                <span class="ss-pool-label"><i class="fas fa-circle" style="color:var(--ss-blue);"></i> Contributions</span>
+                                <span class="ss-pool-label"><i class="fas fa-circle" style="color:var(--ss-blue);"></i> Total Shares</span>
                                 <span class="ss-pool-val" style="color:var(--ss-blue);">K{{ number_format($shareout->total_contributions, 2) }}</span>
+                            </div>
+                            <div class="ss-pool-row">
+                                <span class="ss-pool-label"><i class="fas fa-circle" style="color:var(--ss-purple);"></i> Insurance</span>
+                                <span class="ss-pool-val" style="color:var(--ss-purple);">K{{ number_format($shareout->total_insurance ?? 0, 2) }}</span>
                             </div>
                             <div class="ss-pool-row">
                                 <span class="ss-pool-label"><i class="fas fa-circle" style="color:var(--ss-green);"></i> Interest</span>
@@ -194,20 +200,26 @@
                                 <span class="ss-pool-label"><i class="fas fa-circle" style="color:var(--ss-red);"></i> Penalties</span>
                                 <span class="ss-pool-val" style="color:var(--ss-red);">K{{ number_format($shareout->total_penalties, 2) }}</span>
                             </div>
+                            <div class="ss-pool-row">
+                                <span class="ss-pool-label"><i class="fas fa-circle" style="color:var(--ss-red);"></i> Loans Outstanding</span>
+                                <span class="ss-pool-val" style="color:var(--ss-red);">-K{{ number_format($shareout->total_loans_outstanding ?? 0, 2) }}</span>
+                            </div>
                             <div class="ss-pool-row" style="border-top:2px solid var(--ss-border);margin-top:.25rem;padding-top:.65rem;">
                                 <span class="ss-pool-label" style="font-weight:800;color:var(--ss-text);"><i class="fas fa-coins" style="color:var(--ss-amber);"></i> Total Pool</span>
                                 <span class="ss-pool-val" style="color:var(--ss-amber);font-size:1rem;">K{{ number_format($shareout->total_pool, 2) }}</span>
                             </div>
                             {{-- Stacked bar --}}
                             <div class="ss-pool-bar">
-                                <div class="ss-pool-bar-seg" style="width:{{ $cPct }}%;background:var(--ss-blue);border-radius:8px 0 0 8px;"></div>
+                                <div class="ss-pool-bar-seg" style="width:{{ $sPct }}%;background:var(--ss-blue);border-radius:8px 0 0 8px;"></div>
+                                <div class="ss-pool-bar-seg" style="width:{{ $nPct }}%;background:var(--ss-purple);"></div>
                                 <div class="ss-pool-bar-seg" style="width:{{ $iPct }}%;background:var(--ss-green);"></div>
                                 <div class="ss-pool-bar-seg" style="width:{{ $pPct }}%;background:var(--ss-red);border-radius:0 8px 8px 0;"></div>
                             </div>
                             <div style="display:flex;justify-content:space-between;margin-top:.35rem;">
-                                <span style="font-size:.6rem;color:var(--ss-blue);font-weight:700;">{{ $cPct }}%</span>
-                                <span style="font-size:.6rem;color:var(--ss-green);font-weight:700;">{{ $iPct }}%</span>
-                                <span style="font-size:.6rem;color:var(--ss-red);font-weight:700;">{{ $pPct }}%</span>
+                                <span style="font-size:.6rem;color:var(--ss-blue);font-weight:700;">Shares {{ $sPct }}%</span>
+                                <span style="font-size:.6rem;color:var(--ss-purple);font-weight:700;">Ins {{ $nPct }}%</span>
+                                <span style="font-size:.6rem;color:var(--ss-green);font-weight:700;">Int {{ $iPct }}%</span>
+                                <span style="font-size:.6rem;color:var(--ss-red);font-weight:700;">Pen {{ $pPct }}%</span>
                             </div>
                         </div>
                     </div>
@@ -310,10 +322,12 @@
                                     <tr>
                                         <th>Rank</th>
                                         <th>Member</th>
-                                        <th>Contributions</th>
-                                        <th>Share %</th>
-                                        <th>Profit Share</th>
-                                        <th>Payout</th>
+                                        <th>Total Shares</th>
+                                        <th>Insurance</th>
+                                        <th>Shares Profit</th>
+                                        <th>Insurance Profit</th>
+                                        <th>Loans</th>
+                                        <th>Net Shareout</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -321,7 +335,6 @@
                                         @php
                                             $parts = explode(' ', trim($alloc->user->name ?? ''));
                                             $initials = strtoupper(substr($parts[0],0,1) . (isset($parts[1]) ? substr($parts[1],0,1) : ''));
-                                            $ratio = $shareout->total_contributions > 0 ? round(($alloc->contribution_total / $shareout->total_contributions) * 100, 1) : 0;
                                             $rankColor = $loop->iteration <= 3
                                                 ? ['background:rgba(217,119,6,.08);color:var(--ss-amber);border:1px solid rgba(217,119,6,.2);','background:rgba(148,163,184,.08);color:var(--ss-faint);border:1px solid rgba(148,163,184,.2);','background:rgba(180,83,9,.08);color:#b45309;border:1px solid rgba(180,83,9,.2);'][$loop->iteration - 1]
                                                 : 'background:var(--ss-border);color:var(--ss-faint);';
@@ -338,13 +351,16 @@
                                                 </div>
                                             </td>
                                             <td style="font-weight:700;">K{{ number_format($alloc->contribution_total, 2) }}</td>
-                                            <td>
-                                                <div class="ss-progress-wrap">
-                                                    <div class="ss-progress-bar"><div class="ss-progress-fill" style="width:{{ $ratio }}%;"></div></div>
-                                                    <span class="ss-progress-pct">{{ $ratio }}%</span>
-                                                </div>
+                                            <td style="font-weight:700;color:var(--ss-purple);">K{{ number_format($alloc->insurance_total ?? 0, 2) }}</td>
+                                            <td style="color:var(--ss-green);font-weight:700;">K{{ number_format($alloc->shares_profit ?? 0, 2) }}</td>
+                                            <td style="color:var(--ss-green);font-weight:700;">K{{ number_format($alloc->insurance_profit ?? 0, 2) }}</td>
+                                            <td style="color:var(--ss-red);font-weight:700;">
+                                                @if(($alloc->loan_deduction ?? 0) > 0)
+                                                    -K{{ number_format($alloc->loan_deduction, 2) }}
+                                                @else
+                                                    K0.00
+                                                @endif
                                             </td>
-                                            <td style="color:var(--ss-green);font-weight:700;">K{{ number_format($alloc->profit_share, 2) }}</td>
                                             <td style="color:var(--ss-blue);font-weight:800;">K{{ number_format($alloc->payout_amount, 2) }}</td>
                                         </tr>
                                     @endforeach
@@ -353,8 +369,10 @@
                                     <tr>
                                         <td colspan="2" style="text-align:right;">TOTALS</td>
                                         <td>K{{ number_format($allocations->sum('contribution_total'), 2) }}</td>
-                                        <td>100%</td>
-                                        <td style="color:var(--ss-green);">K{{ number_format($allocations->sum('profit_share'), 2) }}</td>
+                                        <td style="color:var(--ss-purple);">K{{ number_format($allocations->sum('insurance_total'), 2) }}</td>
+                                        <td style="color:var(--ss-green);">K{{ number_format($allocations->sum('shares_profit'), 2) }}</td>
+                                        <td style="color:var(--ss-green);">K{{ number_format($allocations->sum('insurance_profit'), 2) }}</td>
+                                        <td style="color:var(--ss-red);">-K{{ number_format($allocations->sum('loan_deduction'), 2) }}</td>
                                         <td style="color:var(--ss-blue);">K{{ number_format($allocations->sum('payout_amount'), 2) }}</td>
                                     </tr>
                                 </tfoot>
