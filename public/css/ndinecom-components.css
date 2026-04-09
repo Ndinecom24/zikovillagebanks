@@ -1,0 +1,1644 @@
+/* ========================================================================
+   NDINECOM VILLAGE BANKING PLATFORM - COMPONENT STYLES
+   ========================================================================
+   All shared Livewire component styles in one place.
+   Theme: Amber (#D97706) primary, Sapphire (#1E3A5F) secondary.
+   Modern African fintech & community finance design system.
+   ======================================================================== */
+
+/* ====================================================================
+   1. DESIGN TOKENS (TAILWIND INSPIRED)
+   ==================================================================== */
+:root {
+    /* Primary - Warm Amber (African warmth, community) */
+    --z-orange: #D97706;
+    --z-orange-dark: #B45309;
+    --z-orange-light: #F59E0B;
+
+    /* Secondary - Deep Sapphire (trust, finance) */
+    --z-green: #1E3A5F;
+    --z-green-dark: #152C47;
+    --z-green-darker: #0F1F33;
+    --z-green-light: #2B6B96;
+
+    /* Success (semantic — status indicators stay green) */
+    --z-success: #16a34a;
+    --z-success-dark: #15803d;
+    --z-success-light: #22c55e;
+
+    /* Gray scale */
+    --z-gray: #6c757d;
+    --z-gray-dark: #343a40;
+    --z-light: #f8f9fa;
+
+    /* Other colors */
+    --z-blue: #3490dc;
+    --z-indigo: #6574cd;
+    --z-purple: #9561e2;
+    --z-pink: #f66d9b;
+    --z-red: #e3342f;
+    --z-yellow: #ffed4a;
+    --z-teal: #4dc0b5;
+    --z-cyan: #6cb2eb;
+    --z-gold: #D97706;
+
+    /* Surface & Text */
+    --z-surface: #ffffff;
+    --z-surface-alt: #f8fafc;
+    --z-bg: #f0f4f8;
+    --z-text: #1a2332;
+    --z-text-secondary: #64748b;
+    --z-text-muted: #94a3b8;
+    --z-border: #e2e8f0;
+    --z-border-light: #e9ecef;
+
+    /* Shadows */
+    --z-shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+    --z-shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --z-shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+    --z-shadow-orange: 0 4px 12px rgba(217,119,6,0.35);
+    --z-shadow-green: 0 4px 12px rgba(30,58,95,0.25);
+}
+
+/* ====================================================================
+   2. PAGE HEADER (Sapphire Gradient)
+   ==================================================================== */
+.z-page-header {
+    background: linear-gradient(135deg, #eef2f7 0%, #e4eaf2 50%, #eef2f7 100%);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--z-text);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #c7d2e0;
+}
+.z-page-header::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(217,119,6,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+.z-page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+}
+.z-page-header h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--z-green-darker);
+}
+.z-page-header h1 i { color: var(--z-orange); }
+.z-page-header p {
+    margin: 0.25rem 0 0;
+    color: var(--z-text-secondary);
+    font-size: 0.875rem;
+}
+
+/* ====================================================================
+   3. CARDS (Card header amber)
+   ==================================================================== */
+.z-card {
+    border-radius: 12px;
+    border: 1px solid var(--z-border-light);
+    overflow: hidden;
+    background: var(--z-surface);
+    box-shadow: var(--z-shadow-sm);
+}
+.z-card .card-header {
+    background: #fafbfc;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 1rem 1.5rem;
+}
+.z-card .card-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--z-orange-dark);
+    margin: 0;
+}
+
+/* ====================================================================
+   4. TABLES
+   ==================================================================== */
+.z-table thead th {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--z-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 2px solid var(--z-border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    padding: 0.65rem 0.75rem;
+}
+.z-table thead th:hover { color: var(--z-orange); }
+.z-table tbody tr { transition: background 0.15s; }
+.z-table tbody tr:hover { background: #fffbeb; } /* Light amber background */
+.z-table tbody td {
+    font-size: 0.82rem;
+    padding: 0.55rem 0.75rem;
+    vertical-align: middle;
+}
+
+/* Sort icons */
+.sort-icon {
+    font-size: 0.7rem;
+    margin-left: 4px;
+    opacity: 0.5;
+}
+.sort-icon.active {
+    opacity: 1;
+    color: var(--z-orange);
+}
+
+/* ====================================================================
+   5. SEARCH BOX
+   ==================================================================== */
+.z-search {
+    position: relative;
+    max-width: 300px;
+}
+.z-search input {
+    padding: 0.5rem 0.85rem 0.5rem 2.5rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--z-border);
+    font-size: 0.85rem;
+    width: 100%;
+    transition: border-color 0.2s;
+}
+.z-search input:focus {
+    border-color: var(--z-orange);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.12);
+    outline: none;
+}
+.z-search .si {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--z-text-muted);
+    pointer-events: none;
+}
+
+/* ====================================================================
+   6. FILTER & PER-PAGE SELECTS
+   ==================================================================== */
+.z-filter-select {
+    border-radius: 8px;
+    border: 1.5px solid var(--z-border);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    color: #374151;
+    min-width: 150px;
+    transition: border-color 0.2s;
+}
+.z-filter-select:focus {
+    border-color: var(--z-orange);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.12);
+    outline: none;
+}
+.z-per-page {
+    border-radius: 6px;
+    border: 1.5px solid var(--z-border);
+    padding: 0.35rem 0.5rem;
+    font-size: 0.825rem;
+    color: #374151;
+}
+.z-per-page:focus {
+    border-color: var(--z-orange);
+    outline: none;
+}
+
+/* ====================================================================
+   7. ACTION BUTTONS (table row)
+   ==================================================================== */
+.z-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 0.82rem;
+}
+.z-action-view   { background: rgba(52,144,220,0.1);  color: var(--z-blue); }
+.z-action-view:hover { background: var(--z-blue); color: #fff; }
+.z-action-edit   { background: rgba(217,119,6,0.12); color: var(--z-orange-dark); }
+.z-action-edit:hover { background: var(--z-orange); color: #fff; }
+.z-action-delete { background: rgba(227,52,47,0.1);   color: var(--z-red); }
+.z-action-delete:hover { background: var(--z-red); color: #fff; }
+.z-action-save   { background: rgba(56,193,114,0.1);   color: var(--z-green); }
+.z-action-save:hover { background: var(--z-green); color: #fff; }
+.z-action-cancel { background: rgba(108,117,125,0.1);  color: var(--z-gray); }
+.z-action-cancel:hover { background: var(--z-gray); color: #fff; }
+
+/* ====================================================================
+   8. BUTTONS
+   ==================================================================== */
+/* Primary CTA — Amber */
+.btn-nd,
+.btn-zesco {
+    background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark));
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+}
+.btn-nd:hover,
+.btn-zesco:hover {
+    background: linear-gradient(135deg, var(--z-orange-dark), #92400e);
+    box-shadow: var(--z-shadow-orange);
+    color: #fff;
+}
+
+/* Secondary — Sapphire */
+.btn-nd-green,
+.btn-zesco-green {
+    background: linear-gradient(135deg, var(--z-green), var(--z-green-dark));
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+}
+.btn-nd-green:hover,
+.btn-zesco-green:hover {
+    background: linear-gradient(135deg, var(--z-green-dark), var(--z-green-darker));
+    box-shadow: var(--z-shadow-green);
+    color: #fff;
+}
+
+/* Outline */
+.btn-nd-outline,
+.btn-zesco-outline {
+    background: transparent;
+    color: var(--z-green);
+    border: 1.5px solid var(--z-green);
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-weight: 600;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    text-decoration: none;
+}
+.btn-nd-outline:hover,
+.btn-zesco-outline:hover {
+    background: var(--z-green);
+    color: #fff;
+}
+.btn-nd-outline-accent,
+.btn-zesco-outline-orange {
+    background: transparent;
+    color: var(--z-orange);
+    border: 1.5px solid var(--z-orange);
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-weight: 600;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    text-decoration: none;
+}
+.btn-nd-outline-accent:hover,
+.btn-zesco-outline-orange:hover {
+    background: var(--z-orange);
+    color: #fff;
+}
+
+/* ====================================================================
+   9. BADGES & PILLS (amber and sapphire)
+   ==================================================================== */
+/* Generic amber badge */
+.z-badge-orange {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #fffbeb;
+    color: var(--z-orange-dark);
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid #fcd34d;
+}
+/* Green badge (success semantic) */
+.z-badge-green {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #e6f7ec;
+    color: #15803d;
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid #b8e4c6;
+}
+/* Blue badge */
+.z-badge-blue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #eef2ff;
+    color: var(--z-blue);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #c3ddfd;
+}
+/* Purple badge */
+.z-badge-purple {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    background: #f5f3ff;
+    color: var(--z-purple);
+    padding: 0.2rem 0.55rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #ddd6fe;
+}
+/* Red badge */
+.z-badge-red {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    background: #fef2f2;
+    color: var(--z-red);
+    padding: 0.2rem 0.55rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #fecaca;
+}
+
+/* Count pill (orange) */
+.z-count {
+    background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark));
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+}
+
+/* Small info count pills */
+.z-info-count {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+}
+.z-info-count-blue   { background: #eef2ff; color: var(--z-blue); border: 1px solid #c3ddfd; }
+.z-info-count-orange { background: #fffbeb; color: var(--z-orange-dark); border: 1px solid #fcd34d; }
+.z-info-count-green  { background: #e6f7ec; color: #15803d; border: 1px solid #b8e4c6; }
+
+/* ====================================================================
+   10. LOADING OVERLAY
+   ==================================================================== */
+.z-loading {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 12px;
+}
+
+/* ====================================================================
+   11. MODALS
+   ==================================================================== */
+.z-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+.z-modal .modal-header-nd,
+.z-modal .modal-header-zesco {
+    background: linear-gradient(135deg, var(--z-green-darker) 0%, var(--z-green-dark) 60%, var(--z-green) 100%);
+    padding: 1.25rem 1.5rem;
+    color: #fff;
+    border: none;
+}
+.z-modal .modal-header-nd h5,
+.z-modal .modal-header-zesco h5 {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.05rem;
+}
+.z-modal .modal-header-orange {
+    background: linear-gradient(135deg, var(--z-orange-dark) 0%, var(--z-orange) 100%);
+    padding: 1.25rem 1.5rem;
+    color: #fff;
+    border: none;
+}
+.z-modal .modal-header-orange h5 {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+/* ====================================================================
+   12. FORM INPUTS
+   ==================================================================== */
+.z-input {
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--z-border);
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
+}
+.z-input:focus {
+    border-color: var(--z-orange);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.1);
+    outline: none;
+}
+
+/* Inline edit input */
+.z-edit-input {
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    border: 1.5px solid var(--z-orange);
+    font-size: 0.85rem;
+    max-width: 200px;
+}
+.z-edit-input:focus {
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.15);
+    outline: none;
+}
+
+/* Inline edit select */
+.z-edit-select {
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    border: 1.5px solid var(--z-orange);
+    font-size: 0.85rem;
+    max-width: 180px;
+}
+.z-edit-select:focus {
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.15);
+    outline: none;
+}
+
+/* ====================================================================
+   13. DETAIL LABELS & VALUES
+   ==================================================================== */
+.z-detail-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--z-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.25rem;
+}
+.z-detail-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--z-text);
+}
+
+/* ====================================================================
+   14. STAT CARDS
+   ==================================================================== */
+.z-stat-card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.z-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--z-shadow-lg);
+}
+.z-stat-card .stat-icon {
+    font-size: 2rem;
+    opacity: 0.25;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+.z-stat-card .stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+.z-stat-card .stat-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-top: 0.25rem;
+}
+.z-stat-green  { background: linear-gradient(135deg, var(--z-green), var(--z-green-dark)); }
+.z-stat-orange { background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark)); }
+.z-stat-blue   { background: linear-gradient(135deg, var(--z-blue), #2779bd); }
+.z-stat-purple { background: linear-gradient(135deg, var(--z-purple), #7c3aed); }
+
+/* Smaller inline stat */
+.z-stat-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--z-text);
+    line-height: 1.2;
+}
+.z-stat-label-sm {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--z-text-secondary);
+    text-transform: uppercase;
+}
+
+/* ====================================================================
+   15. TABS (Orange active)
+   ==================================================================== */
+.z-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    background: var(--z-surface);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--z-border-light);
+}
+.z-tab {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--z-text-secondary);
+    transition: all 0.2s;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+.z-tab:hover { color: var(--z-orange); background: #fffbeb; }
+.z-tab.active {
+    color: #fff;
+    background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark));
+    box-shadow: 0 2px 8px rgba(217,119,6,0.3);
+}
+
+/* ====================================================================
+   16. TECHNOLOGY CHIPS (Reports)
+   ==================================================================== */
+.z-tech-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1.5px solid var(--z-border);
+    background: var(--z-surface);
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+.z-tech-chip:hover { border-color: var(--z-orange); background: #fffbeb; }
+.z-tech-chip.active { border-color: var(--z-orange); background: #fffbeb; color: var(--z-orange-dark); }
+.z-tech-chip .chip-count {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    background: rgba(217,119,6,0.15);
+    color: var(--z-orange-dark);
+}
+.z-tech-chip .chip-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+/* ====================================================================
+   17. BREAKDOWN TABLE (Reports)
+   ==================================================================== */
+.z-break-table { font-size: 0.82rem; margin-bottom: 0; }
+.z-break-table thead th {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--z-text-secondary);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--z-border);
+    padding: 0.5rem 0.75rem;
+}
+.z-break-table tbody td {
+    padding: 0.5rem 0.75rem;
+    vertical-align: middle;
+}
+.z-break-table tbody tr:hover { background: #fffbeb; }
+
+/* MW highlight */
+.z-mw { font-weight: 700; color: var(--z-orange-dark); }
+
+/* ====================================================================
+   18. CHART CONTAINER
+   ==================================================================== */
+.z-chart-container {
+    position: relative;
+    width: 100%;
+    height: 380px;
+}
+
+/* ====================================================================
+   19. SECTION TITLE
+   ==================================================================== */
+.z-section-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--z-text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.z-section-title i { color: var(--z-orange); }
+
+/* ====================================================================
+   20. DELETE CONFIRMATION MODAL
+   ==================================================================== */
+.z-delete-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fef2f2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.z-delete-icon i { font-size: 1.5rem; color: var(--z-red); }
+
+/* ====================================================================
+   21. USER-SPECIFIC STYLES
+   ==================================================================== */
+/* Back link */
+.z-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--z-orange-dark);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+.z-back:hover { color: var(--z-green); text-decoration: none; }
+
+/* Avatar small */
+.z-avatar-sm {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid var(--z-border);
+}
+
+/* Status pills */
+.z-status { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.z-status-active   { background: #e6f7ec; color: #15803d; border: 1px solid #b8e4c6; }
+.z-status-inactive { background: #fef2f2; color: var(--z-red); border: 1px solid #fecaca; }
+
+/* ====================================================================
+   22. USER PROFILE
+   ==================================================================== */
+.z-profile-header {
+    padding: 0;
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+}
+.z-profile-header-bg {
+    background: linear-gradient(135deg, var(--z-green-darker) 0%, var(--z-green-dark) 40%, var(--z-green) 80%, var(--z-orange) 100%);
+    padding: 2rem 2rem 3rem;
+    position: relative;
+}
+.z-profile-header-bg::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(ellipse, rgba(217,119,6,0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+.z-profile-avatar-wrap {
+    margin-top: -2.5rem;
+    padding: 0 2rem;
+}
+.z-profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: var(--z-shadow-md);
+}
+.z-profile-avatar-upload {
+    position: absolute;
+    bottom: 0;
+    right: -8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--z-orange);
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: 0.72rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.z-profile-avatar-upload:hover { background: var(--z-orange-dark); }
+.z-profile-info-bar {
+    background: var(--z-surface);
+    padding: 1.25rem 2rem 1rem;
+    border-bottom: 1px solid var(--z-border-light);
+}
+.z-profile-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--z-text);
+}
+.z-profile-meta { font-size: 0.82rem; color: var(--z-text-muted); }
+.z-role-badge {
+    background: rgba(217,119,6,0.15);
+    color: var(--z-orange-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    border: 1px solid rgba(217,119,6,0.3);
+}
+.z-profile-card-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--z-text);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+.z-profile-card-title i { color: var(--z-orange); }
+
+/* Detail rows */
+.z-detail-row {
+    display: flex;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+.z-detail-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+/* Password section */
+.z-pwd-section {
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #fcd34d;
+}
+.z-pwd-req {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem;
+    font-size: 0.775rem;
+}
+
+/* ====================================================================
+   23. PROVINCE SHOW – SIDEBAR
+   ==================================================================== */
+.z-sidebar {
+    min-height: 400px;
+}
+.z-sidebar-list { list-style: none; padding: 0; margin: 0; }
+.z-sidebar-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    font-size: 0.85rem;
+}
+.z-sidebar-item:hover { background: #fffbeb; }
+.z-sidebar-item.active {
+    background: #fffbeb;
+    border-left-color: var(--z-orange);
+    font-weight: 600;
+}
+.z-sidebar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 5px;
+    border: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 0.72rem;
+}
+.z-sbtn-edit   { background: rgba(246,153,63,0.12); color: var(--z-orange-dark); }
+.z-sbtn-edit:hover { background: var(--z-orange); color: #fff; }
+.z-sbtn-del    { background: rgba(227,52,47,0.1); color: var(--z-red); }
+.z-sbtn-del:hover { background: var(--z-red); color: #fff; }
+.z-sbtn-save   { background: rgba(56,193,114,0.1); color: var(--z-green); }
+.z-sbtn-save:hover { background: var(--z-green); color: #fff; }
+.z-sbtn-cancel { background: rgba(108,117,125,0.1); color: var(--z-gray); }
+.z-sbtn-cancel:hover { background: var(--z-gray); color: #fff; }
+
+.z-sidebar-edit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+}
+.z-sidebar-edit input {
+    flex: 1;
+    border: 1.5px solid var(--z-orange);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.82rem;
+}
+.z-sidebar-actions {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+.z-sidebar-item:hover .z-sidebar-actions,
+.z-sidebar-actions:focus-within { opacity: 1; }
+
+.z-edit-cell input {
+    border: 1.5px solid var(--z-orange);
+    border-radius: 6px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.82rem;
+    width: 100%;
+}
+.z-edit-cell input:focus {
+    border-color: var(--z-orange-dark);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.12);
+    outline: none;
+}
+
+.z-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--z-text-muted);
+}
+.z-empty-state i { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+
+/* ====================================================================
+   24. PRODUCER-SPECIFIC
+   ==================================================================== */
+.z-section-divider {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--z-orange-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #fcd34d;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.z-section-divider i { color: var(--z-orange); }
+
+.z-tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(217,119,6,0.12);
+    color: var(--z-orange-dark);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: 1px solid rgba(217,119,6,0.3);
+}
+
+.z-file-card {
+    border: 1px solid var(--z-border-light);
+    border-radius: 10px;
+    padding: 0.85rem;
+    transition: all 0.2s;
+    background: var(--z-surface);
+}
+.z-file-card:hover {
+    border-color: var(--z-orange);
+    box-shadow: var(--z-shadow-sm);
+}
+
+/* ====================================================================
+   25. MINI TABLE (used in detail modals)
+   ==================================================================== */
+.z-mini-table { font-size: 0.82rem; }
+.z-mini-table thead th {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--z-text-secondary);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--z-border);
+    padding: 0.5rem;
+}
+.z-mini-table tbody td {
+    padding: 0.45rem 0.5rem;
+    vertical-align: middle;
+}
+
+/* ====================================================================
+   26. DASHBOARD SPECIFIC
+   ==================================================================== */
+.dashboard-header {
+    background: linear-gradient(135deg, var(--z-green-darker) 0%, var(--z-green-dark) 40%, var(--z-green) 100%);
+    border-radius: 12px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(217,119,6,0.08) 0%, transparent 70%);
+}
+.dashboard-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; }
+.dashboard-header p { margin: 0.25rem 0 0; opacity: 0.85; font-size: 0.9rem; }
+.dashboard-header .welcome-name { color: var(--z-orange); font-weight: 700; }
+
+/* Tech cards */
+.tech-card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fff;
+    border: 1px solid var(--z-border-light);
+    transition: all 0.25s ease;
+    text-decoration: none !important;
+    color: inherit !important;
+    margin-bottom: 1rem;
+    box-shadow: var(--z-shadow-sm);
+    cursor: pointer;
+    user-select: none;
+}
+.tech-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--z-shadow-lg);
+    border-color: var(--z-orange);
+}
+.tech-card.active {
+    border-color: var(--z-orange);
+    box-shadow: 0 4px 16px rgba(217,119,6,0.2);
+    background: #fffbeb;
+}
+.tech-card .tech-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+    color: #fff;
+}
+.tech-card .tech-info { flex: 1; }
+.tech-card .tech-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #6c757d;
+}
+.tech-card .tech-count { font-size: 1.5rem; font-weight: 700; color: var(--z-text); }
+.tech-card .tech-arrow { color: #cbd5e1; transition: all 0.2s; }
+.tech-card:hover .tech-arrow { color: var(--z-orange); transform: translateX(4px); }
+
+/* Icon Gradients */
+.bg-solar      { background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark)); }
+.bg-wind       { background: linear-gradient(135deg, var(--z-green), var(--z-green-dark)); }
+.bg-geothermal { background: linear-gradient(135deg, var(--z-red), #dc2626); }
+.bg-hybrid     { background: linear-gradient(135deg, var(--z-blue), #2779bd); }
+.bg-biomass    { background: linear-gradient(135deg, var(--z-purple), #7c3aed); }
+.bg-waste      { background: linear-gradient(135deg, var(--z-gray), #4b5563); }
+
+/* Summary Bar */
+.summary-bar {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--z-border-light);
+    flex-wrap: wrap;
+    align-items: center;
+}
+.summary-item { display: flex; align-items: center; gap: 0.5rem; }
+.summary-item .summary-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--z-orange); }
+.summary-item .summary-label { font-size: 0.8rem; color: #6c757d; }
+.summary-item .summary-value { font-weight: 700; color: var(--z-text); }
+
+/* IPP Table Card (dashboard) */
+.ipp-table-card {
+    border-radius: 12px;
+    border: 1px solid var(--z-border-light);
+    overflow: hidden;
+}
+.ipp-table-card .card-header {
+    background: #fff;
+    border-bottom: 1px solid var(--z-border-light);
+    padding: 1rem 1.5rem;
+}
+.ipp-table-card .card-header h3 { font-size: 1.05rem; font-weight: 700; color: var(--z-text); }
+
+/* Dashboard button aliases */
+.btn-new-ipp {
+    background: linear-gradient(135deg, var(--z-orange), var(--z-orange-dark));
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    border: none;
+    display: inline-block;
+    text-decoration: none !important;
+}
+.btn-new-ipp:hover {
+    background: linear-gradient(135deg, var(--z-orange-dark), #d97706);
+    box-shadow: var(--z-shadow-orange);
+    transform: translateY(-1px);
+    color: #fff;
+}
+
+/* Action btn (dashboard) */
+.action-btn {
+    border: 1.5px solid var(--z-orange);
+    color: var(--z-orange-dark);
+    background: transparent;
+    border-radius: 6px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.action-btn:hover { background: var(--z-orange); color: #fff; }
+
+/* lw-table (dashboard) */
+.lw-table thead th {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--z-text-secondary);
+    border-bottom: 2px solid var(--z-border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+.lw-table thead th:hover { color: var(--z-orange); }
+.lw-table tbody tr:hover { background: #fffbeb; }
+
+/* Status badge (dashboard) */
+.status-badge {
+    background: rgba(217,119,6,0.15);
+    color: var(--z-orange-dark);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Dashboard alert */
+.dashboard-alert {
+    border-radius: 10px;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9rem;
+}
+
+/* Search box (dashboard) */
+.lw-search-box { position: relative; max-width: 320px; }
+.lw-search-box input {
+    padding: 0.55rem 0.85rem 0.55rem 2.5rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--z-border);
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+.lw-search-box input:focus {
+    border-color: var(--z-orange);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.12);
+    outline: none;
+}
+.lw-search-box .search-icon {
+    position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%); color: var(--z-text-muted); pointer-events: none;
+}
+
+/* Filter tag */
+.filter-tag {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: #fffbeb; border: 1px solid #fcd34d; color: var(--z-orange-dark);
+    padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.825rem; font-weight: 600;
+}
+.filter-tag .remove-filter { cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
+.filter-tag .remove-filter:hover { opacity: 1; }
+
+/* Per page select (dashboard) */
+.per-page-select {
+    border-radius: 6px; border: 1.5px solid var(--z-border);
+    padding: 0.35rem 0.5rem; font-size: 0.825rem; color: #374151;
+}
+.per-page-select:focus { border-color: var(--z-orange); outline: none; }
+
+/* Loading overlay (dashboard) */
+.lw-loading-overlay {
+    position: absolute; inset: 0; background: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10; border-radius: 12px;
+}
+
+/* ====================================================================
+   27. TIMELINE
+   ==================================================================== */
+.timeline-container { position: relative; border-left: 3px solid #fcd34d; }
+.timeline-step { padding-left: 2.5rem; position: relative; }
+.timeline-icon {
+    position: absolute; left: -1.5rem; top: 0;
+    width: 2.5rem; height: 2.5rem; line-height: 2.5rem;
+    border-radius: 50%; text-align: center;
+    font-weight: bold; font-size: 1rem;
+    box-shadow: 0 0 0 4px white; z-index: 1;
+}
+.timeline-arrow {
+    position: absolute; left: -0.6rem; top: 3.5rem;
+    height: 10px; width: 5px; background: var(--z-orange); z-index: 0;
+}
+.timeline-arrow::after {
+    content: ""; position: absolute; left: -0.25rem; top: 100%;
+    border-width: 7px; border-style: solid;
+    border-color: var(--z-orange) transparent transparent transparent;
+}
+.timeline-content { margin-left: 2.5rem; }
+
+/* ====================================================================
+   28. ALERT SUCCESS (shared)
+   ==================================================================== */
+.z-alert-success {
+    border-radius: 10px;
+    font-size: 0.9rem;
+    background: #e6f7ec;
+    color: #15803d;
+    border: 1px solid #b8e4c6;
+    padding: 0.75rem 1.25rem;
+}
+
+/* ====================================================================
+   29. DOCUMENT MANAGEMENT MODULE
+   ==================================================================== */
+
+/* --- Folder Tree (sidebar) --- */
+.dm-folder-tree {
+    padding: 0.5rem 0;
+}
+.dm-tree-item {
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border-left: 3px solid transparent;
+    font-size: 0.82rem;
+    color: #4a5568;
+}
+.dm-tree-item:hover {
+    background: #f7fafc;
+    color: var(--z-green);
+}
+.dm-tree-item.dm-tree-active {
+    background: #e6f7ec;
+    color: var(--z-green);
+    border-left-color: var(--z-green);
+    font-weight: 600;
+}
+.dm-tree-label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dm-tree-count {
+    background: #e2e8f0;
+    color: #64748b;
+    border-radius: 10px;
+    padding: 0 6px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    margin-left: auto;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* --- Category sidebar items --- */
+.dm-category-item {
+    padding: 8px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+}
+.dm-category-item:hover {
+    background: #f7fafc;
+}
+.dm-category-item:last-child {
+    border-bottom: none;
+}
+
+/* --- Breadcrumbs --- */
+.dm-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    font-size: 0.78rem;
+    color: #94a3b8;
+}
+.dm-breadcrumb-link {
+    color: var(--z-green);
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.15s;
+}
+.dm-breadcrumb-link:hover {
+    color: var(--z-green-dark);
+    text-decoration: underline;
+}
+.dm-breadcrumb-sep {
+    color: #cbd5e1;
+    margin: 0 2px;
+}
+
+/* --- Folder Grid --- */
+.dm-folder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+}
+.dm-folder-card {
+    background: #fffbf0;
+    border: 1px solid #fcd34d;
+    border-radius: 10px;
+    padding: 0;
+    transition: box-shadow 0.15s, transform 0.1s;
+    overflow: hidden;
+}
+.dm-folder-card:hover {
+    box-shadow: 0 2px 8px rgba(217,119,6,0.15);
+    transform: translateY(-1px);
+}
+.dm-folder-card-body {
+    padding: 14px 14px 8px;
+    cursor: pointer;
+    text-align: center;
+}
+.dm-folder-icon {
+    font-size: 2rem;
+    color: var(--z-orange);
+    margin-bottom: 0.35rem;
+}
+.dm-folder-name {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #1a2332;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dm-folder-meta {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+.dm-folder-actions {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 0 10px;
+    background: rgba(255,255,255,0.6);
+}
+
+/* ====================================================================
+   30. TASK MANAGEMENT MODULE
+   ==================================================================== */
+
+/* --- Stage list items (sidebar) --- */
+.tm-stage-item {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+    cursor: default;
+}
+.tm-stage-item:hover {
+    background: #f7fafc;
+}
+.tm-stage-item:last-child {
+    border-bottom: none;
+}
+.tm-stage-item.tm-stage-active {
+    background: #e6f7ec;
+    border-left: 3px solid var(--z-green);
+}
+.tm-stage-order {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--z-green);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* --- Priority & Status badges --- */
+.tm-priority-badge,
+.tm-status-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ====================================================================
+   10. OFFICE-UNIT (ou-*) COMPONENTS
+   ====================================================================
+   Custom modal, avatar, role-badge, and user-option styles used by
+   office-show, role-show, and similar detail pages.
+   ==================================================================== */
+
+/* --- Modal Backdrop & Container --- */
+.ou-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    animation: ouFadeIn 0.2s ease;
+    padding: 1rem;
+}
+
+@keyframes ouFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes ouSlideUp {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ou-modal {
+    background: #fff;
+    border-radius: 14px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0,0,0,0.04);
+    animation: ouSlideUp 0.25s ease;
+}
+
+.ou-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 14px 14px 0 0;
+}
+
+.ou-modal-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.ou-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.35rem;
+    line-height: 1;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+}
+
+.ou-modal-close:hover {
+    color: #374151;
+    background: #f3f4f6;
+}
+
+.ou-modal-body {
+    padding: 1.25rem;
+}
+
+.ou-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 0 0 14px 14px;
+}
+
+/* --- Avatar circles --- */
+.ou-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--z-green), var(--z-green-dark));
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.ou-avatar-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--z-green-light), var(--z-green));
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* --- Role badges --- */
+.ou-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ou-role-manager {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+}
+
+.ou-role-lead {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+}
+
+.ou-role-member {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+}
+
+/* --- User option (selectable list item inside modal) --- */
+.ou-user-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.85rem;
+    margin: 0;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.15s;
+}
+
+.ou-user-option:last-child {
+    border-bottom: none;
+}
+
+.ou-user-option:hover {
+    background: #f0fdf4;
+}
+
+.ou-user-option-selected {
+    background: #ecfdf5;
+    border-left: 3px solid var(--z-green);
+}
+
+.ou-user-option-selected:hover {
+    background: #dcfce7;
+}
+
+/* --- z-btn-primary (green action button) --- */
+.z-btn-primary {
+    background: linear-gradient(135deg, var(--z-green), var(--z-green-dark));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 0.4rem 1rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.z-btn-primary:hover {
+    background: linear-gradient(135deg, var(--z-green-dark), var(--z-green-darker));
+    box-shadow: var(--z-shadow-green);
+    color: #fff;
+}
+.z-btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+}

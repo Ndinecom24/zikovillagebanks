@@ -2,7 +2,8 @@
 
 namespace App\Http\Livewire\UserManagement;
 
-use App\Models\Role;
+use App\Models\ActivityLog;
+use App\Models\RoleBasedAccess\Role;
 use App\Models\User;
 use App\Rules\StrongPassword;
 use Illuminate\Support\Facades\Hash;
@@ -58,13 +59,7 @@ class UserShow extends Component
 
     public function loadUser()
     {
-        $this->user = User::with([
-            'roles',
-            'offices' => function ($q) {
-                $q->orderBy('responsible_office');
-            },
-            'offices.roles',
-        ])->findOrFail($this->userId);
+        $this->user = User::with(['roles'])->findOrFail($this->userId);
         $this->fillEditFields();
     }
 
@@ -182,32 +177,19 @@ class UserShow extends Component
         }
     }
 
-    /**
-     * Roles inherited through office → role_office pivot.
-     */
-    public function getOfficeRolesProperty(): Collection
-    {
-        try {
-            return $this->user->offices
-                ->flatMap(function ($office) {
-                    return $office->roles->map(function ($role) use ($office) {
-                        $role->source_office = $office->responsible_office;
-                        $role->source_office_id = $office->id;
-                        return $role;
-                    });
-                })
-                ->unique('id')
-                ->values();
-        } catch (\Exception $e) {
-            return collect();
-        }
-    }
-
     public function render()
     {
+        $activityLogs = collect();
+        if ($this->activeTab === 'activity') {
+            $activityLogs = ActivityLog::where('user_id', $this->userId)
+                ->orderByDesc('created_at')
+                ->take(50)
+                ->get();
+        }
+
         return view('livewire.user-management.user-show', [
-            'userRoles'   => $this->userRoles,
-            'officeRoles' => $this->officeRoles,
+            'userRoles'    => $this->userRoles,
+            'activityLogs' => $activityLogs,
         ])->layout('layouts.main.master-livewire');
     }
 }

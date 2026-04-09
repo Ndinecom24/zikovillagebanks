@@ -1,0 +1,228 @@
+<div>
+    {{-- Page Header --}}
+    <div class="z-page-header d-flex align-items-center justify-content-between flex-wrap mb-3">
+        <div>
+            <h4 class="mb-0 fw-bold"><i class="fas fa-credit-card text-success me-2"></i>Payment Configuration</h4>
+            <small class="text-muted">Set up payment methods & account details shown to applicants</small>
+        </div>
+        <button wire:click="openCreate" class="btn btn-zesco-green btn-sm">
+            <i class="fas fa-plus me-1"></i> Add Payment Method
+        </button>
+    </div>
+
+    {{-- Flash Messages --}}
+    @if(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    {{-- Search & Per Page --}}
+    <div class="z-card mb-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="z-search" style="max-width:320px;">
+                <i class="fas fa-search"></i>
+                <input type="text" wire:model.debounce.300ms="search" class="z-input" placeholder="Search payment methods...">
+            </div>
+            <div class="z-per-page">
+                <label class="z-label me-2">Show</label>
+                <select wire:model="perPage" class="z-input" style="width:70px;">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    {{-- Payment Methods Table --}}
+    <div class="z-card">
+        <div class="table-responsive">
+            <table class="z-table table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:40px;">#</th>
+                        <th>Method</th>
+                        <th>Provider</th>
+                        <th>Account Name</th>
+                        <th>Account No.</th>
+                        <th>Branch</th>
+                        <th style="width:80px;">Status</th>
+                        <th style="width:60px;">Order</th>
+                        <th style="width:120px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($configs as $config)
+                        <tr>
+                            <td>{{ $loop->iteration + ($configs->currentPage() - 1) * $configs->perPage() }}</td>
+                            <td class="fw-bold">{{ $config->method_name }}</td>
+                            <td>{{ $config->provider ?? '—' }}</td>
+                            <td>{{ $config->account_name ?? '—' }}</td>
+                            <td>
+                                @if($config->account_number)
+                                    <code>{{ $config->account_number }}</code>
+                                @else
+                                    —
+                                @endif
+                            </td>
+                            <td>{{ $config->branch ?? '—' }}</td>
+                            <td>
+                                <span class="badge {{ $config->is_active ? 'bg-success' : 'bg-secondary' }}"
+                                      style="cursor:pointer;" wire:click="toggleActive({{ $config->id }})"
+                                      title="Click to toggle">
+                                    {{ $config->is_active ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
+                            <td class="text-center">{{ $config->sort_order }}</td>
+                            <td>
+                                <button wire:click="openEdit({{ $config->id }})" class="btn btn-sm btn-outline-primary" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button wire:click="confirmDelete({{ $config->id }})" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-4">
+                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                No payment methods configured yet.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        @if($configs->hasPages())
+            <div class="p-3">{{ $configs->links() }}</div>
+        @endif
+    </div>
+
+    {{-- Instructions Info --}}
+    @if($configs->count())
+        <div class="z-card mt-3" style="border-left:4px solid #D97706;">
+            <div class="d-flex align-items-start gap-2">
+                <i class="fas fa-info-circle text-warning mt-1"></i>
+                <div>
+                    <strong>How it works:</strong> Active payment methods are displayed to applicants on the landing page
+                    when they open the application form. They will see the account details and instructions so they can
+                    make the payment before submitting proof.
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- ===== Create / Edit Modal ===== --}}
+    @if($showModal)
+        <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg" style="border-radius:14px;overflow:hidden;">
+                    <div class="modal-header" style="background:var(--nd-primary,#1E3A5F);color:#fff;border:none;">
+                        <h5 class="modal-title">
+                            <i class="fas fa-{{ $editId ? 'edit' : 'plus-circle' }} me-2"></i>
+                            {{ $editId ? 'Edit Payment Method' : 'Add Payment Method' }}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" wire:click="$set('showModal', false)"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form wire:submit.prevent="save">
+                            <div class="row g-3">
+                                {{-- Method Name --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Method Name <span class="text-danger">*</span></label>
+                                    <input type="text" wire:model.defer="methodName" class="form-control"
+                                           placeholder="e.g. Mobile Money, Bank Transfer">
+                                    @error('methodName') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                </div>
+
+                                {{-- Provider --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Provider</label>
+                                    <input type="text" wire:model.defer="provider" class="form-control"
+                                           placeholder="e.g. Airtel Money, Zanaco, MTN">
+                                    @error('provider') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                </div>
+
+                                {{-- Account Name --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Account Name</label>
+                                    <input type="text" wire:model.defer="accountName" class="form-control"
+                                           placeholder="e.g. Ndinecom Solutions Ltd">
+                                    @error('accountName') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                </div>
+
+                                {{-- Account Number --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Account Number</label>
+                                    <input type="text" wire:model.defer="accountNumber" class="form-control"
+                                           placeholder="e.g. 0012345678 or 097XXXXXXX">
+                                    @error('accountNumber') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                </div>
+
+                                {{-- Branch --}}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Branch</label>
+                                    <input type="text" wire:model.defer="branch" class="form-control"
+                                           placeholder="e.g. Cairo Road Branch">
+                                    @error('branch') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                </div>
+
+                                {{-- Sort Order --}}
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Sort Order</label>
+                                    <input type="number" wire:model.defer="sortOrder" class="form-control" min="0">
+                                </div>
+
+                                {{-- Active --}}
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" wire:model.defer="isActive" id="isActiveSwitch">
+                                        <label class="form-check-label fw-bold" for="isActiveSwitch">Active</label>
+                                    </div>
+                                </div>
+
+                                {{-- Instructions --}}
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Payment Instructions</label>
+                                    <textarea wire:model.defer="instructions" class="form-control" rows="3"
+                                              placeholder="Additional instructions for applicants, e.g. 'Include your bank name as reference when sending payment'"></textarea>
+                                    @error('instructions') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <button type="button" wire:click="$set('showModal', false)" class="btn btn-light">Cancel</button>
+                                <button type="submit" class="btn btn-zesco-green">
+                                    <i class="fas fa-save me-1"></i> {{ $editId ? 'Update' : 'Save' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- ===== Delete Confirmation Modal ===== --}}
+    @if($confirmDeleteId)
+        <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg" style="border-radius:14px;">
+                    <div class="modal-body text-center p-4">
+                        <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
+                        <h5 class="fw-bold">Delete Payment Method?</h5>
+                        <p class="text-muted mb-3">This action cannot be undone.</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <button wire:click="cancelDelete" class="btn btn-light">Cancel</button>
+                            <button wire:click="delete" class="btn btn-danger">
+                                <i class="fas fa-trash me-1"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>

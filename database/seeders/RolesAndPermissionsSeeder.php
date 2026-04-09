@@ -2,89 +2,66 @@
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
-use App\Models\Role;
+use App\Models\RoleBasedAccess\Permission;
+use App\Models\RoleBasedAccess\Role;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
     public function run()
     {
-        // ===== PERMISSIONS =====
-        $permissions = [
-            // IPP Management
-            ['name' => 'View IPP', 'group' => 'IPP Management', 'description' => 'View independent power producers'],
-            ['name' => 'Create IPP', 'group' => 'IPP Management', 'description' => 'Create new IPP entries'],
-            ['name' => 'Edit IPP', 'group' => 'IPP Management', 'description' => 'Edit IPP entries'],
-            ['name' => 'Delete IPP', 'group' => 'IPP Management', 'description' => 'Delete IPP entries'],
+        // ===== PERMISSIONS (driven by config/chilolezo.php) =====
+        $groups = config('chilolezo.permissions', []);
 
-            // User Management
-            ['name' => 'View Users', 'group' => 'User Management', 'description' => 'View user list'],
-            ['name' => 'Create Users', 'group' => 'User Management', 'description' => 'Create new users'],
-            ['name' => 'Edit Users', 'group' => 'User Management', 'description' => 'Edit user details'],
-            ['name' => 'Delete Users', 'group' => 'User Management', 'description' => 'Delete users'],
-            ['name' => 'Manage Roles', 'group' => 'User Management', 'description' => 'Manage roles and permissions'],
-
-            // Reports
-            ['name' => 'View Reports', 'group' => 'Reports', 'description' => 'View reports'],
-            ['name' => 'Export Reports', 'group' => 'Reports', 'description' => 'Export reports to file'],
-
-            // Configuration
-            ['name' => 'Manage Statuses', 'group' => 'Configuration', 'description' => 'Manage status configurations'],
-            ['name' => 'Manage Technologies', 'group' => 'Configuration', 'description' => 'Manage technology types'],
-            ['name' => 'Manage Ventures', 'group' => 'Configuration', 'description' => 'Manage venture types'],
-            ['name' => 'Manage Modules', 'group' => 'Configuration', 'description' => 'Manage system modules'],
-            ['name' => 'Manage Offices', 'group' => 'Configuration', 'description' => 'Manage responsible offices'],
-
-            // Substations
-            ['name' => 'View Substations', 'group' => 'Substations', 'description' => 'View connection points'],
-            ['name' => 'Manage Substations', 'group' => 'Substations', 'description' => 'Manage connection points'],
-        ];
-
-        foreach ($permissions as $perm) {
-            Permission::firstOrCreate(
-                ['slug' => Str::slug($perm['name'])],
-                [
-                    'name' => $perm['name'],
-                    'slug' => Str::slug($perm['name']),
-                    'description' => $perm['description'],
-                    'group' => $perm['group'],
-                ]
-            );
+        foreach ($groups as $section) {
+            $group = $section['group'];
+            foreach ($section['items'] ?? [] as $slug => $description) {
+                Permission::updateOrCreate(
+                    ['slug' => $slug],
+                    [
+                        'name'        => ucwords(str_replace('-', ' ', $slug)),
+                        'slug'        => $slug,
+                        'description' => $description,
+                        'group'       => $group,
+                    ]
+                );
+            }
         }
 
         // ===== ROLES =====
-        $admin = Role::firstOrCreate(
-            ['slug' => 'admin'],
-            ['name' => 'Admin', 'slug' => 'admin', 'description' => 'Full system access']
-        );
+        $rolesData = [
+            'super-admin'      => ['name' => 'Super Admin',      'description' => 'Ndinecom platform super administrator — full system access'],
+            'chairperson'      => ['name' => 'Chairperson',      'description' => 'Circle chairperson — full village bank admin access'],
+            'secretary'        => ['name' => 'Secretary',         'description' => 'Records, member management, monthly cycles'],
+            'treasurer'        => ['name' => 'Treasurer',         'description' => 'Financial operations — shares, loans, payments'],
+            'committee-member' => ['name' => 'Committee Member',  'description' => 'Loan approvals and oversight'],
+            'member'           => ['name' => 'Member',            'description' => 'Regular circle member'],
+        ];
 
-        $editor = Role::firstOrCreate(
-            ['slug' => 'editor'],
-            ['name' => 'Editor', 'slug' => 'editor', 'description' => 'Can manage IPPs and view reports']
-        );
+        $roles = [];
+        foreach ($rolesData as $slug => $data) {
+            $roles[$slug] = Role::firstOrCreate(
+                ['slug' => $slug],
+                array_merge(['slug' => $slug], $data)
+            );
+        }
 
-        $viewer = Role::firstOrCreate(
-            ['slug' => 'viewer'],
-            ['name' => 'Viewer', 'slug' => 'viewer', 'description' => 'Read-only access']
-        );
+        // ===== ROLE → PERMISSION MAPPING (driven by config) =====
+        $mappings = config('chilolezo.role_permissions', []);
 
-        // Admin gets all permissions
-        $admin->permissions()->sync(Permission::pluck('id'));
+        foreach ($mappings as $roleSlug => $permSlugs) {
+            if (! isset($roles[$roleSlug])) {
+                continue;
+            }
 
-        // Editor gets IPP + Reports + Substations view
-        $editorPerms = Permission::whereIn('slug', [
-            'view-ipp', 'create-ipp', 'edit-ipp',
-            'view-reports', 'export-reports',
-            'view-substations',
-        ])->pluck('id');
-        $editor->permissions()->sync($editorPerms);
+            if ($permSlugs === 'all') {
+                $roles[$roleSlug]->permissions()->sync(Permission::pluck('id'));
+            } else {
+                $ids = Permission::whereIn('slug', $permSlugs)->pluck('id');
+                $roles[$roleSlug]->permissions()->sync($ids);
+            }
+        }
 
-        // Viewer gets view-only
-        $viewerPerms = Permission::whereIn('slug', [
-            'view-ipp', 'view-reports', 'view-users', 'view-substations',
-        ])->pluck('id');
-        $viewer->permissions()->sync($viewerPerms);
+        $this->command->info('Roles & permissions seeded from config/chilolezo.php ✓');
     }
 }

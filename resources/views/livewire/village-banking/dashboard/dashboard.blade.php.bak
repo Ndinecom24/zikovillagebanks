@@ -1,0 +1,426 @@
+<div>
+    <!-- Content Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="z-page-header">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div>
+                        <h1><i class="fas fa-hand-holding-usd mr-2" style="color: var(--z-gold)"></i>Village Banking System</h1>
+                        <p>Welcome back, <strong>{{ Auth::user()->name }}</strong> &mdash; here's your overview</p>
+                    </div>
+                    <div class="d-flex align-items-center" style="gap:0.75rem;">
+                        @include('partials.village-bank-selector')
+                        <a href="{{ route('reports.index') }}" class="btn btn-light" style="border-radius:8px;">
+                            <i class="fas fa-chart-bar mr-1"></i> Full Reports
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            {{-- Flash Alerts --}}
+            @if(session()->has('message'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius:10px;">
+                    <i class="fas fa-check-circle mr-1"></i> {{ session('message') }}
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            @endif
+
+            {{-- Pending alerts --}}
+            @if($pendingMembers > 0 || $pendingLoans > 0 || $pendingPayments > 0)
+                <div class="alert alert-warning" style="border-radius:10px;font-size:0.9rem;">
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    <strong>Action needed:</strong>
+                    @if($pendingMembers > 0)
+                        <a href="{{ route('members.approval') }}" class="alert-link">{{ $pendingMembers }} member(s)</a>
+                    @endif
+                    @if($pendingLoans > 0)
+                        {{ $pendingMembers > 0 ? '&middot;' : '' }}
+                        <a href="{{ route('loans.approval') }}" class="alert-link">{{ $pendingLoans }} loan(s)</a>
+                    @endif
+                    @if($pendingPayments > 0)
+                        {{ ($pendingMembers > 0 || $pendingLoans > 0) ? '&middot;' : '' }}
+                        <a href="{{ route('payments.confirm') }}" class="alert-link">{{ $pendingPayments }} payment(s)</a>
+                    @endif
+                    awaiting review.
+                </div>
+            @endif
+
+            {{-- ═══════════════ ROW 1: KEY STATS ═══════════════ --}}
+            <div class="row mb-3">
+                <div class="col-xl-3 col-md-6 mb-3">
+                    <div class="card z-card" style="border-left:4px solid #2563eb;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted">Active Circles</small>
+                                <h3 class="mb-0 font-weight-bold">{{ $activeCircles }}</h3>
+                                <small style="color:#94a3b8;">of {{ $totalCircles }} total</small>
+                            </div>
+                            <div style="width:48px;height:48px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-circle-notch" style="font-size:1.2rem;color:#2563eb;"></i>
+                            </div>
+                        </div>
+                        <a href="{{ route('circles.index') }}" class="card-footer bg-white text-center py-2" style="font-size:0.82rem;color:#2563eb;text-decoration:none;display:block;border-top:1px solid #e5e7eb;">
+                            View Circles <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-3">
+                    <div class="card z-card" style="border-left:4px solid #16a34a;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted">Active Members</small>
+                                <h3 class="mb-0 font-weight-bold">{{ $totalMembers }}</h3>
+                                @if($pendingMembers > 0)
+                                    <small style="color:#f59e0b;font-weight:600;">{{ $pendingMembers }} pending</small>
+                                @endif
+                            </div>
+                            <div style="width:48px;height:48px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-users" style="font-size:1.2rem;color:#16a34a;"></i>
+                            </div>
+                        </div>
+                        <a href="{{ route('members.index') }}" class="card-footer bg-white text-center py-2" style="font-size:0.82rem;color:#16a34a;text-decoration:none;display:block;border-top:1px solid #e5e7eb;">
+                            View Members <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-3">
+                    <div class="card z-card" style="border-left:4px solid #ea580c;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted">Active Loans</small>
+                                <h3 class="mb-0 font-weight-bold">{{ $activeLoans }}</h3>
+                                @if($pendingLoans > 0)
+                                    <small style="color:#f59e0b;font-weight:600;">{{ $pendingLoans }} pending</small>
+                                @endif
+                            </div>
+                            <div style="width:48px;height:48px;border-radius:50%;background:#fff7ed;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-hand-holding-usd" style="font-size:1.2rem;color:#ea580c;"></i>
+                            </div>
+                        </div>
+                        <a href="{{ route('loans.index') }}" class="card-footer bg-white text-center py-2" style="font-size:0.82rem;color:#ea580c;text-decoration:none;display:block;border-top:1px solid #e5e7eb;">
+                            View Loans <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-3">
+                    <div class="card z-card" style="border-left:4px solid var(--z-gold);">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted">Shareouts Done</small>
+                                <h3 class="mb-0 font-weight-bold">{{ $shareoutsDone }}</h3>
+                                <small style="color:#94a3b8;">K{{ number_format($totalDistributed, 2) }}</small>
+                            </div>
+                            <div style="width:48px;height:48px;border-radius:50%;background:#fffbeb;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-coins" style="font-size:1.2rem;color:var(--z-gold);"></i>
+                            </div>
+                        </div>
+                        <a href="{{ route('shareout.index') }}" class="card-footer bg-white text-center py-2" style="font-size:0.82rem;color:var(--z-gold);text-decoration:none;display:block;border-top:1px solid #e5e7eb;">
+                            Shareout <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ═══════════════ ROW 2: FINANCIAL OVERVIEW ═══════════════ --}}
+            <div class="row mb-3">
+                <div class="col-md-3 mb-3">
+                    <div class="card z-card" style="border-left:4px solid #0891b2;">
+                        <div class="card-body py-3">
+                            <small class="text-muted">Total Contributions</small>
+                            <h4 class="mb-0 font-weight-bold" style="color:#0891b2;">K{{ number_format($totalContributions, 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card z-card" style="border-left:4px solid #16a34a;">
+                        <div class="card-body py-3">
+                            <small class="text-muted">Total Repaid</small>
+                            <h4 class="mb-0 font-weight-bold" style="color:#16a34a;">K{{ number_format($totalRepaid, 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card z-card" style="border-left:4px solid #dc2626;">
+                        <div class="card-body py-3">
+                            <small class="text-muted">Outstanding Balance</small>
+                            <h4 class="mb-0 font-weight-bold" style="color:#dc2626;">K{{ number_format($totalOutstanding, 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card z-card" style="border-left:4px solid #7c3aed;">
+                        <div class="card-body py-3">
+                            <small class="text-muted">Penalties + Insurance</small>
+                            <h4 class="mb-0 font-weight-bold" style="color:#7c3aed;">K{{ number_format($totalPenalties + $totalInsurance, 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                {{-- ═══════════════ LEFT COLUMN ═══════════════ --}}
+                <div class="col-lg-8">
+
+                    {{-- Quick Actions --}}
+                    <div class="card z-card mb-3">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bolt mr-2" style="color:var(--z-gold)"></i>Quick Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center" style="gap-y:0.5rem;">
+                                @php
+                                    $actions = [
+                                        ['route' => 'circles.create',   'icon' => 'fas fa-plus-circle',        'label' => 'New Circle',     'color' => '#2563eb', 'bg' => '#eff6ff'],
+                                        ['route' => 'members.create',   'icon' => 'fas fa-user-plus',          'label' => 'Add Member',     'color' => '#16a34a', 'bg' => '#f0fdf4'],
+                                        ['route' => 'loans.request',    'icon' => 'fas fa-file-invoice-dollar', 'label' => 'Loan Request',   'color' => '#ea580c', 'bg' => '#fff7ed'],
+                                        ['route' => 'shares.declare',   'icon' => 'fas fa-coins',              'label' => 'Declare Shares', 'color' => '#0891b2', 'bg' => '#ecfeff'],
+                                        ['route' => 'payments.upload',  'icon' => 'fas fa-upload',             'label' => 'Upload Payment', 'color' => '#7c3aed', 'bg' => '#f5f3ff'],
+                                        ['route' => 'repayments.index', 'icon' => 'fas fa-money-bill-wave',    'label' => 'Repayment',      'color' => '#dc2626', 'bg' => '#fef2f2'],
+                                    ];
+                                @endphp
+                                @foreach ($actions as $act)
+                                    <div class="col-md-2 col-sm-4 col-6 mb-2">
+                                        <a href="{{ route($act['route']) }}" class="d-block text-decoration-none p-3" style="border-radius:12px;border:1px solid #e5e7eb;transition:all 0.2s;" onmouseover="this.style.borderColor='{{ $act['color'] }}';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'" onmouseout="this.style.borderColor='#e5e7eb';this.style.boxShadow='none'">
+                                            <div style="width:44px;height:44px;border-radius:50%;background:{{ $act['bg'] }};display:flex;align-items:center;justify-content:center;margin:0 auto 0.4rem;">
+                                                <i class="{{ $act['icon'] }}" style="font-size:1.1rem;color:{{ $act['color'] }};"></i>
+                                            </div>
+                                            <small style="font-weight:600;color:#374151;font-size:0.78rem;">{{ $act['label'] }}</small>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Circle Health --}}
+                    @if ($circleHealth->count())
+                        <div class="card z-card mb-3">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <h3><i class="fas fa-heartbeat mr-2" style="color:var(--z-green)"></i>Active Circle Health</h3>
+                                <a href="{{ route('circles.index') }}" style="font-size:0.82rem;color:#6b7280;">View all &rarr;</a>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table z-table mb-0">
+                                        <thead>
+                                            <tr><th>Circle</th><th>Members</th><th>Active Month</th><th>Status</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($circleHealth as $ch)
+                                                @php $activeMo = $ch->months->first(); @endphp
+                                                <tr>
+                                                    <td><strong>{{ $ch->name }}</strong></td>
+                                                    <td>{{ $ch->members_count }}</td>
+                                                    <td style="font-size:0.85rem;">
+                                                        @if ($activeMo)
+                                                            Month {{ $activeMo->month_number }}
+                                                        @else
+                                                            <span style="color:#d1d5db;">&mdash;</span>
+                                                        @endif
+                                                    </td>
+                                                    <td><span class="badge" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;font-size:0.78rem;font-weight:600;">Active</span></td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Recent Loans --}}
+                    <div class="card z-card mb-3">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <h3><i class="fas fa-file-invoice-dollar mr-2" style="color:#ea580c"></i>Recent Loan Requests</h3>
+                            <a href="{{ route('loans.index') }}" style="font-size:0.82rem;color:#6b7280;">View all &rarr;</a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table z-table mb-0">
+                                    <thead>
+                                        <tr><th>Borrower</th><th>Circle</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($recentLoans as $rl)
+                                            @php
+                                                $sc = ['pending'=>['#fffbeb','#92400e','#fde68a'],'approved'=>['#eff6ff','#1e40af','#bfdbfe'],'active'=>['#f0fdf4','#166534','#bbf7d0'],'completed'=>['#f3f4f6','#374151','#e5e7eb'],'rejected'=>['#fef2f2','#991b1b','#fecaca']][$rl->status] ?? ['#f3f4f6','#374151','#e5e7eb'];
+                                            @endphp
+                                            <tr>
+                                                <td><strong>{{ $rl->borrower->name ?? '--' }}</strong></td>
+                                                <td style="font-size:0.85rem;">{{ $rl->month->circle->name ?? '--' }}</td>
+                                                <td style="font-weight:600;">K{{ number_format($rl->amount, 2) }}</td>
+                                                <td><span class="badge" style="background:{{ $sc[0] }};color:{{ $sc[1] }};border:1px solid {{ $sc[2] }};font-size:0.78rem;font-weight:600;">{{ ucfirst($rl->status) }}</span></td>
+                                                <td style="font-size:0.82rem;color:#6b7280;">{{ $rl->created_at->format('d M') }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr><td colspan="5" class="text-center py-3" style="color:#94a3b8;">No loans yet.</td></tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ═══════════════ RIGHT COLUMN ═══════════════ --}}
+                <div class="col-lg-4">
+
+                    {{-- My Overview --}}
+                    <div class="card z-card mb-3">
+                        <div class="card-header">
+                            <h3><i class="fas fa-user-circle mr-2" style="color:var(--z-gold)"></i>My Overview</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3" style="gap:0.75rem;">
+                                <div class="z-avatar-sm z-avatar-initials" style="width:48px;height:48px;font-size:1.1rem;">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                                <div>
+                                    <strong>{{ Auth::user()->name }}</strong>
+                                    <small class="d-block text-muted">{{ Auth::user()->email }}</small>
+                                </div>
+                            </div>
+                            <div class="row text-center" style="font-size:0.88rem;">
+                                <div class="col-4">
+                                    <div class="p-2" style="background:#eff6ff;border-radius:10px;">
+                                        <div style="font-weight:700;color:#2563eb;font-size:1.2rem;">{{ $myCircles->count() }}</div>
+                                        <small class="text-muted">Circles</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2" style="background:#f0fdf4;border-radius:10px;">
+                                        <div style="font-weight:700;color:#16a34a;font-size:1rem;">K{{ number_format($myContributions, 0) }}</div>
+                                        <small class="text-muted">Contributed</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2" style="background:#fef2f2;border-radius:10px;">
+                                        <div style="font-weight:700;color:#dc2626;font-size:1rem;">{{ $myActiveLoans }}</div>
+                                        <small class="text-muted">Active Loans</small>
+                                    </div>
+                                </div>
+                            </div>
+                            @if ($myOutstanding > 0)
+                                <div class="mt-3 p-2 text-center" style="background:#fffbeb;border-radius:8px;border:1px solid #fde68a;">
+                                    <small class="text-muted d-block">My Outstanding Balance</small>
+                                    <strong style="color:#dc2626;font-size:1.1rem;">K{{ number_format($myOutstanding, 2) }}</strong>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- My Loans --}}
+                    @if ($myLoans->count())
+                        <div class="card z-card mb-3">
+                            <div class="card-header">
+                                <h3><i class="fas fa-file-alt mr-2" style="color:var(--z-green)"></i>My Loans</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="list-group list-group-flush">
+                                    @foreach ($myLoans as $ml)
+                                        @php
+                                            $sc = ['pending'=>['#fffbeb','#92400e','#fde68a'],'approved'=>['#eff6ff','#1e40af','#bfdbfe'],'active'=>['#f0fdf4','#166534','#bbf7d0'],'completed'=>['#f3f4f6','#374151','#e5e7eb'],'rejected'=>['#fef2f2','#991b1b','#fecaca']][$ml->status] ?? ['#f3f4f6','#374151','#e5e7eb'];
+                                            $pct = $ml->total_payable > 0 ? min(100, round((($ml->total_payable - $ml->outstanding_balance) / $ml->total_payable) * 100)) : 0;
+                                        @endphp
+                                        <div class="list-group-item" style="border:none;padding:0.75rem 1rem;">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <strong style="font-size:0.88rem;">{{ $ml->month->circle->name ?? '--' }}</strong>
+                                                <span class="badge" style="background:{{ $sc[0] }};color:{{ $sc[1] }};border:1px solid {{ $sc[2] }};font-size:0.75rem;font-weight:600;">{{ ucfirst($ml->status) }}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between" style="font-size:0.82rem;color:#6b7280;">
+                                                <span>K{{ number_format($ml->amount, 2) }}</span>
+                                                <span>{{ $pct }}% repaid</span>
+                                            </div>
+                                            <div class="progress mt-1" style="height:4px;border-radius:4px;">
+                                                <div class="progress-bar" style="width:{{ $pct }}%;background:var(--z-green);border-radius:4px;"></div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Recent Payments --}}
+                    <div class="card z-card mb-3">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <h3><i class="fas fa-exchange-alt mr-2" style="color:#7c3aed"></i>Recent Payments</h3>
+                            <a href="{{ route('payments.confirm') }}" style="font-size:0.82rem;color:#6b7280;">View all &rarr;</a>
+                        </div>
+                        <div class="card-body p-0">
+                            @if ($recentPayments->count())
+                                <div class="list-group list-group-flush">
+                                    @foreach ($recentPayments as $rp)
+                                        @php
+                                            $sc = ['pending'=>['#fffbeb','#92400e','#fde68a'],'confirmed'=>['#f0fdf4','#166534','#bbf7d0'],'rejected'=>['#fef2f2','#991b1b','#fecaca']][$rp->status] ?? ['#f3f4f6','#374151','#e5e7eb'];
+                                        @endphp
+                                        <div class="list-group-item d-flex align-items-center justify-content-between" style="border:none;padding:0.6rem 1rem;">
+                                            <div>
+                                                <strong style="font-size:0.85rem;">{{ $rp->sender->name ?? '--' }}</strong>
+                                                <small class="d-block text-muted">to {{ $rp->receiver->name ?? '--' }}</small>
+                                            </div>
+                                            <div class="text-right">
+                                                <div style="font-weight:600;font-size:0.88rem;">K{{ number_format($rp->amount, 2) }}</div>
+                                                <span class="badge" style="background:{{ $sc[0] }};color:{{ $sc[1] }};border:1px solid {{ $sc[2] }};font-size:0.72rem;font-weight:600;">{{ ucfirst($rp->status) }}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="text-center py-3" style="color:#94a3b8;font-size:0.88rem;">
+                                    <i class="fas fa-exchange-alt fa-2x mb-2 d-block"></i>
+                                    No payments yet.
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- System Stats --}}
+                    <div class="card z-card mb-3">
+                        <div class="card-header">
+                            <h3><i class="fas fa-tachometer-alt mr-2" style="color:#0891b2"></i>System Stats</h3>
+                        </div>
+                        <div class="card-body" style="font-size:0.88rem;">
+                            <ul class="list-unstyled mb-0" style="line-height:2.2;">
+                                <li class="d-flex justify-content-between">
+                                    <span class="text-muted">Total Loans Issued</span>
+                                    <strong>K{{ number_format($totalLoanAmount, 2) }}</strong>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span class="text-muted">Confirmed Payments</span>
+                                    <strong style="color:#16a34a;">K{{ number_format($confirmedPayments, 2) }}</strong>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span class="text-muted">Total Penalties</span>
+                                    <strong style="color:#dc2626;">K{{ number_format($totalPenalties, 2) }}</strong>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span class="text-muted">Insurance Pool</span>
+                                    <strong style="color:#0d9488;">K{{ number_format($totalInsurance, 2) }}</strong>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span class="text-muted">Distributed (Shareouts)</span>
+                                    <strong style="color:var(--z-gold);">K{{ number_format($totalDistributed, 2) }}</strong>
+                                </li>
+                                @php
+                                    $repayRate = $totalLoanAmount > 0 ? round(($totalRepaid / $totalLoanAmount) * 100) : 0;
+                                @endphp
+                                <li class="mt-2">
+                                    <div class="d-flex justify-content-between mb-1"><span class="text-muted">Repayment Rate</span><strong>{{ $repayRate }}%</strong></div>
+                                    <div class="progress" style="height:6px;border-radius:6px;">
+                                        <div class="progress-bar" style="width:{{ $repayRate }}%;background:var(--z-green);border-radius:6px;"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

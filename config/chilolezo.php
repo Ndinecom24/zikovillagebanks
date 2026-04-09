@@ -6,111 +6,279 @@ return [
     |--------------------------------------------------------------------------
     | Roles
     |--------------------------------------------------------------------------
+    | Slugs for the system roles. Referenced via config('chilolezo.roles.xxx').
     */
     'roles' => [
-        'super_admin' => 'super_admin',
+        'super_admin'      => 'super-admin',
+        'chairperson'      => 'chairperson',
+        'secretary'        => 'secretary',
+        'treasurer'        => 'treasurer',
+        'committee_member' => 'committee-member',
+        'member'           => 'member',
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Permissions
+    | Permissions Registry
     |--------------------------------------------------------------------------
+    | Single source of truth for every permission in the system.
+    | Grouped by functional area. The slug is the key used for @can / Gate.
     */
     'permissions' => [
 
-        /*
-        |----------------------------------------------------------------------
-        | Client Management
-        |----------------------------------------------------------------------
-        */
-        'clients' => [
-            'group' => 'Client Management',
-            'actions' => [
-                // Clients.php (list page)
-                'clients.view'       => ['name' => 'View Clients',       'description' => 'View the clients list page'],
-                'clients.sort'       => ['name' => 'Sort Clients',       'description' => 'Sort the clients table by columns'],
-
-                // ClientCreate.php
-                'clients.create'     => ['name' => 'Create Client',      'description' => 'Create a new client record'],
-                'clients.upload'     => ['name' => 'Upload Client Files', 'description' => 'Upload document files when creating a client'],
+        /* ── Dashboard ────────────────────────── */
+        'dashboard' => [
+            'group' => 'Dashboard',
+            'items' => [
+                'view-dashboard' => 'Access the main dashboard',
             ],
         ],
 
-        /*
-        |----------------------------------------------------------------------
-        | Client Detail / Show
-        |----------------------------------------------------------------------
-        */
-        'client_show' => [
-            'group' => 'Client Detail',
-            'actions' => [
-                // ClientShow.php
-                'clients.show'                 => ['name' => 'View Client Detail',         'description' => 'View a single client detail page'],
-                'clients.assign_process'       => ['name' => 'Assign Process to Client',   'description' => 'Open the assign-process modal and assign a process'],
-                'clients.select_process'       => ['name' => 'Select Active Process',      'description' => 'Switch between assigned processes in the tracking view'],
-                'clients.toggle_stage'         => ['name' => 'Toggle Stage Accordion',     'description' => 'Expand or collapse a stage section'],
-                'clients.update_task_status'   => ['name' => 'Update Task Status',         'description' => 'Change a task status (pending, in_progress, completed)'],
-                'clients.save_task_remarks'    => ['name' => 'Save Task Remarks',          'description' => 'Save free-text remarks on a task progress record'],
-                'clients.view_task_detail'     => ['name' => 'View Task Detail Modal',     'description' => 'Open the task detail side-panel'],
+        /* ── Member Management ────────────────── */
+        'members' => [
+            'group' => 'Member Management',
+            'items' => [
+                'view-members'         => 'View member list',
+                'create-members'       => 'Register new members',
+                'edit-members'         => 'Edit member details',
+                'approve-members'      => 'Approve or reject pending members',
+                'manage-join-requests' => 'Review and approve join requests',
             ],
         ],
 
-        /*
-        |----------------------------------------------------------------------
-        | Client Task Action (individual task page)
-        |----------------------------------------------------------------------
-        */
-        'client_task_action' => [
-            'group' => 'Client Task Action',
-            'actions' => [
-                // ClientTaskAction.php
-                'client_tasks.update_status'   => ['name' => 'Update Client Task Status',  'description' => 'Set task to any status (pending, in_progress, completed, skipped)'],
-                'client_tasks.mark_complete'   => ['name' => 'Mark Task Complete',          'description' => 'Mark a client task as completed'],
-                'client_tasks.mark_in_progress' => ['name' => 'Mark Task In Progress',     'description' => 'Mark a client task as in progress'],
-                'client_tasks.reset_pending'   => ['name' => 'Reset Task to Pending',      'description' => 'Reset a client task back to pending'],
-                'client_tasks.skip'            => ['name' => 'Skip Task',                   'description' => 'Skip a client task'],
-                'client_tasks.save_remarks'    => ['name' => 'Save Task Action Remarks',   'description' => 'Persist remarks on the task action page'],
-                'client_tasks.add_comment'     => ['name' => 'Add Task Comment',            'description' => 'Add a comment to a task'],
-                'client_tasks.edit_comment'    => ['name' => 'Edit Task Comment',           'description' => 'Edit an existing task comment'],
-                'client_tasks.delete_comment'  => ['name' => 'Delete Task Comment',         'description' => 'Delete a task comment'],
-                'client_tasks.upload_files'    => ['name' => 'Upload Task Files',           'description' => 'Upload files to a task'],
-                'client_tasks.delete_file'     => ['name' => 'Delete Task File',            'description' => 'Delete a file from a task'],
-                'client_tasks.download_file'   => ['name' => 'Download Task File',          'description' => 'Download a file attached to a task'],
+        /* ── Circle Management ────────────────── */
+        'circles' => [
+            'group' => 'Circle Management',
+            'items' => [
+                'view-circles'   => 'View banking circles',
+                'create-circles' => 'Create new circles',
+                'manage-circles' => 'Edit, activate, close circles',
+                'manage-months'  => 'Open/close months and phases',
             ],
         ],
 
-        /*
-        |----------------------------------------------------------------------
-        | Client Task List (all tasks overview)
-        |----------------------------------------------------------------------
-        */
-        'client_task_list' => [
-            'group' => 'Client Task List',
-            'actions' => [
-                // ClientTaskList.php
-                'client_tasks.view_list'       => ['name' => 'View Client Task List',      'description' => 'View the paginated list of all client tasks'],
-                'client_tasks.filter'          => ['name' => 'Filter Client Tasks',         'description' => 'Use filters on the client task list'],
+        /* ── Shares & Insurance ───────────────── */
+        'shares' => [
+            'group' => 'Shares & Insurance',
+            'items' => [
+                'declare-shares'      => 'Declare monthly share amount',
+                'view-shares'         => 'View share declarations',
+                'configure-insurance' => 'Set insurance rules for a circle',
             ],
         ],
 
+        /* ── Loan Management ──────────────────── */
+        'loans' => [
+            'group' => 'Loan Management',
+            'items' => [
+                'request-loans' => 'Submit a loan request',
+                'approve-loans' => 'Approve or reject loan requests',
+                'view-loans'    => 'View all loans',
+                'pair-loans'    => 'Match borrowers with lenders',
+                'force-loans'   => 'Apply forced loans to members',
+            ],
+        ],
+
+        /* ── Payments ─────────────────────────── */
+        'payments' => [
+            'group' => 'Payments',
+            'items' => [
+                'upload-payments'        => 'Upload proof of payment',
+                'confirm-payments'       => 'Confirm or reject payments',
+                'manage-payment-methods' => 'Configure payment methods',
+            ],
+        ],
+
+        /* ── Repayments ───────────────────────── */
+        'repayments' => [
+            'group' => 'Repayments',
+            'items' => [
+                'make-repayments' => 'Submit loan repayments',
+                'view-repayments' => 'View repayment history',
+            ],
+        ],
+
+        /* ── Shareout ─────────────────────────── */
+        'shareout' => [
+            'group' => 'Shareout',
+            'items' => [
+                'calculate-shareout' => 'Run shareout calculations',
+                'view-shareout'      => 'View shareout results',
+            ],
+        ],
+
+        /* ── Rules & Bylaws ───────────────────── */
+        'rules' => [
+            'group' => 'Rules & Bylaws',
+            'items' => [
+                'manage-rules' => 'Create, edit, delete rules and bylaws',
+                'view-rules'   => 'View rules and acknowledge them',
+            ],
+        ],
+
+        /* ── Polls & Voting ───────────────────── */
+        'polls' => [
+            'group' => 'Polls & Voting',
+            'items' => [
+                'manage-polls' => 'Create, edit, open, close polls',
+                'vote-polls'   => 'Cast votes and comment on polls',
+                'view-polls'   => 'View poll results',
+            ],
+        ],
+
+        /* ── Reports ──────────────────────────── */
+        'reports' => [
+            'group' => 'Reports',
+            'items' => [
+                'view-reports'   => 'Access financial and operational reports',
+                'export-reports' => 'Export reports to PDF/Excel',
+            ],
+        ],
+
+        /* ── Bank Configuration ───────────────── */
+        'settings' => [
+            'group' => 'Settings',
+            'items' => [
+                'manage-bank-config' => 'Configure village bank settings',
+            ],
+        ],
+
+        /* ── Village Banks (platform) ─────────── */
+        'village_banks' => [
+            'group' => 'Village Banks',
+            'items' => [
+                'manage-village-banks' => 'Create and manage village banks',
+                'view-village-banks'   => 'View village bank details',
+            ],
+        ],
+
+        /* ── User Management ──────────────────── */
+        'users' => [
+            'group' => 'User Management',
+            'items' => [
+                'view-users'   => 'View user list',
+                'create-users' => 'Create new users',
+                'edit-users'   => 'Edit user details',
+                'delete-users' => 'Delete users',
+                'manage-roles' => 'Manage roles and permissions',
+            ],
+        ],
+
+        /* ── Subscriptions & Licensing ────────── */
+        'subscriptions' => [
+            'group' => 'Subscriptions',
+            'items' => [
+                'manage-subscriptions' => 'Manage subscription plans and payments',
+                'manage-licenses'      => 'Issue, revoke, and manage licenses',
+                'review-applications'  => 'Approve or reject bank applications',
+                'view-applications'    => 'View submitted bank applications',
+            ],
+        ],
+
+        /* ── Training ─────────────────────────── */
+        'training' => [
+            'group' => 'Training',
+            'items' => [
+                'manage-training' => 'Manage training programs and applications',
+            ],
+        ],
+
+        /* ── Activity Logs ────────────────────── */
+        'activity_logs' => [
+            'group' => 'Activity Logs',
+            'items' => [
+                'view-activity-logs' => 'View system activity logs',
+            ],
+        ],
+
+        /* ── Discovery ────────────────────────── */
+        'discovery' => [
+            'group' => 'Discovery',
+            'items' => [
+                'discover-banks' => 'Search and request to join village banks',
+            ],
+        ],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Permission Groups
+    | Role → Permission Mapping
     |--------------------------------------------------------------------------
+    | Defines which permissions each role receives. 'all' = every permission.
     */
-    'permission_groups' => [
-        'ipp_management'    => 'IPP Management',
-        'user_management'   => 'User Management',
-        'reports'           => 'Reports',
-        'configuration'     => 'Configuration',
-        'substations'       => 'Substations',
-        'general'           => 'General',
-        'client_management' => 'Client Management',
-        'client_detail'     => 'Client Detail',
-        'client_task_action' => 'Client Task Action',
-        'client_task_list'  => 'Client Task List',
-    ],
+    'role_permissions' => [
 
+        'super-admin' => 'all',
+
+        'chairperson' => [
+            'view-dashboard',
+            // Members
+            'view-members', 'create-members', 'edit-members', 'approve-members', 'manage-join-requests',
+            // Circles
+            'view-circles', 'create-circles', 'manage-circles', 'manage-months',
+            // Shares
+            'declare-shares', 'view-shares', 'configure-insurance',
+            // Loans
+            'request-loans', 'approve-loans', 'view-loans', 'pair-loans', 'force-loans',
+            // Payments
+            'upload-payments', 'confirm-payments', 'manage-payment-methods',
+            // Repayments
+            'make-repayments', 'view-repayments',
+            // Shareout
+            'calculate-shareout', 'view-shareout',
+            // Governance
+            'manage-rules', 'view-rules', 'manage-polls', 'vote-polls', 'view-polls',
+            // Reports & Settings
+            'view-reports', 'export-reports', 'manage-bank-config',
+            // Village Banks
+            'manage-village-banks', 'view-village-banks',
+            // Users (view only)
+            'view-users',
+            // Discovery
+            'discover-banks',
+        ],
+
+        'secretary' => [
+            'view-dashboard',
+            'view-members', 'create-members', 'approve-members', 'edit-members', 'manage-join-requests',
+            'view-circles', 'create-circles', 'manage-circles', 'manage-months',
+            'view-shares', 'view-loans', 'view-repayments', 'view-shareout',
+            'manage-rules', 'view-rules', 'manage-polls', 'vote-polls', 'view-polls',
+            'view-reports', 'view-users', 'view-village-banks', 'discover-banks',
+        ],
+
+        'treasurer' => [
+            'view-dashboard',
+            'view-members', 'view-circles',
+            'declare-shares', 'view-shares', 'configure-insurance',
+            'view-loans', 'pair-loans',
+            'upload-payments', 'confirm-payments', 'manage-payment-methods',
+            'view-repayments', 'calculate-shareout', 'view-shareout',
+            'view-rules', 'vote-polls', 'view-polls',
+            'view-reports', 'export-reports', 'view-village-banks', 'discover-banks',
+        ],
+
+        'committee-member' => [
+            'view-dashboard',
+            'view-members', 'approve-members',
+            'view-circles', 'view-shares',
+            'approve-loans', 'view-loans',
+            'confirm-payments',
+            'view-repayments', 'view-shareout',
+            'view-rules', 'vote-polls', 'view-polls',
+            'view-reports', 'view-village-banks', 'discover-banks',
+        ],
+
+        'member' => [
+            'view-dashboard',
+            'view-members', 'view-circles',
+            'declare-shares', 'view-shares',
+            'request-loans', 'view-loans',
+            'upload-payments',
+            'make-repayments', 'view-repayments',
+            'view-shareout',
+            'view-rules', 'vote-polls', 'view-polls',
+            'view-village-banks', 'discover-banks',
+        ],
+    ],
 ];

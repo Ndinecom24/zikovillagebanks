@@ -1,350 +1,282 @@
-<div>
-    <!-- Page Header -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="z-page-header">
-                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                    <div>
-                        <h1><i class="fas fa-users mr-2" style="color: var(--z-gold)"></i>User Management</h1>
-                        <p>Manage system users, accounts and access</p>
-                    </div>
-                    <button wire:click="openCreateModal" class="btn-zesco">
-                        <i class="fas fa-user-plus"></i> Add User
-                    </button>
+﻿<div>
+
+@can('view-users')
+<div class="nd-page">
+    {{-- â•â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â•â• --}}
+    <div class="nd-hero">
+        <div class="nd-hero-inner">
+            <ul class="nd-breadcrumb">
+                <li><a href="{{ route('home') }}">Home</a></li>
+                <li class="sep">/</li>
+                <li class="active">User Management</li>
+            </ul>
+            <div class="nd-hero-row">
+                <div class="nd-hero-title">
+                    <h1><i class="fas fa-users"></i>User Management</h1>
+                    <p class="nd-hero-sub">Manage system users, accounts and access control</p>
+                </div>
+                <button wire:click="openCreateModal" class="nd-btn nd-btn-amber">
+                    <i class="fas fa-user-plus"></i> Add User
+                </button>
+            </div>
+
+            <div class="nd-stat-row">
+                <div class="nd-stat">
+                    <div class="nd-stat-val">{{ $users->total() }}</div>
+                    <div class="nd-stat-label">Total Users</div>
+                </div>
+                <div class="nd-stat">
+                    <div class="nd-stat-val" style="color:#60a5fa;">{{ $users->count() }}</div>
+                    <div class="nd-stat-label">On This Page</div>
+                </div>
+                <div class="nd-stat">
+                    <div class="nd-stat-val" style="color:#34d399;">{{ $users->where('roles_count', '>', 0)->count() }}</div>
+                    <div class="nd-stat-label">With Roles</div>
+                </div>
+                <div class="nd-stat">
+                    <div class="nd-stat-val" style="color:#fbbf24;">{{ $perPage }}</div>
+                    <div class="nd-stat-label">Per Page</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Content -->
-    <section class="content">
-        <div class="container-fluid">
+    {{-- â•â•â•â•â•â•â•â•â•â•â• CONTENT â•â•â•â•â•â•â•â•â•â•â• --}}
+    <div class="nd-content">
 
-            {{-- Flash --}}
-            @if (session()->has('message'))
-                <div class="alert alert-success" style="border-radius: 10px; font-size: 0.9rem;">
-                    <i class="fas fa-check-circle mr-1"></i> {{ session('message') }}
-                </div>
-            @endif
+        {{-- Flash --}}
+        @if(session()->has('message'))
+            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:.65rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#166534;">
+                <i class="fas fa-check-circle"></i> {{ session('message') }}
+            </div>
+        @endif
 
-            {{-- Table Card --}}
-            <div class="card z-card">
-                <div class="card-header d-flex align-items-center justify-content-between flex-wrap"
-                    style="gap: 0.75rem;">
-                    <h3><i class="fas fa-list mr-2" style="color: var(--z-green)"></i>All Users</h3>
-                    <div class="d-flex align-items-center" style="gap: 0.75rem;">
-                        <div class="z-search">
-                            <i class="fas fa-search si"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search users...">
-                        </div>
-                        <select wire:model="perPage" class="z-per-page">
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                        </select>
+        <div class="nd-card">
+            <div class="nd-card-header">
+                <h3><i class="fas fa-list"></i> All Users</h3>
+                <div class="nd-toolbar">
+                    <div class="nd-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" wire:model.debounce.300ms="search" placeholder="Search users...">
                     </div>
+                    <select wire:model="perPage" class="nd-select">
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
                 </div>
+            </div>
 
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover z-table mb-0">
-                            <thead>
-                                <tr>
-                                    <th style="width: 50px;"></th>
-                                    <th wire:click="sortBy('staff_no')">
-                                        Staff No
-                                        @if ($sortField === 'staff_no')
-                                            <i
-                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
-                                        @else
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        @endif
-                                    </th>
-                                    <th wire:click="sortBy('name')">
-                                        Name
-                                        @if ($sortField === 'name')
-                                            <i
-                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
-                                        @else
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        @endif
-                                    </th>
-                                    <th wire:click="sortBy('email')">
-                                        Email
-                                        @if ($sortField === 'email')
-                                            <i
-                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
-                                        @else
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        @endif
-                                    </th>
-                                    <th wire:click="sortBy('directorate')">
-                                        Directorate
-                                        @if ($sortField === 'directorate')
-                                            <i
-                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
-                                        @else
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        @endif
-                                    </th>
-                                    <th wire:click="sortBy('job_title')">
-                                        Job Title
-                                        @if ($sortField === 'job_title')
-                                            <i
-                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
-                                        @else
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        @endif
-                                    </th>
-                                    <th wire:click="sortBy('total_login')">
-                                        Logins
-                                        @if ($sortField === 'total_login')
-                                            <i
-                                                class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
-                                        @else
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        @endif
-                                    </th>
-                                    <th>Offices</th>
-                                    <th>Roles</th>
-                                    <th style="width: 100px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($users as $u)
-                                    <tr>
-                                        <td>
-                                            @if ($u->avatar && file_exists(storage_path('app/public/user_avatar/' . $u->avatar)))
-                                                <img src="{{ asset('storage/user_avatar/' . $u->avatar) }}"
-                                                    class="z-avatar-sm" alt="{{ $u->name }}">
-                                            @else
-                                                @php
-                                                    $parts = explode(' ', trim($u->name ?? ''));
-                                                    $initials = strtoupper(
-                                                        substr($parts[0], 0, 1) .
-                                                            (isset($parts[1]) ? substr($parts[1], 0, 1) : ''),
-                                                    );
-                                                @endphp
-                                                <div class="z-avatar-sm z-avatar-initials">{{ $initials }}</div>
+            <div style="overflow-x:auto;">
+                <table class="nd-table">
+                    <thead>
+                        <tr>
+                            <th style="width:46px;cursor:default;"></th>
+                            <th wire:click="sortBy('username')">
+                                Username
+                                <i class="fas fa-sort{{ $sortField === 'username' ? ($sortDirection === 'asc' ? '-up' : '-down') : '' }} nd-sort {{ $sortField === 'username' ? 'active' : '' }}"></i>
+                            </th>
+                            <th wire:click="sortBy('name')">
+                                Name
+                                <i class="fas fa-sort{{ $sortField === 'name' ? ($sortDirection === 'asc' ? '-up' : '-down') : '' }} nd-sort {{ $sortField === 'name' ? 'active' : '' }}"></i>
+                            </th>
+                            <th wire:click="sortBy('email')">
+                                Email
+                                <i class="fas fa-sort{{ $sortField === 'email' ? ($sortDirection === 'asc' ? '-up' : '-down') : '' }} nd-sort {{ $sortField === 'email' ? 'active' : '' }}"></i>
+                            </th>
+                            <th wire:click="sortBy('job_title')">
+                                Job Title
+                                <i class="fas fa-sort{{ $sortField === 'job_title' ? ($sortDirection === 'asc' ? '-up' : '-down') : '' }} nd-sort {{ $sortField === 'job_title' ? 'active' : '' }}"></i>
+                            </th>
+                            <th wire:click="sortBy('total_login')">
+                                Logins
+                                <i class="fas fa-sort{{ $sortField === 'total_login' ? ($sortDirection === 'asc' ? '-up' : '-down') : '' }} nd-sort {{ $sortField === 'total_login' ? 'active' : '' }}"></i>
+                            </th>
+                            <th>Roles</th>
+                            <th style="width:90px;cursor:default;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($users as $u)
+                            <tr>
+                                <td>
+                                    @if($u->avatar && file_exists(storage_path('app/public/user_avatar/' . $u->avatar)))
+                                        <img src="{{ asset('storage/user_avatar/' . $u->avatar) }}" class="nd-avatar" alt="{{ $u->name }}">
+                                    @else
+                                        @php
+                                            $parts = explode(' ', trim($u->name ?? ''));
+                                            $initials = strtoupper(substr($parts[0], 0, 1) . (isset($parts[1]) ? substr($parts[1], 0, 1) : ''));
+                                        @endphp
+                                        <div class="nd-avatar-init">{{ $initials }}</div>
+                                    @endif
+                                </td>
+                                <td style="font-family:'Courier New',monospace;font-size:.8rem;color:var(--nd-faint);">{{ $u->username ?? 'â€”' }}</td>
+                                <td><strong>{{ $u->name ?? 'â€”' }}</strong></td>
+                                <td style="font-size:.82rem;">{{ $u->email ?? 'â€”' }}</td>
+                                <td style="font-size:.82rem;color:var(--nd-muted);">{{ $u->job_title ?? 'â€”' }}</td>
+                                <td>
+                                    <span class="nd-badge nd-badge-gray">
+                                        <i class="fas fa-sign-in-alt" style="font-size:.55rem;"></i>
+                                        {{ $u->total_login ?? 0 }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @if($u->roles_count > 0)
+                                        <span class="nd-badge nd-badge-amber">
+                                            <i class="fas fa-shield-alt" style="font-size:.55rem;"></i>
+                                            {{ $u->roles_count }}
+                                        </span>
+                                    @else
+                                        <span style="color:#d1d5db;font-size:.8rem;">â€”</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div style="display:flex;gap:4px;">
+                                        <a href="{{ route('users.show', $u->id) }}" class="nd-action" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <button wire:click="confirmDelete({{ $u->id }})" class="nd-action nd-action-danger" title="Delete">
+                                            <span wire:loading wire:target="confirmDelete({{ $u->id }})" class="spinner-border spinner-border-sm" role="status" style="width:12px;height:12px;"></span>
+                                            <i wire:loading.remove wire:target="confirmDelete({{ $u->id }})" class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8">
+                                    <div class="nd-empty">
+                                        <i class="fas fa-users"></i>
+                                        <p style="margin:0;">No users found.
+                                            @if($search)
+                                                Try a different search term.
                                             @endif
-                                        </td>
-                                        <td>{{ $u->staff_no ?? '--' }}</td>
-                                        <td><strong>{{ $u->name ?? '--' }}</strong></td>
-                                        <td>{{ $u->email ?? '--' }}</td>
-                                        <td>{{ $u->directorate ?? '--' }}</td>
-                                        <td>{{ $u->job_title ?? '--' }}</td>
-                                        <td>
-                                            <span class="badge badge-light"
-                                                style="font-size: 0.8rem;">{{ $u->total_login ?? 0 }}</span>
-                                        </td>
-                                        <td>
-                                            @if ($u->offices_count > 0)
-                                                <span class="badge"
-                                                    style="background: #ecfdf5; color: #065f46; font-size: 0.78rem; font-weight: 600; border: 1px solid #a7f3d0;">
-                                                    <i class="fas fa-building mr-1"
-                                                        style="font-size: 0.65rem;"></i>{{ $u->offices_count }}
-                                                </span>
-                                            @else
-                                                <span style="color: #d1d5db; font-size: 0.8rem;">&mdash;</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($u->roles_count > 0)
-                                                <span class="badge"
-                                                    style="background: #fef3c7; color: #92400e; font-size: 0.78rem; font-weight: 600; border: 1px solid #fde68a;">
-                                                    <i class="fas fa-shield-alt mr-1"
-                                                        style="font-size: 0.65rem;"></i>{{ $u->roles_count }}
-                                                </span>
-                                            @else
-                                                <span style="color: #d1d5db; font-size: 0.8rem;">&mdash;</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex" style="gap: 4px;">
-                                                <a href="{{ route('user.show', $u->id) }}"
-                                                    class="z-action z-action-view" title="View">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <button wire:click="confirmDelete({{ $u->id }})"
-                                                    class="z-action z-action-delete" title="Delete">
-                                                    <span wire:loading wire:target="confirmDelete({{ $u->id }})"
-                                                        class="spinner-border spinner-border-sm" role="status"></span>
-                                                    <i wire:loading.remove
-                                                        wire:target="confirmDelete({{ $u->id }})"
-                                                        class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="10" class="text-center py-4" style="color: #94a3b8;">
-                                            <i class="fas fa-users fa-2x mb-2 d-block"></i>
-                                            No users found.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
-                <div class="card-footer bg-white border-top d-flex align-items-center justify-content-between flex-wrap"
-                    style="gap: 0.75rem;">
-                    <span style="font-size: 0.82rem; color: #6b7280;">
-                        Showing {{ $users->firstItem() ?? 0 }} - {{ $users->lastItem() ?? 0 }} of
-                        {{ $users->total() }}
-                    </span>
+            @if($users->hasPages())
+                <div class="nd-footer">
+                    <span>Showing {{ $users->firstItem() ?? 0 }}â€“{{ $users->lastItem() ?? 0 }} of {{ $users->total() }}</span>
                     {{ $users->links() }}
                 </div>
-            </div>
-
+            @endif
         </div>
-    </section>
+    </div>
 
-    {{-- ===== CREATE USER MODAL --}}
-    @if ($showCreateModal)
-        <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header-zesco d-flex align-items-center justify-content-between">
-                        <h5><i class="fas fa-user-plus mr-2"></i> Add New User</h5>
-                        <button type="button" class="close" wire:click="$set('showCreateModal', false)">
-                            <span>&times;</span>
-                        </button>
+    {{-- â•â•â•â•â•â•â•â•â•â•â• CREATE USER MODAL â•â•â•â•â•â•â•â•â•â•â• --}}
+    @if($showCreateModal)
+    <div class="nd-overlay" wire:click.self="$set('showCreateModal', false)">
+        <div class="nd-modal" style="max-width:700px;">
+            <div class="nd-modal-head">
+                <h5><i class="fas fa-user-plus"></i> Add New User</h5>
+                <button class="nd-modal-close" wire:click="$set('showCreateModal', false)">&times;</button>
+            </div>
+            <form wire:submit.prevent="createUser">
+                <div class="nd-modal-body">
+                    @if($errors->any())
+                        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:.5rem .75rem;margin-bottom:.85rem;font-size:.82rem;color:var(--nd-red);">
+                            <i class="fas fa-exclamation-circle mr-1"></i> Please fix the errors below.
+                        </div>
+                    @endif
+
+                    {{-- Staff lookup --}}
+                    <div style="display:grid;grid-template-columns:5fr 7fr;gap:.75rem;">
+                        <div class="nd-field">
+                            <label>Employee Staff No</label>
+                            <div style="display:flex;gap:.5rem;">
+                                <input type="text" wire:model.defer="staffNo" placeholder="e.g. 12345" style="flex:1;">
+                                <button type="button" wire:click.prevent="lookupStaff" class="nd-btn nd-btn-navy" style="padding:.4rem .75rem;white-space:nowrap;" wire:loading.attr="disabled">
+                                    <i class="fas fa-search"></i> Lookup
+                                </button>
+                            </div>
+                            @error('staffNo') <div class="err">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="nd-field">
+                            <label>Full Name <span class="req">*</span></label>
+                            <input type="text" wire:model.defer="staffName" placeholder="Full name" {{ $staffFound ? 'readonly' : '' }}>
+                            @error('staffName') <div class="err">{{ $message }}</div> @enderror
+                        </div>
                     </div>
-                    <form wire:submit.prevent="createUser">
-                        <div class="modal-body">
-                            {{-- Error banner --}}
-                            @if ($errors->any())
-                                <div class="alert alert-danger"
-                                    style="border-radius: 8px; font-size: 0.85rem; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem;">
-                                    <i class="fas fa-exclamation-circle mr-1"></i>
-                                    Please fix the errors below before submitting.
-                                </div>
-                            @endif
 
-                            {{-- Staff search --}}
-                            <div class="row mb-3">
-                                <div class="col-md-5">
-                                    <label for="staffNo" class="z-label">Employee Staff No</label>
-                                    <div class="input-group">
-                                        <input type="text" id="staffNo" wire:model.defer="staffNo"
-                                            class="form-control z-input" placeholder="e.g. 12345">
-                                        <div class="input-group-append">
-                                            <button wire:click.prevent="lookupStaff" class="btn btn-zesco-green"
-                                                type="button" wire:loading.attr="disabled">
-                                                <i class="fas fa-search"></i> Lookup
-                                            </button>
-                                        </div>
-                                    </div>
-                                    @error('staffNo')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="col-md-7">
-                                    <label for="staffName" class="z-label">Staff Name <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" id="staffName" wire:model.defer="staffName"
-                                        class="form-control z-input" placeholder="Full name"
-                                        {{ $staffFound ? 'readonly' : '' }}>
-                                    @error('staffName')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="jobTitle" class="z-label">Job Title</label>
-                                    <input type="text" id="jobTitle" wire:model.defer="jobTitle"
-                                        class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="userUnit" class="z-label">Department / Unit</label>
-                                    <input type="text" id="userUnit" wire:model.defer="userUnit"
-                                        class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="directorate" class="z-label">Directorate</label>
-                                    <input type="text" id="directorate" wire:model.defer="directorate"
-                                        class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="mobileNo" class="z-label">Mobile No</label>
-                                    <input type="text" id="mobileNo" wire:model.defer="mobileNo"
-                                        class="form-control z-input" {{ $staffFound ? 'readonly' : '' }}>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="staffEmail" class="z-label">Email <span
-                                            class="text-danger">*</span></label>
-                                    <input type="email" id="staffEmail" wire:model.defer="staffEmail"
-                                        class="form-control z-input" placeholder="email@zesco.co.zm"
-                                        {{ $staffFound ? 'readonly' : '' }}>
-                                    @error('staffEmail')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="password" class="z-label">Default Password <span
-                                            class="text-danger">*</span></label>
-                                    <input type="password" id="password" wire:model.defer="password"
-                                        class="form-control z-input" placeholder="Strong password">
-                                    @error('password')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                    <small class="text-muted">Min 8 chars, upper + lower + number + special</small>
-                                </div>
-                            </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+                        <div class="nd-field">
+                            <label>Job Title</label>
+                            <input type="text" wire:model.defer="jobTitle" {{ $staffFound ? 'readonly' : '' }}>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" wire:click="$set('showCreateModal', false)" class="btn btn-light"
-                                style="border-radius: 8px;">Cancel</button>
-                            <button type="submit" class="btn-zesco-green" wire:loading.attr="disabled"
-                                wire:target="createUser">
-                                <span wire:loading.remove wire:target="createUser"><i
-                                        class="fas fa-check-circle mr-1"></i> Create User</span>
-                                <span wire:loading wire:target="createUser"><i
-                                        class="fas fa-spinner fa-spin mr-1"></i> Creating...</span>
-                            </button>
+                        <div class="nd-field">
+                            <label>Department / Unit</label>
+                            <input type="text" wire:model.defer="userUnit" {{ $staffFound ? 'readonly' : '' }}>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endif
+                    </div>
 
-    {{-- ===== DELETE CONFIRMATION MODAL ===== --}}
-    @if ($deleteId)
-        <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
-                <div class="modal-content">
-                    <div style="padding: 2rem; text-align: center;">
-                        <div
-                            style="width: 56px; height: 56px; border-radius: 50%; background: #fef2f2; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                            <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #dc2626;"></i>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;">
+                        <div class="nd-field">
+                            <label>Directorate</label>
+                            <input type="text" wire:model.defer="directorate" {{ $staffFound ? 'readonly' : '' }}>
                         </div>
-                        <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Delete User?</h5>
-                        <p style="color: #6b7280; font-size: 0.9rem;">Are you sure you want to delete
-                            <strong>{{ $deleteName }}</strong>? This action cannot be undone.</p>
-                        <div class="d-flex justify-content-center" style="gap: 0.75rem; margin-top: 1.5rem;">
-                            <button wire:click="$set('deleteId', null)" class="btn btn-light px-4"
-                                style="border-radius: 8px;">Cancel</button>
-                            <button wire:click="deleteUser" class="btn btn-danger px-4"
-                                style="border-radius: 8px; font-weight: 600;">
-                                <i class="fas fa-trash-alt mr-1"></i> Delete
-                            </button>
+                        <div class="nd-field">
+                            <label>Mobile No</label>
+                            <input type="text" wire:model.defer="mobileNo" {{ $staffFound ? 'readonly' : '' }}>
+                        </div>
+                        <div class="nd-field">
+                            <label>Email <span class="req">*</span></label>
+                            <input type="email" wire:model.defer="staffEmail" placeholder="email@example.com" {{ $staffFound ? 'readonly' : '' }}>
+                            @error('staffEmail') <div class="err">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+                        <div class="nd-field">
+                            <label>Default Password <span class="req">*</span></label>
+                            <input type="password" wire:model.defer="password" placeholder="Strong password">
+                            @error('password') <div class="err">{{ $message }}</div> @enderror
+                            <div style="font-size:.7rem;color:var(--nd-faint);margin-top:.2rem;">Min 8 chars, upper + lower + number + special</div>
                         </div>
                     </div>
                 </div>
+                <div class="nd-modal-footer">
+                    <button type="button" wire:click="$set('showCreateModal', false)" class="nd-btn nd-btn-light">Cancel</button>
+                    <button type="submit" class="nd-btn nd-btn-amber" wire:loading.attr="disabled" wire:target="createUser">
+                        <span wire:loading.remove wire:target="createUser"><i class="fas fa-check-circle"></i> Create User</span>
+                        <span wire:loading wire:target="createUser"><i class="fas fa-spinner fa-spin"></i> Creating...</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endif
+
+    {{-- â•â•â•â•â•â•â•â•â•â•â• DELETE CONFIRMATION â•â•â•â•â•â•â•â•â•â•â• --}}
+    @if($deleteId)
+    <div class="nd-overlay" wire:click.self="$set('deleteId', null)">
+        <div class="nd-modal" style="max-width:420px;">
+            <div style="padding:2rem;text-align:center;">
+                <div class="nd-delete-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h5 style="font-weight:700;margin-bottom:.5rem;color:var(--nd-text);">Delete User?</h5>
+                <p style="color:var(--nd-muted);font-size:.9rem;">
+                    Are you sure you want to delete <strong>{{ $deleteName }}</strong>? This action cannot be undone.
+                </p>
+                <div style="display:flex;justify-content:center;gap:.75rem;margin-top:1.5rem;">
+                    <button wire:click="$set('deleteId', null)" class="nd-btn nd-btn-light" style="padding:.45rem 1.25rem;">Cancel</button>
+                    <button wire:click="deleteUser" class="nd-btn nd-btn-danger" style="padding:.45rem 1.25rem;">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
     @endif
+</div>
+@else
+    @include('livewire.partials.unauthorized')
+@endcan
 </div>

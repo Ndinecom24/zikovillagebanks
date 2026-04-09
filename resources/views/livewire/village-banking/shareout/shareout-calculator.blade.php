@@ -1,0 +1,358 @@
+<div>
+    @push('custom-styles')
+    <style>
+        :root {
+            --sc-navy:#1E3A5F;--sc-navy-light:#2B6B96;--sc-amber:#D97706;--sc-amber-light:#F59E0B;
+            --sc-bg:#f4f6fa;--sc-card:#fff;--sc-border:#edf0f7;--sc-text:#1e293b;
+            --sc-muted:#64748b;--sc-faint:#94a3b8;--sc-green:#16a34a;--sc-red:#dc2626;--sc-blue:#2563eb;--sc-purple:#7c3aed;--sc-radius:16px;
+        }
+        .sc-page{background:var(--sc-bg);min-height:100vh;}
+
+        /* ── Hero ─────────────────── */
+        .sc-hero{background:linear-gradient(135deg,var(--sc-navy) 0%,#234b78 50%,var(--sc-navy-light) 100%);padding:1.75rem 0 6rem;position:relative;overflow:hidden;}
+        .sc-hero::before{content:'';position:absolute;width:600px;height:600px;top:-60%;right:-8%;background:radial-gradient(circle,rgba(217,119,6,.12) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
+        .sc-hero-inner{position:relative;z-index:2;padding:0 1.5rem;}
+        .sc-breadcrumb{display:flex;gap:.5rem;list-style:none;padding:0;margin:0 0 .75rem;font-size:.82rem;}
+        .sc-breadcrumb a{color:rgba(255,255,255,.55);text-decoration:none;}
+        .sc-breadcrumb a:hover{color:rgba(255,255,255,.85);}
+        .sc-breadcrumb .active{color:var(--sc-amber-light);font-weight:600;}
+        .sc-breadcrumb .sep{color:rgba(255,255,255,.25);}
+        .sc-hero-row{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+        .sc-hero-title h1{color:#fff;font-size:1.6rem;font-weight:800;margin:0;}
+        .sc-hero-title h1 i{color:var(--sc-amber);margin-right:.5rem;}
+        .sc-hero-sub{color:rgba(255,255,255,.55);font-size:.88rem;margin:.25rem 0 0;}
+
+        /* ── Content ──────────────── */
+        .sc-content{margin-top:-4rem;position:relative;z-index:10;padding:0 1.5rem 2rem;}
+        .sc-grid{display:grid;grid-template-columns:1fr 360px;gap:1.25rem;}
+        @media(max-width:992px){.sc-grid{grid-template-columns:1fr;}}
+
+        /* ── Card ─────────────────── */
+        .sc-card{background:var(--sc-card);border-radius:var(--sc-radius);border:1px solid var(--sc-border);box-shadow:0 2px 12px rgba(0,0,0,.04);overflow:hidden;}
+        .sc-card-header{padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;border-bottom:1px solid var(--sc-border);}
+        .sc-card-title{font-size:.92rem;font-weight:700;color:var(--sc-text);display:flex;align-items:center;gap:.4rem;}
+        .sc-card-title i{color:var(--sc-amber);font-size:.78rem;}
+        .sc-card-body{padding:1.25rem 1.5rem;}
+
+        /* ── Alerts ───────────────── */
+        .sc-alert{padding:.7rem 1rem;border-radius:12px;font-size:.84rem;display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;}
+        .sc-alert-success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+        .sc-alert-warning{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+        .sc-alert-info{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;}
+
+        /* ── Form ─────────────────── */
+        .sc-label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);margin-bottom:.35rem;}
+        .sc-select{width:100%;padding:.55rem .85rem;border:1px solid var(--sc-border);border-radius:10px;font-size:.85rem;background:#fafbfd;transition:border .2s;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right .65rem center;background-size:.65rem;padding-right:2rem;}
+        .sc-select:focus{outline:none;border-color:var(--sc-amber);background-color:#fff;box-shadow:0 0 0 3px rgba(217,119,6,.08);}
+        .sc-form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:.85rem;align-items:end;}
+        @media(max-width:768px){.sc-form-row{grid-template-columns:1fr;}}
+        .sc-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.25rem;border-radius:10px;font-size:.82rem;font-weight:700;border:none;cursor:pointer;transition:all .2s;text-decoration:none;}
+        .sc-btn-primary{background:var(--sc-amber);color:#fff;}
+        .sc-btn-primary:hover{background:var(--sc-amber-light);transform:translateY(-1px);box-shadow:0 4px 14px rgba(217,119,6,.2);}
+        .sc-btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+        .sc-btn-green{background:var(--sc-green);color:#fff;}
+        .sc-btn-green:hover{background:#15803d;transform:translateY(-1px);box-shadow:0 4px 14px rgba(22,163,74,.2);}
+
+        /* ── Pool stats ───────────── */
+        .sc-pool{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.25rem;}
+        @media(max-width:768px){.sc-pool{grid-template-columns:repeat(2,1fr);}}
+        .sc-pool-item{background:var(--sc-card);border-radius:var(--sc-radius);border:1px solid var(--sc-border);box-shadow:0 2px 12px rgba(0,0,0,.04);padding:1rem 1.1rem;display:flex;align-items:center;justify-content:space-between;transition:all .2s;}
+        .sc-pool-item:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.06);}
+        .sc-pool-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);}
+        .sc-pool-value{font-size:1.35rem;font-weight:800;color:var(--sc-text);margin-top:.05rem;}
+        .sc-pool-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+
+        /* ── Table ────────────────── */
+        .sc-table{width:100%;border-collapse:collapse;}
+        .sc-table thead th{font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);padding:.7rem 1rem;border-bottom:1px solid var(--sc-border);background:#fafbfd;white-space:nowrap;}
+        .sc-table tbody td{padding:.7rem 1rem;border-bottom:1px solid #f5f7fa;font-size:.84rem;vertical-align:middle;}
+        .sc-table tbody tr:last-child td{border-bottom:none;}
+        .sc-table tbody tr:hover{background:#fafbfd;}
+        .sc-table tfoot td{padding:.7rem 1rem;font-weight:800;background:#fafbfd;border-top:2px solid var(--sc-border);font-size:.84rem;}
+
+        /* ── Avatar ───────────────── */
+        .sc-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.65rem;flex-shrink:0;background:linear-gradient(135deg,var(--sc-navy),var(--sc-navy-light));color:#fff;}
+        .sc-member{display:flex;align-items:center;gap:.55rem;}
+        .sc-member-name{font-weight:700;color:var(--sc-text);font-size:.84rem;}
+        .sc-member-email{font-size:.7rem;color:var(--sc-faint);}
+
+        /* ── Progress ─────────────── */
+        .sc-progress-wrap{display:flex;align-items:center;gap:.4rem;}
+        .sc-progress-bar{flex:1;height:5px;border-radius:5px;background:var(--sc-border);overflow:hidden;max-width:60px;}
+        .sc-progress-fill{height:100%;border-radius:5px;background:var(--sc-green);transition:width .3s;}
+        .sc-progress-pct{font-size:.72rem;color:var(--sc-faint);font-weight:700;}
+
+        /* ── Sidebar ──────────────── */
+        .sc-sidebar{display:flex;flex-direction:column;gap:1.25rem;}
+
+        /* How-it-works */
+        .sc-steps{padding:1rem 1.25rem;counter-reset:step;}
+        .sc-step{display:flex;gap:.65rem;padding:.5rem 0;counter-increment:step;}
+        .sc-step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0;background:rgba(217,119,6,.08);color:var(--sc-amber);border:1px solid rgba(217,119,6,.15);}
+        .sc-step-num::before{content:counter(step);}
+        .sc-step-text{font-size:.82rem;color:var(--sc-muted);line-height:1.5;padding-top:.15rem;}
+
+        /* Past shareout list */
+        .sc-so-item{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.25rem;border-bottom:1px solid #f5f7fa;text-decoration:none;color:inherit;transition:background .15s;cursor:pointer;}
+        .sc-so-item:last-child{border-bottom:none;}
+        .sc-so-item:hover{background:#fafbfd;text-decoration:none;color:inherit;}
+        .sc-so-circle{font-weight:700;font-size:.86rem;color:var(--sc-text);}
+        .sc-so-meta{font-size:.72rem;color:var(--sc-faint);}
+        .sc-so-pool{font-weight:800;font-size:.88rem;color:var(--sc-blue);}
+        .sc-so-arrow{color:var(--sc-faint);font-size:.65rem;margin-left:.5rem;}
+
+        /* ── Empty ────────────────── */
+        .sc-empty{text-align:center;padding:2.5rem 1rem;}
+        .sc-empty i{font-size:2rem;opacity:.12;display:block;margin-bottom:.5rem;color:var(--sc-navy);}
+        .sc-empty p{font-size:.84rem;color:var(--sc-muted);margin:0;}
+
+        @keyframes scSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .sc-animate{animation:scSlide .3s ease;}
+        @media(max-width:768px){.sc-content{padding:0 .75rem 1.5rem;}}
+    </style>
+    @endpush
+
+    @can('view-shareout')
+    <section class="content sc-page">
+        {{-- ████ Hero ████ --}}
+        <div class="sc-hero">
+            <div class="sc-hero-inner container-fluid">
+                <ul class="sc-breadcrumb">
+                    <li><a href="{{ route('home') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="sep">/</li>
+                    <li class="active">Shareout</li>
+                </ul>
+                <div class="sc-hero-row">
+                    <div class="sc-hero-title">
+                        <h1><i class="fas fa-coins"></i>Shareout Calculator</h1>
+                        <p class="sc-hero-sub">Calculate and distribute the end-of-cycle pool to members</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ████ Content ████ --}}
+        <div class="sc-content container-fluid sc-animate">
+
+            {{-- Alerts --}}
+            @if ($successMessage)
+                <div class="sc-alert sc-alert-success"><i class="fas fa-check-circle"></i> {{ $successMessage }}</div>
+            @endif
+            @if (session()->has('warning'))
+                <div class="sc-alert sc-alert-warning"><i class="fas fa-exclamation-triangle"></i> {{ session('warning') }}</div>
+            @endif
+
+            <div class="sc-grid">
+                {{-- ██ LEFT — Calculator ██ --}}
+                <div>
+                    {{-- Circle selector card --}}
+                    <div class="sc-card" style="margin-bottom:1.25rem;">
+                        <div class="sc-card-header">
+                            <div class="sc-card-title"><i class="fas fa-calculator"></i> Calculate Shareout</div>
+                        </div>
+                        <div class="sc-card-body">
+                            <div class="sc-form-row">
+                                <div>
+                                    <label class="sc-label">Village Bank</label>
+                                    @include('partials.village-bank-selector')
+                                </div>
+                                <div>
+                                    <label class="sc-label">Circle <span style="color:var(--sc-red);">*</span></label>
+                                    <select wire:model="circleId" class="sc-select">
+                                        <option value="">-- Select Circle --</option>
+                                        @foreach ($this->circles as $c)
+                                            <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }} members)</option>
+                                        @endforeach
+                                    </select>
+                                    @error('circleId') <small style="color:var(--sc-red);font-size:.76rem;">{{ $message }}</small> @enderror
+                                </div>
+                                <div>
+                                    @if ($existingShareout)
+                                        <div class="sc-alert sc-alert-info" style="margin-bottom:0;white-space:nowrap;">
+                                            <i class="fas fa-info-circle"></i> Already finalised — K{{ number_format($existingShareout->total_pool, 2) }}
+                                        </div>
+                                    @elseif ($circleId)
+                                        <button wire:click="preview" class="sc-btn sc-btn-primary" wire:loading.attr="disabled" wire:target="preview">
+                                            <span wire:loading.remove wire:target="preview"><i class="fas fa-search-dollar"></i> Preview</span>
+                                            <span wire:loading wire:target="preview"><i class="fas fa-spinner fa-spin"></i> Calculating…</span>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Preview results --}}
+                    @if ($previewed)
+                        {{-- Pool breakdown --}}
+                        <div class="sc-pool">
+                            <div class="sc-pool-item">
+                                <div>
+                                    <div class="sc-pool-label">Contributions</div>
+                                    <div class="sc-pool-value" style="color:var(--sc-blue);">K{{ number_format($totalContributions, 2) }}</div>
+                                </div>
+                                <div class="sc-pool-icon" style="background:rgba(37,99,235,.08);color:var(--sc-blue);"><i class="fas fa-piggy-bank"></i></div>
+                            </div>
+                            <div class="sc-pool-item">
+                                <div>
+                                    <div class="sc-pool-label">Interest Earned</div>
+                                    <div class="sc-pool-value" style="color:var(--sc-green);">K{{ number_format($totalInterest, 2) }}</div>
+                                </div>
+                                <div class="sc-pool-icon" style="background:rgba(22,163,74,.08);color:var(--sc-green);"><i class="fas fa-percentage"></i></div>
+                            </div>
+                            <div class="sc-pool-item">
+                                <div>
+                                    <div class="sc-pool-label">Penalties</div>
+                                    <div class="sc-pool-value" style="color:var(--sc-red);">K{{ number_format($totalPenalties, 2) }}</div>
+                                </div>
+                                <div class="sc-pool-icon" style="background:rgba(220,38,38,.08);color:var(--sc-red);"><i class="fas fa-gavel"></i></div>
+                            </div>
+                            <div class="sc-pool-item">
+                                <div>
+                                    <div class="sc-pool-label">Total Pool</div>
+                                    <div class="sc-pool-value" style="color:var(--sc-amber);">K{{ number_format($totalPool, 2) }}</div>
+                                </div>
+                                <div class="sc-pool-icon" style="background:rgba(217,119,6,.08);color:var(--sc-amber);"><i class="fas fa-coins"></i></div>
+                            </div>
+                        </div>
+
+                        {{-- Allocations table --}}
+                        <div class="sc-card">
+                            <div class="sc-card-header">
+                                <div class="sc-card-title"><i class="fas fa-users"></i> Member Allocations ({{ count($allocations) }})</div>
+                                @if (!$existingShareout)
+                                    <button wire:click="finalise" class="sc-btn sc-btn-green" wire:loading.attr="disabled" wire:target="finalise"
+                                            onclick="return confirm('Are you sure? This action cannot be undone.')">
+                                        <span wire:loading.remove wire:target="finalise"><i class="fas fa-check-double"></i> Finalise Shareout</span>
+                                        <span wire:loading wire:target="finalise"><i class="fas fa-spinner fa-spin"></i> Finalising…</span>
+                                    </button>
+                                @endif
+                            </div>
+                            <div style="overflow-x:auto;">
+                                <table class="sc-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Member</th>
+                                            <th>Contributions</th>
+                                            <th>Share %</th>
+                                            <th>Profit Share</th>
+                                            <th>Payout</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($allocations as $i => $alloc)
+                                            @php
+                                                $parts = explode(' ', trim($alloc['name']));
+                                                $initials = strtoupper(substr($parts[0],0,1) . (isset($parts[1]) ? substr($parts[1],0,1) : ''));
+                                            @endphp
+                                            <tr>
+                                                <td style="color:var(--sc-faint);font-size:.78rem;">{{ $i + 1 }}</td>
+                                                <td>
+                                                    <div class="sc-member">
+                                                        <div class="sc-avatar">{{ $initials }}</div>
+                                                        <div>
+                                                            <div class="sc-member-name">{{ $alloc['name'] }}</div>
+                                                            <div class="sc-member-email">{{ $alloc['email'] }}</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="font-weight:700;">K{{ number_format($alloc['contribution_total'], 2) }}</td>
+                                                <td>
+                                                    <div class="sc-progress-wrap">
+                                                        <div class="sc-progress-bar"><div class="sc-progress-fill" style="width:{{ $alloc['ratio'] }}%;"></div></div>
+                                                        <span class="sc-progress-pct">{{ $alloc['ratio'] }}%</span>
+                                                    </div>
+                                                </td>
+                                                <td style="color:var(--sc-green);font-weight:700;">K{{ number_format($alloc['profit_share'], 2) }}</td>
+                                                <td style="color:var(--sc-blue);font-weight:800;">K{{ number_format($alloc['payout_amount'], 2) }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6">
+                                                    <div class="sc-empty">
+                                                        <i class="fas fa-users"></i>
+                                                        <p>No members found in this circle</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                    @if (count($allocations))
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" style="text-align:right;">TOTALS</td>
+                                                <td>K{{ number_format(array_sum(array_column($allocations, 'contribution_total')), 2) }}</td>
+                                                <td>100%</td>
+                                                <td style="color:var(--sc-green);">K{{ number_format(array_sum(array_column($allocations, 'profit_share')), 2) }}</td>
+                                                <td style="color:var(--sc-blue);">K{{ number_format(array_sum(array_column($allocations, 'payout_amount')), 2) }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    @endif
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- ██ RIGHT — Sidebar ██ --}}
+                <div class="sc-sidebar">
+                    {{-- How it works --}}
+                    <div class="sc-card">
+                        <div class="sc-card-header"><div class="sc-card-title"><i class="fas fa-lightbulb"></i> How Shareout Works</div></div>
+                        <div class="sc-steps">
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Select a circle to calculate shareout for</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Contributions from all months are totalled</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Interest = total repayments &minus; total loans issued</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Penalties collected are added to the pool</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Pool is split proportionally to each member's share</div></div>
+                            <div class="sc-step"><div class="sc-step-num"></div><div class="sc-step-text">Once finalised, the circle is marked <strong>Completed</strong></div></div>
+                        </div>
+                    </div>
+
+                    {{-- Past shareouts --}}
+                    <div class="sc-card">
+                        <div class="sc-card-header"><div class="sc-card-title"><i class="fas fa-history"></i> Past Shareouts</div></div>
+                        @if ($this->shareouts->count())
+                            <div>
+                                @foreach ($this->shareouts as $so)
+                                    <a href="{{ route('shareout.show', $so->id) }}" class="sc-so-item">
+                                        <div>
+                                            <div class="sc-so-circle">{{ $so->circle->name ?? '--' }}</div>
+                                            <div class="sc-so-meta">{{ $so->created_at->format('d M Y') }} &middot; {{ $so->allocations->count() }} members</div>
+                                        </div>
+                                        <div style="display:flex;align-items:center;">
+                                            <span class="sc-so-pool">K{{ number_format($so->total_pool, 2) }}</span>
+                                            <i class="fas fa-chevron-right sc-so-arrow"></i>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="sc-empty">
+                                <i class="fas fa-coins"></i>
+                                <p>No shareouts recorded yet</p>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Pool formula --}}
+                    <div class="sc-card">
+                        <div class="sc-card-header"><div class="sc-card-title"><i class="fas fa-chart-pie"></i> Pool Formula</div></div>
+                        <div class="sc-card-body" style="font-size:.82rem;color:var(--sc-muted);line-height:1.7;">
+                            <div style="background:#fafbfd;border-radius:10px;padding:.85rem 1rem;border:1px solid var(--sc-border);font-family:monospace;font-size:.78rem;color:var(--sc-text);">
+                                <strong>Pool</strong> = Contributions + Interest + Penalties<br>
+                                <strong>Payout<sub>i</sub></strong> = Contribution<sub>i</sub> + (Profit &times; Ratio<sub>i</sub>)<br>
+                                <strong>Ratio<sub>i</sub></strong> = Contribution<sub>i</sub> / Total Contributions
+                            </div>
+                            <p style="margin-top:.75rem;">Each member receives their original contributions plus a proportional share of profits (interest + penalties).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @else
+        @include('livewire.partials.unauthorized')
+    @endcan
+</div>

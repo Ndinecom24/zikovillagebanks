@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'IPP Management') - {{ config('app.name', 'ZESCO') }}</title>
+    <title>@yield('title', 'Village Banking') - {{ config('app.name', 'VBS') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,18 +18,18 @@
 
     <style>
         :root {
-            --zesco-green: #006B3F;
-            --zesco-green-dark: #004D2E;
-            --zesco-green-light: #00895A;
-            --zesco-gold: #FFB223;
-            --zesco-gold-light: #FFC554;
+            --nd-primary: #1E3A5F;
+            --nd-primary-dark: #152C47;
+            --nd-primary-light: #2B6B96;
+            --nd-accent: #D97706;
+            --nd-accent-light: #F59E0B;
             --surface: #ffffff;
             --surface-hover: #f8fafb;
             --text-primary: #1a2332;
             --text-secondary: #5a6a7e;
             --text-muted: #8896a7;
             --border: #e2e8f0;
-            --border-focus: #FFB223;
+            --border-focus: #D97706;
             --error: #dc3545;
             --error-bg: #fef2f2;
             --success: #10b981;
@@ -65,7 +65,7 @@
             display: none;
             width: 45%;
             max-width: 640px;
-            background: linear-gradient(160deg, var(--zesco-green-dark) 0%, var(--zesco-green) 50%, var(--zesco-green-light) 100%);
+            background: linear-gradient(160deg, var(--nd-primary-dark) 0%, var(--nd-primary) 50%, var(--nd-primary-light) 100%);
             position: relative;
             overflow: hidden;
             padding: 3rem;
@@ -91,7 +91,7 @@
             left: -20%;
             width: 60%;
             height: 60%;
-            background: radial-gradient(ellipse, rgba(255, 178, 35, 0.1) 0%, transparent 70%);
+            background: radial-gradient(ellipse, rgba(217, 119, 6, 0.1) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -124,7 +124,7 @@
         }
 
         .brand-content h1 span {
-            color: var(--zesco-gold);
+            color: var(--nd-accent);
         }
 
         .brand-content p {
@@ -153,13 +153,13 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: rgba(255, 178, 35, 0.2);
+            background: rgba(217, 119, 6, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             font-size: 1rem;
-            color: var(--zesco-gold);
+            color: var(--nd-accent);
         }
 
         .brand-bottom {
@@ -178,11 +178,24 @@
             padding: 2rem 1.5rem;
             background: #f0f4f8;
             overflow-y: auto;
+            position: relative;
+        }
+
+        .auth-form-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('{{ asset("img/image3.jpg") }}') center/cover no-repeat;
+            opacity: 0.27;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .auth-form-container {
             width: 100%;
             max-width: 480px;
+            position: relative;
+            z-index: 1;
         }
 
         .auth-mobile-logo {
@@ -211,14 +224,14 @@
             width: 52px;
             height: 52px;
             border-radius: 14px;
-            background: linear-gradient(135deg, var(--zesco-gold), #f59e0b);
+            background: linear-gradient(135deg, var(--nd-accent), #f59e0b);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.25rem;
             color: #fff;
             font-size: 1.35rem;
-            box-shadow: 0 4px 12px rgba(255, 178, 35, 0.25);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
         }
 
         .auth-card-header h2 {
@@ -320,12 +333,12 @@
         .input-group-auth input:focus,
         .input-group-auth select:focus {
             border-color: var(--border-focus);
-            box-shadow: 0 0 0 3px rgba(255, 178, 35, 0.15);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
         }
 
         .input-group-auth input:focus~.input-icon,
         .input-group-auth select:focus~.input-icon {
-            color: var(--zesco-gold);
+            color: var(--nd-accent);
         }
 
         .input-group-auth input.is-invalid {
@@ -372,7 +385,7 @@
             width: 16px;
             height: 16px;
             border-radius: 4px;
-            accent-color: var(--zesco-gold);
+            accent-color: var(--nd-accent);
             cursor: pointer;
         }
 
@@ -387,7 +400,7 @@
         .btn-auth-primary {
             width: 100%;
             padding: 0.8rem;
-            background: linear-gradient(135deg, var(--zesco-green), var(--zesco-green-light));
+            background: linear-gradient(135deg, var(--nd-primary), var(--nd-primary-light));
             color: #ffffff;
             border: none;
             border-radius: var(--radius-sm);
@@ -396,7 +409,7 @@
             font-family: inherit;
             cursor: pointer;
             transition: all 0.25s ease;
-            box-shadow: 0 2px 8px rgba(0, 107, 63, 0.25);
+            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -404,8 +417,8 @@
         }
 
         .btn-auth-primary:hover {
-            background: linear-gradient(135deg, var(--zesco-gold), #f59e0b);
-            box-shadow: 0 4px 14px rgba(255, 178, 35, 0.4);
+            background: linear-gradient(135deg, var(--nd-accent), #f59e0b);
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4);
             transform: translateY(-1px);
         }
 
@@ -439,7 +452,7 @@
 
         /* ===== Links ===== */
         .auth-link {
-            color: var(--zesco-gold);
+            color: var(--nd-accent);
             text-decoration: none;
             font-weight: 600;
             font-size: 0.85rem;
@@ -447,7 +460,7 @@
         }
 
         .auth-link:hover {
-            color: var(--zesco-green);
+            color: var(--nd-primary);
             text-decoration: underline;
         }
 
@@ -485,7 +498,7 @@
         }
 
         .auth-bottom-text a {
-            color: var(--zesco-gold);
+            color: var(--nd-accent);
             text-decoration: none;
             font-weight: 600;
         }
@@ -543,48 +556,166 @@
         .d-none {
             display: none;
         }
+
+        /* ===== Auth Top Nav ===== */
+        .auth-top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 1.5rem;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .auth-top-nav .nav-brand {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--nd-primary);
+            text-decoration: none;
+        }
+
+        .auth-top-nav .nav-brand span {
+            color: var(--nd-accent);
+        }
+
+        .auth-top-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .auth-top-nav .nav-actions a {
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .auth-top-nav .nav-link-text {
+            color: var(--text-secondary);
+        }
+
+        .auth-top-nav .nav-link-text:hover {
+            color: var(--nd-primary);
+        }
+
+        .auth-top-nav .nav-link-outline {
+            color: var(--nd-primary);
+            border: 1.5px solid var(--nd-primary);
+        }
+
+        .auth-top-nav .nav-link-outline:hover {
+            background: var(--nd-primary);
+            color: #fff;
+        }
+
+        .auth-top-nav .nav-link-filled {
+            background: var(--nd-primary);
+            color: #fff;
+        }
+
+        .auth-top-nav .nav-link-filled:hover {
+            background: var(--nd-primary-dark);
+        }
+
+        .auth-top-nav .nav-link-accent {
+            background: var(--nd-accent);
+            color: #fff;
+        }
+
+        .auth-top-nav .nav-link-accent:hover {
+            background: #b45309;
+        }
+
+        /* Push content below fixed nav */
+        .auth-wrapper {
+            padding-top: 56px;
+        }
+
+        @media (min-width: 1024px) {
+            .auth-top-nav {
+                padding: 0 2.5rem;
+            }
+        }
     </style>
 
     @yield('styles')
 </head>
 
 <body>
+    {{-- Top Navigation --}}
+    <nav class="auth-top-nav">
+        <a href="{{ route('landing') }}" class="nav-brand">Ziko Village<span>Bank</span></a>
+        <div class="nav-actions">
+            <a href="{{ route('landing') }}#pricing" class="nav-link-text">
+                <i class="bi bi-tag" style="margin-right:3px;"></i> Pricing
+            </a>
+            <a href="{{ route('landing') }}#features" class="nav-link-text">
+                <i class="bi bi-grid" style="margin-right:3px;"></i> Features
+            </a>
+
+            @if(Route::currentRouteName() !== 'login')
+                <a href="{{ route('login') }}" class="nav-link-outline">
+                    <i class="bi bi-box-arrow-in-right" style="margin-right:3px;"></i> Login
+                </a>
+            @endif
+
+            @if(Route::currentRouteName() !== 'register' && Route::has('register'))
+                <a href="{{ route('register') }}" class="nav-link-filled">
+                    <i class="bi bi-person-plus" style="margin-right:3px;"></i> Register
+                </a>
+            @endif
+
+            <a href="{{ route('landing') }}#pricing" class="nav-link-accent">
+                <i class="bi bi-building" style="margin-right:3px;"></i> Create Bank
+            </a>
+        </div>
+    </nav>
+
     <div class="auth-wrapper">
         {{-- Left Brand Panel --}}
         <div class="auth-brand-panel">
-            <div class="brand-top">
-                <img src="{{ asset('img/zesco_logo.png') }}" alt="ZESCO" class="brand-logo">
-            </div>
+          
             <div class="brand-content">
-                <h1>RENEWABLE <span>ENERGY</span>  <br> MANAGEMENT SYSTEM</h1>
-                <p>Effortlessly manage, track, and streamline the integration of independent power producers into
-                    Zambia's energy network.</p>
+                <h1>ZIKO VILLAGE <span>BANKING</span> <br> MANAGEMENT SYSTEM</h1>
+                <p>A modern platform for managing community savings groups, shares, loans, and financial growth across Africa.</p>
 
                 <div class="brand-features">
                     <div class="brand-feature">
-                        <div class="feature-icon"><i class="bi bi-lightning-charge"></i></div>
-                        <span>Real-time monitoring of IPP applications</span>
+                        <div class="feature-icon"><i class="bi bi-people"></i></div>
+                        <span>Community-driven savings & lending circles</span>
                     </div>
                     <div class="brand-feature">
                         <div class="feature-icon"><i class="bi bi-graph-up"></i></div>
-                        <span>Advanced analytics and reporting for informed decision-making</span>
+                        <span>Transparent share tracking & dividend calculations</span>
                     </div>
                     <div class="brand-feature">
-                        <div class="feature-icon"><i class="bi bi-diagram-3"></i></div>
-                        <span>Comprehensive project management for renewable energy initiatives</span>
+                        <div class="feature-icon"><i class="bi bi-cash-coin"></i></div>
+                        <span>Automated loan management & repayment tracking</span>
                     </div>
                     <div class="brand-feature">
-                        <div class="feature-icon"><i class="bi bi-folder2-open"></i></div>
-                        <span>Secure and organized document management</span>
+                        <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                        <span>Rules, bylaws & group governance tools</span>
                     </div>
                     <div class="brand-feature">
-                        <div class="feature-icon"><i class="bi bi-people"></i></div>
-                        <span>Simplified client interactions and application portal</span>
+                        <div class="feature-icon"><i class="bi bi-bar-chart"></i></div>
+                        <span>Comprehensive reports & financial analytics</span>
                     </div>
                 </div>
             </div>
             <div class="brand-bottom">
-                &copy; {{ date('Y') }} ZESCO Limited. All rights reserved.
+                &copy; {{ date('Y') }} Ndinecom. All rights reserved.
             </div>
         </div>
 
@@ -592,7 +723,7 @@
         <div class="auth-form-panel">
             <div class="auth-form-container">
                 <div class="auth-mobile-logo">
-                    <img src="{{ asset('img/zesco_logo.png') }}" alt="ZESCO">
+                    <img src="{{ asset('img/ndinecom_logo.png') }}" alt="Ndinecom">
                 </div>
 
                 @yield('content')

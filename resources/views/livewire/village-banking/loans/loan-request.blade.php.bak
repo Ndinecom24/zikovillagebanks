@@ -1,0 +1,161 @@
+<div>
+    <!-- Page Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="z-page-header">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div>
+                        <h1><i class="fas fa-plus-circle mr-2" style="color: var(--z-gold)"></i>Request Loan</h1>
+                        <p>Submit a new loan request for a circle member</p>
+                    </div>
+                    <a href="{{ route('loans.index') }}" class="btn btn-light" style="border-radius:8px;">
+                        <i class="fas fa-arrow-left mr-1"></i> Back to Loans
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+
+            @if ($successMessage)
+                <div class="alert alert-success" style="border-radius:10px;font-size:0.9rem;">
+                    <i class="fas fa-check-circle mr-1"></i> {{ $successMessage }}
+                    <a href="{{ route('loans.index') }}" class="ml-2" style="font-weight:600;">View Loans &rarr;</a>
+                </div>
+            @endif
+            @if (session()->has('warning'))
+                <div class="alert alert-warning" style="border-radius:10px;font-size:0.9rem;">
+                    <i class="fas fa-exclamation-triangle mr-1"></i> {{ session('warning') }}
+                </div>
+            @endif
+
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="card z-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-file-invoice-dollar mr-2" style="color:var(--z-green)"></i>Loan Details</h3>
+                        </div>
+                        <form wire:submit.prevent="submitRequest">
+                            <div class="card-body">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger" style="border-radius:8px;font-size:0.85rem;padding:0.5rem 0.75rem;">
+                                        <i class="fas fa-exclamation-circle mr-1"></i> Please fix the errors below.
+                                    </div>
+                                @endif
+
+                                {{-- Village Bank & Circle & Month --}}
+                                <div class="row mb-3">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="z-label">Village Bank</label>
+                                        <select wire:model="villageBankId" class="form-control z-input">
+                                            <option value="">All Village Banks</option>
+                                            @foreach ($this->villageBanks as $vb)
+                                                <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="z-label">Circle <span class="text-danger">*</span></label>
+                                        <select wire:model="circleId" class="form-control z-input">
+                                            <option value="">-- Select Circle --</option>
+                                            @foreach ($circles as $c)
+                                                <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }})</option>
+                                            @endforeach
+                                        </select>
+                                        @error('circleId') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="z-label">Active Month <span class="text-danger">*</span></label>
+                                        <select wire:model="monthId" class="form-control z-input" {{ empty($circleId) ? 'disabled' : '' }}>
+                                            <option value="">-- Select Month --</option>
+                                            @foreach ($months as $mo)
+                                                <option value="{{ $mo->id }}">Month {{ $mo->month_number }} ({{ $mo->start_date->format('d M') }} - {{ $mo->end_date->format('d M') }})</option>
+                                            @endforeach
+                                        </select>
+                                        @error('monthId') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+
+                                {{-- Borrower --}}
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label class="z-label">Borrower <span class="text-danger">*</span></label>
+                                        <select wire:model="borrowerId" class="form-control z-input" {{ empty($circleId) ? 'disabled' : '' }}>
+                                            <option value="">-- Select Member --</option>
+                                            @foreach ($membersList as $m)
+                                                <option value="{{ $m->id }}">{{ $m->name }} ({{ $m->email }})</option>
+                                            @endforeach
+                                        </select>
+                                        @error('borrowerId') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+
+                                {{-- Amount, Rate, Duration --}}
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label class="z-label">Amount (K) <span class="text-danger">*</span></label>
+                                        <input type="number" step="0.01" min="1" wire:model="amount" class="form-control z-input" placeholder="0.00">
+                                        @error('amount') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="z-label">Interest Rate (%) <span class="text-danger">*</span></label>
+                                        <input type="number" step="0.01" min="0" max="100" wire:model="interestRate" class="form-control z-input">
+                                        @error('interestRate') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="z-label">Duration (months) <span class="text-danger">*</span></label>
+                                        <input type="number" min="1" max="12" wire:model="duration" class="form-control z-input">
+                                        @error('duration') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+
+                                {{-- Total payable preview --}}
+                                @if ($totalPayable > 0)
+                                    <div class="p-3 mb-3" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <small class="text-muted">Total Payable</small>
+                                                <h4 class="mb-0" style="font-weight:700;color:#065f46;">K{{ number_format($totalPayable, 2) }}</h4>
+                                            </div>
+                                            <div class="text-right">
+                                                <small class="text-muted">Interest</small>
+                                                <h5 class="mb-0" style="font-weight:600;color:#92400e;">K{{ number_format($totalPayable - (float)$amount, 2) }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="card-footer bg-white border-top d-flex justify-content-end" style="gap:0.75rem;">
+                                <a href="{{ route('loans.index') }}" class="btn btn-light px-4" style="border-radius:8px;">Cancel</a>
+                                <button type="submit" class="btn-zesco-green" wire:loading.attr="disabled" wire:target="submitRequest">
+                                    <span wire:loading.remove wire:target="submitRequest"><i class="fas fa-paper-plane mr-1"></i> Submit Request</span>
+                                    <span wire:loading wire:target="submitRequest"><i class="fas fa-spinner fa-spin mr-1"></i> Submitting...</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card z-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-info-circle mr-2" style="color:var(--z-gold)"></i>Loan Process</h3>
+                        </div>
+                        <div class="card-body" style="font-size:0.88rem;color:#4b5563;">
+                            <ul class="list-unstyled mb-0" style="line-height:2;">
+                                <li><i class="fas fa-1 text-primary mr-2"></i> Submit loan request</li>
+                                <li><i class="fas fa-2 text-primary mr-2"></i> Admin reviews and approves/rejects</li>
+                                <li><i class="fas fa-3 text-primary mr-2"></i> Approved loans are paired with lenders</li>
+                                <li><i class="fas fa-4 text-primary mr-2"></i> Loan becomes active when fully paired</li>
+                                <li><i class="fas fa-5 text-primary mr-2"></i> Borrower repays principal + interest</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

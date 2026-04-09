@@ -9,7 +9,7 @@
                 <i class="bi bi-box-arrow-in-right"></i>
             </div>
             <h2>Welcome back</h2>
-            <p>Sign in to IPP Management System</p>
+            <p>Sign in to {{ Env('APP_NAME') }}</p>
         </div>
 
         {{-- Error Messages --}}
@@ -36,19 +36,19 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            {{-- Man Number --}}
+            {{-- Login (Username / Email / Phone) --}}
             <div class="form-field">
-                <label for="staff_no">{{ __('Man Number') }}</label>
+                <label for="login">{{ __('Username, Email or Phone') }}</label>
                 <div class="input-group-auth">
-                    <input id="staff_no" type="text"
-                           class="{{ $errors->has('staff_no') ? 'is-invalid' : '' }}"
-                           name="staff_no"
-                           value="{{ old('staff_no') }}"
-                           placeholder="Enter your man number"
-                           required autocomplete="staff_no" autofocus>
+                    <input id="login" type="text"
+                           class="{{ $errors->has('login') ? 'is-invalid' : '' }}"
+                           name="login"
+                           value="{{ old('login') }}"
+                           placeholder="Enter username, email or phone"
+                           required autocomplete="username" autofocus>
                     <i class="bi bi-person input-icon"></i>
                 </div>
-                @error('staff_no')
+                @error('login')
                     <span class="invalid-feedback-auth">{{ $message }}</span>
                 @enderror
             </div>

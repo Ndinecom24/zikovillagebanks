@@ -9,7 +9,7 @@
                 <i class="bi bi-person-plus"></i>
             </div>
             <h2>Create an account</h2>
-            <p>Register to IPP Management System</p>
+            <p>Register to {{ Env('APP_NAME') }}</p>
         </div>
 
         {{-- Error Messages --}}
@@ -36,19 +36,19 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            {{-- Man Number --}}
+            {{-- Username --}}
             <div class="form-field">
-                <label for="staff_no">{{ __('Man Number') }}</label>
+                <label for="username">{{ __('Username') }}</label>
                 <div class="input-group-auth">
-                    <input id="staff_no" type="text"
-                           class="{{ $errors->has('staff_no') ? 'is-invalid' : '' }}"
-                           name="staff_no"
-                           value="{{ old('staff_no') }}"
-                           placeholder="Enter your man number"
-                           required autocomplete="staff_no" autofocus>
+                    <input id="username" type="text"
+                           class="{{ $errors->has('username') ? 'is-invalid' : '' }}"
+                           name="username"
+                           value="{{ old('username') }}"
+                           placeholder="Choose a username"
+                           required autocomplete="username" autofocus>
                     <i class="bi bi-person-badge input-icon"></i>
                 </div>
-                @error('staff_no')
+                @error('username')
                     <span class="invalid-feedback-auth">{{ $message }}</span>
                 @enderror
             </div>

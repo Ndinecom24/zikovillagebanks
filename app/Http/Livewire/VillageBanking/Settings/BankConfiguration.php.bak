@@ -1,0 +1,148 @@
+<?php
+
+namespace App\Http\Livewire\VillageBanking\Settings;
+
+use App\Models\VillageBanking\VillageBank;
+use App\Models\VillageBanking\VillageBankConfiguration;
+use App\Traits\HasVillageBankScope;
+use Livewire\Component;
+
+class BankConfiguration extends Component
+{
+    use HasVillageBankScope;
+
+    /* ── Insurance ────────────────────── */
+    public $insurance_type            = 'percentage';
+    public $insurance_value           = 0;
+
+    /* ── Loans ────────────────────────── */
+    public $max_loan_multiplier       = 3;
+    public $default_interest_rate     = 20;
+    public $default_loan_duration     = 1;
+    public $allow_multiple_active_loans = false;
+    public $min_loan_amount           = '';
+    public $max_loan_amount           = '';
+
+    /* ── Penalties ────────────────────── */
+    public $late_repayment_penalty_rate = 5;
+    public $grace_period_days          = 0;
+
+    /* ── UI state ─────────────────────── */
+    public $savedMessage = '';
+    public $bankName     = '';
+    public $bankCode     = '';
+
+    /* ── Lifecycle ────────────────────── */
+
+    public function mount()
+    {
+        $this->loadConfiguration();
+    }
+
+    public function updatedVillageBankId()
+    {
+        $this->loadConfiguration();
+    }
+
+    protected function loadConfiguration()
+    {
+        $bankId = $this->activeBankId();
+        if (empty($bankId)) {
+            $this->bankName = '';
+            $this->bankCode = '';
+            return;
+        }
+
+        $bank = VillageBank::find($bankId);
+        if (!$bank) return;
+
+        $this->bankName = $bank->name;
+        $this->bankCode = $bank->code;
+
+        $config = VillageBankConfiguration::forBank($bankId);
+
+        $this->insurance_type              = $config->insurance_type;
+        $this->insurance_value             = $config->insurance_value;
+        $this->max_loan_multiplier         = $config->max_loan_multiplier;
+        $this->default_interest_rate       = $config->default_interest_rate;
+        $this->default_loan_duration       = $config->default_loan_duration;
+        $this->allow_multiple_active_loans = $config->allow_multiple_active_loans;
+        $this->min_loan_amount             = $config->min_loan_amount ?? '';
+        $this->max_loan_amount             = $config->max_loan_amount ?? '';
+        $this->late_repayment_penalty_rate = $config->late_repayment_penalty_rate;
+        $this->grace_period_days           = $config->grace_period_days;
+    }
+
+    /* ── Validation ───────────────────── */
+
+    protected function rules()
+    {
+        return [
+            'insurance_type'              => 'required|in:percentage,fixed',
+            'insurance_value'             => 'required|numeric|min:0',
+            'max_loan_multiplier'         => 'required|integer|min:1|max:20',
+            'default_interest_rate'       => 'required|numeric|min:0|max:100',
+            'default_loan_duration'       => 'required|integer|min:1|max:12',
+            'allow_multiple_active_loans' => 'boolean',
+            'min_loan_amount'             => 'nullable|numeric|min:0',
+            'max_loan_amount'             => 'nullable|numeric|min:0',
+            'late_repayment_penalty_rate' => 'required|numeric|min:0|max:100',
+            'grace_period_days'           => 'required|integer|min:0|max:90',
+        ];
+    }
+
+    protected $messages = [
+        'max_loan_multiplier.min' => 'The multiplier must be at least 1.',
+        'max_loan_multiplier.max' => 'The multiplier cannot exceed 20.',
+    ];
+
+    /* ── Save ─────────────────────────── */
+
+    public function saveConfiguration()
+    {
+        $bankId = $this->activeBankId();
+        if (empty($bankId)) {
+            session()->flash('warning', 'Please select a village bank first.');
+            return;
+        }
+
+        $this->validate();
+
+        VillageBankConfiguration::updateOrCreate(
+            ['village_bank_id' => $bankId],
+            [
+                'insurance_type'              => $this->insurance_type,
+                'insurance_value'             => (float) $this->insurance_value,
+                'max_loan_multiplier'         => (int) $this->max_loan_multiplier,
+                'default_interest_rate'       => (float) $this->default_interest_rate,
+                'default_loan_duration'       => (int) $this->default_loan_duration,
+                'allow_multiple_active_loans' => (bool) $this->allow_multiple_active_loans,
+                'min_loan_amount'             => $this->min_loan_amount !== '' ? (float) $this->min_loan_amount : null,
+                'max_loan_amount'             => $this->max_loan_amount !== '' ? (float) $this->max_loan_amount : null,
+                'late_repayment_penalty_rate' => (float) $this->late_repayment_penalty_rate,
+                'grace_period_days'           => (int) $this->grace_period_days,
+            ]
+        );
+
+        $this->savedMessage = 'Configuration saved successfully.';
+    }
+
+    /* ── Computed ──────────────────────── */
+
+    /**
+     * Preview: if a member has X savings, they can borrow up to multiplier × X.
+     */
+    public function getExampleBorrowableProperty()
+    {
+        $exampleSavings = 10000;
+        return $exampleSavings * max(1, (int) $this->max_loan_multiplier);
+    }
+
+    /* ── Render ────────────────────────── */
+
+    public function render()
+    {
+        return view('livewire.village-banking.settings.bank-configuration')
+            ->layout('layouts.main.master-livewire');
+    }
+}

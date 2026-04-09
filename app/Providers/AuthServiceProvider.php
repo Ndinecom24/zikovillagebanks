@@ -25,6 +25,23 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // ── Super-admin bypass ─────────────────────────────────────────
+        // If the user is a super-admin, every gate check returns true.
+        Gate::before(function ($user) {
+            if ($user->isSuperAdmin()) {
+                return true;
+            }
+        });
+
+        // ── Register a Gate for every permission in the config ─────────
+        $groups = config('chilolezo.permissions', []);
+
+        foreach ($groups as $group) {
+            foreach ($group['items'] ?? [] as $slug => $description) {
+                Gate::define($slug, function ($user) use ($slug) {
+                    return $user->hasPermission($slug);
+                });
+            }
+        }
     }
 }

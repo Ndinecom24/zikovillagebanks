@@ -21,7 +21,7 @@
         @endif
 
         <div style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem;">
-            <i class="bi bi-mailbox" style="font-size: 2.5rem; color: var(--zesco-green); display: block; margin-bottom: 1rem;"></i>
+            <i class="bi bi-mailbox" style="font-size: 2.5rem; color: var(--nd-primary); display: block; margin-bottom: 1rem;"></i>
             {{ __('Before proceeding, please check your email for a verification link.') }}
             {{ __('If you did not receive the email') }},
             click the button below to request a new one.

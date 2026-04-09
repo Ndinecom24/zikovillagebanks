@@ -1,0 +1,1203 @@
+<div>
+    @push('custom-styles')
+    <style>
+        /* ══════════════════════════════════════════════
+         *  USER PROFILE – Ndinecom Themed
+         * ══════════════════════════════════════════════ */
+
+        .profile-hero {
+            background: linear-gradient(135deg, #1E3A5F 0%, #2B6B96 60%, #1E3A5F 100%);
+            padding: 2.5rem 2rem 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(217,119,6,0.12) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .profile-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .profile-card-container {
+            margin-top: -4rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .profile-main-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid rgba(30,58,95,0.06);
+        }
+
+        /* Avatar section */
+        .profile-avatar-section {
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5rem;
+            padding: 0 2rem;
+            margin-top: -3.5rem;
+            position: relative;
+            z-index: 20;
+        }
+
+        .profile-avatar-wrapper {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            object-fit: cover;
+            background: #f1f5f9;
+        }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #D97706;
+            border: 3px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #fff;
+            font-size: 0.8rem;
+        }
+
+        .avatar-upload-overlay:hover {
+            background: #b45309;
+            transform: scale(1.1);
+        }
+
+        .profile-identity {
+            padding-bottom: 1rem;
+            flex: 1;
+        }
+
+        .profile-identity h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .profile-identity .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.2rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1E3A5F, #2B6B96);
+            color: #fff;
+            margin-top: 0.35rem;
+        }
+
+        .profile-identity .email-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.15rem;
+        }
+
+        /* Stats row */
+        .profile-stats-row {
+            display: flex;
+            gap: 0;
+            border-top: 1px solid #f1f5f9;
+            margin-top: 1.25rem;
+        }
+
+        .profile-stat {
+            flex: 1;
+            text-align: center;
+            padding: 1rem 0.5rem;
+            border-right: 1px solid #f1f5f9;
+            transition: background 0.2s;
+        }
+
+        .profile-stat:last-child {
+            border-right: none;
+        }
+
+        .profile-stat:hover {
+            background: #fefce8;
+        }
+
+        .profile-stat .stat-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #1E3A5F;
+        }
+
+        .profile-stat .stat-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        /* Tabs */
+        .profile-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid #f1f5f9;
+            padding: 0 2rem;
+            background: #fafbfc;
+        }
+
+        .profile-tab {
+            padding: 0.85rem 1.25rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .profile-tab:hover {
+            color: #1E3A5F;
+            background: rgba(30,58,95,0.03);
+        }
+
+        .profile-tab.active {
+            color: #D97706;
+            border-bottom-color: #D97706;
+        }
+
+        /* Info grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+        }
+
+        .info-item {
+            padding: 1rem 1.25rem;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s;
+        }
+
+        .info-item:hover {
+            border-color: #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .info-item .info-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .info-item .info-value {
+            font-size: 0.92rem;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .info-item .info-value.empty {
+            color: #cbd5e1;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* Edit form */
+        .edit-field {
+            margin-bottom: 1rem;
+        }
+
+        .edit-field label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .edit-field input {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            color: #1e293b;
+            transition: all 0.2s;
+            background: #fff;
+        }
+
+        .edit-field input:focus {
+            border-color: #D97706;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(217,119,6,0.1);
+        }
+
+        /* Village bank cards */
+        .vb-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+        }
+
+        .vb-card:hover {
+            border-color: #D97706;
+            box-shadow: 0 4px 12px rgba(217,119,6,0.08);
+            transform: translateY(-1px);
+        }
+
+        .vb-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #1E3A5F, #2B6B96);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .vb-card-info h4 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .vb-card-info p {
+            font-size: 0.78rem;
+            color: #64748b;
+            margin: 0.15rem 0 0;
+        }
+
+        .vb-role-tag {
+            padding: 0.15rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .vb-role-admin {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .vb-role-member {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        /* Action buttons */
+        .profile-btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .profile-btn-primary {
+            background: linear-gradient(135deg, #D97706, #F59E0B);
+            color: #fff;
+        }
+
+        .profile-btn-primary:hover {
+            background: linear-gradient(135deg, #b45309, #D97706);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(217,119,6,0.25);
+        }
+
+        .profile-btn-navy {
+            background: linear-gradient(135deg, #1E3A5F, #2B6B96);
+            color: #fff;
+        }
+
+        .profile-btn-navy:hover {
+            background: linear-gradient(135deg, #162d4a, #1E3A5F);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30,58,95,0.25);
+        }
+
+        .profile-btn-outline {
+            background: transparent;
+            border: 2px solid #e2e8f0;
+            color: #64748b;
+        }
+
+        .profile-btn-outline:hover {
+            border-color: #cbd5e1;
+            color: #475569;
+            background: #f8fafc;
+        }
+
+        .profile-btn-danger {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .profile-btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        /* Avatar preview modal */
+        .avatar-preview-area {
+            background: #f8fafc;
+            border: 2px dashed #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1rem 2rem;
+        }
+
+        .avatar-preview-area img {
+            width: 140px;
+            height: 140px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Password modal */
+        .password-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(15,26,46,0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .password-modal-box {
+            background: #fff;
+            border-radius: 20px;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+            overflow: hidden;
+            animation: profileSlideIn 0.25s ease;
+        }
+
+        .password-modal-header {
+            background: linear-gradient(135deg, #1E3A5F, #2B6B96);
+            padding: 1.25rem 1.5rem;
+            color: #fff;
+        }
+
+        .password-modal-header h4 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .password-modal-body {
+            padding: 1.5rem;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            margin-top: 0.35rem;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        /* Section headers */
+        .section-header {
+            padding: 1.25rem 2rem 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-header h3 i {
+            color: #D97706;
+            font-size: 0.9rem;
+        }
+
+        /* Flash messages */
+        .profile-flash {
+            margin: 1rem 2rem 0;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: profileSlideIn 0.3s ease;
+        }
+
+        .profile-flash-success {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .profile-flash-error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        @keyframes profileSlideIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-avatar-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-identity {
+                text-align: center;
+            }
+
+            .profile-stats-row {
+                flex-wrap: wrap;
+            }
+
+            .profile-stat {
+                min-width: 33%;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-tabs {
+                overflow-x: auto;
+                padding: 0 1rem;
+            }
+
+            .section-header,
+            .info-grid,
+            .profile-flash {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+    @endpush
+
+    <section class="content">
+        {{-- ═══ Hero Banner ═══ --}}
+        <div class="profile-hero">
+            <div class="container-fluid" style="position:relative;z-index:5;">
+                <nav aria-label="breadcrumb">
+                    <ol style="display:flex;gap:0.5rem;list-style:none;padding:0;margin:0;font-size:0.82rem;">
+                        <li><a href="{{ route('home') }}" style="color:rgba(255,255,255,0.6);text-decoration:none;"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li style="color:rgba(255,255,255,0.3);">/</li>
+                        <li style="color:#F59E0B;font-weight:600;">My Profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        {{-- ═══ Main Profile Card ═══ --}}
+        <div class="container-fluid profile-card-container">
+            <div class="profile-main-card">
+
+                {{-- Flash Messages --}}
+                @if(session()->has('profile_success'))
+                    <div class="profile-flash profile-flash-success">
+                        <i class="fas fa-check-circle"></i> {{ session('profile_success') }}
+                    </div>
+                @endif
+
+                {{-- Avatar + Identity Row --}}
+                <div class="profile-avatar-section">
+                    <div class="profile-avatar-wrapper">
+                        <img src="{{ $avatarUrl }}" alt="Profile" class="profile-avatar"
+                             onerror="this.onerror=null; this.src='{{ asset('img/default-avatar.svg') }}';">
+                        <label for="avatar-input" class="avatar-upload-overlay" title="Change Photo">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                        <input type="file" id="avatar-input" wire:model="avatarUpload" accept="image/*" style="display:none;">
+                    </div>
+                    <div class="profile-identity">
+                        <h2>{{ $name }}</h2>
+                        <p class="email-text">{{ $email }}</p>
+                        <span class="role-badge">
+                            <i class="fas fa-shield-alt" style="font-size:0.65rem;"></i>
+                            {{ $userRoleName }}
+                        </span>
+                    </div>
+                    <div class="d-none d-md-flex" style="gap:0.5rem;padding-bottom:1rem;">
+                        @if(!$editing)
+                            <button wire:click="startEditing" class="profile-btn profile-btn-primary">
+                                <i class="fas fa-pen"></i> Edit Profile
+                            </button>
+                        @endif
+                        <button wire:click="openPasswordModal" class="profile-btn profile-btn-outline">
+                            <i class="fas fa-lock"></i> Password
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Avatar Preview (when uploading) --}}
+                @if($avatarPreview)
+                    <div class="avatar-preview-area">
+                        <img src="{{ $avatarPreview }}" alt="Preview">
+                        <div style="display:flex;gap:0.5rem;justify-content:center;">
+                            <button wire:click="saveAvatar" class="profile-btn profile-btn-primary">
+                                <i class="fas fa-check"></i> Save Photo
+                            </button>
+                            <button wire:click="cancelAvatarUpload" class="profile-btn profile-btn-outline">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                        @error('avatarUpload')
+                            <p style="color:#dc2626;font-size:0.8rem;margin-top:0.5rem;">{{ $message }}</p>
+                        @enderror
+                    </div>
+                @endif
+
+                {{-- Mobile edit/password buttons --}}
+                <div class="d-md-none" style="padding:1rem 2rem 0;display:flex;gap:0.5rem;">
+                    @if(!$editing)
+                        <button wire:click="startEditing" class="profile-btn profile-btn-primary" style="flex:1;">
+                            <i class="fas fa-pen"></i> Edit Profile
+                        </button>
+                    @endif
+                    <button wire:click="openPasswordModal" class="profile-btn profile-btn-outline" style="flex:1;">
+                        <i class="fas fa-lock"></i> Password
+                    </button>
+                </div>
+
+                {{-- Stats Row --}}
+                <div class="profile-stats-row">
+                    <div class="profile-stat">
+                        <div class="stat-value">{{ $stats['banks'] }}</div>
+                        <div class="stat-label">Village Banks</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="stat-value">{{ $stats['circles'] }}</div>
+                        <div class="stat-label">Circles</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="stat-value">{{ $stats['loans'] }}</div>
+                        <div class="stat-label">Loans</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="stat-value">{{ $totalLogins }}</div>
+                        <div class="stat-label">Total Logins</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="stat-value" style="font-size:0.95rem;">{{ $memberSince }}</div>
+                        <div class="stat-label">Member Since</div>
+                    </div>
+                </div>
+
+                {{-- Tabs --}}
+                <div class="profile-tabs">
+                    <button wire:click="switchTab('overview')" class="profile-tab {{ $activeTab === 'overview' ? 'active' : '' }}">
+                        <i class="fas fa-user"></i> Overview
+                    </button>
+                    <button wire:click="switchTab('banks')" class="profile-tab {{ $activeTab === 'banks' ? 'active' : '' }}">
+                        <i class="fas fa-university"></i> Village Banks
+                    </button>
+                    <button wire:click="switchTab('security')" class="profile-tab {{ $activeTab === 'security' ? 'active' : '' }}">
+                        <i class="fas fa-shield-alt"></i> Security
+                    </button>
+                </div>
+
+                {{-- ═══ Tab: Overview ═══ --}}
+                @if($activeTab === 'overview')
+                    @if($editing)
+                        {{-- Edit Mode --}}
+                        <div class="section-header">
+                            <h3><i class="fas fa-edit"></i> Edit Personal Information</h3>
+                        </div>
+                        <div style="padding:0.5rem 2rem 1.5rem;">
+                            @if ($errors->any())
+                                <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:0.6rem 0.85rem;margin-bottom:1rem;font-size:0.82rem;color:#dc2626;">
+                                    <i class="fas fa-exclamation-circle mr-1"></i> Please fix the errors below.
+                                </div>
+                            @endif
+
+                            {{-- Basic Info --}}
+                            <h6 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#1E3A5F;border-bottom:2px solid #f1f5f9;padding-bottom:0.4rem;margin-bottom:1rem;">
+                                <i class="fas fa-user" style="color:#D97706;"></i> Basic Information
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Full Name *</label>
+                                        <input type="text" wire:model.defer="name" placeholder="Enter full name">
+                                        @error('name') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Email Address *</label>
+                                        <input type="email" wire:model.defer="email" placeholder="Enter email">
+                                        @error('email') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="edit-field">
+                                        <label>Username</label>
+                                        <input type="text" wire:model.defer="username" placeholder="Enter username">
+                                        @error('username') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="edit-field">
+                                        <label>Phone Number</label>
+                                        <input type="text" wire:model.defer="phone" placeholder="0977 123 456">
+                                        @error('phone') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="edit-field">
+                                        <label>Mobile Number</label>
+                                        <input type="text" wire:model.defer="mobileNo" placeholder="0966 789 012">
+                                        @error('mobileNo') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Identity --}}
+                            <h6 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#1E3A5F;border-bottom:2px solid #f1f5f9;padding-bottom:0.4rem;margin:1rem 0;">
+                                <i class="fas fa-id-card" style="color:#D97706;"></i> Identity Details
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="edit-field">
+                                        <label>Date of Birth</label>
+                                        <input type="date" wire:model.defer="dateOfBirth">
+                                        @error('dateOfBirth') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="edit-field">
+                                        <label>Gender</label>
+                                        <select wire:model.defer="gender" style="width:100%;padding:0.6rem 0.9rem;border:2px solid #e2e8f0;border-radius:10px;font-size:0.88rem;color:#1e293b;">
+                                            <option value="">Select gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        @error('gender') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="edit-field">
+                                        <label>National ID / NRC</label>
+                                        <input type="text" wire:model.defer="nationalId" placeholder="e.g. 123456/78/1">
+                                        @error('nationalId') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Employment --}}
+                            <h6 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#1E3A5F;border-bottom:2px solid #f1f5f9;padding-bottom:0.4rem;margin:1rem 0;">
+                                <i class="fas fa-briefcase" style="color:#D97706;"></i> Employment
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Employment Status</label>
+                                        <select wire:model.defer="employmentStatus" style="width:100%;padding:0.6rem 0.9rem;border:2px solid #e2e8f0;border-radius:10px;font-size:0.88rem;color:#1e293b;">
+                                            <option value="">Select status</option>
+                                            <option value="employed">Employed</option>
+                                            <option value="self_employed">Self Employed</option>
+                                            <option value="unemployed">Unemployed</option>
+                                            <option value="student">Student</option>
+                                            <option value="retired">Retired</option>
+                                        </select>
+                                        @error('employmentStatus') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Job Title / Occupation</label>
+                                        <input type="text" wire:model.defer="jobTitle" placeholder="e.g. Accountant">
+                                        @error('jobTitle') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Company / Employer</label>
+                                        <input type="text" wire:model.defer="companyName" placeholder="e.g. ABC Limited">
+                                        @error('companyName') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Company Location</label>
+                                        <input type="text" wire:model.defer="companyLocation" placeholder="e.g. Lusaka, Cairo Road">
+                                        @error('companyLocation') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Address --}}
+                            <h6 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#1E3A5F;border-bottom:2px solid #f1f5f9;padding-bottom:0.4rem;margin:1rem 0;">
+                                <i class="fas fa-map-marker-alt" style="color:#D97706;"></i> Home Address
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Country</label>
+                                        <input type="text" wire:model.defer="country" placeholder="e.g. Zambia">
+                                        @error('country') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Province / State</label>
+                                        <input type="text" wire:model.defer="province" placeholder="e.g. Lusaka Province">
+                                        @error('province') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>City / Town</label>
+                                        <input type="text" wire:model.defer="city" placeholder="e.g. Lusaka">
+                                        @error('city') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Home Address</label>
+                                        <textarea wire:model.defer="homeAddress" placeholder="e.g. Plot 123, Kabulonga Road" style="width:100%;padding:0.6rem 0.9rem;border:2px solid #e2e8f0;border-radius:10px;font-size:0.88rem;color:#1e293b;min-height:70px;resize:vertical;"></textarea>
+                                        @error('homeAddress') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Next of Kin --}}
+                            <h6 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#1E3A5F;border-bottom:2px solid #f1f5f9;padding-bottom:0.4rem;margin:1rem 0;">
+                                <i class="fas fa-user-friends" style="color:#D97706;"></i> Next of Kin
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Full Name</label>
+                                        <input type="text" wire:model.defer="nokName" placeholder="e.g. Mary Banda">
+                                        @error('nokName') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Relationship</label>
+                                        <select wire:model.defer="nokRelationship" style="width:100%;padding:0.6rem 0.9rem;border:2px solid #e2e8f0;border-radius:10px;font-size:0.88rem;color:#1e293b;">
+                                            <option value="">Select relationship</option>
+                                            <option value="spouse">Spouse</option>
+                                            <option value="parent">Parent</option>
+                                            <option value="child">Child (Adult)</option>
+                                            <option value="sibling">Sibling</option>
+                                            <option value="relative">Other Relative</option>
+                                            <option value="friend">Friend</option>
+                                        </select>
+                                        @error('nokRelationship') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Contact Phone</label>
+                                        <input type="text" wire:model.defer="nokContact" placeholder="0977 999 888">
+                                        @error('nokContact') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="edit-field">
+                                        <label>Address / Location</label>
+                                        <textarea wire:model.defer="nokAddress" placeholder="e.g. Chilenje South, Lusaka" style="width:100%;padding:0.6rem 0.9rem;border:2px solid #e2e8f0;border-radius:10px;font-size:0.88rem;color:#1e293b;min-height:70px;resize:vertical;"></textarea>
+                                        @error('nokAddress') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+                                <button wire:click="saveProfile" class="profile-btn profile-btn-primary">
+                                    <i class="fas fa-check"></i> Save Changes
+                                </button>
+                                <button wire:click="cancelEditing" class="profile-btn profile-btn-outline">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </div>
+                        </div>
+                    @else
+                        {{-- View Mode --}}
+                        {{-- Basic Info --}}
+                        <div class="section-header">
+                            <h3><i class="fas fa-id-card"></i> Personal Information</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-user" style="color:#D97706;"></i> Full Name</div>
+                                <div class="info-value">{{ $name }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-envelope" style="color:#D97706;"></i> Email Address</div>
+                                <div class="info-value">{{ $email }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-at" style="color:#D97706;"></i> Username</div>
+                                <div class="info-value {{ empty($username) ? 'empty' : '' }}">{{ $username ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-phone" style="color:#D97706;"></i> Phone</div>
+                                <div class="info-value {{ empty($phone) ? 'empty' : '' }}">{{ $phone ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-mobile-alt" style="color:#D97706;"></i> Mobile</div>
+                                <div class="info-value {{ empty($mobileNo) ? 'empty' : '' }}">{{ $mobileNo ?: 'Not set' }}</div>
+                            </div>
+                        </div>
+
+                        {{-- Identity --}}
+                        <div class="section-header">
+                            <h3><i class="fas fa-fingerprint"></i> Identity Details</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-calendar" style="color:#D97706;"></i> Date of Birth</div>
+                                <div class="info-value {{ empty($dateOfBirth) ? 'empty' : '' }}">
+                                    {{ $dateOfBirth ? \Carbon\Carbon::parse($dateOfBirth)->format('M d, Y') : 'Not set' }}
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-venus-mars" style="color:#D97706;"></i> Gender</div>
+                                <div class="info-value {{ empty($gender) ? 'empty' : '' }}">{{ $gender ? ucfirst($gender) : 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-id-badge" style="color:#D97706;"></i> National ID / NRC</div>
+                                <div class="info-value {{ empty($nationalId) ? 'empty' : '' }}">{{ $nationalId ?: 'Not set' }}</div>
+                            </div>
+                        </div>
+
+                        {{-- Employment --}}
+                        <div class="section-header">
+                            <h3><i class="fas fa-briefcase"></i> Employment</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-user-tie" style="color:#D97706;"></i> Employment Status</div>
+                                <div class="info-value {{ empty($employmentStatus) ? 'empty' : '' }}">
+                                    {{ $employmentStatus ? str_replace('_', ' ', ucfirst($employmentStatus)) : 'Not set' }}
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-briefcase" style="color:#D97706;"></i> Job Title</div>
+                                <div class="info-value {{ empty($jobTitle) ? 'empty' : '' }}">{{ $jobTitle ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-building" style="color:#D97706;"></i> Company</div>
+                                <div class="info-value {{ empty($companyName) ? 'empty' : '' }}">{{ $companyName ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-map-pin" style="color:#D97706;"></i> Company Location</div>
+                                <div class="info-value {{ empty($companyLocation) ? 'empty' : '' }}">{{ $companyLocation ?: 'Not set' }}</div>
+                            </div>
+                        </div>
+
+                        {{-- Address --}}
+                        <div class="section-header">
+                            <h3><i class="fas fa-home"></i> Home Address</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-globe-africa" style="color:#D97706;"></i> Country</div>
+                                <div class="info-value {{ empty($country) ? 'empty' : '' }}">{{ $country ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-map" style="color:#D97706;"></i> Province</div>
+                                <div class="info-value {{ empty($province) ? 'empty' : '' }}">{{ $province ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-city" style="color:#D97706;"></i> City / Town</div>
+                                <div class="info-value {{ empty($city) ? 'empty' : '' }}">{{ $city ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-map-marker-alt" style="color:#D97706;"></i> Home Address</div>
+                                <div class="info-value {{ empty($homeAddress) ? 'empty' : '' }}">{{ $homeAddress ?: 'Not set' }}</div>
+                            </div>
+                        </div>
+
+                        {{-- Next of Kin --}}
+                        <div class="section-header">
+                            <h3><i class="fas fa-user-friends"></i> Next of Kin</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-user" style="color:#D97706;"></i> Full Name</div>
+                                <div class="info-value {{ empty($nokName) ? 'empty' : '' }}">{{ $nokName ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-heart" style="color:#D97706;"></i> Relationship</div>
+                                <div class="info-value {{ empty($nokRelationship) ? 'empty' : '' }}">{{ $nokRelationship ? ucfirst($nokRelationship) : 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-phone-alt" style="color:#D97706;"></i> Contact Phone</div>
+                                <div class="info-value {{ empty($nokContact) ? 'empty' : '' }}">{{ $nokContact ?: 'Not set' }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label"><i class="fas fa-map-marker-alt" style="color:#D97706;"></i> Address</div>
+                                <div class="info-value {{ empty($nokAddress) ? 'empty' : '' }}">{{ $nokAddress ?: 'Not set' }}</div>
+                            </div>
+                        </div>
+                    @endif
+                @endif
+
+                {{-- ═══ Tab: Village Banks ═══ --}}
+                @if($activeTab === 'banks')
+                    <div class="section-header">
+                        <h3><i class="fas fa-university"></i> Village Bank Memberships</h3>
+                        <span style="font-size:0.78rem;color:#64748b;font-weight:600;">{{ $villageBanks->count() }} bank(s)</span>
+                    </div>
+                    <div style="padding:0.5rem 2rem 1.5rem;">
+                        @if($villageBanks->count() > 0)
+                            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0.75rem;">
+                                @foreach($villageBanks as $bank)
+                                    <div class="vb-card">
+                                        <div class="vb-card-icon">
+                                            <i class="fas fa-university"></i>
+                                        </div>
+                                        <div class="vb-card-info" style="flex:1;">
+                                            <h4>{{ $bank->name }}</h4>
+                                            <p>
+                                                @if($bank->code)
+                                                    <i class="fas fa-tag" style="font-size:0.65rem;"></i> {{ $bank->code }}
+                                                    <span style="margin:0 0.25rem;opacity:0.3;">|</span>
+                                                @endif
+                                                <i class="fas fa-users" style="font-size:0.65rem;"></i> {{ $bank->members()->count() }} members
+                                                <span style="margin:0 0.25rem;opacity:0.3;">|</span>
+                                                <i class="fas fa-calendar-alt" style="font-size:0.65rem;"></i> Joined {{ $bank->pivot->joined_at ? \Carbon\Carbon::parse($bank->pivot->joined_at)->format('M d, Y') : 'N/A' }}
+                                            </p>
+                                        </div>
+                                        <span class="vb-role-tag {{ $bank->pivot->role === 'admin' ? 'vb-role-admin' : 'vb-role-member' }}">
+                                            {{ ucfirst($bank->pivot->role ?? 'member') }}
+                                        </span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div style="text-align:center;padding:3rem 1rem;color:#94a3b8;">
+                                <i class="fas fa-university" style="font-size:2.5rem;opacity:0.3;display:block;margin-bottom:0.75rem;"></i>
+                                <p style="font-weight:600;">No Village Bank Memberships</p>
+                                <p style="font-size:0.82rem;">You are not currently a member of any village bank.</p>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
+                {{-- ═══ Tab: Security ═══ --}}
+                @if($activeTab === 'security')
+                    <div class="section-header">
+                        <h3><i class="fas fa-shield-alt"></i> Security Settings</h3>
+                    </div>
+                    <div style="padding:0.5rem 2rem 1.5rem;">
+                        {{-- Password Section --}}
+                        <div style="background:#f8fafc;border:1px solid #f1f5f9;border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
+                                <div>
+                                    <div style="font-weight:700;color:#1e293b;font-size:0.92rem;display:flex;align-items:center;gap:0.5rem;">
+                                        <i class="fas fa-key" style="color:#D97706;"></i> Password
+                                    </div>
+                                    <p style="font-size:0.8rem;color:#64748b;margin:0.25rem 0 0;">
+                                        Last changed: {{ Auth::user()->password_changed ? \Carbon\Carbon::parse(Auth::user()->password_changed)->diffForHumans() : 'Never' }}
+                                    </p>
+                                </div>
+                                <button wire:click="openPasswordModal" class="profile-btn profile-btn-navy">
+                                    <i class="fas fa-lock"></i> Change Password
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Current Session --}}
+                        <div style="background:#f8fafc;border:1px solid #f1f5f9;border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
+                                <div>
+                                    <div style="font-weight:700;color:#1e293b;font-size:0.92rem;display:flex;align-items:center;gap:0.5rem;">
+                                        <i class="fas fa-desktop" style="color:#D97706;"></i> Active Session
+                                    </div>
+                                    <p style="font-size:0.8rem;color:#64748b;margin:0.25rem 0 0;">
+                                        Session started at {{ now()->format('M d, Y h:i A') }}
+                                    </p>
+                                </div>
+                                <span style="padding:0.3rem 0.75rem;border-radius:20px;font-size:0.72rem;font-weight:700;background:#dcfce7;color:#16a34a;">
+                                    <i class="fas fa-circle" style="font-size:0.45rem;vertical-align:middle;"></i> Active
+                                </span>
+                            </div>
+                        </div>
+
+                        {{-- Avatar Management --}}
+                        <div style="background:#f8fafc;border:1px solid #f1f5f9;border-radius:14px;padding:1.25rem 1.5rem;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
+                                <div>
+                                    <div style="font-weight:700;color:#1e293b;font-size:0.92rem;display:flex;align-items:center;gap:0.5rem;">
+                                        <i class="fas fa-image" style="color:#D97706;"></i> Profile Picture
+                                    </div>
+                                    <p style="font-size:0.8rem;color:#64748b;margin:0.25rem 0 0;">
+                                        Accepted formats: JPG, PNG, WebP (max 2MB)
+                                    </p>
+                                </div>
+                                <div style="display:flex;gap:0.5rem;">
+                                    <label for="avatar-input-security" class="profile-btn profile-btn-primary" style="cursor:pointer;margin:0;">
+                                        <i class="fas fa-upload"></i> Upload New
+                                    </label>
+                                    <input type="file" id="avatar-input-security" wire:model="avatarUpload" accept="image/*" style="display:none;">
+                                    @if(Auth::user()->avatar)
+                                        <button wire:click="removeAvatar" class="profile-btn profile-btn-danger"
+                                                onclick="return confirm('Are you sure you want to remove your profile picture?')">
+                                            <i class="fas fa-trash-alt"></i> Remove
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+            </div> {{-- end profile-main-card --}}
+        </div> {{-- end profile-card-container --}}
+
+        {{-- Spacer --}}
+        <div style="height:2rem;"></div>
+    </section>
+
+    {{-- ═══ Password Change Modal ═══ --}}
+    @if($showPasswordModal)
+        <div class="password-modal-overlay" wire:click.self="closePasswordModal">
+            <div class="password-modal-box">
+                <div class="password-modal-header">
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <h4><i class="fas fa-lock mr-2"></i> Change Password</h4>
+                        <button wire:click="closePasswordModal" style="background:none;border:none;color:rgba(255,255,255,0.7);font-size:1.1rem;cursor:pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="password-modal-body">
+                    <div class="edit-field">
+                        <label>Current Password</label>
+                        <input type="password" wire:model.defer="currentPassword" placeholder="Enter current password">
+                        @error('currentPassword') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                    </div>
+                    <div class="edit-field">
+                        <label>New Password</label>
+                        <input type="password" wire:model.defer="newPassword" placeholder="Enter new password (min 8 chars)">
+                        @error('newPassword') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                    </div>
+                    <div class="edit-field">
+                        <label>Confirm New Password</label>
+                        <input type="password" wire:model.defer="newPasswordConfirmation" placeholder="Re-enter new password">
+                        @error('newPasswordConfirmation') <small style="color:#dc2626;font-size:0.78rem;">{{ $message }}</small> @enderror
+                    </div>
+                    <div style="display:flex;gap:0.5rem;margin-top:0.75rem;">
+                        <button wire:click="changePassword" class="profile-btn profile-btn-primary" style="flex:1;">
+                            <i class="fas fa-check"></i> Update Password
+                        </button>
+                        <button wire:click="closePasswordModal" class="profile-btn profile-btn-outline">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- Loading overlay --}}
+    <div wire:loading.flex wire:target="saveProfile,saveAvatar,changePassword,removeAvatar"
+         style="position:fixed;inset:0;z-index:99999;background:rgba(255,255,255,0.6);backdrop-filter:blur(2px);align-items:center;justify-content:center;">
+        <div style="background:#fff;padding:1rem 2rem;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.1);display:flex;align-items:center;gap:0.75rem;">
+            <div style="width:20px;height:20px;border:3px solid #e2e8f0;border-top-color:#D97706;border-radius:50%;animation:spin 0.7s linear infinite;"></div>
+            <span style="font-weight:600;color:#1e293b;font-size:0.88rem;">Processing...</span>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</div>

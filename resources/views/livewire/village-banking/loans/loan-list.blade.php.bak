@@ -1,0 +1,148 @@
+<div>
+    <!-- Page Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="z-page-header">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div>
+                        <h1><i class="fas fa-hand-holding-usd mr-2" style="color: var(--z-gold)"></i>Loans</h1>
+                        <p>View and manage all village bank loans</p>
+                    </div>
+                    <div class="d-flex" style="gap:0.5rem;">
+                        <a href="{{ route('loans.request') }}" class="btn-zesco">
+                            <i class="fas fa-plus-circle mr-1"></i> Request Loan
+                        </a>
+                        <a href="{{ route('loans.approval') }}" class="btn-zesco-green">
+                            <i class="fas fa-clipboard-check mr-1"></i> Approvals
+                        </a>
+                        <a href="{{ route('loans.pairing') }}" class="btn btn-outline-primary" style="border-radius:8px;">
+                            <i class="fas fa-link mr-1"></i> Pairing
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+
+            {{-- Stat Cards --}}
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left:4px solid var(--z-green);">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div><small class="text-muted">Total Loans</small><h3 class="mb-0 font-weight-bold">{{ $totalLoans }}</h3></div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#ecfdf5;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-file-invoice-dollar" style="font-size:1.1rem;color:#065f46;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left:4px solid #f59e0b;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div><small class="text-muted">Pending</small><h3 class="mb-0 font-weight-bold">{{ $pendingLoans }}</h3></div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#fffbeb;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-clock" style="font-size:1.1rem;color:#f59e0b;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left:4px solid #2563eb;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div><small class="text-muted">Active</small><h3 class="mb-0 font-weight-bold">{{ $activeLoans }}</h3></div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-play-circle" style="font-size:1.1rem;color:#2563eb;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left:4px solid #16a34a;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div><small class="text-muted">Disbursed</small><h3 class="mb-0 font-weight-bold">K{{ number_format($totalDisbursed, 2) }}</h3></div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-coins" style="font-size:1.1rem;color:#16a34a;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Table --}}
+            <div class="card z-card">
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap:0.75rem;">
+                    <h3><i class="fas fa-list mr-2" style="color:var(--z-green)"></i>All Loans</h3>
+                    <div class="d-flex align-items-center flex-wrap" style="gap:0.75rem;">
+                        @include('partials.village-bank-selector')
+                        <select wire:model="statusFilter" class="z-per-page">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                        <div class="z-search"><i class="fas fa-search si"></i>
+                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search loans...">
+                        </div>
+                        <select wire:model="perPage" class="z-per-page">
+                            <option value="10">10</option><option value="15">15</option><option value="25">25</option><option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover z-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th wire:click="sortBy('id')" style="cursor:pointer;">ID @if($sortField==='id')<i class="fas fa-sort-{{ $sortDirection==='asc'?'up':'down' }} sort-icon active"></i>@else<i class="fas fa-sort sort-icon"></i>@endif</th>
+                                    <th>Borrower</th>
+                                    <th>Circle</th>
+                                    <th>Month</th>
+                                    <th wire:click="sortBy('amount')" style="cursor:pointer;">Amount @if($sortField==='amount')<i class="fas fa-sort-{{ $sortDirection==='asc'?'up':'down' }} sort-icon active"></i>@else<i class="fas fa-sort sort-icon"></i>@endif</th>
+                                    <th>Rate</th>
+                                    <th>Payable</th>
+                                    <th>Balance</th>
+                                    <th>Lenders</th>
+                                    <th wire:click="sortBy('status')" style="cursor:pointer;">Status @if($sortField==='status')<i class="fas fa-sort-{{ $sortDirection==='asc'?'up':'down' }} sort-icon active"></i>@else<i class="fas fa-sort sort-icon"></i>@endif</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($loans as $l)
+                                    <tr>
+                                        <td style="font-size:0.85rem;color:#94a3b8;">#{{ $l->id }}</td>
+                                        <td><strong>{{ $l->borrower->name ?? '--' }}</strong></td>
+                                        <td style="font-size:0.88rem;">{{ $l->month->circle->name ?? '--' }}</td>
+                                        <td><span class="badge" style="background:#f1f5f9;color:#475569;font-size:0.78rem;border-radius:8px;">M{{ $l->month->month_number ?? '' }}</span></td>
+                                        <td style="font-weight:600;">K{{ number_format($l->amount, 2) }}</td>
+                                        <td>{{ $l->interest_rate }}%</td>
+                                        <td style="color:#1e40af;font-weight:600;">K{{ number_format($l->total_payable, 2) }}</td>
+                                        <td style="color:#dc2626;font-weight:600;">K{{ number_format($l->outstanding_balance, 2) }}</td>
+                                        <td><span class="badge" style="background:#f3f4f6;color:#374151;font-size:0.78rem;border:1px solid #e5e7eb;"><i class="fas fa-users mr-1" style="font-size:0.65rem;"></i>{{ $l->pairings_count }}</span></td>
+                                        <td>
+                                            @php
+                                                $sc = ['pending'=>['#fffbeb','#92400e','#fde68a'],'approved'=>['#eff6ff','#1e40af','#bfdbfe'],'active'=>['#ecfdf5','#065f46','#a7f3d0'],'completed'=>['#f0fdf4','#166534','#bbf7d0'],'rejected'=>['#fef2f2','#991b1b','#fecaca']][$l->status] ?? ['#f3f4f6','#374151','#e5e7eb'];
+                                            @endphp
+                                            <span class="badge" style="background:{{ $sc[0] }};color:{{ $sc[1] }};font-size:0.78rem;font-weight:600;border:1px solid {{ $sc[2] }};">{{ ucfirst($l->status) }}</span>
+                                        </td>
+                                        <td style="font-size:0.82rem;color:#6b7280;">{{ $l->created_at->format('d M Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr><td colspan="11" class="text-center py-4" style="color:#94a3b8;"><i class="fas fa-hand-holding-usd fa-2x mb-2 d-block"></i>No loans found.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top d-flex align-items-center justify-content-between flex-wrap" style="gap:0.75rem;">
+                    <span style="font-size:0.82rem;color:#6b7280;">Showing {{ $loans->firstItem() ?? 0 }} - {{ $loans->lastItem() ?? 0 }} of {{ $loans->total() }}</span>
+                    {{ $loans->links() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

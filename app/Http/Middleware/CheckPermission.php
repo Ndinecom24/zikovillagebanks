@@ -17,8 +17,15 @@ class CheckPermission
             abort(403, 'Unauthorized.');
         }
 
+        $user = auth()->user();
+
+        // Super-admin bypasses all permission checks
+        if ($user->isSuperAdmin()) {
+            return $next($request);
+        }
+
         foreach ($permissions as $permission) {
-            if (auth()->user()->hasPermission($permission)) {
+            if ($user->hasPermission($permission)) {
                 return $next($request);
             }
         }

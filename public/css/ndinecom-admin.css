@@ -1,0 +1,736 @@
+/* ========================================================================
+   NDINECOM ADMIN — SHARED COMPONENT STYLES
+   ========================================================================
+   Centralised CSS for all admin/dashboard Livewire blade pages.
+   Replaces the per-page inline <style> blocks that duplicated the same
+   patterns with different 2-letter prefixes (ul-, rl-, al-, ll-, ml-, etc.).
+
+   Usage:  Replace e.g.  class="ul-hero"   with  class="nd-hero"
+           Remove the @push('custom-styles') ... @endpush block (or keep
+           only truly page-specific overrides in it).
+
+   Included via master-livewire layout before @stack('custom-styles').
+   ======================================================================== */
+
+/* ====================================================================
+   1. DESIGN TOKENS  (page-level)
+   ====================================================================
+   Global tokens already live in ndinecom-layout-styles.blade.php
+   (--nd-primary, --nd-accent, etc.).  These add the page-component set
+   that every page formerly declared with its own prefix.
+   ==================================================================== */
+:root {
+    --nd-navy:        #1E3A5F;
+    --nd-navy-light:  #2B6B96;
+    --nd-amber:       #D97706;
+    --nd-amber-light: #F59E0B;
+    --nd-bg:          #f4f6fa;
+    --nd-card:        #ffffff;
+    --nd-border:      #edf0f7;
+    --nd-text:        #1e293b;
+    --nd-muted:       #64748b;
+    --nd-faint:       #94a3b8;
+    --nd-green:       #16a34a;
+    --nd-red:         #dc2626;
+    --nd-blue:        #2563eb;
+    --nd-purple:      #7c3aed;
+    --nd-cyan:        #0891b2;
+    --nd-radius:      16px;
+}
+
+/* ====================================================================
+   2. PAGE WRAPPER
+   ==================================================================== */
+.nd-page {
+    background: var(--nd-bg);
+    min-height: 100vh;
+}
+
+/* ====================================================================
+   3. HERO BANNER
+   ==================================================================== */
+.nd-hero {
+    background: linear-gradient(135deg, var(--nd-navy) 0%, #234b78 50%, var(--nd-navy-light) 100%);
+    padding: 1.75rem 0 6rem;
+    position: relative;
+    overflow: hidden;
+}
+.nd-hero--tall   { padding-bottom: 7rem; }
+.nd-hero--short  { padding-bottom: 5rem; }
+
+.nd-hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    top: -60%; right: -8%;
+    background: radial-gradient(circle, rgba(217,119,6,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.nd-hero-inner {
+    position: relative; z-index: 2;
+    padding: 0 1.5rem;
+}
+.nd-hero-inner--flex {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.75rem;
+}
+
+/* ── Hero title / subtitle ── */
+.nd-hero-row {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.75rem;
+}
+.nd-hero-title h1,
+.nd-hero-title h2,
+h1.nd-hero-title,
+h2.nd-hero-title {
+    color: #fff; font-size: 1.6rem; font-weight: 800; margin: 0;
+}
+.nd-hero-title h1 i,
+.nd-hero-title h2 i,
+h1.nd-hero-title i,
+h2.nd-hero-title i {
+    color: var(--nd-amber); margin-right: 0.5rem;
+}
+.nd-hero-sub {
+    color: rgba(255,255,255,0.55); font-size: 0.88rem; margin: 0.25rem 0 0;
+}
+.nd-back {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    color: rgba(255,255,255,0.65); font-size: 0.82rem; font-weight: 600;
+    text-decoration: none;
+}
+.nd-back:hover { color: #fff; text-decoration: none; }
+
+/* ── Hero links / actions ── */
+.nd-hero-links {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+}
+.nd-hero-link {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.45rem 1rem; border-radius: 10px;
+    font-size: 0.78rem; font-weight: 700; text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8);
+}
+.nd-hero-link:hover {
+    border-color: var(--nd-amber); color: #fff;
+    background: rgba(217,119,6,0.15); text-decoration: none;
+}
+
+/* ── Hero button ── */
+.nd-hero-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.55rem 1.25rem; border-radius: 10px;
+    font-size: 0.82rem; font-weight: 700; border: none; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+    background: var(--nd-amber); color: #fff;
+}
+.nd-hero-btn:hover {
+    background: var(--nd-amber-light); color: #fff; text-decoration: none;
+    transform: translateY(-1px); box-shadow: 0 4px 12px rgba(217,119,6,0.25);
+}
+.nd-hero-btn--ghost {
+    background: rgba(255,255,255,0.12); color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.nd-hero-btn--ghost:hover {
+    background: rgba(255,255,255,0.2); color: #fff;
+    box-shadow: none; transform: none;
+}
+
+/* ── Hero stats (glass row) ── */
+.nd-hero-stats,
+.nd-stat-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem; margin-top: 1.25rem;
+}
+.nd-hero-stat,
+.nd-stat-row > div {
+    background: rgba(255,255,255,0.1); border-radius: 10px;
+    padding: 0.65rem 0.85rem; backdrop-filter: blur(4px);
+}
+.nd-hero-stat-val,
+.nd-stat-val { font-size: 1.3rem; font-weight: 800; color: #fff; }
+.nd-hero-stat-lbl,
+.nd-stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-top: 0.1rem; }
+
+/* ====================================================================
+   4. BREADCRUMB
+   ==================================================================== */
+.nd-breadcrumb {
+    display: flex; gap: 0.5rem; list-style: none; padding: 0;
+    margin: 0 0 0.75rem; font-size: 0.82rem;
+}
+.nd-breadcrumb a { color: rgba(255,255,255,0.55); text-decoration: none; }
+.nd-breadcrumb a:hover { color: rgba(255,255,255,0.85); }
+.nd-breadcrumb .active { color: var(--nd-amber-light); font-weight: 600; }
+.nd-breadcrumb .sep { color: rgba(255,255,255,0.25); }
+
+/* ====================================================================
+   5. CONTENT OVERLAP REGION
+   ==================================================================== */
+.nd-content {
+    margin-top: -4.5rem;
+    position: relative; z-index: 10;
+    padding: 0 1.5rem 2rem;
+}
+.nd-content--shallow { margin-top: -4rem; }
+
+/* ====================================================================
+   6. CARDS
+   ==================================================================== */
+.nd-card {
+    background: var(--nd-card);
+    border-radius: var(--nd-radius);
+    border: 1px solid var(--nd-border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+.nd-card + .nd-card { margin-top: 1.25rem; }
+
+.nd-card-head,
+.nd-card-header {
+    padding: 1rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--nd-border);
+    flex-wrap: wrap; gap: 0.75rem;
+}
+.nd-card-head h3,
+.nd-card-header h3 {
+    font-size: 1rem; font-weight: 800; color: var(--nd-text); margin: 0;
+    display: flex; align-items: center; gap: 0.5rem;
+}
+.nd-card-head h3 i,
+.nd-card-header h3 i { color: var(--nd-amber); font-size: 0.9rem; }
+
+.nd-card-title {
+    font-size: 0.92rem; font-weight: 700; color: var(--nd-text); margin: 0;
+    display: flex; align-items: center; gap: 0.5rem;
+}
+.nd-card-title i { color: var(--nd-amber); font-size: 0.88rem; }
+
+.nd-card-body { padding: 1.25rem 1.5rem; }
+
+.nd-card-footer,
+.nd-footer {
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid var(--nd-border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.5rem;
+    font-size: 0.82rem; color: var(--nd-muted);
+}
+
+/* ====================================================================
+   7. STAT CARDS (content-area)
+   ==================================================================== */
+.nd-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; margin-bottom: 1.25rem;
+}
+.nd-stats--3 { grid-template-columns: repeat(3, 1fr); }
+
+.nd-stat {
+    background: var(--nd-card); border-radius: var(--nd-radius);
+    border: 1px solid var(--nd-border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    padding: 1rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.2s;
+}
+.nd-stat:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+
+.nd-stat-label {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px;
+    font-weight: 700; color: var(--nd-faint);
+}
+.nd-stat-value {
+    font-size: 1.5rem; font-weight: 800; color: var(--nd-text); line-height: 1.2;
+}
+.nd-stat-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+}
+
+/* ====================================================================
+   8. TOOLBAR / SEARCH / SELECT (above tables)
+   ==================================================================== */
+.nd-toolbar {
+    display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;
+}
+.nd-search {
+    position: relative; min-width: 200px;
+}
+.nd-search input {
+    width: 100%; padding: 0.42rem 0.75rem 0.42rem 2.1rem;
+    border: 1px solid var(--nd-border); border-radius: 10px;
+    font-size: 0.82rem; background: var(--nd-card); color: var(--nd-text);
+    transition: all 0.2s;
+}
+.nd-search input:focus {
+    outline: none; border-color: var(--nd-amber);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.1);
+}
+.nd-search i {
+    position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);
+    color: var(--nd-faint); font-size: 0.78rem;
+}
+
+.nd-select {
+    padding: 0.42rem 0.65rem; border-radius: 10px;
+    border: 1px solid var(--nd-border); font-size: 0.82rem;
+    color: var(--nd-text); background: var(--nd-card); cursor: pointer;
+}
+.nd-select:focus {
+    outline: none; border-color: var(--nd-amber);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.1);
+}
+
+/* ====================================================================
+   9. DATA TABLE
+   ==================================================================== */
+.nd-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    font-size: 0.84rem;
+}
+.nd-table thead th {
+    background: #f8fafc; padding: 0.65rem 1rem;
+    font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.5px;
+    font-weight: 700; color: var(--nd-faint);
+    border-bottom: 1px solid var(--nd-border); white-space: nowrap;
+}
+.nd-table thead th.sortable { cursor: pointer; user-select: none; }
+.nd-table thead th.sortable:hover { color: var(--nd-text); }
+.nd-table tbody td {
+    padding: 0.65rem 1rem; border-bottom: 1px solid var(--nd-border);
+    vertical-align: middle; color: var(--nd-text);
+}
+.nd-table tbody tr:last-child td { border-bottom: none; }
+.nd-table tbody tr { transition: background 0.15s; }
+.nd-table tbody tr:hover { background: #fafbfd; }
+
+.nd-sort { font-size: 0.55rem; margin-left: 0.25rem; opacity: 0.4; }
+.nd-sort.active { opacity: 1; color: var(--nd-amber); }
+
+/* ====================================================================
+   10. BADGES
+   ==================================================================== */
+.nd-badge {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    padding: 0.18rem 0.55rem; border-radius: 8px;
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+/* Semantic badge colours */
+.nd-badge-green   { background: rgba(22,163,74,0.08); color: var(--nd-green); border: 1px solid rgba(22,163,74,0.2); }
+.nd-badge-red     { background: #fef2f2; color: var(--nd-red);   border: 1px solid #fecaca; }
+.nd-badge-blue    { background: rgba(37,99,235,0.08); color: var(--nd-blue);  border: 1px solid rgba(37,99,235,0.2); }
+.nd-badge-amber   { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.nd-badge-purple  { background: rgba(124,58,237,0.08); color: var(--nd-purple); border: 1px solid rgba(124,58,237,0.2); }
+.nd-badge-cyan    { background: rgba(8,145,178,0.08);  color: var(--nd-cyan);   border: 1px solid rgba(8,145,178,0.2); }
+.nd-badge-gray    { background: #f3f4f6; color: var(--nd-muted); border: 1px solid #e5e7eb; }
+.nd-badge-navy    { background: rgba(30,58,95,0.06);   color: var(--nd-navy);   border: 1px solid rgba(30,58,95,0.15); }
+
+/* ====================================================================
+   11. ACTION BUTTONS (icon squares)
+   ==================================================================== */
+.nd-act,
+.nd-action {
+    width: 30px; height: 30px; border-radius: 8px;
+    border: 1px solid var(--nd-border); background: var(--nd-card);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+    color: var(--nd-muted); font-size: 0.72rem; text-decoration: none;
+}
+.nd-act:hover,
+.nd-action:hover { background: #f8fafc; color: var(--nd-navy); border-color: #cbd5e1; text-decoration: none; }
+.nd-act--view:hover   { color: var(--nd-blue);   border-color: #bfdbfe; background: #eff6ff; }
+.nd-act--edit:hover   { color: var(--nd-amber);  border-color: #fde68a; background: #fffbeb; }
+.nd-act--delete:hover,
+.nd-action-danger:hover { color: var(--nd-red);    border-color: #fecaca; background: #fef2f2; }
+.nd-act--green:hover  { color: var(--nd-green);  border-color: #bbf7d0; background: #f0fdf4; }
+
+/* ====================================================================
+   12. AVATARS
+   ==================================================================== */
+.nd-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.65rem; color: #fff; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--nd-navy), var(--nd-navy-light));
+}
+.nd-avatar--lg { width: 42px; height: 42px; font-size: 0.8rem; }
+.nd-avatar img {
+    width: 100%; height: 100%; border-radius: 50%;
+    object-fit: cover; border: 2px solid var(--nd-border);
+}
+.nd-avatar-init {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.65rem; color: #fff; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--nd-navy), var(--nd-navy-light));
+}
+
+/* ====================================================================
+   13. BUTTONS
+   ==================================================================== */
+.nd-btn {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.5rem 1.15rem; border-radius: 10px;
+    font-size: 0.82rem; font-weight: 700; border: none; cursor: pointer;
+    transition: all 0.2s; text-decoration: none;
+}
+.nd-btn:hover { text-decoration: none; }
+
+.nd-btn-amber {
+    background: linear-gradient(135deg, var(--nd-amber), var(--nd-amber-light));
+    color: #fff;
+}
+.nd-btn-amber:hover {
+    background: linear-gradient(135deg, #b45309, var(--nd-amber));
+    transform: translateY(-1px); box-shadow: 0 4px 12px rgba(217,119,6,0.25);
+    color: #fff;
+}
+
+.nd-btn-navy {
+    background: linear-gradient(135deg, var(--nd-navy), var(--nd-navy-light));
+    color: #fff;
+}
+.nd-btn-navy:hover {
+    transform: translateY(-1px); box-shadow: 0 4px 12px rgba(30,58,95,0.25);
+    color: #fff;
+}
+
+.nd-btn-ghost {
+    background: transparent; border: 2px solid #e2e8f0;
+    color: var(--nd-muted);
+}
+.nd-btn-ghost:hover { border-color: #cbd5e1; color: var(--nd-text); background: #f8fafc; }
+
+.nd-btn-danger {
+    background: #fef2f2; color: var(--nd-red); border: 1px solid #fecaca;
+}
+.nd-btn-danger:hover { background: #fee2e2; }
+
+.nd-btn-danger-solid {
+    background: var(--nd-red); color: #fff;
+}
+.nd-btn-danger-solid:hover { background: #b91c1c; }
+
+.nd-btn-cancel {
+    padding: 0.45rem 1.25rem; border-radius: 10px;
+    font-size: 0.82rem; font-weight: 600;
+    background: #f1f5f9; color: var(--nd-text);
+    border: 1px solid var(--nd-border); cursor: pointer;
+    transition: all 0.15s;
+}
+.nd-btn-cancel:hover { background: #e2e8f0; }
+
+.nd-btn-light {
+    background: #f3f4f6; color: var(--nd-muted);
+    border: 1px solid var(--nd-border);
+}
+.nd-btn-light:hover { background: #e5e7eb; color: var(--nd-text); }
+
+.nd-btn-outline {
+    background: transparent;
+    border: 1px solid var(--nd-amber); color: var(--nd-amber);
+}
+.nd-btn-outline:hover {
+    background: rgba(217,119,6,0.04);
+}
+
+.nd-btn:disabled, .nd-btn[disabled] {
+    opacity: 0.6; cursor: not-allowed; transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ====================================================================
+   14. FORM FIELDS
+   ==================================================================== */
+.nd-field { margin-bottom: 0.85rem; }
+
+/* Explicit class approach */
+.nd-label {
+    display: block; font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    color: var(--nd-faint); margin-bottom: 0.3rem;
+}
+.nd-label .req { color: var(--nd-red); }
+
+.nd-input,
+.nd-textarea {
+    width: 100%; padding: 0.5rem 0.8rem;
+    border: 1px solid var(--nd-border); border-radius: 10px;
+    font-size: 0.85rem; color: var(--nd-text);
+    background: var(--nd-card); transition: all 0.2s;
+}
+.nd-input:focus,
+.nd-textarea:focus {
+    outline: none; border-color: var(--nd-amber);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.08);
+}
+.nd-input:disabled,
+.nd-input[readonly] {
+    background: #f8fafc; color: var(--nd-muted); cursor: not-allowed;
+}
+.nd-input-error { border-color: var(--nd-red) !important; }
+
+.nd-error {
+    font-size: 0.73rem; color: var(--nd-red); margin-top: 0.2rem; font-weight: 500;
+}
+.nd-hint {
+    font-size: 0.72rem; color: var(--nd-faint); margin-top: 0.25rem;
+}
+
+/* Descendant approach — auto-style children inside .nd-field */
+.nd-field > label {
+    display: block; font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    color: var(--nd-faint); margin-bottom: 0.3rem;
+}
+.nd-field .req { color: var(--nd-red); }
+
+.nd-field input,
+.nd-field select,
+.nd-field textarea {
+    width: 100%; padding: 0.5rem 0.8rem;
+    border: 1px solid var(--nd-border); border-radius: 10px;
+    font-size: 0.85rem; color: var(--nd-text);
+    background: var(--nd-card); transition: all 0.2s;
+}
+.nd-field input:focus,
+.nd-field select:focus,
+.nd-field textarea:focus {
+    outline: none; border-color: var(--nd-amber);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.08);
+}
+.nd-field input:disabled,
+.nd-field input[readonly],
+.nd-field select:disabled,
+.nd-field textarea:disabled {
+    background: #f8fafc; color: var(--nd-muted); cursor: not-allowed;
+}
+.nd-field .err {
+    font-size: 0.73rem; color: var(--nd-red); margin-top: 0.2rem; font-weight: 500;
+}
+
+/* 2-col / 3-col field grid */
+.nd-row   { display: grid; gap: 1rem; margin-bottom: 1rem; }
+.nd-row-2 { grid-template-columns: 1fr 1fr; }
+.nd-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+.nd-row-auto { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.75rem; }
+
+/* ====================================================================
+   15. FLASH / ALERT MESSAGES
+   ==================================================================== */
+.nd-flash {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1.15rem; border-radius: 12px;
+    font-size: 0.84rem; font-weight: 600;
+    margin-bottom: 1rem; animation: ndSlide 0.3s ease;
+}
+.nd-flash-success { background: #f0fdf4; color: var(--nd-green); border: 1px solid #bbf7d0; }
+.nd-flash-warning { background: #fffbeb; color: #92400e;         border: 1px solid #fde68a; }
+.nd-flash-danger  { background: #fef2f2; color: var(--nd-red);   border: 1px solid #fecaca; }
+.nd-flash-info    { background: #eff6ff; color: #1e40af;         border: 1px solid #bfdbfe; }
+
+/* ====================================================================
+   16. MODAL / OVERLAY
+   ==================================================================== */
+.nd-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,0.45); backdrop-filter: blur(4px);
+    z-index: 1050;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+}
+
+.nd-modal {
+    background: var(--nd-card); border-radius: var(--nd-radius);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    width: 100%; max-width: 520px; overflow: hidden;
+    animation: ndSlide 0.2s ease-out;
+    max-height: 90vh; display: flex; flex-direction: column;
+}
+.nd-modal--sm { max-width: 400px; }
+.nd-modal--md { max-width: 520px; }
+.nd-modal--lg { max-width: 720px; }
+
+.nd-modal-head {
+    background: linear-gradient(135deg, var(--nd-navy), var(--nd-navy-light));
+    padding: 1rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.nd-modal-head h5 {
+    color: #fff; font-size: 0.95rem; font-weight: 700; margin: 0;
+    display: flex; align-items: center; gap: 0.4rem;
+}
+.nd-modal-head h5 i { color: var(--nd-amber); }
+
+.nd-modal-head--danger {
+    background: linear-gradient(135deg, #991b1b, var(--nd-red));
+}
+
+.nd-modal-close {
+    background: none; border: none; color: rgba(255,255,255,0.6);
+    font-size: 1.2rem; cursor: pointer; padding: 0; line-height: 1;
+}
+.nd-modal-close:hover { color: #fff; }
+
+.nd-modal-body { padding: 1.25rem; overflow-y: auto; flex: 1; }
+
+.nd-modal-foot,
+.nd-modal-footer {
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid var(--nd-border);
+    display: flex; justify-content: flex-end; gap: 0.5rem;
+}
+
+/* Delete confirmation icon */
+.nd-delete-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #fef2f2;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+}
+.nd-delete-icon i { font-size: 1.5rem; color: var(--nd-red); }
+
+/* ====================================================================
+   17. EMPTY STATE
+   ==================================================================== */
+.nd-empty {
+    text-align: center; padding: 3rem 1rem; color: var(--nd-faint);
+}
+.nd-empty i {
+    font-size: 2.5rem; opacity: 0.15; display: block;
+    margin-bottom: 0.6rem; color: var(--nd-navy);
+}
+.nd-empty strong {
+    display: block; color: var(--nd-muted); font-size: 0.92rem;
+    margin-bottom: 0.2rem;
+}
+.nd-empty p {
+    font-size: 0.82rem; color: var(--nd-muted); margin: 0;
+}
+
+/* ====================================================================
+   18. PAGINATION / FOOTER
+   ==================================================================== */
+.nd-pagination {
+    padding: 0.75rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--nd-border); flex-wrap: wrap; gap: 0.5rem;
+    font-size: 0.82rem; color: var(--nd-muted);
+}
+.nd-pagination-info {
+    font-size: 0.78rem; color: var(--nd-faint); font-weight: 600;
+}
+
+/* ====================================================================
+   19. FILTER STRIP
+   ==================================================================== */
+.nd-filter-strip {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    background: var(--nd-card); border-radius: var(--nd-radius);
+    border: 1px solid var(--nd-border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+}
+.nd-filter-label {
+    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.5px;
+    font-weight: 700; color: var(--nd-faint);
+    margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;
+}
+.nd-filter-label i { color: var(--nd-amber); font-size: 0.6rem; }
+
+/* ====================================================================
+   20. INFO GRID (profile / detail pages)
+   ==================================================================== */
+.nd-info-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.85rem;
+}
+.nd-info-item {
+    padding: 0.75rem 1rem; background: #f8fafc;
+    border-radius: 12px; border: 1px solid #f1f5f9;
+    transition: border-color 0.15s;
+}
+.nd-info-item:hover { border-color: #e2e8f0; }
+
+.nd-info-lbl {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--nd-faint); font-weight: 700;
+    display: flex; align-items: center; gap: 0.3rem;
+    margin-bottom: 0.2rem;
+}
+.nd-info-lbl i { color: var(--nd-amber); font-size: 0.7rem; }
+
+.nd-info-val {
+    font-size: 0.88rem; font-weight: 600; color: var(--nd-text);
+}
+.nd-info-val.empty {
+    color: #cbd5e1; font-style: italic; font-weight: 400;
+}
+
+/* ====================================================================
+   21. SECTION ICON (config / settings cards)
+   ==================================================================== */
+.nd-section-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem; flex-shrink: 0;
+}
+
+/* ====================================================================
+   22. LOADING OVERLAY
+   ==================================================================== */
+.nd-loading {
+    position: fixed; inset: 0; z-index: 99999;
+    background: rgba(255,255,255,0.6); backdrop-filter: blur(2px);
+    display: flex; align-items: center; justify-content: center;
+}
+.nd-spinner {
+    width: 20px; height: 20px;
+    border: 3px solid #e2e8f0;
+    border-top-color: var(--nd-amber);
+    border-radius: 50%;
+    animation: ndSpin 0.7s linear infinite;
+}
+
+/* ====================================================================
+   23. ANIMATIONS
+   ==================================================================== */
+@keyframes ndSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ndSpin {
+    to { transform: rotate(360deg); }
+}
+.nd-animate { animation: ndSlide 0.3s ease; }
+
+/* ====================================================================
+   24. RESPONSIVE
+   ==================================================================== */
+@media (max-width: 992px) {
+    .nd-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .nd-content { padding: 0 0.75rem 1.5rem; }
+    .nd-hero-stats,
+    .nd-stat-row { grid-template-columns: repeat(2, 1fr); }
+    .nd-hero-row { flex-direction: column; }
+    .nd-toolbar { width: 100%; }
+    .nd-search { min-width: 100%; width: 100%; }
+    .nd-row-2, .nd-row-3 { grid-template-columns: 1fr; }
+    .nd-info-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 576px) {
+    .nd-stats { grid-template-columns: 1fr; }
+}

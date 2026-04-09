@@ -1,0 +1,422 @@
+<div>
+    @push('custom-styles')
+    <style>
+        :root {
+            --sd-navy:#1E3A5F; --sd-navy-light:#2B6B96; --sd-amber:#D97706; --sd-amber-light:#F59E0B;
+            --sd-bg:#f4f6fa; --sd-card:#fff; --sd-border:#edf0f7; --sd-text:#1e293b;
+            --sd-muted:#64748b; --sd-faint:#94a3b8; --sd-green:#16a34a; --sd-red:#dc2626; --sd-blue:#2563eb; --sd-radius:16px;
+        }
+        .sd-page { background:var(--sd-bg); min-height:100vh; }
+
+        /* Hero */
+        .sd-hero {
+            background:linear-gradient(135deg,var(--sd-navy) 0%,#234b78 50%,var(--sd-navy-light) 100%);
+            padding:1.75rem 0 6rem; position:relative; overflow:hidden;
+        }
+        .sd-hero::before { content:''; position:absolute; width:600px; height:600px; top:-60%; right:-8%; background:radial-gradient(circle,rgba(217,119,6,.12) 0%,transparent 70%); border-radius:50%; pointer-events:none; }
+        .sd-hero-inner { position:relative; z-index:2; padding:0 1.5rem; }
+        .sd-breadcrumb { display:flex; gap:.5rem; list-style:none; padding:0; margin:0 0 .75rem; font-size:.82rem; }
+        .sd-breadcrumb a { color:rgba(255,255,255,.55); text-decoration:none; }
+        .sd-breadcrumb a:hover { color:rgba(255,255,255,.85); }
+        .sd-breadcrumb .active { color:var(--sd-amber-light); font-weight:600; }
+        .sd-breadcrumb .sep { color:rgba(255,255,255,.25); }
+        .sd-back { display:inline-flex; align-items:center; gap:.35rem; color:rgba(255,255,255,.65); font-size:.82rem; font-weight:600; text-decoration:none; margin-bottom:.6rem; }
+        .sd-back:hover { color:#fff; text-decoration:none; }
+        .sd-hero-title h1 { color:#fff; font-size:1.6rem; font-weight:800; margin:0; }
+        .sd-hero-title h1 i { color:var(--sd-amber); margin-right:.5rem; }
+        .sd-hero-sub { color:rgba(255,255,255,.55); font-size:.88rem; margin:.25rem 0 0; }
+
+        /* Content */
+        .sd-content { margin-top:-4rem; position:relative; z-index:10; padding:0 1.5rem 2rem; }
+
+        /* Card */
+        .sd-card {
+            background:var(--sd-card); border-radius:var(--sd-radius); border:1px solid var(--sd-border);
+            box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden;
+        }
+        .sd-card-header {
+            padding:1rem 1.5rem; border-bottom:1px solid var(--sd-border);
+            display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem;
+        }
+        .sd-card-title { font-size:.95rem; font-weight:700; color:var(--sd-text); display:flex; align-items:center; gap:.4rem; }
+        .sd-card-title i { color:var(--sd-amber); font-size:.8rem; }
+        .sd-card-body { padding:1.25rem 1.5rem; }
+        .sd-card-footer { padding:1rem 1.5rem; border-top:1px solid var(--sd-border); display:flex; justify-content:flex-end; gap:.75rem; }
+
+        /* Selection strip */
+        .sd-filter-strip {
+            display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem;
+            background:var(--sd-card); border-radius:var(--sd-radius); border:1px solid var(--sd-border);
+            box-shadow:0 2px 12px rgba(0,0,0,.04); padding:1.25rem 1.5rem; margin-bottom:1.25rem;
+        }
+        .sd-filter-group {}
+        .sd-filter-label {
+            font-size:.62rem; text-transform:uppercase; letter-spacing:.5px; font-weight:700; color:var(--sd-faint);
+            margin-bottom:.35rem; display:flex; align-items:center; gap:.3rem;
+        }
+        .sd-filter-label i { color:var(--sd-amber); font-size:.6rem; }
+        .sd-input {
+            width:100%; padding:.5rem .75rem; border:1px solid var(--sd-border); border-radius:10px;
+            font-size:.84rem; background:#fafbfd; transition:all .2s;
+        }
+        .sd-input:focus { outline:none; border-color:var(--sd-amber); background:#fff; box-shadow:0 0 0 3px rgba(217,119,6,.08); }
+        .sd-input:disabled { opacity:.5; cursor:not-allowed; }
+
+        /* Insurance badge */
+        .sd-insurance-badge {
+            display:inline-flex; align-items:center; gap:.3rem; padding:.3rem .75rem; border-radius:8px;
+            font-size:.78rem; font-weight:700; background:rgba(217,119,6,.08); color:#92400e; border:1px solid #fde68a;
+        }
+        .sd-btn-config {
+            width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+            border:1px solid var(--sd-border); background:#fafbfd; color:var(--sd-muted); cursor:pointer;
+            font-size:.65rem; transition:all .15s;
+        }
+        .sd-btn-config:hover { border-color:var(--sd-amber); color:var(--sd-amber); background:rgba(217,119,6,.04); }
+
+        /* Button */
+        .sd-btn-primary {
+            padding:.5rem 1.15rem; border-radius:10px; font-size:.82rem; font-weight:700;
+            background:var(--sd-amber); color:#fff; border:none; cursor:pointer;
+            display:inline-flex; align-items:center; gap:.35rem; transition:all .2s;
+        }
+        .sd-btn-primary:hover { background:var(--sd-amber-light); transform:translateY(-1px); box-shadow:0 4px 12px rgba(217,119,6,.25); }
+        .sd-btn-primary:disabled { opacity:.6; cursor:not-allowed; transform:none; box-shadow:none; }
+        .sd-btn-outline {
+            padding:.4rem .85rem; border-radius:8px; font-size:.75rem; font-weight:700; border:1px solid;
+            cursor:pointer; display:inline-flex; align-items:center; gap:.3rem; transition:all .15s; background:transparent;
+        }
+
+        /* Table */
+        .sd-table { width:100%; border-collapse:collapse; }
+        .sd-table thead th {
+            font-size:.62rem; text-transform:uppercase; letter-spacing:.5px; font-weight:700; color:var(--sd-faint);
+            padding:.7rem 1rem; border-bottom:1px solid var(--sd-border); background:#fafbfd; white-space:nowrap;
+        }
+        .sd-table tbody td { padding:.65rem 1rem; border-bottom:1px solid #f5f7fa; font-size:.84rem; vertical-align:middle; }
+        .sd-table tbody tr:last-child td { border-bottom:none; }
+        .sd-table tbody tr:hover { background:#fafbfd; }
+        .sd-table tfoot td {
+            padding:.75rem 1rem; font-weight:700; font-size:.88rem;
+            background:#fafbfd; border-top:2px solid var(--sd-border);
+        }
+        .sd-share-input {
+            width:100%; padding:.4rem .65rem; border:1px solid var(--sd-border); border-radius:8px;
+            font-size:.84rem; text-align:right; background:#fafbfd; transition:all .2s;
+        }
+        .sd-share-input:focus { outline:none; border-color:var(--sd-amber); background:#fff; box-shadow:0 0 0 3px rgba(217,119,6,.08); }
+
+        /* Avatar */
+        .sd-avatar {
+            width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+            font-weight:700; font-size:.65rem; flex-shrink:0;
+            background:linear-gradient(135deg,var(--sd-navy),var(--sd-navy-light)); color:#fff;
+        }
+        .sd-member-cell { display:flex; align-items:center; gap:.55rem; }
+
+        /* Summary badges */
+        .sd-summary-badges { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; }
+        .sd-summary-badge {
+            display:inline-flex; align-items:center; gap:.3rem; padding:.35rem .75rem; border-radius:10px;
+            font-size:.78rem; font-weight:700;
+        }
+
+        /* Flash */
+        .sd-flash {
+            display:flex; align-items:center; gap:.5rem; padding:.65rem 1rem; border-radius:10px; font-size:.84rem; font-weight:600;
+            margin-bottom:1rem;
+        }
+        .sd-flash-success { background:rgba(22,163,74,.08); color:#166534; border:1px solid #bbf7d0; }
+        .sd-flash-warning { background:rgba(217,119,6,.08); color:#92400e; border:1px solid #fde68a; }
+
+        /* Empty */
+        .sd-empty { text-align:center; padding:3rem 1rem; }
+        .sd-empty i { font-size:2.5rem; opacity:.12; display:block; margin-bottom:.75rem; color:var(--sd-navy); }
+        .sd-empty p { font-size:.88rem; color:var(--sd-muted); margin:0; }
+
+        /* Modal */
+        .sd-overlay { position:fixed; inset:0; background:rgba(15,23,42,.45); backdrop-filter:blur(4px); z-index:1050; display:flex; align-items:center; justify-content:center; }
+        .sd-modal {
+            background:#fff; border-radius:var(--sd-radius); width:95%; max-width:460px;
+            box-shadow:0 20px 40px rgba(0,0,0,.12); animation:sdSlide .25s ease; overflow:hidden;
+        }
+        .sd-modal-header {
+            padding:1rem 1.5rem; background:linear-gradient(135deg,var(--sd-navy),var(--sd-navy-light));
+            display:flex; align-items:center; justify-content:space-between;
+        }
+        .sd-modal-header h5 { color:#fff; font-size:.92rem; font-weight:700; margin:0; display:flex; align-items:center; gap:.4rem; }
+        .sd-modal-close { background:none; border:none; color:rgba(255,255,255,.6); font-size:1.2rem; cursor:pointer; }
+        .sd-modal-close:hover { color:#fff; }
+        .sd-modal-body { padding:1.5rem; }
+        .sd-modal-footer { padding:1rem 1.5rem; border-top:1px solid var(--sd-border); display:flex; justify-content:flex-end; gap:.65rem; }
+        .sd-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; font-weight:700; color:var(--sd-faint); margin-bottom:.35rem; }
+        .sd-label .req { color:#ef4444; }
+        .sd-error { font-size:.72rem; color:#ef4444; margin-top:.25rem; font-weight:500; }
+        .sd-hint { font-size:.72rem; color:var(--sd-faint); margin-top:.25rem; }
+        .sd-btn-cancel { padding:.45rem 1.25rem; border-radius:10px; font-size:.82rem; font-weight:600; background:#f1f5f9; color:var(--sd-text); border:1px solid var(--sd-border); cursor:pointer; transition:all .15s; }
+        .sd-btn-cancel:hover { background:#e2e8f0; }
+
+        @keyframes sdSlide { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        .sd-animate { animation:sdSlide .3s ease; }
+        @media(max-width:768px){ .sd-content{padding:0 .75rem 1.5rem;} .sd-filter-strip{grid-template-columns:1fr;} }
+    </style>
+    @endpush
+
+    <section class="content sd-page">
+        {{-- Hero --}}
+        <div class="sd-hero">
+            <div class="sd-hero-inner container-fluid">
+                <a href="{{ route('shares.index') }}" class="sd-back"><i class="fas fa-arrow-left"></i> Back to Shares</a>
+                <ul class="sd-breadcrumb">
+                    <li><a href="{{ route('home') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="sep">/</li>
+                    <li><a href="{{ route('shares.index') }}">Shares</a></li>
+                    <li class="sep">/</li>
+                    <li class="active">Declare</li>
+                </ul>
+                <div class="sd-hero-title">
+                    <h1><i class="fas fa-coins"></i>Declare Shares</h1>
+                    <p class="sd-hero-sub">Declare monthly share contributions for circle members</p>
+                </div>
+            </div>
+        </div>
+
+        {{-- Content --}}
+        <div class="sd-content container-fluid sd-animate">
+
+            {{-- Flash --}}
+            @if (session()->has('message'))
+                <div class="sd-flash sd-flash-success">
+                    <i class="fas fa-check-circle"></i> {{ session('message') }}
+                </div>
+            @endif
+            @if (session()->has('warning'))
+                <div class="sd-flash sd-flash-warning">
+                    <i class="fas fa-exclamation-triangle"></i> {{ session('warning') }}
+                </div>
+            @endif
+
+            {{-- Selection Strip --}}
+            <div class="sd-filter-strip">
+                <div class="sd-filter-group">
+                    <div class="sd-filter-label"><i class="fas fa-university"></i> Village Bank</div>
+                    <select wire:model="villageBankId" class="sd-input">
+                        <option value="">All Village Banks</option>
+                        @foreach ($this->villageBanks as $vb)
+                            <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="sd-filter-group">
+                    <div class="sd-filter-label"><i class="fas fa-circle-notch"></i> Circle</div>
+                    <select wire:model="circleId" class="sd-input">
+                        <option value="">-- Select Circle --</option>
+                        @foreach ($circles as $c)
+                            <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }} members)</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="sd-filter-group">
+                    <div class="sd-filter-label"><i class="fas fa-calendar-alt"></i> Active Month</div>
+                    <select wire:model="monthId" class="sd-input" {{ empty($circleId) ? 'disabled' : '' }}>
+                        <option value="">-- Select Month --</option>
+                        @foreach ($months as $mo)
+                            <option value="{{ $mo->id }}">Month {{ $mo->month_number }} ({{ $mo->start_date->format('d M') }} - {{ $mo->end_date->format('d M') }})</option>
+                        @endforeach
+                    </select>
+                    @if (!empty($circleId) && $months->count() === 0)
+                        <div class="sd-hint" style="color:var(--sd-amber);"><i class="fas fa-info-circle"></i> No active months in this circle.</div>
+                    @endif
+                </div>
+                <div class="sd-filter-group">
+                    <div class="sd-filter-label"><i class="fas fa-shield-alt"></i> Insurance</div>
+                    @if (!empty($insuranceType))
+                        <div style="display:flex;align-items:center;gap:.5rem;">
+                            <span class="sd-insurance-badge">
+                                {{ $insuranceType === 'fixed' ? 'K' . number_format($insuranceValue, 2) . ' fixed' : $insuranceValue . '% of shares' }}
+                            </span>
+                            @if (!empty($circleId))
+                                <button wire:click="openInsuranceModal" class="sd-btn-config" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            @endif
+                        </div>
+                    @elseif (!empty($circleId))
+                        <button wire:click="openInsuranceModal" class="sd-btn-outline" style="border-color:var(--sd-amber);color:var(--sd-amber);">
+                            <i class="fas fa-plus"></i> Configure
+                        </button>
+                    @else
+                        <span style="font-size:.82rem;color:var(--sd-faint);">Select a circle first</span>
+                    @endif
+                </div>
+            </div>
+
+            {{-- Declarations Table --}}
+            @if (!empty($circleId) && !empty($monthId) && $membersList->count() > 0)
+                <div class="sd-card">
+                    <div class="sd-card-header">
+                        <div class="sd-card-title"><i class="fas fa-table"></i> Member Shares</div>
+                        <div class="sd-summary-badges">
+                            <span class="sd-summary-badge" style="background:rgba(22,163,74,.06);color:#166534;border:1px solid #bbf7d0;">
+                                <i class="fas fa-coins" style="font-size:.6rem;"></i> Shares: K{{ number_format($totalShares, 2) }}
+                            </span>
+                            @if (!empty($insuranceType))
+                                <span class="sd-summary-badge" style="background:rgba(217,119,6,.06);color:#92400e;border:1px solid #fde68a;">
+                                    <i class="fas fa-shield-alt" style="font-size:.6rem;"></i> Insurance: K{{ number_format($totalInsurance, 2) }}
+                                </span>
+                            @endif
+                            <button wire:click="saveDeclarations" class="sd-btn-primary" wire:loading.attr="disabled" wire:target="saveDeclarations">
+                                <span wire:loading.remove wire:target="saveDeclarations"><i class="fas fa-save"></i> Save All</span>
+                                <span wire:loading wire:target="saveDeclarations"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="sd-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th>Member</th>
+                                    <th>Email</th>
+                                    <th style="width:180px;">Share Amount (K)</th>
+                                    @if (!empty($insuranceType))
+                                        <th style="width:140px;">Insurance (K)</th>
+                                    @endif
+                                    <th style="width:140px;">Total (K)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($membersList as $idx => $m)
+                                    <tr>
+                                        <td style="font-size:.78rem;color:var(--sd-faint);">{{ $idx + 1 }}</td>
+                                        <td>
+                                            <div class="sd-member-cell">
+                                                @php
+                                                    $parts = explode(' ', trim($m->name ?? ''));
+                                                    $initials = strtoupper(substr($parts[0], 0, 1) . (isset($parts[1]) ? substr($parts[1], 0, 1) : ''));
+                                                @endphp
+                                                <div class="sd-avatar">{{ $initials }}</div>
+                                                <span style="font-weight:700;">{{ $m->name }}</span>
+                                            </div>
+                                        </td>
+                                        <td style="color:var(--sd-muted);">{{ $m->email }}</td>
+                                        <td>
+                                            <input type="number" step="0.01" min="0"
+                                                wire:model.lazy="shares.{{ $m->id }}"
+                                                class="sd-share-input" placeholder="0.00">
+                                        </td>
+                                        @if (!empty($insuranceType))
+                                            <td>
+                                                @php
+                                                    $shareVal = $shares[$m->id] ?? 0;
+                                                    $insAmt = is_numeric($shareVal) && $shareVal > 0
+                                                        ? ($insuranceType === 'fixed' ? $insuranceValue : round(($shareVal * $insuranceValue) / 100, 2))
+                                                        : 0;
+                                                @endphp
+                                                <span class="sd-insurance-badge" style="font-size:.72rem;padding:.2rem .5rem;">
+                                                    {{ number_format($insAmt, 2) }}
+                                                </span>
+                                            </td>
+                                        @endif
+                                        <td>
+                                            @php
+                                                $shareAmt = is_numeric($shares[$m->id] ?? 0) ? (float)($shares[$m->id] ?? 0) : 0;
+                                                $totalAmt = $shareAmt + ($insAmt ?? 0);
+                                            @endphp
+                                            <span style="font-weight:800;color:var(--sd-green);">{{ number_format($totalAmt, 2) }}</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" style="text-align:right;color:var(--sd-text);">Totals:</td>
+                                    <td style="text-align:right;color:var(--sd-green);">K{{ number_format($totalShares, 2) }}</td>
+                                    @if (!empty($insuranceType))
+                                        <td style="color:#92400e;">K{{ number_format($totalInsurance, 2) }}</td>
+                                    @endif
+                                    <td style="color:var(--sd-navy);"><strong>K{{ number_format($totalShares + $totalInsurance, 2) }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="sd-card-footer">
+                        <button wire:click="saveDeclarations" class="sd-btn-primary" wire:loading.attr="disabled" wire:target="saveDeclarations">
+                            <span wire:loading.remove wire:target="saveDeclarations"><i class="fas fa-save"></i> Save Declarations</span>
+                            <span wire:loading wire:target="saveDeclarations"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                        </button>
+                    </div>
+                </div>
+            @elseif (!empty($circleId) && !empty($monthId) && $membersList->count() === 0)
+                <div class="sd-card">
+                    <div class="sd-card-body">
+                        <div class="sd-empty">
+                            <i class="fas fa-users"></i>
+                            <p>No members in this circle. Add members first.</p>
+                        </div>
+                    </div>
+                </div>
+            @elseif (empty($circleId))
+                <div class="sd-card">
+                    <div class="sd-card-body">
+                        <div class="sd-empty">
+                            <i class="fas fa-hand-pointer"></i>
+                            <p>Select a circle and month above to get started.</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+        </div>
+    </section>
+
+    {{-- ===== INSURANCE CONFIG MODAL ===== --}}
+    @if ($showInsuranceModal)
+        <div class="sd-overlay">
+            <div class="sd-modal">
+                <div class="sd-modal-header">
+                    <h5><i class="fas fa-shield-alt"></i> Insurance Configuration</h5>
+                    <button type="button" class="sd-modal-close" wire:click="$set('showInsuranceModal', false)">&times;</button>
+                </div>
+                <form wire:submit.prevent="saveInsuranceConfig">
+                    <div class="sd-modal-body">
+                        <p style="font-size:.84rem;color:var(--sd-muted);margin-bottom:1.25rem;">
+                            Configure how insurance contributions are calculated for each member's share declaration.
+                        </p>
+                        <div style="margin-bottom:1.25rem;">
+                            <label class="sd-label">Type <span class="req">*</span></label>
+                            <select wire:model="configType" class="sd-input">
+                                <option value="fixed">Fixed Amount</option>
+                                <option value="percentage">Percentage of Shares</option>
+                            </select>
+                            @error('configType') <div class="sd-error">{{ $message }}</div> @enderror
+                        </div>
+                        <div>
+                            <label class="sd-label">
+                                {{ $configType === 'fixed' ? 'Amount (K)' : 'Percentage (%)' }}
+                                <span class="req">*</span>
+                            </label>
+                            <input type="number" step="0.01" min="0" wire:model.defer="configValue"
+                                class="sd-input" placeholder="{{ $configType === 'fixed' ? '0.00' : '0' }}">
+                            @error('configValue') <div class="sd-error">{{ $message }}</div> @enderror
+                            <div class="sd-hint">
+                                @if ($configType === 'fixed')
+                                    Each member pays this fixed amount per month.
+                                @else
+                                    Calculated as a percentage of each member's share amount.
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sd-modal-footer">
+                        <button type="button" wire:click="$set('showInsuranceModal', false)" class="sd-btn-cancel">Cancel</button>
+                        <button type="submit" class="sd-btn-primary" wire:loading.attr="disabled" wire:target="saveInsuranceConfig">
+                            <span wire:loading.remove wire:target="saveInsuranceConfig"><i class="fas fa-save"></i> Save Config</span>
+                            <span wire:loading wire:target="saveInsuranceConfig"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+</div>

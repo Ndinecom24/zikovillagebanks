@@ -1,0 +1,323 @@
+<div>
+    @push('custom-styles')
+    <style>
+        :root {
+            --bc-navy:#1E3A5F; --bc-navy-light:#2B6B96; --bc-amber:#D97706; --bc-amber-light:#F59E0B;
+            --bc-bg:#f4f6fa; --bc-card:#fff; --bc-border:#edf0f7; --bc-text:#1e293b;
+            --bc-muted:#64748b; --bc-faint:#94a3b8; --bc-green:#16a34a; --bc-red:#dc2626; --bc-blue:#2563eb; --bc-radius:16px;
+        }
+        .bc-page { background:var(--bc-bg); min-height:100vh; }
+        .bc-hero {
+            background:linear-gradient(135deg,var(--bc-navy) 0%,#234b78 50%,var(--bc-navy-light) 100%);
+            padding:1.75rem 0 5rem; position:relative; overflow:hidden;
+        }
+        .bc-hero::before { content:''; position:absolute; width:500px; height:500px; top:-50%; right:-5%; background:radial-gradient(circle,rgba(217,119,6,.12) 0%,transparent 70%); border-radius:50%; pointer-events:none; }
+        .bc-hero-inner { position:relative; z-index:2; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem; }
+        .bc-breadcrumb { display:flex; gap:.5rem; list-style:none; padding:0; margin:0; font-size:.82rem; }
+        .bc-breadcrumb a { color:rgba(255,255,255,.55); text-decoration:none; }
+        .bc-breadcrumb a:hover { color:rgba(255,255,255,.85); }
+        .bc-breadcrumb .active { color:var(--bc-amber-light); font-weight:600; }
+        .bc-breadcrumb .sep { color:rgba(255,255,255,.25); }
+        .bc-hero-title { color:#fff; font-size:1.3rem; font-weight:800; margin:.3rem 0 0; }
+        .bc-hero-sub { color:rgba(255,255,255,.5); font-size:.8rem; margin:.15rem 0 0; }
+        .bc-bank-badge { display:inline-flex; align-items:center; gap:.4rem; background:rgba(255,255,255,.1); padding:.3rem .75rem; border-radius:8px; color:var(--bc-amber-light); font-size:.78rem; font-weight:700; backdrop-filter:blur(6px); }
+        .bc-content { margin-top:-3.5rem; position:relative; z-index:10; padding:0 1.5rem 2rem; }
+        .bc-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
+        @media(max-width:992px){ .bc-grid { grid-template-columns:1fr; } }
+        .bc-card { background:var(--bc-card); border-radius:var(--bc-radius); border:1px solid var(--bc-border); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+        .bc-card-head { padding:.85rem 1.25rem; border-bottom:1px solid var(--bc-border); display:flex; align-items:center; gap:.45rem; }
+        .bc-card-title { font-size:.9rem; font-weight:700; color:var(--bc-text); margin:0; display:flex; align-items:center; gap:.45rem; }
+        .bc-card-title i { color:var(--bc-amber); font-size:.85rem; }
+        .bc-card-body { padding:1.25rem 1.5rem; }
+        .bc-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; font-weight:700; color:var(--bc-faint); margin-bottom:.3rem; display:block; }
+        .bc-input {
+            width:100%; padding:.5rem .75rem; border:2px solid #e2e8f0; border-radius:10px;
+            font-size:.88rem; color:var(--bc-text); transition:border-color .2s; background:#fff;
+        }
+        .bc-input:focus { border-color:var(--bc-amber); outline:none; }
+        .bc-input:disabled { background:#f8fafc; cursor:not-allowed; }
+        .bc-input-error { border-color:var(--bc-red) !important; }
+        .bc-error { font-size:.75rem; color:var(--bc-red); margin-top:.2rem; font-weight:600; }
+        .bc-row { display:grid; gap:1rem; margin-bottom:1rem; }
+        .bc-row-2 { grid-template-columns:1fr 1fr; }
+        .bc-row-3 { grid-template-columns:1fr 1fr 1fr; }
+        @media(max-width:768px){ .bc-row-2,.bc-row-3 { grid-template-columns:1fr; } }
+        .bc-hint { font-size:.72rem; color:var(--bc-muted); margin-top:.2rem; line-height:1.35; }
+        .bc-toggle {
+            position:relative; width:42px; height:22px; background:#e2e8f0; border-radius:11px; cursor:pointer;
+            border:none; transition:background .2s; display:inline-block;
+        }
+        .bc-toggle.active { background:var(--bc-green); }
+        .bc-toggle::after {
+            content:''; position:absolute; top:2px; left:2px; width:18px; height:18px;
+            background:#fff; border-radius:50%; transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.15);
+        }
+        .bc-toggle.active::after { transform:translateX(20px); }
+        .bc-footer { padding:.85rem 1.25rem; border-top:1px solid var(--bc-border); display:flex; justify-content:flex-end; gap:.65rem; }
+        .bc-btn {
+            display:inline-flex; align-items:center; gap:.35rem; padding:.5rem 1.2rem; border-radius:10px;
+            font-size:.84rem; font-weight:600; border:none; cursor:pointer; transition:all .2s;
+        }
+        .bc-btn-primary { background:linear-gradient(135deg,var(--bc-navy),var(--bc-navy-light)); color:#fff; }
+        .bc-btn-primary:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(30,58,95,.3); }
+        .bc-btn-primary:disabled { opacity:.6; cursor:not-allowed; transform:none; box-shadow:none; }
+        .bc-flash { display:flex; align-items:center; gap:.5rem; padding:.7rem 1.15rem; border-radius:12px; font-size:.84rem; font-weight:600; margin-bottom:1rem; }
+        .bc-flash-success { background:#f0fdf4; color:var(--bc-green); border:1px solid #bbf7d0; }
+        .bc-flash-warning { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+        .bc-preview-box {
+            padding:.75rem 1rem; border-radius:12px; background:linear-gradient(135deg,#f0f9ff,#e0f2fe);
+            border:1px solid #bae6fd; margin-top:.75rem;
+        }
+        .bc-preview-label { font-size:.65rem; text-transform:uppercase; letter-spacing:.5px; font-weight:700; color:var(--bc-blue); }
+        .bc-preview-value { font-size:1.1rem; font-weight:800; color:var(--bc-navy); margin:.1rem 0; }
+        .bc-preview-hint { font-size:.68rem; color:var(--bc-muted); }
+        .bc-section-icon {
+            width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+            font-size:.85rem;flex-shrink:0;
+        }
+        .bc-icon-insurance { background:#fef3c7; color:#b45309; }
+        .bc-icon-loan { background:#dbeafe; color:#1d4ed8; }
+        .bc-icon-penalty { background:#fee2e2; color:#dc2626; }
+        @keyframes bcSlide { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        .bc-animate { animation:bcSlide .3s ease; }
+        @media(max-width:768px){ .bc-content{padding:0 .75rem 1.5rem;} }
+    </style>
+    @endpush
+
+    <section class="content bc-page">
+        {{-- Hero --}}
+        <div class="bc-hero">
+            <div class="bc-hero-inner container-fluid">
+                <div>
+                    <ul class="bc-breadcrumb">
+                        <li><a href="{{ route('home') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li class="sep">/</li>
+                        <li class="active">Bank Configuration</li>
+                    </ul>
+                    <h1 class="bc-hero-title"><i class="fas fa-cogs" style="margin-right:.4rem;"></i> Village Bank Configuration</h1>
+                    <p class="bc-hero-sub">Manage insurance, loan limits, and penalty settings for your village bank</p>
+                </div>
+                @if($bankName)
+                    <div class="bc-bank-badge">
+                        <i class="fas fa-university"></i> {{ $bankName }} ({{ $bankCode }})
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="bc-content container-fluid bc-animate">
+            {{-- VB Selector --}}
+            @if(count($this->villageBanks) > 1)
+                <div style="margin-bottom:1rem;">
+                    <select wire:model="villageBankId" class="bc-input" style="max-width:360px;">
+                        <option value="">-- Select Village Bank --</option>
+                        @foreach($this->villageBanks as $vb)
+                            <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+
+            {{-- Flash messages --}}
+            @if($savedMessage)
+                <div class="bc-flash bc-flash-success"><i class="fas fa-check-circle"></i> {{ $savedMessage }}</div>
+            @endif
+            @if(session()->has('warning'))
+                <div class="bc-flash bc-flash-warning"><i class="fas fa-exclamation-triangle"></i> {{ session('warning') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="bc-flash" style="background:#fef2f2;color:var(--bc-red);border:1px solid #fecaca;">
+                    <i class="fas fa-exclamation-circle"></i> Please fix the errors below.
+                </div>
+            @endif
+
+            @if($this->activeBankId())
+            <form wire:submit.prevent="saveConfiguration">
+                <div class="bc-grid">
+                    {{-- ══════════════ LEFT COLUMN ══════════════ --}}
+                    <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+                        {{-- Insurance Config --}}
+                        <div class="bc-card">
+                            <div class="bc-card-head">
+                                <div class="bc-section-icon bc-icon-insurance"><i class="fas fa-shield-alt"></i></div>
+                                <h3 class="bc-card-title">Insurance Configuration</h3>
+                            </div>
+                            <div class="bc-card-body">
+                                <p style="font-size:.78rem;color:var(--bc-muted);margin:0 0 1rem;">
+                                    Set default insurance calculation applied when collecting share declarations. This applies to all circles in this bank.
+                                </p>
+                                <div class="bc-row bc-row-2">
+                                    <div>
+                                        <label class="bc-label">Insurance Type</label>
+                                        <select wire:model="insurance_type" class="bc-input @error('insurance_type') bc-input-error @enderror">
+                                            <option value="percentage">Percentage of Shares</option>
+                                            <option value="fixed">Fixed Amount</option>
+                                        </select>
+                                        @error('insurance_type') <div class="bc-error">{{ $message }}</div> @enderror
+                                        <div class="bc-hint">
+                                            @if($insurance_type === 'percentage')
+                                                Insurance = share amount × {{ $insurance_value }}%
+                                            @else
+                                                Fixed amount per member per month
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="bc-label">{{ $insurance_type === 'percentage' ? 'Percentage (%)' : 'Amount (K)' }}</label>
+                                        <input type="number" step="0.01" min="0"
+                                               wire:model="insurance_value"
+                                               class="bc-input @error('insurance_value') bc-input-error @enderror"
+                                               placeholder="{{ $insurance_type === 'percentage' ? 'e.g. 10' : 'e.g. 500' }}">
+                                        @error('insurance_value') <div class="bc-error">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Penalty Config --}}
+                        <div class="bc-card">
+                            <div class="bc-card-head">
+                                <div class="bc-section-icon bc-icon-penalty"><i class="fas fa-exclamation-triangle"></i></div>
+                                <h3 class="bc-card-title">Penalty Settings</h3>
+                            </div>
+                            <div class="bc-card-body">
+                                <p style="font-size:.78rem;color:var(--bc-muted);margin:0 0 1rem;">
+                                    Configure late repayment penalties and grace periods.
+                                </p>
+                                <div class="bc-row bc-row-2">
+                                    <div>
+                                        <label class="bc-label">Late Repayment Penalty (%)</label>
+                                        <input type="number" step="0.01" min="0" max="100"
+                                               wire:model="late_repayment_penalty_rate"
+                                               class="bc-input @error('late_repayment_penalty_rate') bc-input-error @enderror"
+                                               placeholder="5">
+                                        @error('late_repayment_penalty_rate') <div class="bc-error">{{ $message }}</div> @enderror
+                                        <div class="bc-hint">Penalty charged on outstanding balance for late payments</div>
+                                    </div>
+                                    <div>
+                                        <label class="bc-label">Grace Period (days)</label>
+                                        <input type="number" min="0" max="90"
+                                               wire:model="grace_period_days"
+                                               class="bc-input @error('grace_period_days') bc-input-error @enderror"
+                                               placeholder="0">
+                                        @error('grace_period_days') <div class="bc-error">{{ $message }}</div> @enderror
+                                        <div class="bc-hint">Days after due date before penalty kicks in</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- ══════════════ RIGHT COLUMN ══════════════ --}}
+                    <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+                        {{-- Loan Config --}}
+                        <div class="bc-card">
+                            <div class="bc-card-head">
+                                <div class="bc-section-icon bc-icon-loan"><i class="fas fa-hand-holding-usd"></i></div>
+                                <h3 class="bc-card-title">Loan Configuration</h3>
+                            </div>
+                            <div class="bc-card-body">
+                                <p style="font-size:.78rem;color:var(--bc-muted);margin:0 0 1rem;">
+                                    Define borrowing rules. Members can borrow up to <strong>{{ $max_loan_multiplier }}×</strong> their total savings (shares + insurance) in a circle, limited by available funds for that month.
+                                </p>
+
+                                {{-- Multiplier --}}
+                                <div class="bc-row" style="margin-bottom:1.25rem;">
+                                    <div>
+                                        <label class="bc-label">Maximum Borrowing Multiplier</label>
+                                        <input type="number" min="1" max="20"
+                                               wire:model="max_loan_multiplier"
+                                               class="bc-input @error('max_loan_multiplier') bc-input-error @enderror"
+                                               placeholder="3"
+                                               style="max-width:200px;">
+                                        @error('max_loan_multiplier') <div class="bc-error">{{ $message }}</div> @enderror
+                                        <div class="bc-hint">Example: if set to {{ $max_loan_multiplier }}, a member with K10,000 total savings can borrow up to K{{ number_format(10000 * max(1, (int)$max_loan_multiplier)) }}</div>
+
+                                        <div class="bc-preview-box">
+                                            <div class="bc-preview-label">Preview with K10,000 savings</div>
+                                            <div class="bc-preview-value">K{{ number_format($this->exampleBorrowable, 2) }}</div>
+                                            <div class="bc-preview-hint">Savings × {{ $max_loan_multiplier }} = maximum borrowable (still limited by available monthly funds)</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Interest & Duration --}}
+                                <div class="bc-row bc-row-2">
+                                    <div>
+                                        <label class="bc-label">Default Interest Rate (%)</label>
+                                        <input type="number" step="0.01" min="0" max="100"
+                                               wire:model="default_interest_rate"
+                                               class="bc-input @error('default_interest_rate') bc-input-error @enderror"
+                                               placeholder="20">
+                                        @error('default_interest_rate') <div class="bc-error">{{ $message }}</div> @enderror
+                                        <div class="bc-hint">Pre-filled when creating a loan request</div>
+                                    </div>
+                                    <div>
+                                        <label class="bc-label">Default Loan Duration (months)</label>
+                                        <input type="number" min="1" max="12"
+                                               wire:model="default_loan_duration"
+                                               class="bc-input @error('default_loan_duration') bc-input-error @enderror"
+                                               placeholder="1">
+                                        @error('default_loan_duration') <div class="bc-error">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+
+                                {{-- Min / Max Loan --}}
+                                <div class="bc-row bc-row-2" style="margin-top:1rem;">
+                                    <div>
+                                        <label class="bc-label">Minimum Loan Amount (K)</label>
+                                        <input type="number" step="0.01" min="0"
+                                               wire:model="min_loan_amount"
+                                               class="bc-input @error('min_loan_amount') bc-input-error @enderror"
+                                               placeholder="Leave blank for no minimum">
+                                        @error('min_loan_amount') <div class="bc-error">{{ $message }}</div> @enderror
+                                        <div class="bc-hint">Optional hard floor</div>
+                                    </div>
+                                    <div>
+                                        <label class="bc-label">Maximum Loan Amount (K)</label>
+                                        <input type="number" step="0.01" min="0"
+                                               wire:model="max_loan_amount"
+                                               class="bc-input @error('max_loan_amount') bc-input-error @enderror"
+                                               placeholder="Leave blank for no cap">
+                                        @error('max_loan_amount') <div class="bc-error">{{ $message }}</div> @enderror
+                                        <div class="bc-hint">Optional hard ceiling regardless of savings</div>
+                                    </div>
+                                </div>
+
+                                {{-- Allow Multiple Loans --}}
+                                <div style="margin-top:1.25rem;display:flex;align-items:center;gap:.75rem;">
+                                    <button type="button"
+                                            class="bc-toggle {{ $allow_multiple_active_loans ? 'active' : '' }}"
+                                            wire:click="$toggle('allow_multiple_active_loans')">
+                                    </button>
+                                    <div>
+                                        <div style="font-size:.84rem;font-weight:700;color:var(--bc-text);">Allow Multiple Active Loans</div>
+                                        <div class="bc-hint" style="margin-top:0;">If disabled, a member cannot request a new loan while they have a pending or active one in the same circle</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Save button --}}
+                <div style="margin-top:1.25rem;display:flex;justify-content:flex-end;">
+                    <button type="submit" class="bc-btn bc-btn-primary" wire:loading.attr="disabled" wire:target="saveConfiguration">
+                        <span wire:loading.remove wire:target="saveConfiguration"><i class="fas fa-save"></i> Save Configuration</span>
+                        <span wire:loading wire:target="saveConfiguration"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                    </button>
+                </div>
+            </form>
+            @else
+                <div class="bc-card">
+                    <div class="bc-card-body" style="text-align:center;padding:3rem;">
+                        <i class="fas fa-university" style="font-size:2.5rem;color:var(--bc-faint);margin-bottom:1rem;"></i>
+                        <p style="font-size:.9rem;color:var(--bc-muted);margin:0;">Please select a village bank to manage its configuration.</p>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </section>
+</div>

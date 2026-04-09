@@ -77,8 +77,6 @@ class UserList extends Component
                 $this->addError('staffNo', 'Employee not found. You can enter details manually.');
             }
         } catch (\Exception $e) {
-
-        dd($e->getMessage());
             $this->addError('staffNo', 'Could not connect to HR system. Enter details manually.');
         }
 
@@ -119,12 +117,12 @@ class UserList extends Component
             'password' => ['required', new \App\Rules\StrongPassword],
         ];
 
-        // Only validate staff_no uniqueness when one is provided
+        // Only validate username uniqueness when one is provided
         if (!empty($this->staffNo)) {
             $rules['staffNo'] = [
                 'string',
                 'max:50',
-                Rule::unique('users', 'staff_no')->whereNull('deleted_at'),
+                Rule::unique('users', 'username')->whereNull('deleted_at'),
             ];
         }
 
@@ -140,7 +138,7 @@ class UserList extends Component
         try {
             User::create([
                 'name'             => $this->staffName,
-                'staff_no'         => $this->staffNo ?: null,
+                'username'         => $this->staffNo ?: null,
                 'email'            => $this->staffEmail,
                 'job_title'        => $this->jobTitle ?: null,
                 'user_unit'        => $this->userUnit ?: null,
@@ -189,13 +187,13 @@ class UserList extends Component
 
     public function render()
     {
-        $query = User::withCount(['offices', 'roles']);
+        $query = User::withCount(['roles']);
 
         if (!empty($this->search)) {
             $term = '%' . trim($this->search) . '%';
             $query->where(function ($q) use ($term) {
                 $q->where('name', 'like', $term)
-                  ->orWhere('staff_no', 'like', $term)
+                  ->orWhere('username', 'like', $term)
                   ->orWhere('email', 'like', $term)
                   ->orWhere('directorate', 'like', $term)
                   ->orWhere('job_title', 'like', $term);

@@ -1,0 +1,443 @@
+<div>
+    <!-- Page Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="z-page-header">
+                <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap: 1rem;">
+                    <div>
+                        <h1>
+                            <i class="fas fa-user-shield mr-2" style="color: var(--z-gold)"></i>
+                            {{ $role->name }}
+                        </h1>
+                        <p>
+                            <code style="background: rgba(255,255,255,0.15); padding: 0.15rem 0.5rem; border-radius: 4px;">{{ $role->slug }}</code>
+                            &nbsp;{{ $role->description ?? 'No description' }}
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                        <a href="{{ route('roles.index') }}" class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #fff; border-radius: 8px; font-size: 0.82rem;">
+                            <i class="fas fa-arrow-left mr-1"></i> Back to Roles
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Stats --}}
+                <div class="row mt-3">
+                    <div class="col-6 col-md-3">
+                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                            <div style="font-size: 1.15rem; font-weight: 800;">{{ $role->permissions->count() }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Permissions</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                            <div style="font-size: 1.15rem; font-weight: 800; color: #60a5fa;">{{ $role->offices->count() }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Offices</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                            <div style="font-size: 1.15rem; font-weight: 800; color: #34d399;">{{ $role->users->count() }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Users</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div style="background: rgba(255,255,255,0.12); border-radius: 8px; padding: 0.5rem 0.75rem;">
+                            <div style="font-size: 1.15rem; font-weight: 800; color: #fbbf24;">{{ $role->created_at->format('M d, Y') }}</div>
+                            <div style="font-size: 0.72rem; opacity: 0.8;">Created</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            {{-- Flash Messages --}}
+            @if(session()->has('message'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                    <i class="fas fa-check-circle mr-1"></i> {!! session('message') !!}
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            @endif
+            @if(session()->has('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                    <i class="fas fa-exclamation-circle mr-1"></i> {!! session('error') !!}
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            @endif
+
+            {{-- Tabs --}}
+            <div class="card z-card mb-0" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+                <div class="card-body py-0 px-0">
+                    <ul class="nav nav-tabs" style="border: none; padding: 0 1rem;">
+                        <li class="nav-item">
+                            <a href="#" wire:click.prevent="$set('activeTab', 'permissions')"
+                               class="nav-link {{ $activeTab === 'permissions' ? 'active' : '' }}"
+                               style="border-radius: 8px 8px 0 0; font-size: 0.85rem; font-weight: 600;">
+                                <i class="fas fa-key mr-1"></i> Permissions
+                                <span class="badge badge-success ml-1">{{ $role->permissions->count() }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" wire:click.prevent="$set('activeTab', 'offices')"
+                               class="nav-link {{ $activeTab === 'offices' ? 'active' : '' }}"
+                               style="border-radius: 8px 8px 0 0; font-size: 0.85rem; font-weight: 600;">
+                                <i class="fas fa-building mr-1"></i> Offices
+                                <span class="badge badge-primary ml-1">{{ $role->offices->count() }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" wire:click.prevent="$set('activeTab', 'users')"
+                               class="nav-link {{ $activeTab === 'users' ? 'active' : '' }}"
+                               style="border-radius: 8px 8px 0 0; font-size: 0.85rem; font-weight: 600;">
+                                <i class="fas fa-users mr-1"></i> Users
+                                <span class="badge badge-info ml-1">{{ $role->users->count() }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {{-- ══════════════════════════════════ --}}
+            {{-- PERMISSIONS TAB                    --}}
+            {{-- ══════════════════════════════════ --}}
+            @if($activeTab === 'permissions')
+                <div class="card z-card" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h3 class="mb-0" style="font-size: 1rem; font-weight: 700;">
+                            <i class="fas fa-key mr-1" style="color: var(--z-green)"></i> Assigned Permissions
+                        </h3>
+                        <button wire:click="openPermModal" class="btn btn-sm z-btn-primary">
+                            <span wire:loading wire:target="openPermModal" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                            <i wire:loading.remove wire:target="openPermModal" class="fas fa-plus mr-1"></i> Attach Permissions
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        @php $grouped = $role->permissions->groupBy('group'); @endphp
+                        @forelse($grouped as $group => $perms)
+                            <div style="padding: 0.75rem 1rem 0.4rem; background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+                                <h6 style="font-size: 0.78rem; font-weight: 700; color: #6b7280; text-transform: uppercase; margin: 0;">
+                                    <i class="fas fa-folder-open mr-1"></i> {{ $group ?: 'General' }}
+                                    <span style="font-size: 0.7rem; font-weight: 400;">({{ $perms->count() }})</span>
+                                </h6>
+                            </div>
+                            <div style="padding: 0.5rem 1rem;">
+                                <div class="d-flex flex-wrap" style="gap: 0.4rem;">
+                                    @foreach($perms as $perm)
+                                        <div class="d-inline-flex align-items-center"
+                                             style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 20px; padding: 0.25rem 0.5rem 0.25rem 0.75rem; font-size: 0.78rem; font-weight: 600; color: #065f46;">
+                                            <i class="fas fa-shield-alt mr-1" style="font-size: 0.65rem;"></i>
+                                            {{ $perm->name }}
+                                            @if($detachType === 'permission' && $detachId === $perm->id)
+                                                <button wire:click="detachPermission" class="btn btn-sm p-0 ml-2" style="color: #dc2626; font-size: 0.72rem;" title="Confirm remove">
+                                                    <span wire:loading wire:target="detachPermission" class="spinner-border spinner-border-sm" role="status"></span>
+                                                    <i wire:loading.remove wire:target="detachPermission" class="fas fa-check"></i>
+                                                </button>
+                                                <button wire:click="cancelDetach" class="btn btn-sm p-0 ml-1" style="color: #6b7280; font-size: 0.72rem;" title="Cancel">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            @else
+                                                <button wire:click="confirmDetachPermission({{ $perm->id }}, '{{ addslashes($perm->name) }}')"
+                                                        class="btn btn-sm p-0 ml-2" style="color: #dc2626; font-size: 0.72rem; opacity: 0.5;" title="Remove permission">
+                                                    <span wire:loading wire:target="confirmDetachPermission({{ $perm->id }}, '{{ addslashes($perm->name) }}')" class="spinner-border spinner-border-sm" role="status"></span>
+                                                    <i wire:loading.remove wire:target="confirmDetachPermission({{ $perm->id }}, '{{ addslashes($perm->name) }}')" class="fas fa-times-circle"></i>
+                                                </button>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @empty
+                            <div class="text-center text-muted py-4">
+                                <i class="fas fa-key" style="font-size: 2rem; opacity: 0.3;"></i>
+                                <p class="mt-2 mb-0">No permissions assigned to this role.</p>
+                                <button wire:click="openPermModal" class="btn btn-sm z-btn-primary mt-2">
+                                    <i class="fas fa-plus mr-1"></i> Attach Permissions
+                                </button>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            @endif
+
+            {{-- ══════════════════════════════════ --}}
+            {{-- OFFICES TAB                        --}}
+            {{-- ══════════════════════════════════ --}}
+            @if($activeTab === 'offices')
+                <div class="card z-card" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h3 class="mb-0" style="font-size: 1rem; font-weight: 700;">
+                            <i class="fas fa-building mr-1" style="color: var(--z-green)"></i> Assigned Offices
+                        </h3>
+                        <button wire:click="openOfficeModal" class="btn btn-sm z-btn-primary">
+                            <span wire:loading wire:target="openOfficeModal" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                            <i wire:loading.remove wire:target="openOfficeModal" class="fas fa-plus mr-1"></i> Attach Offices
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" style="font-size: 0.85rem;">
+                                <thead style="background: #f8fafc;">
+                                    <tr>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">#</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Office Name</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Status</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($role->offices as $idx => $office)
+                                        <tr>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #94a3b8;">{{ $idx + 1 }}</td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle;">
+                                                <a href="{{ route('office.show', $office->id) }}" style="font-weight: 600; color: #1a2332; text-decoration: none;">
+                                                    <i class="fas fa-building mr-1" style="color: var(--z-green); font-size: 0.75rem;"></i>
+                                                    {{ $office->responsible_office }}
+                                                </a>
+                                            </td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle;">
+                                                @if($office->office_status)
+                                                    <span class="z-status z-status-active" style="font-size: 0.72rem;">Active</span>
+                                                @else
+                                                    <span class="z-status z-status-inactive" style="font-size: 0.72rem;">Inactive</span>
+                                                @endif
+                                            </td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; text-align: center;">
+                                                @if($detachType === 'office' && $detachId === $office->id)
+                                                    <button wire:click="detachOffice" class="btn btn-sm btn-danger" style="border-radius: 6px; font-size: 0.78rem; padding: 0.25rem 0.55rem;">
+                                                        <span wire:loading wire:target="detachOffice" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                                                        <i wire:loading.remove wire:target="detachOffice" class="fas fa-check mr-1"></i>Confirm
+                                                    </button>
+                                                    <button wire:click="cancelDetach" class="btn btn-sm" style="background: #f3f4f6; color: #6b7280; border-radius: 6px; font-size: 0.78rem; padding: 0.25rem 0.55rem;">
+                                                        Cancel
+                                                    </button>
+                                                @else
+                                                    <button wire:click="confirmDetachOffice({{ $office->id }}, '{{ addslashes($office->responsible_office) }}')"
+                                                            class="btn btn-sm" title="Remove from role"
+                                                            style="background: #fef2f2; color: #dc2626; border-radius: 6px; font-size: 0.78rem; padding: 0.25rem 0.55rem;">
+                                                        <span wire:loading wire:target="confirmDetachOffice({{ $office->id }}, '{{ addslashes($office->responsible_office) }}')" class="spinner-border spinner-border-sm" role="status"></span>
+                                                        <i wire:loading.remove wire:target="confirmDetachOffice({{ $office->id }}, '{{ addslashes($office->responsible_office) }}')" class="fas fa-unlink"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">
+                                                <i class="fas fa-building" style="font-size: 2rem; opacity: 0.3;"></i>
+                                                <p class="mt-2 mb-0">No offices assigned to this role.</p>
+                                                <button wire:click="openOfficeModal" class="btn btn-sm z-btn-primary mt-2">
+                                                    <i class="fas fa-plus mr-1"></i> Attach Offices
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            {{-- ══════════════════════════════════ --}}
+            {{-- USERS TAB                          --}}
+            {{-- ══════════════════════════════════ --}}
+            @if($activeTab === 'users')
+                <div class="card z-card" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <div class="card-header">
+                        <h3 class="mb-0" style="font-size: 1rem; font-weight: 700;">
+                            <i class="fas fa-users mr-1" style="color: var(--z-green)"></i> Users with this Role
+                        </h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" style="font-size: 0.85rem;">
+                                <thead style="background: #f8fafc;">
+                                    <tr>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">#</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Name</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Staff No</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Email</th>
+                                        <th style="padding: 0.65rem 1rem; font-weight: 700; color: #374151; border-bottom: 2px solid #e5e7eb;">Job Title</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($role->users as $idx => $u)
+                                        <tr>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #94a3b8;">{{ $idx + 1 }}</td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle;">
+                                                <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                                                    <div class="ou-avatar">{{ strtoupper(substr($u->name, 0, 1)) }}</div>
+                                                    <div>
+                                                        <div style="font-weight: 600; color: #111827;">{{ $u->name }}</div>
+                                                        @if($u->directorate)
+                                                            <div style="font-size: 0.72rem; color: #6b7280;">{{ $u->directorate }}</div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #374151;">{{ $u->username ?? '—' }}</td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #374151;">{{ $u->email }}</td>
+                                            <td style="padding: 0.6rem 1rem; vertical-align: middle; color: #374151;">{{ $u->job_title ?? '—' }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">
+                                                <i class="fas fa-users" style="font-size: 2rem; opacity: 0.3;"></i>
+                                                <p class="mt-2 mb-0">No users assigned to this role.</p>
+                                                <a href="{{ route('user-roles.index') }}" class="btn btn-sm z-btn-primary mt-2">
+                                                    <i class="fas fa-user-tag mr-1"></i> Manage User Roles
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+        </div>
+    </section>
+
+    {{-- ══════════════════════════════════ --}}
+    {{-- ATTACH PERMISSIONS MODAL           --}}
+    {{-- ══════════════════════════════════ --}}
+    @if($showPermModal)
+        <div class="ou-modal-backdrop" wire:click.self="closePermModal">
+            <div class="ou-modal" style="max-width: 620px;">
+                <div class="ou-modal-header">
+                    <h5><i class="fas fa-key mr-2"></i>Attach Permissions</h5>
+                    <button wire:click="closePermModal" class="ou-modal-close">&times;</button>
+                </div>
+                <div class="ou-modal-body">
+                    <div class="form-group">
+                        <input type="text" wire:model.debounce.300ms="permSearch"
+                               class="form-control form-control-sm"
+                               placeholder="Search permissions by name or group…"
+                               style="border-radius: 8px; border-color: #d1d5db;">
+                    </div>
+
+                    <div style="max-height: 350px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
+                        @php $groupedAvail = $availablePerms->groupBy('group'); @endphp
+                        @forelse($groupedAvail as $group => $perms)
+                            <div style="padding: 0.5rem 0.75rem; background: #f8fafc; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 1;">
+                                <strong style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase;">
+                                    <i class="fas fa-folder-open mr-1"></i>{{ $group ?: 'General' }}
+                                </strong>
+                            </div>
+                            @foreach($perms as $perm)
+                                <label class="ou-user-option {{ in_array($perm->id, $selectedPermIds) ? 'ou-user-option-selected' : '' }}"
+                                       style="cursor: pointer;">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="ap_{{ $perm->id }}"
+                                               value="{{ $perm->id }}" wire:model="selectedPermIds">
+                                        <label class="custom-control-label" for="ap_{{ $perm->id }}" style="font-size: 0.82rem; font-weight: 600; color: #111827;">
+                                            {{ $perm->name }}
+                                        </label>
+                                    </div>
+                                    @if($perm->description)
+                                        <small style="font-size: 0.7rem; color: #9ca3af;">{{ $perm->description }}</small>
+                                    @endif
+                                </label>
+                            @endforeach
+                        @empty
+                            <div class="text-center text-muted py-3" style="font-size: 0.82rem;">
+                                @if($permSearch)
+                                    No matching permissions found.
+                                @else
+                                    All permissions are already attached.
+                                @endif
+                            </div>
+                        @endforelse
+                    </div>
+
+                    @if(count($selectedPermIds) > 0)
+                        <div class="mt-2" style="font-size: 0.78rem; color: #065f46; font-weight: 600;">
+                            <i class="fas fa-check-circle mr-1"></i> {{ count($selectedPermIds) }} selected
+                        </div>
+                    @endif
+                </div>
+                <div class="ou-modal-footer">
+                    <button wire:click="closePermModal" class="btn btn-sm" style="background: #f3f4f6; color: #374151; border-radius: 8px; padding: 0.4rem 1rem;">
+                        Cancel
+                    </button>
+                    <button wire:click="attachPermissions" class="btn btn-sm z-btn-primary"
+                            @if(empty($selectedPermIds)) disabled @endif>
+                        <span wire:loading wire:target="attachPermissions" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                        <i wire:loading.remove wire:target="attachPermissions" class="fas fa-link mr-1"></i> Attach Selected
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- ══════════════════════════════════ --}}
+    {{--         ATTACH OFFICES MODAL       --}}
+    {{-- ══════════════════════════════════ --}}
+    
+    @if($showOfficeModal)
+        <div class="ou-modal-backdrop" wire:click.self="closeOfficeModal">
+            <div class="ou-modal" style="max-width: 540px;">
+                <div class="ou-modal-header">
+                    <h5><i class="fas fa-building mr-2"></i>Attach Offices</h5>
+                    <button wire:click="closeOfficeModal" class="ou-modal-close">&times;</button>
+                </div>
+                <div class="ou-modal-body">
+                    <div class="form-group">
+                        <input type="text" wire:model.debounce.300ms="officeSearch"
+                               class="form-control form-control-sm"
+                               placeholder="Search offices…"
+                               style="border-radius: 8px; border-color: #d1d5db;">
+                    </div>
+
+                    <div style="max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
+                        @forelse($availableOffices as $off)
+                            <label class="ou-user-option {{ in_array($off->id, $selectedOfficeIds) ? 'ou-user-option-selected' : '' }}"
+                                   style="cursor: pointer;">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="ao_{{ $off->id }}"
+                                           value="{{ $off->id }}" wire:model="selectedOfficeIds">
+                                    <label class="custom-control-label" for="ao_{{ $off->id }}" style="font-size: 0.82rem; font-weight: 600; color: #111827;">
+                                        <i class="fas fa-building mr-1" style="color: var(--z-green); font-size: 0.7rem;"></i>
+                                        {{ $off->responsible_office }}
+                                    </label>
+                                </div>
+                            </label>
+                        @empty
+                            <div class="text-center text-muted py-3" style="font-size: 0.82rem;">
+                                @if($officeSearch)
+                                    No matching offices found.
+                                @else
+                                    All offices are already attached.
+                                @endif
+                            </div>
+                        @endforelse
+                    </div>
+
+                    @if(count($selectedOfficeIds) > 0)
+                        <div class="mt-2" style="font-size: 0.78rem; color: #065f46; font-weight: 600;">
+                            <i class="fas fa-check-circle mr-1"></i> {{ count($selectedOfficeIds) }} selected
+                        </div>
+                    @endif
+                </div>
+                <div class="ou-modal-footer">
+                    <button wire:click="closeOfficeModal" class="btn btn-sm" style="background: #f3f4f6; color: #374151; border-radius: 8px; padding: 0.4rem 1rem;">
+                        Cancel
+                    </button>
+                    <button wire:click="attachOffices" class="btn btn-sm z-btn-primary"
+                            @if(empty($selectedOfficeIds)) disabled @endif>
+                        <span wire:loading wire:target="attachOffices" class="spinner-border spinner-border-sm mr-1" role="status"></span>
+                        <i wire:loading.remove wire:target="attachOffices" class="fas fa-link mr-1"></i> Attach Selected
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+</div>

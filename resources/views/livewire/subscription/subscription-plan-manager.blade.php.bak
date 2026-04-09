@@ -1,0 +1,224 @@
+<div>
+    {{-- Page Header --}}
+    <div class="z-page-header d-flex align-items-center justify-content-between flex-wrap mb-3">
+        <div>
+            <h4 class="mb-0 fw-bold"><i class="fas fa-tags text-success me-2"></i>Subscription Plans</h4>
+            <small class="text-muted">Manage pricing plans for village bank subscriptions</small>
+        </div>
+        <button wire:click="openCreate" class="btn btn-zesco-green btn-sm">
+            <i class="fas fa-plus me-1"></i> New Plan
+        </button>
+    </div>
+
+    {{-- Flash Messages --}}
+    @if(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-1"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-1"></i> {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    {{-- Search & Per Page --}}
+    <div class="z-card mb-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="z-search" style="max-width:320px;">
+                <i class="fas fa-search"></i>
+                <input type="text" wire:model.debounce.300ms="search" class="z-input" placeholder="Search plans...">
+            </div>
+            <div class="z-per-page">
+                <label class="z-label me-2">Show</label>
+                <select wire:model="perPage" class="z-input" style="width:70px;">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    {{-- Plans Table --}}
+    <div class="z-card">
+        <div class="table-responsive">
+            <table class="z-table table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Plan</th>
+                        <th>Price</th>
+                        <th>Billing</th>
+                        <th>Duration</th>
+                        <th>Limits</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($plans as $plan)
+                        <tr>
+                            <td>{{ $plan->sort_order }}</td>
+                            <td>
+                                <strong>{{ $plan->name }}</strong>
+                                @if($plan->is_featured)
+                                    <span class="badge bg-warning text-dark ms-1" style="font-size:0.7rem;">Featured</span>
+                                @endif
+                                <br>
+                                <small class="text-muted">{{ $plan->slug }}</small>
+                            </td>
+                            <td><strong class="text-success">{{ $plan->formattedPrice() }}</strong></td>
+                            <td>
+                                <span class="badge bg-info text-dark">{{ ucfirst($plan->billing_cycle) }}</span>
+                            </td>
+                            <td>{{ $plan->duration_days }} days</td>
+                            <td>
+                                <small>
+                                    <i class="fas fa-circle-notch me-1"></i>{{ $plan->max_circles ?? '∞' }} circles<br>
+                                    <i class="fas fa-users me-1"></i>{{ $plan->max_members ?? '∞' }} members
+                                </small>
+                            </td>
+                            <td>
+                                <button wire:click="toggleActive({{ $plan->id }})" class="btn btn-sm {{ $plan->is_active ? 'btn-success' : 'btn-secondary' }}" style="min-width:75px;">
+                                    {{ $plan->is_active ? 'Active' : 'Inactive' }}
+                                </button>
+                            </td>
+                            <td class="text-end">
+                                <button wire:click="openEdit({{ $plan->id }})" class="z-action text-primary" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button wire:click="confirmDelete({{ $plan->id }})" class="z-action text-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                No subscription plans found.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-3 d-flex justify-content-end">
+            {{ $plans->links() }}
+        </div>
+    </div>
+
+    {{-- Create / Edit Modal --}}
+    @if($showModal)
+        <div class="z-modal" style="display:flex;" wire:click.self="$set('showModal', false)">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header modal-header-zesco">
+                        <h5 class="modal-title text-white">
+                            <i class="fas fa-{{ $editId ? 'edit' : 'plus-circle' }} me-2"></i>
+                            {{ $editId ? 'Edit Plan' : 'Create Plan' }}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" wire:click="$set('showModal', false)"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form wire:submit.prevent="save">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="z-label">Plan Name <span class="text-danger">*</span></label>
+                                    <input type="text" wire:model.defer="name" class="z-input form-control">
+                                    @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="z-label">Slug <span class="text-danger">*</span></label>
+                                    <input type="text" wire:model.defer="slug" class="z-input form-control">
+                                    @error('slug') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-12">
+                                    <label class="z-label">Description</label>
+                                    <textarea wire:model.defer="description" class="z-input form-control" rows="2"></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="z-label">Price (K) <span class="text-danger">*</span></label>
+                                    <input type="number" wire:model.defer="price" class="z-input form-control" step="0.01" min="0">
+                                    @error('price') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="z-label">Billing Cycle <span class="text-danger">*</span></label>
+                                    <select wire:model.defer="billingCycle" class="z-input form-control">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="quarterly">Quarterly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                    @error('billingCycle') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="z-label">Duration (Days) <span class="text-danger">*</span></label>
+                                    <input type="number" wire:model.defer="durationDays" class="z-input form-control" min="1">
+                                    @error('durationDays') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="z-label">Max Circles</label>
+                                    <input type="number" wire:model.defer="maxCircles" class="z-input form-control" min="1" placeholder="Leave empty = unlimited">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="z-label">Max Members</label>
+                                    <input type="number" wire:model.defer="maxMembers" class="z-input form-control" min="1" placeholder="Leave empty = unlimited">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="z-label">Sort Order</label>
+                                    <input type="number" wire:model.defer="sortOrder" class="z-input form-control" min="0">
+                                </div>
+                                <div class="col-12">
+                                    <label class="z-label">Features <small class="text-muted">(one per line)</small></label>
+                                    <textarea wire:model.defer="featuresText" class="z-input form-control" rows="3" placeholder="Loan tracking&#10;SMS notifications&#10;Email reports"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" wire:model.defer="isActive" class="form-check-input" id="isActive">
+                                        <label class="form-check-label" for="isActive">Active</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" wire:model.defer="isFeatured" class="form-check-input" id="isFeatured">
+                                        <label class="form-check-label" for="isFeatured">Featured (highlighted on landing page)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex justify-content-end gap-2">
+                                <button type="button" wire:click="$set('showModal', false)" class="btn btn-light">Cancel</button>
+                                <button type="submit" class="btn btn-zesco-green">
+                                    <i class="fas fa-save me-1"></i> {{ $editId ? 'Update' : 'Create' }} Plan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- Delete Confirmation Modal --}}
+    @if($confirmDeleteId)
+        <div class="z-modal" style="display:flex;" wire:click.self="$set('confirmDeleteId', null)">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-body text-center py-4">
+                        <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
+                        <h5 class="fw-bold">Delete Plan?</h5>
+                        <p class="text-muted mb-3">This action cannot be undone. Plans with existing subscriptions cannot be deleted.</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <button wire:click="$set('confirmDeleteId', null)" class="btn btn-light">Cancel</button>
+                            <button wire:click="delete" class="btn btn-danger">
+                                <i class="fas fa-trash me-1"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>

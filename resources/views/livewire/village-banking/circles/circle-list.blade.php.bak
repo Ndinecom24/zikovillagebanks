@@ -1,0 +1,235 @@
+<div>
+    <!-- Page Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="z-page-header">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div>
+                        <h1><i class="fas fa-circle-notch mr-2" style="color: var(--z-gold)"></i>Circles</h1>
+                        <p>Manage village banking circles and cycles</p>
+                    </div>
+                    <a href="{{ route('circles.create') }}" class="btn-zesco">
+                        <i class="fas fa-plus-circle"></i> Create Circle
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            {{-- Flash --}}
+            @if (session()->has('message'))
+                <div class="alert alert-success" style="border-radius: 10px; font-size: 0.9rem;">
+                    <i class="fas fa-check-circle mr-1"></i> {{ session('message') }}
+                </div>
+            @endif
+
+            {{-- Stat Cards --}}
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left: 4px solid var(--z-green);">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted">Total</small>
+                                <h3 class="mb-0 font-weight-bold">{{ $totalCircles }}</h3>
+                            </div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#ecfdf5;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-circle-notch" style="font-size:1.1rem;color:#065f46;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left: 4px solid #94a3b8;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted">Draft</small>
+                                <h3 class="mb-0 font-weight-bold">{{ $draftCircles }}</h3>
+                            </div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-pencil-alt" style="font-size:1.1rem;color:#64748b;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left: 4px solid #2563eb;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted">Active</small>
+                                <h3 class="mb-0 font-weight-bold">{{ $activeCircles }}</h3>
+                            </div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-play-circle" style="font-size:1.1rem;color:#2563eb;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left: 4px solid #16a34a;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted">Completed</small>
+                                <h3 class="mb-0 font-weight-bold">{{ $completedCircles }}</h3>
+                            </div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-check-double" style="font-size:1.1rem;color:#16a34a;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Table Card --}}
+            <div class="card z-card">
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
+                    <h3><i class="fas fa-list mr-2" style="color: var(--z-green)"></i>All Circles</h3>
+                    <div class="d-flex align-items-center flex-wrap" style="gap: 0.75rem;">
+                        @include('partials.village-bank-selector')
+                        <select wire:model="statusFilter" class="z-per-page">
+                            <option value="">All Statuses</option>
+                            <option value="draft">Draft</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <div class="z-search">
+                            <i class="fas fa-search si"></i>
+                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search circles...">
+                        </div>
+                        <select wire:model="perPage" class="z-per-page">
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover z-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th wire:click="sortBy('name')" style="cursor:pointer;">
+                                        Name
+                                        @if ($sortField === 'name')
+                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @else
+                                            <i class="fas fa-sort sort-icon"></i>
+                                        @endif
+                                    </th>
+                                    <th>Duration</th>
+                                    <th wire:click="sortBy('start_date')" style="cursor:pointer;">
+                                        Start Date
+                                        @if ($sortField === 'start_date')
+                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @else
+                                            <i class="fas fa-sort sort-icon"></i>
+                                        @endif
+                                    </th>
+                                    <th>End Date</th>
+                                    <th>Members</th>
+                                    <th>Created By</th>
+                                    <th wire:click="sortBy('status')" style="cursor:pointer;">
+                                        Status
+                                        @if ($sortField === 'status')
+                                            <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} sort-icon active"></i>
+                                        @else
+                                            <i class="fas fa-sort sort-icon"></i>
+                                        @endif
+                                    </th>
+                                    <th style="width: 120px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($circles as $c)
+                                    <tr>
+                                        <td><strong>{{ $c->name }}</strong></td>
+                                        <td>{{ $c->duration_months }} {{ Str::plural('month', $c->duration_months) }}</td>
+                                        <td style="font-size:0.85rem;">{{ $c->start_date->format('d M Y') }}</td>
+                                        <td style="font-size:0.85rem;">{{ $c->end_date ? $c->end_date->format('d M Y') : '--' }}</td>
+                                        <td>
+                                            <span class="badge" style="background:#eff6ff;color:#1e40af;font-size:0.78rem;font-weight:600;border:1px solid #bfdbfe;">
+                                                <i class="fas fa-users mr-1" style="font-size:0.65rem;"></i>{{ $c->members_count }}
+                                            </span>
+                                        </td>
+                                        <td style="font-size:0.88rem;">{{ $c->creator->name ?? '--' }}</td>
+                                        <td>
+                                            @php
+                                                $statusColors = [
+                                                    'draft'     => ['bg' => '#f1f5f9', 'color' => '#475569', 'border' => '#cbd5e1'],
+                                                    'active'    => ['bg' => '#eff6ff', 'color' => '#1e40af', 'border' => '#bfdbfe'],
+                                                    'completed' => ['bg' => '#f0fdf4', 'color' => '#166534', 'border' => '#bbf7d0'],
+                                                ];
+                                                $sc = $statusColors[$c->status] ?? ['bg' => '#f3f4f6', 'color' => '#374151', 'border' => '#e5e7eb'];
+                                            @endphp
+                                            <span class="badge" style="background:{{ $sc['bg'] }};color:{{ $sc['color'] }};font-size:0.78rem;font-weight:600;border:1px solid {{ $sc['border'] }};">
+                                                {{ ucfirst($c->status) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex" style="gap: 4px;">
+                                                <a href="{{ route('circles.members', $c->id) }}" class="z-action z-action-view" title="Manage">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                @if ($c->status === 'draft')
+                                                    <button wire:click="confirmDelete({{ $c->id }})" class="z-action z-action-delete" title="Delete">
+                                                        <span wire:loading wire:target="confirmDelete({{ $c->id }})" class="spinner-border spinner-border-sm" role="status"></span>
+                                                        <i wire:loading.remove wire:target="confirmDelete({{ $c->id }})" class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center py-4" style="color: #94a3b8;">
+                                            <i class="fas fa-circle-notch fa-2x mb-2 d-block"></i>
+                                            No circles found.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-white border-top d-flex align-items-center justify-content-between flex-wrap" style="gap: 0.75rem;">
+                    <span style="font-size: 0.82rem; color: #6b7280;">
+                        Showing {{ $circles->firstItem() ?? 0 }} - {{ $circles->lastItem() ?? 0 }} of {{ $circles->total() }}
+                    </span>
+                    {{ $circles->links() }}
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    {{-- ===== DELETE CONFIRMATION MODAL ===== --}}
+    @if ($deleteId)
+        <div class="modal fade show z-modal" style="display: block; background: rgba(0,0,0,0.5);" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+                <div class="modal-content">
+                    <div style="padding: 2rem; text-align: center;">
+                        <div style="width:56px;height:56px;border-radius:50%;background:#fef2f2;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #dc2626;"></i>
+                        </div>
+                        <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Delete Circle?</h5>
+                        <p style="color: #6b7280; font-size: 0.9rem;">
+                            Are you sure you want to delete <strong>{{ $deleteName }}</strong>? All associated data will be removed.
+                        </p>
+                        <div class="d-flex justify-content-center" style="gap: 0.75rem; margin-top: 1.5rem;">
+                            <button wire:click="$set('deleteId', null)" class="btn btn-light px-4" style="border-radius: 8px;">Cancel</button>
+                            <button wire:click="deleteCircle" class="btn btn-danger px-4" style="border-radius: 8px; font-weight: 600;">
+                                <i class="fas fa-trash-alt mr-1"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>

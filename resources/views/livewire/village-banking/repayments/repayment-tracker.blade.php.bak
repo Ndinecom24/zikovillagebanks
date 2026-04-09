@@ -1,0 +1,269 @@
+<div>
+    <!-- Page Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="z-page-header">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div>
+                        <h1><i class="fas fa-chart-line mr-2" style="color: var(--z-gold)"></i>Repayment Tracker</h1>
+                        <p>Monitor loan repayment progress and outstanding balances</p>
+                    </div>
+                    <a href="{{ route('repayments.index') }}" class="btn-zesco">
+                        <i class="fas fa-hand-holding-usd mr-1"></i> Record Repayment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+
+            {{-- Stat Cards --}}
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left:4px solid #f59e0b;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div><small class="text-muted">Active Loans</small><h3 class="mb-0 font-weight-bold">{{ $this->activeLoansCount }}</h3></div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#fffbeb;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-file-invoice-dollar" style="font-size:1.1rem;color:#f59e0b;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left:4px solid #dc2626;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div><small class="text-muted">Total Outstanding</small><h3 class="mb-0 font-weight-bold">K{{ number_format($this->totalOutstanding, 2) }}</h3></div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#fef2f2;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-exclamation-circle" style="font-size:1.1rem;color:#dc2626;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left:4px solid #16a34a;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div><small class="text-muted">Total Repaid</small><h3 class="mb-0 font-weight-bold">K{{ number_format($this->totalRepaid, 2) }}</h3></div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-check-double" style="font-size:1.1rem;color:#16a34a;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card z-card" style="border-left:4px solid #7c3aed;">
+                        <div class="card-body py-3 d-flex align-items-center justify-content-between">
+                            <div><small class="text-muted">Total Penalties</small><h3 class="mb-0 font-weight-bold">K{{ number_format($this->totalPenalties, 2) }}</h3></div>
+                            <div style="width:42px;height:42px;border-radius:50%;background:#f5f3ff;display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-gavel" style="font-size:1.1rem;color:#7c3aed;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Loans Table --}}
+            <div class="card z-card">
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap" style="gap:0.75rem;">
+                    <h3><i class="fas fa-list-alt mr-2" style="color:var(--z-green)"></i>Loan Repayment Overview</h3>
+                    <div class="d-flex align-items-center flex-wrap" style="gap:0.75rem;">
+                        @include('partials.village-bank-selector')
+                        <select wire:model="circleFilter" class="z-per-page">
+                            <option value="">All Circles</option>
+                            @foreach ($this->circles as $c)
+                                <option value="{{ $c->id }}">{{ $c->name }}</option>
+                            @endforeach
+                        </select>
+                        <select wire:model="statusFilter" class="z-per-page">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <div class="z-search"><i class="fas fa-search si"></i>
+                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search borrower...">
+                        </div>
+                        <select wire:model="perPage" class="z-per-page">
+                            <option value="10">10</option><option value="15">15</option><option value="25">25</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover z-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Borrower</th>
+                                    <th>Circle</th>
+                                    <th>Loan Amt</th>
+                                    <th>Total Payable</th>
+                                    <th>Outstanding</th>
+                                    <th>Progress</th>
+                                    <th>Status</th>
+                                    <th>Last Repayment</th>
+                                    <th style="width:90px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($loans as $loan)
+                                    @php
+                                        $repaidPct = $loan->total_payable > 0
+                                            ? min(100, round((($loan->total_payable - $loan->outstanding_balance) / $loan->total_payable) * 100))
+                                            : 0;
+                                        $lastRepayment = $loan->repayments->sortByDesc('created_at')->first();
+                                        $sc = ['pending'=>['#fffbeb','#92400e','#fde68a'],'approved'=>['#eff6ff','#1e40af','#bfdbfe'],'active'=>['#f0fdf4','#166534','#bbf7d0'],'completed'=>['#f3f4f6','#374151','#e5e7eb'],'rejected'=>['#fef2f2','#991b1b','#fecaca']][$loan->status] ?? ['#f3f4f6','#374151','#e5e7eb'];
+                                    @endphp
+                                    <tr>
+                                        <td style="font-size:0.85rem;color:#94a3b8;">#{{ $loan->id }}</td>
+                                        <td><strong>{{ $loan->borrower->name ?? '--' }}</strong></td>
+                                        <td style="font-size:0.88rem;">{{ $loan->month->circle->name ?? '--' }}</td>
+                                        <td>K{{ number_format($loan->amount, 2) }}</td>
+                                        <td>K{{ number_format($loan->total_payable, 2) }}</td>
+                                        <td style="font-weight:600;color:#dc2626;">K{{ number_format($loan->outstanding_balance, 2) }}</td>
+                                        <td style="width:120px;">
+                                            <div class="d-flex align-items-center" style="gap:0.5rem;">
+                                                <div class="progress flex-grow-1" style="height:6px;border-radius:6px;">
+                                                    <div class="progress-bar" style="width:{{ $repaidPct }}%;background:var(--z-green);border-radius:6px;"></div>
+                                                </div>
+                                                <small style="font-size:0.75rem;color:#6b7280;min-width:28px;">{{ $repaidPct }}%</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge" style="background:{{ $sc[0] }};color:{{ $sc[1] }};font-size:0.78rem;font-weight:600;border:1px solid {{ $sc[2] }};">{{ ucfirst($loan->status) }}</span>
+                                        </td>
+                                        <td style="font-size:0.82rem;color:#6b7280;">
+                                            {{ $lastRepayment ? $lastRepayment->created_at->format('d M Y') : '--' }}
+                                        </td>
+                                        <td>
+                                            <button wire:click="viewDetails({{ $loan->id }})" class="btn btn-sm btn-outline-primary" style="border-radius:6px;font-size:0.8rem;">
+                                                <i class="fas fa-eye mr-1"></i> Details
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr><td colspan="10" class="text-center py-4" style="color:#94a3b8;"><i class="fas fa-file-invoice-dollar fa-2x mb-2 d-block"></i>No loans found.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top d-flex align-items-center justify-content-between flex-wrap" style="gap:0.75rem;">
+                    <span style="font-size:0.82rem;color:#6b7280;">Showing {{ $loans->firstItem() ?? 0 }} - {{ $loans->lastItem() ?? 0 }} of {{ $loans->total() }}</span>
+                    {{ $loans->links() }}
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    {{-- Detail Modal --}}
+    @if ($detailLoan)
+        <div class="modal fade show z-modal" style="display:block;background:rgba(0,0,0,0.5);" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width:700px;">
+                <div class="modal-content">
+                    <div class="modal-header-zesco d-flex align-items-center justify-content-between">
+                        <h5><i class="fas fa-info-circle mr-2"></i> Loan #{{ $detailLoan->id }} &mdash; {{ $detailLoan->borrower->name }}</h5>
+                        <button type="button" class="close" wire:click="closeDetails"><span>&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        {{-- Loan summary --}}
+                        <div class="row mb-3" style="font-size:0.88rem;">
+                            <div class="col-4">
+                                <small class="text-muted d-block">Circle</small>
+                                <strong>{{ $detailLoan->month->circle->name ?? '--' }}</strong>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted d-block">Loan Amount</small>
+                                <strong>K{{ number_format($detailLoan->amount, 2) }}</strong>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted d-block">Interest</small>
+                                <strong>{{ $detailLoan->interest_rate }}% &middot; {{ $detailLoan->duration }} mo</strong>
+                            </div>
+                        </div>
+                        <div class="row mb-3" style="font-size:0.88rem;">
+                            <div class="col-4">
+                                <small class="text-muted d-block">Total Payable</small>
+                                <strong>K{{ number_format($detailLoan->total_payable, 2) }}</strong>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted d-block">Outstanding</small>
+                                <strong style="color:#dc2626;">K{{ number_format($detailLoan->outstanding_balance, 2) }}</strong>
+                            </div>
+                            <div class="col-4">
+                                @php
+                                    $pct = $detailLoan->total_payable > 0
+                                        ? min(100, round((($detailLoan->total_payable - $detailLoan->outstanding_balance) / $detailLoan->total_payable) * 100))
+                                        : 0;
+                                @endphp
+                                <small class="text-muted d-block">Progress</small>
+                                <div class="d-flex align-items-center" style="gap:0.5rem;">
+                                    <div class="progress flex-grow-1" style="height:6px;border-radius:6px;">
+                                        <div class="progress-bar" style="width:{{ $pct }}%;background:var(--z-green);border-radius:6px;"></div>
+                                    </div>
+                                    <small style="font-weight:600;">{{ $pct }}%</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        {{-- Repayment history --}}
+                        <h6 class="font-weight-bold mb-2"><i class="fas fa-history mr-1" style="color:var(--z-green)"></i> Repayment History</h6>
+                        @if ($detailLoan->repayments->count())
+                            <div class="table-responsive">
+                                <table class="table table-sm z-table mb-3">
+                                    <thead><tr><th>#</th><th>Amount</th><th>Penalty</th><th>Balance After</th><th>Date</th></tr></thead>
+                                    <tbody>
+                                        @foreach ($detailLoan->repayments as $rp)
+                                            <tr>
+                                                <td style="color:#94a3b8;">{{ $loop->iteration }}</td>
+                                                <td style="font-weight:600;">K{{ number_format($rp->amount_paid, 2) }}</td>
+                                                <td>
+                                                    @if ($rp->penalty_applied > 0)
+                                                        <span style="color:#dc2626;font-weight:600;">K{{ number_format($rp->penalty_applied, 2) }}</span>
+                                                    @else
+                                                        <span style="color:#d1d5db;">&mdash;</span>
+                                                    @endif
+                                                </td>
+                                                <td>K{{ number_format($rp->remaining_balance, 2) }}</td>
+                                                <td style="font-size:0.82rem;color:#6b7280;">{{ $rp->created_at->format('d M Y, H:i') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @else
+                            <p class="text-muted text-center py-2" style="font-size:0.88rem;">No repayments recorded.</p>
+                        @endif
+
+                        {{-- Penalties --}}
+                        @if ($detailLoan->penalties->count())
+                            <h6 class="font-weight-bold mb-2"><i class="fas fa-gavel mr-1" style="color:#dc2626;"></i> Penalties</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm z-table mb-0">
+                                    <thead><tr><th>%</th><th>Amount</th><th>Applied</th></tr></thead>
+                                    <tbody>
+                                        @foreach ($detailLoan->penalties as $pen)
+                                            <tr>
+                                                <td>{{ $pen->percentage }}%</td>
+                                                <td style="color:#dc2626;font-weight:600;">K{{ number_format($pen->amount, 2) }}</td>
+                                                <td style="font-size:0.82rem;color:#6b7280;">{{ $pen->applied_at->format('d M Y') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button wire:click="closeDetails" class="btn btn-secondary" style="border-radius:8px;"><i class="fas fa-times mr-1"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>

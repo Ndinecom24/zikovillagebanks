@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Renewable Energy Management System</title>
+    <title>{{ config('app.name', 'Ziko Village Banking System') }}</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('dashboard/plugins/fontawesome-free/css/all.min.css')}}">
@@ -16,12 +16,14 @@
     <link rel="stylesheet" href="{{ asset('dashboard/plugins/sweetalert2/sweetalert2.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <!-- ZESCO Component Styles (central) -->
-    <link rel="stylesheet" href="{{ asset('css/zesco-components.css') }}">
+    <!-- Ndinecom Component Styles -->
+    <link rel="stylesheet" href="{{ asset('css/ndinecom-components.css') }}">
+    <!-- Ndinecom Admin Shared Styles -->
+    <link rel="stylesheet" href="{{ asset('css/ndinecom-admin.css') }}">
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-    @include('layouts.main.zesco-layout-styles')
+    @include('layouts.main.ndinecom-layout-styles')
     @stack('custom-styles')
     @livewireStyles
 </head>
@@ -47,6 +49,11 @@
         <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
+
+    <!-- Village Bank Selector Modal -->
+    @auth
+        @livewire('village-banking.village-bank-selector')
+    @endauth
 
     <!-- Main Footer -->
     @include('layouts.main.footer')
