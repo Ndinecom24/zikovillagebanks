@@ -574,6 +574,18 @@ h2.nd-hero-title i {
 .nd-modal-head--danger {
     background: linear-gradient(135deg, #991b1b, var(--nd-red));
 }
+.nd-modal-head--green,
+.nd-modal-head-green {
+    background: linear-gradient(135deg, #15803d, var(--nd-green));
+}
+.nd-modal-head--red,
+.nd-modal-head-red {
+    background: linear-gradient(135deg, #991b1b, var(--nd-red));
+}
+.nd-modal-head--green h5 i,
+.nd-modal-head-green h5 i,
+.nd-modal-head--red h5 i,
+.nd-modal-head-red h5 i { color: #fff; }
 
 .nd-modal-close {
     background: none; border: none; color: rgba(255,255,255,0.6);

@@ -1,5 +1,47 @@
 ﻿<div>
 
+@push('custom-styles')
+<style>
+/* ═══ Application Review (ar-*) ═══ */
+:root{--ar-blue:#2563eb;}
+.ar-alert{display:flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-radius:10px;font-size:.84rem;font-weight:600;margin-bottom:1rem;}
+.ar-alert-success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+.ar-alert-error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.ar-badge-plan{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:.72rem;padding:.12rem .4rem;border-radius:5px;}
+.ar-code{font-family:monospace;font-size:.82rem;color:var(--nd-navy,#1E3A5F);background:#f1f5f9;padding:.15rem .4rem;border-radius:4px;}
+.ar-badge-pending{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.ar-badge-approved{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+.ar-badge-rejected{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.ar-actions{display:flex;align-items:center;gap:.35rem;}
+.ar-act{width:28px;height:28px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;cursor:pointer;transition:all .15s;text-decoration:none;}
+.ar-act:hover{border-color:#cbd5e1;}
+.ar-act-view{color:var(--nd-navy,#1E3A5F);}
+.ar-act-view:hover{background:rgba(30,58,95,.08);}
+.ar-act-approve{color:var(--nd-green,#16a34a);}
+.ar-act-approve:hover{background:#f0fdf4;border-color:#bbf7d0;}
+.ar-act-reject{color:var(--nd-red,#dc2626);}
+.ar-act-reject:hover{background:#fef2f2;border-color:#fecaca;}
+.ar-act-file{color:var(--ar-blue,#2563eb);}
+.ar-act-file:hover{background:#eff6ff;border-color:#bfdbfe;}
+.ar-modal-lg{max-width:720px;width:95%;}
+.ar-modal-md{max-width:520px;width:95%;}
+.ar-section-title{font-size:.82rem;font-weight:700;color:var(--nd-navy,#1E3A5F);display:flex;align-items:center;gap:.35rem;margin:1rem 0 .5rem;padding-bottom:.35rem;border-bottom:1px solid #f1f5f9;}
+.ar-section-title:first-child{margin-top:0;}
+.ar-info-label{font-size:.78rem;font-weight:600;color:var(--nd-muted,#64748b);min-width:90px;}
+.ar-info-box{display:flex;gap:.5rem;padding:.65rem .85rem;border-radius:8px;font-size:.82rem;margin-bottom:1rem;}
+.ar-info-box-blue{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
+.ar-label{display:block;font-size:.76rem;font-weight:700;color:var(--nd-navy,#1E3A5F);text-transform:uppercase;letter-spacing:.4px;margin-bottom:.3rem;}
+.ar-label .req{color:var(--nd-red,#dc2626);}
+.ar-input{width:100%;padding:.5rem .75rem;border:1px solid #d1d5db;border-radius:8px;font-size:.86rem;background:#fff;transition:border-color .15s,box-shadow .15s;}
+.ar-input:focus{outline:none;border-color:var(--nd-navy,#1E3A5F);box-shadow:0 0 0 3px rgba(30,58,95,.1);}
+.ar-error{color:var(--nd-red,#dc2626);font-size:.74rem;margin-top:.2rem;}
+.ar-btn-approve{padding:.45rem 1.1rem;border-radius:8px;border:none;font-size:.84rem;font-weight:600;cursor:pointer;background:#16a34a;color:#fff;display:inline-flex;align-items:center;gap:.3rem;transition:opacity .15s;}
+.ar-btn-approve:hover{opacity:.9;}
+.ar-btn-reject{padding:.45rem 1.1rem;border-radius:8px;border:none;font-size:.84rem;font-weight:600;cursor:pointer;background:var(--nd-red,#dc2626);color:#fff;display:inline-flex;align-items:center;gap:.3rem;transition:opacity .15s;}
+.ar-btn-reject:hover{opacity:.9;}
+</style>
+@endpush
+
 @can('review-applications')
 <div class="nd-page">
     <div class="nd-hero">

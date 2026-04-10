@@ -1,5 +1,49 @@
 ﻿<div>
 
+@push('custom-styles')
+<style>
+/* ═══ Training Program Manager (tp-*) ═══ */
+:root{--tp-cyan:#06b6d4;}
+.tp-alert{display:flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-radius:10px;font-size:.84rem;font-weight:600;margin-bottom:1rem;}
+.tp-alert-success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+.tp-badge-featured{background:#fffbeb;color:#b45309;border:1px solid #fde68a;font-size:.68rem;padding:.12rem .4rem;border-radius:5px;}
+.tp-badge-cat{display:inline-block;padding:.15rem .5rem;border-radius:6px;font-size:.72rem;font-weight:600;color:#fff;}
+.tp-amount{font-weight:700;color:var(--nd-green,#16a34a);font-size:.86rem;}
+.tp-applicant-count{display:inline-flex;align-items:center;gap:.3rem;font-size:.84rem;font-weight:600;color:var(--nd-text);}
+.tp-badge-draft{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;}
+.tp-badge-published{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+.tp-badge-closed{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.tp-badge-completed{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;}
+.tp-actions{display:flex;align-items:center;gap:.35rem;}
+.tp-act{width:28px;height:28px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;cursor:pointer;transition:all .15s;}
+.tp-act:hover{border-color:#cbd5e1;}
+.tp-act-edit{color:var(--nd-navy,#1E3A5F);}
+.tp-act-edit:hover{background:rgba(30,58,95,.08);}
+.tp-act-publish{color:var(--nd-green,#16a34a);}
+.tp-act-publish:hover{background:#f0fdf4;border-color:#bbf7d0;}
+.tp-act-close{color:var(--nd-amber,#d97706);}
+.tp-act-close:hover{background:#fffbeb;border-color:#fde68a;}
+.tp-act-delete{color:var(--nd-red,#dc2626);}
+.tp-act-delete:hover{background:#fef2f2;border-color:#fecaca;}
+.tp-modal-lg{max-width:720px;width:95%;}
+.tp-modal-sm{max-width:380px;width:92%;}
+.tp-label{display:block;font-size:.76rem;font-weight:700;color:var(--nd-navy,#1E3A5F);text-transform:uppercase;letter-spacing:.4px;margin-bottom:.3rem;}
+.tp-label .req{color:var(--nd-red,#dc2626);}
+.tp-input{width:100%;padding:.5rem .75rem;border:1px solid #d1d5db;border-radius:8px;font-size:.86rem;background:#fff;transition:border-color .15s,box-shadow .15s;}
+.tp-input:focus{outline:none;border-color:var(--nd-navy,#1E3A5F);box-shadow:0 0 0 3px rgba(30,58,95,.1);}
+.tp-error{color:var(--nd-red,#dc2626);font-size:.74rem;margin-top:.2rem;}
+.tp-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.tp-form-third{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem;}
+@media(max-width:640px){.tp-form-grid,.tp-form-third{grid-template-columns:1fr;}}
+.tp-switch{display:flex;align-items:center;gap:.45rem;font-size:.84rem;font-weight:600;color:var(--nd-text);cursor:pointer;}
+.tp-switch input[type="checkbox"]{width:16px;height:16px;accent-color:var(--nd-navy,#1E3A5F);}
+.tp-btn-save{padding:.45rem 1.1rem;border-radius:8px;border:none;font-size:.84rem;font-weight:600;cursor:pointer;background:linear-gradient(135deg,#1E3A5F,#2d5a8e);color:#fff;display:inline-flex;align-items:center;gap:.3rem;transition:opacity .15s;}
+.tp-btn-save:hover{opacity:.9;}
+.tp-btn-delete{padding:.45rem 1.1rem;border-radius:8px;border:none;font-size:.84rem;font-weight:600;cursor:pointer;background:var(--nd-red,#dc2626);color:#fff;display:inline-flex;align-items:center;gap:.3rem;transition:opacity .15s;}
+.tp-btn-delete:hover{opacity:.9;}
+</style>
+@endpush
+
 @can('manage-training')
 <div class="nd-page">
     {{-- â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â• --}}

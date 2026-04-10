@@ -1,5 +1,38 @@
 ﻿<div>
 
+@push('custom-styles')
+<style>
+/* ═══ Subscription Plan Manager (sp-*) ═══ */
+.sp-alert{display:flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-radius:10px;font-size:.84rem;font-weight:600;margin-bottom:1rem;}
+.sp-alert-success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+.sp-alert-error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.sp-badge-featured{background:#fffbeb;color:#b45309;border:1px solid #fde68a;font-size:.72rem;padding:.15rem .45rem;border-radius:6px;}
+.sp-badge-cycle{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:.72rem;padding:.15rem .45rem;border-radius:6px;}
+.sp-actions{display:flex;align-items:center;gap:.35rem;}
+.sp-act{width:28px;height:28px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;cursor:pointer;transition:all .15s;}
+.sp-act:hover{border-color:#cbd5e1;}
+.sp-act-edit{color:var(--nd-navy,#1E3A5F);}
+.sp-act-edit:hover{background:rgba(30,58,95,.08);}
+.sp-act-delete{color:var(--nd-red,#dc2626);}
+.sp-act-delete:hover{background:#fef2f2;border-color:#fecaca;}
+.sp-modal-lg{max-width:720px;width:95%;}
+.sp-modal-sm{max-width:380px;width:92%;}
+.sp-grid{display:grid;gap:.85rem;}
+.sp-grid-2{grid-template-columns:1fr 1fr;}
+.sp-grid-3{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:640px){.sp-grid-2,.sp-grid-3{grid-template-columns:1fr;}}
+.sp-label{display:block;font-size:.76rem;font-weight:700;color:var(--nd-navy,#1E3A5F);text-transform:uppercase;letter-spacing:.4px;margin-bottom:.3rem;}
+.sp-label .req{color:var(--nd-red,#dc2626);}
+.sp-input{width:100%;padding:.5rem .75rem;border:1px solid #d1d5db;border-radius:8px;font-size:.86rem;background:#fff;transition:border-color .15s,box-shadow .15s;}
+.sp-input:focus{outline:none;border-color:var(--nd-navy,#1E3A5F);box-shadow:0 0 0 3px rgba(30,58,95,.1);}
+.sp-error{color:var(--nd-red,#dc2626);font-size:.74rem;margin-top:.2rem;}
+.sp-switch{display:flex;align-items:center;gap:.45rem;font-size:.84rem;font-weight:600;color:var(--nd-text);cursor:pointer;}
+.sp-switch input[type="checkbox"]{width:16px;height:16px;accent-color:var(--nd-navy,#1E3A5F);}
+.sp-btn-save{padding:.45rem 1.1rem;border-radius:8px;border:none;font-size:.84rem;font-weight:600;cursor:pointer;background:linear-gradient(135deg,#1E3A5F,#2d5a8e);color:#fff;display:inline-flex;align-items:center;gap:.3rem;transition:opacity .15s;}
+.sp-btn-save:hover{opacity:.9;}
+</style>
+@endpush
+
 @can('manage-subscriptions')
 <div class="nd-page">
     <div class="nd-hero">
