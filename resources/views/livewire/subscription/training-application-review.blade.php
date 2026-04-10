@@ -33,6 +33,7 @@ tr.ta-pending:hover{background:#fef9c3;}
 .ta-btn-approve:hover{opacity:.9;}
 .ta-btn-reject{padding:.45rem 1.1rem;border-radius:8px;border:none;font-size:.84rem;font-weight:600;cursor:pointer;background:var(--nd-red,#dc2626);color:#fff;display:inline-flex;align-items:center;gap:.3rem;transition:opacity .15s;}
 .ta-btn-reject:hover{opacity:.9;}
+.ta-modal-lg{max-width:640px;width:95%;}
 </style>
 @endpush
 
@@ -213,7 +214,7 @@ tr.ta-pending:hover{background:#fef9c3;}
 {{-- â•â•â•â•â•â•â• DETAIL / ACTION MODAL â•â•â•â•â•â•â• --}}
 @if($showDetailModal && $selectedApp)
     <div class="nd-overlay" wire:click.self="closeModal">
-        <div class="nd-modal">
+        <div class="nd-modal ta-modal-lg">
             <div class="nd-modal-head">
                 <h5><i class="fas fa-user-graduate"></i> Application Details</h5>
                 <button class="nd-modal-close" wire:click="closeModal">&times;</button>

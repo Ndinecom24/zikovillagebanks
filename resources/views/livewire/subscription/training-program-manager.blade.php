@@ -54,13 +54,15 @@
                 <li class="sep">/</li>
                 <li class="active">Training Programs</li>
             </ul>
-            <div class="nd-hero-title">
-                <h1><i class="fas fa-graduation-cap"></i>Training Programs</h1>
-                <p class="nd-hero-sub">Create and manage training courses for village bank members</p>
+            <div class="nd-hero-row">
+                <div class="nd-hero-title">
+                    <h1><i class="fas fa-graduation-cap"></i>Training Programs</h1>
+                    <p class="nd-hero-sub">Create and manage training courses for village bank members</p>
+                </div>
+                <button wire:click="openCreate" class="nd-hero-btn">
+                    <i class="fas fa-plus"></i> New Program
+                </button>
             </div>
-            <button wire:click="openCreate" class="nd-hero-btn">
-                <i class="fas fa-plus"></i> New Program
-            </button>
         </div>
     </div>
 
@@ -222,8 +224,8 @@
                 </h5>
                 <button class="nd-modal-close" wire:click="$set('showModal', false)">&times;</button>
             </div>
-            <div class="nd-modal-body">
-                <form wire:submit.prevent="save">
+            <form wire:submit.prevent="save">
+                <div class="nd-modal-body">
                     {{-- Title (full width) --}}
                     <div style="margin-bottom:1rem;">
                         <label class="tp-label">Program Title <span class="req">*</span></label>
@@ -324,14 +326,14 @@
                         </div>
                     </div>
 
-                    <div class="nd-modal-foot" style="border-top:none;padding:0;margin-top:.5rem;">
-                        <button type="button" class="nd-btn-cancel" wire:click="$set('showModal', false)">Cancel</button>
-                        <button type="submit" class="tp-btn-save">
-                            <i class="fas fa-save" style="margin-right:4px;"></i> {{ $editId ? 'Update Program' : 'Create Program' }}
-                        </button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="nd-modal-foot">
+                    <button type="button" class="nd-btn-cancel" wire:click="$set('showModal', false)">Cancel</button>
+                    <button type="submit" class="tp-btn-save">
+                        <i class="fas fa-save" style="margin-right:4px;"></i> {{ $editId ? 'Update Program' : 'Create Program' }}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 @endif
