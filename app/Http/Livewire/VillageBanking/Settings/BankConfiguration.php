@@ -19,6 +19,7 @@ class BankConfiguration extends Component
     /* ── Insurance ────────────────────── */
     public $insurance_type            = 'percentage';
     public $insurance_value           = 0;
+    public $insurance_profit_to_members = true;
 
     /* ── Circle ───────────────────────── */
     public $circle_duration_months    = 12;
@@ -105,6 +106,7 @@ class BankConfiguration extends Component
         $this->max_shares_per_month          = $config->max_shares_per_month;
         $this->insurance_type              = $config->insurance_type;
         $this->insurance_value             = $config->insurance_value;
+        $this->insurance_profit_to_members = (bool) $config->insurance_profit_to_members;
         $this->max_loan_multiplier         = $config->max_loan_multiplier;
         $this->default_interest_rate       = $config->default_interest_rate;
         $this->interest_type               = $config->interest_type;
@@ -295,6 +297,7 @@ class BankConfiguration extends Component
             'max_shares_per_month'        => 'required|integer|min:1|max:1000',
             'insurance_type'              => 'required|in:percentage,fixed',
             'insurance_value'             => 'required|numeric|min:0',
+            'insurance_profit_to_members' => 'boolean',
             'max_loan_multiplier'         => 'required|integer|min:1|max:20',
             'default_interest_rate'       => 'required|numeric|min:0|max:100',
             'interest_type'               => 'required|in:flat,reducing_balance',
@@ -332,6 +335,7 @@ class BankConfiguration extends Component
                 'max_shares_per_month'        => (int) $this->max_shares_per_month,
                 'insurance_type'              => $this->insurance_type,
                 'insurance_value'             => (float) $this->insurance_value,
+                'insurance_profit_to_members' => (bool) $this->insurance_profit_to_members,
                 'max_loan_multiplier'         => (int) $this->max_loan_multiplier,
                 'default_interest_rate'       => (float) $this->default_interest_rate,
                 'interest_type'               => $this->interest_type,

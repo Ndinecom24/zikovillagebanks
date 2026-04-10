@@ -331,6 +331,25 @@
                                         @error('insurance_value') <div class="bc-error">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
+
+                                {{-- Insurance Profit to Members --}}
+                                <div style="margin-top:1.25rem;display:flex;align-items:center;gap:.75rem;padding:1rem;background:#fafbfd;border-radius:12px;border:1px solid var(--bc-border);">
+                                    <button type="button"
+                                            class="bc-toggle {{ $insurance_profit_to_members ? 'active' : '' }}"
+                                            wire:click="$toggle('insurance_profit_to_members')">
+                                    </button>
+                                    <div style="flex:1;">
+                                        <div style="font-size:.84rem;font-weight:700;color:var(--bc-text);">Give Insurance Profit to Members</div>
+                                        <div class="bc-hint" style="margin-top:0;">
+                                            @if($insurance_profit_to_members)
+                                                Insurance profit is included in each member's shareout payout.
+                                            @else
+                                                <span style="color:#b45309;font-weight:600;"><i class="fas fa-hand-holding-heart" style="margin-right:.2rem;"></i> Social Fund mode</span> —
+                                                Insurance profit and penalties are pooled into a social fund instead of being distributed to members.
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
