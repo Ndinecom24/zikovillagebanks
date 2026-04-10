@@ -5,6 +5,7 @@
 /vendor
 .env
 .env.backup
+/public/.app_base_path
 composer.lock
 .phpunit.result.cache
 docker-compose.override.yml

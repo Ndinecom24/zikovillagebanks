@@ -16,8 +16,26 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
-    require __DIR__.'/../storage/framework/maintenance.php';
+/*
+|--------------------------------------------------------------------------
+| Application Base Path (cPanel deployment)
+|--------------------------------------------------------------------------
+|
+| When deploying on cPanel the public/ contents live in public_html/
+| while the rest of the app lives in a separate directory.
+|
+| LOCAL dev  → leave the file absent; defaults to __DIR__/..
+| CPANEL     → create public_html/.app_base_path containing one line:
+|              /home/YOUR_USERNAME/repositories/zikovillagebanks
+|
+*/
+$basePathFile = __DIR__.'/.app_base_path';
+$basePath = file_exists($basePathFile)
+    ? trim(file_get_contents($basePathFile))
+    : __DIR__.'/..';
+
+if (file_exists($basePath.'/storage/framework/maintenance.php')) {
+    require $basePath.'/storage/framework/maintenance.php';
 }
 
 /*
@@ -30,8 +48,8 @@ if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
 | into the script here so we don't need to manually load our classes.
 |
 */
-require __DIR__.'/../app/Helpers/helper.php';
-require __DIR__.'/../vendor/autoload.php';
+require $basePath.'/app/Helpers/helper.php';
+require $basePath.'/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +62,7 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once $basePath.'/bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
