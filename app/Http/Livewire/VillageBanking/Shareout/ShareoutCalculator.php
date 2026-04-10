@@ -12,6 +12,7 @@ use App\Models\VillageBanking\Penalty;
 use App\Models\VillageBanking\Repayment;
 use App\Models\VillageBanking\InsuranceContribution;
 use App\Models\VillageBanking\VillageBankConfiguration;
+use App\Models\VillageBanking\SocialFund;
 use App\Traits\HasVillageBankScope;
 
 class ShareoutCalculator extends Component
@@ -30,6 +31,12 @@ class ShareoutCalculator extends Component
     public $compoundRate        = 5;
     public $allocations         = [];
     public $previewed           = false;
+
+    /* ── Social Fund ─────── */
+    public $insuranceProfitToMembers = true;
+    public $socialFundTotal     = 0;
+    public $socialFundInsurance  = 0;
+    public $socialFundPenalties  = 0;
 
     /* ── Existing shareout ── */
     public $existingShareout   = null;
@@ -68,7 +75,7 @@ class ShareoutCalculator extends Component
 
     public function updatedCircleId()
     {
-        $this->reset('totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'compoundRate', 'allocations', 'previewed', 'existingShareout', 'successMessage');
+        $this->reset('totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'compoundRate', 'allocations', 'previewed', 'existingShareout', 'successMessage', 'insuranceProfitToMembers', 'socialFundTotal', 'socialFundInsurance', 'socialFundPenalties');
 
         if ($this->circleId) {
             $this->existingShareout = Shareout::where('circle_id', $this->circleId)->first();
@@ -95,6 +102,7 @@ class ShareoutCalculator extends Component
             : 0.05; // default 5% per month
         $this->compoundRate = round($monthlyRate * 100, 2);
         $maxLoanMultiplier = $config->max_loan_multiplier ?? 3;
+        $this->insuranceProfitToMembers = (bool) $config->insurance_profit_to_members;
 
         // Month-number lookup: month_id → month_number
         $monthNumberMap = $months->pluck('month_number', 'id');
@@ -147,9 +155,11 @@ class ShareoutCalculator extends Component
             $insuranceProfit = round($insuranceCompounded - $memberInsurance, 2);
 
             // ── Penalty share (proportional to contribution) ──
-            $penaltyShare = $this->totalContributions > 0
-                ? round($this->totalPenalties * ($memberContribution / $this->totalContributions), 2)
-                : 0;
+            // When social fund is active, penalties go to the fund instead
+            $penaltyShare = 0;
+            if ($this->insuranceProfitToMembers && $this->totalContributions > 0) {
+                $penaltyShare = round($this->totalPenalties * ($memberContribution / $this->totalContributions), 2);
+            }
 
             // ── Outstanding loans ──
             $loanDeduction = Loan::whereIn('month_id', $monthIds)
@@ -161,7 +171,14 @@ class ShareoutCalculator extends Component
             $creditLimit = round($memberContribution * $maxLoanMultiplier, 2);
 
             // ── Net shareout ──
-            $grossShareout = round($investmentCompounded + $insuranceCompounded + $penaltyShare, 2);
+            // When insurance profit goes to social fund, member only gets
+            // their original insurance back (not the compounded value)
+            if ($this->insuranceProfitToMembers) {
+                $grossShareout = round($investmentCompounded + $insuranceCompounded + $penaltyShare, 2);
+            } else {
+                // Member gets original insurance back + compounded shares only
+                $grossShareout = round($investmentCompounded + $memberInsurance, 2);
+            }
             $netShareout = round($grossShareout - $loanDeduction, 2);
             $action = $netShareout >= 0 ? 'Receiving' : 'Pay back';
 
@@ -197,6 +214,19 @@ class ShareoutCalculator extends Component
             + array_sum(array_column($this->allocations, 'insurance_compounded'))
             + $this->totalPenalties, 2
         );
+
+        // 5. Social fund totals (when insurance profit not given to members)
+        if (!$this->insuranceProfitToMembers) {
+            $this->socialFundInsurance = round(
+                array_sum(array_column($this->allocations, 'insurance_profit')), 2
+            );
+            $this->socialFundPenalties = round($this->totalPenalties, 2);
+            $this->socialFundTotal = round($this->socialFundInsurance + $this->socialFundPenalties, 2);
+        } else {
+            $this->socialFundInsurance = 0;
+            $this->socialFundPenalties = 0;
+            $this->socialFundTotal = 0;
+        }
 
         // Sort by payout descending
         usort($this->allocations, fn ($a, $b) => $b['payout_amount'] <=> $a['payout_amount']);
@@ -250,8 +280,23 @@ class ShareoutCalculator extends Component
         // Mark circle as completed
         Circle::where('id', $this->circleId)->update(['status' => 'completed']);
 
-        $this->successMessage = 'Shareout finalised successfully! K' . number_format($this->totalPool, 2) . ' distributed to ' . count($this->allocations) . ' members.';
-        $this->reset('circleId', 'totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'compoundRate', 'allocations', 'previewed', 'existingShareout');
+        // ── Create social fund if insurance profit goes to fund ──
+        if (!$this->insuranceProfitToMembers && $this->socialFundTotal > 0) {
+            SocialFund::create([
+                'circle_id'              => $this->circleId,
+                'shareout_id'            => $shareout->id,
+                'total_insurance_profit'  => $this->socialFundInsurance,
+                'total_penalties'         => $this->socialFundPenalties,
+                'total_fund'             => $this->socialFundTotal,
+                'total_used'             => 0,
+                'total_remaining'        => $this->socialFundTotal,
+                'status'                 => 'active',
+            ]);
+        }
+
+        $this->successMessage = 'Shareout finalised successfully! K' . number_format($this->totalPool, 2) . ' distributed to ' . count($this->allocations) . ' members.'
+            . ($this->socialFundTotal > 0 ? ' Social fund of K' . number_format($this->socialFundTotal, 2) . ' created.' : '');
+        $this->reset('circleId', 'totalContributions', 'totalInsurance', 'totalInterest', 'totalPenalties', 'totalLoansOutstanding', 'totalPool', 'compoundRate', 'allocations', 'previewed', 'existingShareout', 'insuranceProfitToMembers', 'socialFundTotal', 'socialFundInsurance', 'socialFundPenalties');
     }
 
     /* ── View member detail (preview modal) ── */

@@ -47,4 +47,9 @@ class Shareout extends Model
     {
         return $this->hasMany(ShareoutAllocation::class);
     }
+
+    public function socialFund()
+    {
+        return $this->hasOne(SocialFund::class);
+    }
 }

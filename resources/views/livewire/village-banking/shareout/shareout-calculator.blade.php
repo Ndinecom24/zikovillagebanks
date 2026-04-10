@@ -235,6 +235,38 @@
                             </div>
                         </div>
 
+                        {{-- Social fund notice --}}
+                        @if (!$insuranceProfitToMembers && $socialFundTotal > 0)
+                            <div class="sc-card sc-animate" style="margin-bottom:1.25rem;border-left:4px solid var(--sc-amber);">
+                                <div class="sc-card-body" style="padding:.85rem 1.25rem;">
+                                    <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;">
+                                        <div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(217,119,6,.08);color:var(--sc-amber);font-size:.9rem;flex-shrink:0;">
+                                            <i class="fas fa-hand-holding-heart"></i>
+                                        </div>
+                                        <div style="flex:1;min-width:200px;">
+                                            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);">Social Fund Created</div>
+                                            <div style="font-size:1.15rem;font-weight:800;color:var(--sc-amber);">K{{ number_format($socialFundTotal, 2) }}</div>
+                                        </div>
+                                        <div style="display:flex;gap:1.25rem;flex-wrap:wrap;">
+                                            <div>
+                                                <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);">Insurance Profit</div>
+                                                <div style="font-weight:700;color:var(--sc-green);font-size:.88rem;">K{{ number_format($socialFundInsurance, 2) }}</div>
+                                            </div>
+                                            <div>
+                                                <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--sc-faint);">Penalties</div>
+                                                <div style="font-weight:700;color:var(--sc-red);font-size:.88rem;">K{{ number_format($socialFundPenalties, 2) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top:.65rem;font-size:.78rem;color:var(--sc-muted);">
+                                        <i class="fas fa-info-circle" style="margin-right:.25rem;"></i>
+                                        Insurance profit is not distributed to members. It is pooled with penalties into a social fund.
+                                        After finalising, manage the fund from <strong>Social Fund</strong> page.
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         {{-- Allocations table --}}
                         <div class="sc-card">
                             <div class="sc-card-header">

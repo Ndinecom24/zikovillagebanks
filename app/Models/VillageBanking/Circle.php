@@ -71,4 +71,9 @@ class Circle extends Model
     {
         return $this->hasOne(Shareout::class);
     }
+
+    public function socialFund()
+    {
+        return $this->hasOne(SocialFund::class);
+    }
 }

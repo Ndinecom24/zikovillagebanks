@@ -266,12 +266,28 @@
 
                 {{-- Shareout --}}
                 @canany(['view-shareout', 'calculate-shareout'])
-                <li class="nav-item">
-                    <a href="{{ route('shareout.index') }}"
-                       class="nav-link {{ request()->routeIs('shareout.*') ? 'active' : '' }}">
+                <li class="nav-item {{ request()->routeIs('shareout.*') || request()->routeIs('social-fund.*') ? 'menu-open' : '' }}">
+                    <a href="#"
+                       class="nav-link {{ request()->routeIs('shareout.*') || request()->routeIs('social-fund.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>Shareout</p>
+                        <p>Shareout <i class="fas fa-angle-left right"></i></p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('shareout.index') }}"
+                               class="nav-link {{ request()->routeIs('shareout.*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Calculator</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('social-fund.index') }}"
+                               class="nav-link {{ request()->routeIs('social-fund.*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Social Fund</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 @endcanany
 

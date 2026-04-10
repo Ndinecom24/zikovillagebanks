@@ -120,6 +120,7 @@ class InfraCashVillageBankSeeder extends Seeder
             'max_shares_per_month'     => 100,
             'insurance_type'           => 'fixed',
             'insurance_value'          => 200.00,
+            'insurance_profit_to_members' => false, // insurance profit goes to social fund
             'max_loan_multiplier'      => 3,
             'default_interest_rate'    => 10.00,  // 10% service fee on new loans
             'interest_type'            => 'reducing_balance',
