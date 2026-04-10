@@ -1,5 +1,394 @@
 ﻿<div>
 
+@push('custom-styles')
+<style>
+    /* ═══════════════════════════════════════════════════════
+     *  USER SHOW — Page-Specific Styles
+     *  Common styles (hero, cards, buttons, modals,
+     *  flash, forms, info-grid, empty, loading)
+     *  are in /css/ndinecom-admin.css (nd-* prefix).
+     * ═══════════════════════════════════════════════════════ */
+
+    /* ── Hero: User Row ── */
+    .us-hero-user {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    /* ── Hero: Avatar ── */
+    .us-hero-avatar {
+        position: relative;
+        width: 72px;
+        height: 72px;
+        flex-shrink: 0;
+    }
+    .us-hero-avatar img {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid rgba(255,255,255,0.25);
+    }
+    .us-hero-avatar-init {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.12);
+        border: 3px solid rgba(255,255,255,0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+    .us-hero-avatar label {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--nd-amber);
+        border: 2px solid var(--nd-navy);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #fff;
+        font-size: 0.65rem;
+        transition: transform 0.2s, background 0.2s;
+        margin: 0;
+    }
+    .us-hero-avatar label:hover {
+        background: #b45309;
+        transform: scale(1.12);
+    }
+
+    /* ── Hero: Name & Meta ── */
+    .us-hero-name {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .us-hero-name i {
+        color: var(--nd-amber);
+        font-size: 1.1rem;
+    }
+    .us-hero-meta {
+        color: rgba(255,255,255,0.55);
+        font-size: 0.85rem;
+        margin: 0.2rem 0 0;
+    }
+    .us-hero-meta code {
+        background: rgba(255,255,255,0.12);
+        color: var(--nd-amber-light);
+        padding: 0.1rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+    /* ── Hero: Action Buttons ── */
+    .us-hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .us-hero-actions .nd-btn-ghost {
+        color: rgba(255,255,255,0.8);
+        border-color: rgba(255,255,255,0.2);
+    }
+    .us-hero-actions .nd-btn-ghost:hover {
+        border-color: rgba(255,255,255,0.5);
+        color: #fff;
+        background: rgba(255,255,255,0.1);
+    }
+
+    /* ── Tabs ── */
+    .us-tabs {
+        display: flex;
+        gap: 0;
+        background: var(--nd-card);
+        border-radius: var(--nd-radius) var(--nd-radius) 0 0;
+        border: 1px solid var(--nd-border);
+        border-bottom: none;
+        overflow: hidden;
+    }
+    .us-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.85rem 1.35rem;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--nd-muted);
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+    }
+    .us-tab:hover {
+        color: var(--nd-text);
+        background: #f8fafc;
+    }
+    .us-tab.active {
+        color: var(--nd-amber);
+        border-bottom-color: var(--nd-amber);
+        background: #fff;
+    }
+    .us-tab i {
+        font-size: 0.78rem;
+    }
+    .us-tab-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 0.4rem;
+        border-radius: 10px;
+        background: rgba(30,58,95,0.08);
+        color: var(--nd-navy);
+        font-size: 0.68rem;
+        font-weight: 800;
+    }
+    .us-tab.active .us-tab-count {
+        background: rgba(217,119,6,0.12);
+        color: var(--nd-amber);
+    }
+
+    /* ── Info Table (Profile / Account) ── */
+    .us-info-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .us-info-table tbody tr {
+        transition: background 0.15s;
+    }
+    .us-info-table tbody tr:hover {
+        background: #fafbfd;
+    }
+    .us-info-table td {
+        padding: 0.75rem 1.25rem;
+        border-bottom: 1px solid var(--nd-border);
+        font-size: 0.85rem;
+        vertical-align: middle;
+    }
+    .us-info-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    .us-info-label {
+        width: 180px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--nd-faint);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+    }
+
+    /* ── Role Badges ── */
+    .us-role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.22rem 0.65rem;
+        border-radius: 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s;
+        margin-right: 0.3rem;
+        margin-bottom: 0.3rem;
+    }
+    .us-role-badge-direct {
+        background: rgba(30,58,95,0.06);
+        color: var(--nd-navy);
+        border: 1px solid rgba(30,58,95,0.15);
+    }
+    .us-role-badge-direct:hover {
+        background: rgba(30,58,95,0.12);
+        border-color: rgba(30,58,95,0.3);
+        color: var(--nd-navy);
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+
+    /* ── Password Reset Section ── */
+    .us-pwd-section {
+        border-top: 1px solid var(--nd-border);
+        padding: 1.25rem;
+        background: #fffbeb;
+    }
+    .us-pwd-warn {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 10px;
+        padding: 0.6rem 1rem;
+        font-size: 0.82rem;
+        color: var(--nd-red);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    /* ── Password Requirements Grid ── */
+    .pwd-req {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.25rem 0.75rem;
+        margin-top: 0.5rem;
+    }
+    .pwd-req span {
+        font-size: 0.72rem;
+        color: var(--nd-faint);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: color 0.2s;
+    }
+    .pwd-req span i {
+        font-size: 0.6rem;
+    }
+    .pwd-req span.met {
+        color: var(--nd-green);
+    }
+
+    /* ── Activity Log Table ── */
+    .us-log-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.84rem;
+    }
+    .us-log-table thead th {
+        background: #f8fafc;
+        padding: 0.65rem 1rem;
+        font-size: 0.64rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        color: var(--nd-faint);
+        border-bottom: 1px solid var(--nd-border);
+        white-space: nowrap;
+    }
+    .us-log-table tbody td {
+        padding: 0.65rem 1rem;
+        border-bottom: 1px solid var(--nd-border);
+        vertical-align: middle;
+        color: var(--nd-text);
+    }
+    .us-log-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    .us-log-table tbody tr {
+        transition: background 0.15s;
+    }
+    .us-log-table tbody tr:hover {
+        background: #fafbfd;
+    }
+
+    /* ── Log Badges ── */
+    .us-log-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+        padding: 0.18rem 0.55rem;
+        border-radius: 8px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+    /* Type badges */
+    .us-log-auth {
+        background: rgba(37,99,235,0.08);
+        color: var(--nd-blue);
+        border: 1px solid rgba(37,99,235,0.2);
+    }
+    .us-log-model {
+        background: rgba(124,58,237,0.08);
+        color: var(--nd-purple);
+        border: 1px solid rgba(124,58,237,0.2);
+    }
+    .us-log-system {
+        background: #f3f4f6;
+        color: var(--nd-muted);
+        border: 1px solid #e5e7eb;
+    }
+    /* Event badges */
+    .us-log-login {
+        background: rgba(22,163,74,0.08);
+        color: var(--nd-green);
+        border: 1px solid rgba(22,163,74,0.2);
+    }
+    .us-log-logout {
+        background: rgba(8,145,178,0.08);
+        color: var(--nd-cyan);
+        border: 1px solid rgba(8,145,178,0.2);
+    }
+    .us-log-created {
+        background: rgba(37,99,235,0.08);
+        color: var(--nd-blue);
+        border: 1px solid rgba(37,99,235,0.2);
+    }
+    .us-log-updated {
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+    }
+    .us-log-deleted {
+        background: #fef2f2;
+        color: var(--nd-red);
+        border: 1px solid #fecaca;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+        .us-hero-user {
+            flex-direction: column;
+            text-align: center;
+        }
+        .us-hero-actions {
+            justify-content: center;
+        }
+        .us-hero-name {
+            font-size: 1.2rem;
+            justify-content: center;
+        }
+        .us-tabs {
+            overflow-x: auto;
+        }
+        .us-tab {
+            padding: 0.75rem 1rem;
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+        .us-info-label {
+            width: 140px;
+        }
+        .us-log-table {
+            font-size: 0.78rem;
+        }
+        .us-log-table thead th,
+        .us-log-table tbody td {
+            padding: 0.5rem 0.65rem;
+        }
+    }
+</style>
+@endpush
+
 @can('view-users')
 <div class="nd-page">
     {{-- â•â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â•â• --}}
