@@ -17,6 +17,21 @@ $app = new Illuminate\Foundation\Application(
 
 /*
 |--------------------------------------------------------------------------
+| Override Public Path for cPanel
+|--------------------------------------------------------------------------
+|
+| On cPanel, public_html lives outside the app directory. We must tell
+| Laravel where the real public folder is so that public_path(), asset(),
+| storage:link, Livewire uploads, etc. all work correctly.
+|
+*/
+
+$app->usePublicPath(
+    realpath($_SERVER['DOCUMENT_ROOT'] ?? $app->basePath('public')) ?: $app->basePath('public')
+);
+
+/*
+|--------------------------------------------------------------------------
 | Bind Important Interfaces
 |--------------------------------------------------------------------------
 |
