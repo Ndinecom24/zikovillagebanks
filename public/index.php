@@ -15,6 +15,8 @@ define('LARAVEL_START', microtime(true));
 | instead of starting the framework, which could cause an exception.
 |
 */
+// nauq2vlq4u9b@p3plzcpnl508728 [~/repositories/zikovillagebanks]$ nauq2vlq4u9b@p3plzcpnl508728 [~]$
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,7 @@ define('LARAVEL_START', microtime(true));
 |
 | LOCAL dev  → leave the file absent; defaults to __DIR__/..
 | CPANEL     → create public_html/.app_base_path containing one line:
-|              /home/YOUR_USERNAME/repositories/zikovillagebanks
+|              /home/nauq2vlq4u9b/repositories/zikovillagebanks
 |
 */
 $basePathFile = __DIR__.'/.app_base_path';
