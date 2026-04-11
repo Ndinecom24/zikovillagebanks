@@ -422,7 +422,7 @@
                         <h1 class="us-hero-name"><i class="fas fa-user"></i>{{ $user->name }}</h1>
                         <p class="us-hero-meta">
                             <code>{{ $user->username ?? 'N/A' }}</code>
-                            &nbsp;{{ $user->job_title ?? 'No job title' }} &bull; {{ $user->directorate ?? 'No directorate' }}
+                            &nbsp;{{ $user->job_title ?? 'No job title' }} &bull; {{ $user->company_name ?? 'No company' }}
                         </p>
                     </div>
                 </div>
@@ -538,12 +538,12 @@
                                     <input type="text" wire:model.defer="editJobTitle">
                                 </div>
                                 <div class="nd-field">
-                                    <label>Department / Unit</label>
-                                    <input type="text" wire:model.defer="editUserUnit">
+                                    <label>Company Name</label>
+                                    <input type="text" wire:model.defer="editCompanyName">
                                 </div>
                                 <div class="nd-field">
-                                    <label>Directorate</label>
-                                    <input type="text" wire:model.defer="editDirectorate">
+                                    <label>Company Location</label>
+                                    <input type="text" wire:model.defer="editCompanyLocation">
                                 </div>
                             </div>
                             <div style="display:flex;gap:.5rem;margin-top:.5rem;">
@@ -564,8 +564,8 @@
                                         ['Email', $user->email, 'fas fa-envelope'],
                                         ['Mobile No', $user->mobile_no, 'fas fa-phone-alt'],
                                         ['Job Title', $user->job_title, 'fas fa-briefcase'],
-                                        ['Dept / Unit', $user->user_unit, 'fas fa-building'],
-                                        ['Directorate', $user->directorate, 'fas fa-sitemap'],
+                                        ['Company', $user->company_name, 'fas fa-building'],
+                                        ['Location', $user->company_location, 'fas fa-map-marker-alt'],
                                     ];
                                 @endphp
                                 @foreach($fields as $f)
@@ -648,20 +648,20 @@
                             <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
                                 <div class="nd-field">
                                     <label>New Password <span class="req">*</span></label>
-                                    <input type="password" wire:model="newPassword" placeholder="Enter new password" id="resetPwd">
+                                    <input type="password" wire:model.defer="newPassword" placeholder="Enter new password" id="resetPwd">
                                     @error('newPassword') <div class="err">{{ $message }}</div> @enderror
                                     <div class="pwd-req" id="pwdReqGrid">
-                                        <span id="rr-length"><i class="bi bi-circle"></i> Min 8 chars</span>
-                                        <span id="rr-upper"><i class="bi bi-circle"></i> Uppercase</span>
-                                        <span id="rr-lower"><i class="bi bi-circle"></i> Lowercase</span>
-                                        <span id="rr-number"><i class="bi bi-circle"></i> Number</span>
-                                        <span id="rr-special"><i class="bi bi-circle"></i> Special char</span>
-                                        <span id="rr-match"><i class="bi bi-circle"></i> Match</span>
+                                        <span id="rr-length"><i class="far fa-circle"></i> Min 8 chars</span>
+                                        <span id="rr-upper"><i class="far fa-circle"></i> Uppercase</span>
+                                        <span id="rr-lower"><i class="far fa-circle"></i> Lowercase</span>
+                                        <span id="rr-number"><i class="far fa-circle"></i> Number</span>
+                                        <span id="rr-special"><i class="far fa-circle"></i> Special char</span>
+                                        <span id="rr-match"><i class="far fa-circle"></i> Match</span>
                                     </div>
                                 </div>
                                 <div class="nd-field">
                                     <label>Confirm Password <span class="req">*</span></label>
-                                    <input type="password" wire:model="newPasswordConfirmation" placeholder="Confirm password" id="resetPwdConfirm">
+                                    <input type="password" wire:model.defer="newPasswordConfirmation" placeholder="Confirm password" id="resetPwdConfirm">
                                     @error('newPasswordConfirmation') <div class="err">{{ $message }}</div> @enderror
                                 </div>
                             </div>
@@ -795,8 +795,8 @@ document.addEventListener('livewire:load', function() {
         for (var key in checks) {
             var el = document.getElementById(key);
             if (el) {
-                if (checks[key]) { el.classList.add('met'); el.querySelector('i').className = 'bi bi-check-circle-fill'; }
-                else { el.classList.remove('met'); el.querySelector('i').className = 'bi bi-circle'; }
+                if (checks[key]) { el.classList.add('met'); el.querySelector('i').className = 'fas fa-check-circle'; }
+                else { el.classList.remove('met'); el.querySelector('i').className = 'far fa-circle'; }
             }
         }
     }

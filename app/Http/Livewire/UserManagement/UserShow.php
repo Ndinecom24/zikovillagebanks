@@ -25,8 +25,8 @@ class UserShow extends Component
     public $editEmail;
     public $editMobileNo;
     public $editJobTitle;
-    public $editUserUnit;
-    public $editDirectorate;
+    public $editCompanyName;
+    public $editCompanyLocation;
 
     // Avatar upload
     public $avatarUpload;
@@ -69,8 +69,8 @@ class UserShow extends Component
         $this->editEmail = $this->user->email;
         $this->editMobileNo = $this->user->mobile_no;
         $this->editJobTitle = $this->user->job_title;
-        $this->editUserUnit = $this->user->user_unit;
-        $this->editDirectorate = $this->user->directorate;
+        $this->editCompanyName = $this->user->company_name;
+        $this->editCompanyLocation = $this->user->company_location;
     }
 
     // ---------- TOGGLE EDIT ----------
@@ -98,8 +98,8 @@ class UserShow extends Component
             'editEmail' => 'required|email|unique:users,email,' . $this->userId,
             'editMobileNo' => 'nullable|string|max:20',
             'editJobTitle' => 'nullable|string|max:255',
-            'editUserUnit' => 'nullable|string|max:255',
-            'editDirectorate' => 'nullable|string|max:255',
+            'editCompanyName' => 'nullable|string|max:255',
+            'editCompanyLocation' => 'nullable|string|max:255',
         ]);
 
         $this->user->update([
@@ -107,8 +107,8 @@ class UserShow extends Component
             'email' => $this->editEmail,
             'mobile_no' => $this->editMobileNo,
             'job_title' => $this->editJobTitle,
-            'user_unit' => $this->editUserUnit,
-            'directorate' => $this->editDirectorate,
+            'company_name' => $this->editCompanyName,
+            'company_location' => $this->editCompanyLocation,
         ]);
 
         $this->editing = false;
