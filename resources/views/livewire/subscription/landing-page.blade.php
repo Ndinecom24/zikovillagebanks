@@ -385,24 +385,25 @@
                         @endif
 
                         <h6 style="font-weight:700;color:var(--nd-primary);margin-bottom:0.75rem;font-size:0.9rem;">
-                            <i class="fas fa-building"></i> Bank Details
+                            <i class="fas fa-building"></i> Village Bank Details
                         </h6>
 
                         <div class="lf-row">
                             <div>
-                                <label class="lf-label">Bank Name <span style="color:#dc3545;">*</span></label>
+                                <label class="lf-label">Village Bank Name <span style="color:#dc3545;">*</span></label>
                                 <input type="text" wire:model.defer="bankName" class="lf-input" placeholder="e.g. Sunrise Village Bank">
                                 @error('bankName') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
-                                <label class="lf-label">Bank Code</label>
-                                <input type="text" wire:model.defer="bankCode" class="lf-input" placeholder="Optional short code">
-                                @error('bankCode') <div class="lf-error">{{ $message }}</div> @enderror
+                                <label class="lf-label">Village Bank Code</label>
+                                <div class="lf-input" style="background:#f1f5f9;color:#64748b;cursor:default;">
+                                    <i class="fas fa-lock" style="font-size:0.75rem;"></i> Auto-generated on approval
+                                </div>
                             </div>
                         </div>
 
                         <div class="lf-col">
-                            <label class="lf-label">Description</label>
+                            <label class="lf-label">Village Bank Description</label>
                             <textarea wire:model.defer="bankDescription" class="lf-input" rows="2" placeholder="Brief description of your village bank"></textarea>
                         </div>
 
@@ -437,8 +438,10 @@
                                 @error('contactName') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
-                                <label class="lf-label">Staff No</label>
-                                <input type="text" wire:model.defer="contactStaffNo" class="lf-input" placeholder="Will be used as login ID">
+                                <label class="lf-label">Member Number</label>
+                                <div class="lf-input" style="background:#f1f5f9;color:#64748b;cursor:default;">
+                                    <i class="fas fa-lock" style="font-size:0.75rem;"></i> Auto-generated on approval
+                                </div>
                             </div>
                         </div>
 

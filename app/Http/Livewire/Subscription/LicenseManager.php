@@ -31,7 +31,6 @@ class LicenseManager extends Component
     /* ── Detail modal ── */
     public $showDetailModal = false;
     public $detailLicenseId = null;
-    public $detailLicense = null;
     public $detailUsage = null;
     public $detailPayments = [];
 
@@ -55,21 +54,23 @@ class LicenseManager extends Component
     public function viewDetail($id)
     {
         $this->detailLicenseId = $id;
-        $this->detailLicense = License::with([
+        $license = License::with([
             'villageBank',
             'subscription.plan',
             'subscription.payments.payer',
         ])->findOrFail($id);
 
         // Usage stats
-        if ($this->detailLicense->village_bank_id) {
-            $enforcement = LicenseEnforcement::forBank($this->detailLicense->village_bank_id);
+        $this->detailUsage = null;
+        if ($license->village_bank_id) {
+            $enforcement = LicenseEnforcement::forBank($license->village_bank_id);
             $this->detailUsage = $enforcement->usageSummary();
         }
 
         // Recent payments
-        if ($this->detailLicense->subscription) {
-            $this->detailPayments = SubscriptionPayment::where('subscription_id', $this->detailLicense->subscription_id)
+        $this->detailPayments = [];
+        if ($license->subscription) {
+            $this->detailPayments = SubscriptionPayment::where('subscription_id', $license->subscription_id)
                 ->with(['payer', 'reviewer'])
                 ->orderByDesc('created_at')
                 ->limit(10)
@@ -83,7 +84,27 @@ class LicenseManager extends Component
     public function closeDetail()
     {
         $this->showDetailModal = false;
-        $this->reset(['detailLicenseId', 'detailLicense', 'detailUsage', 'detailPayments']);
+        $this->reset(['detailLicenseId', 'detailUsage', 'detailPayments']);
+    }
+
+    /**
+     * Close detail modal and open revoke modal for the same license.
+     */
+    public function revokeFromDetail()
+    {
+        $id = $this->detailLicenseId;
+        $this->closeDetail();
+        $this->openRevoke($id);
+    }
+
+    /**
+     * Close detail modal and open activate modal for the same license.
+     */
+    public function activateFromDetail()
+    {
+        $id = $this->detailLicenseId;
+        $this->closeDetail();
+        $this->openActivate($id);
     }
 
     /* ── Revoke actions ── */
@@ -202,6 +223,16 @@ class LicenseManager extends Component
                               ->sum('amount'),
         ];
 
-        return view('livewire.subscription.license-manager', compact('licenses', 'stats', 'revenue'));
+        // Load detail license fresh each render (avoid storing Eloquent model as public property)
+        $detailLicense = null;
+        if ($this->showDetailModal && $this->detailLicenseId) {
+            $detailLicense = License::with(['villageBank', 'subscription.plan'])->find($this->detailLicenseId);
+            if (!$detailLicense) {
+                $this->showDetailModal = false;
+                $this->detailLicenseId = null;
+            }
+        }
+
+        return view('livewire.subscription.license-manager', compact('licenses', 'stats', 'revenue', 'detailLicense'));
     }
 }

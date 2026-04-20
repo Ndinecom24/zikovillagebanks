@@ -35,7 +35,7 @@
         <div class="credentials-box">
             <h3>🔑 Your Login Credentials</h3>
             <p>Use these details to log in to the platform:</p>
-            <div class="cred-item"><strong>Staff No (Username):</strong> {{ $staffNo }}</div>
+            <div class="cred-item"><strong>Member Number (Username):</strong> {{ $staffNo }}</div>
             <div class="cred-item"><strong>Password:</strong> {{ $defaultPassword }}</div>
             <p style="color:#dc3545;font-size:13px;margin-bottom:0;">
                 ⚠️ Please change your password immediately after your first login.

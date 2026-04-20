@@ -1,4 +1,4 @@
-﻿<div>
+<div>
 
 @can('view-users')
 <div class="nd-page">

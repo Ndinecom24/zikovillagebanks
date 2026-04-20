@@ -3,12 +3,15 @@
 namespace App\Http\Livewire\Subscription;
 
 use App\Mail\Subscription\ApplicationReceived;
+use App\Mail\Subscription\NewApplicationAdminAlert;
 use App\Models\Subscription\BankApplication;
 use App\Models\Subscription\PaymentConfiguration;
 use App\Models\Subscription\SubscriptionPlan;
 use App\Models\Subscription\TrainingApplication;
 use App\Models\Subscription\TrainingProgram;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -21,7 +24,6 @@ class LandingPage extends Component
 
     /* ── Application form fields ──────── */
     public $bankName = '';
-    public $bankCode = '';
     public $bankDescription = '';
     public $bankAddress = '';
     public $bankPhone = '';
@@ -29,7 +31,6 @@ class LandingPage extends Component
     public $contactName = '';
     public $contactEmail = '';
     public $contactPhone = '';
-    public $contactStaffNo = '';
     public $proofFile;
     public $paymentReference = '';
 
@@ -148,9 +149,15 @@ class LandingPage extends Component
 
         $proofPath = $this->proofFile->store('application_proofs', 'public');
 
+        // Auto-generate bank code: VB-XXXXXX (unique)
+        $bankCode = $this->generateUniqueBankCode();
+
+        // Auto-generate member number: MBR-XXXXXXXX (unique)
+        $memberNumber = $this->generateUniqueMemberNumber();
+
         $application = BankApplication::create([
             'bank_name'            => $this->bankName,
-            'bank_code'            => $this->bankCode ?: null,
+            'bank_code'            => $bankCode,
             'bank_description'     => $this->bankDescription ?: null,
             'bank_address'         => $this->bankAddress ?: null,
             'bank_phone'           => $this->bankPhone,
@@ -158,19 +165,34 @@ class LandingPage extends Component
             'contact_name'         => $this->contactName,
             'contact_email'        => $this->contactEmail,
             'contact_phone'        => $this->contactPhone,
-            'contact_staff_no'     => $this->contactStaffNo ?: null,
+            'contact_staff_no'     => $memberNumber,
             'subscription_plan_id' => $this->selectedPlanId,
             'proof_file'           => $proofPath,
             'payment_reference'    => $this->paymentReference,
             'status'               => 'pending',
         ]);
 
-        // Send confirmation email
+        // Send confirmation email to applicant
         try {
             Mail::to($this->contactEmail)
                 ->send(new ApplicationReceived($application));
         } catch (\Exception $e) {
             \Log::warning('Failed to send application received email: ' . $e->getMessage());
+        }
+
+        // Send notification email to all super admins
+        try {
+            $adminEmails = User::where('user_role_id', 1)
+                ->whereNotNull('email')
+                ->pluck('email')
+                ->toArray();
+
+            if (!empty($adminEmails)) {
+                Mail::to($adminEmails)
+                    ->send(new NewApplicationAdminAlert($application));
+            }
+        } catch (\Exception $e) {
+            \Log::warning('Failed to send admin alert email: ' . $e->getMessage());
         }
 
         $this->showApplyModal = false;
@@ -181,12 +203,42 @@ class LandingPage extends Component
     private function resetForm()
     {
         $this->reset([
-            'bankName', 'bankCode', 'bankDescription', 'bankAddress',
+            'bankName', 'bankDescription', 'bankAddress',
             'bankPhone', 'bankEmail', 'contactName', 'contactEmail',
-            'contactPhone', 'contactStaffNo', 'proofFile', 'paymentReference',
+            'contactPhone', 'proofFile', 'paymentReference',
             'selectedPlanId',
         ]);
         $this->resetErrorBag();
+    }
+
+    /**
+     * Generate a unique village bank code (e.g. VB-A3X9K2).
+     */
+    private function generateUniqueBankCode(): string
+    {
+        do {
+            $code = 'VB-' . Str::upper(Str::random(6));
+        } while (BankApplication::where('bank_code', $code)->exists());
+
+        return $code;
+    }
+
+    /**
+     * Generate a unique member number (e.g. MBR-00000012).
+     */
+    private function generateUniqueMemberNumber(): string
+    {
+        $lastApp = BankApplication::whereNotNull('contact_staff_no')
+            ->where('contact_staff_no', 'like', 'MBR-%')
+            ->orderByDesc('id')
+            ->first();
+
+        $nextNum = 1;
+        if ($lastApp && preg_match('/MBR-(\d+)/', $lastApp->contact_staff_no, $m)) {
+            $nextNum = (int) $m[1] + 1;
+        }
+
+        return 'MBR-' . str_pad($nextNum, 8, '0', STR_PAD_LEFT);
     }
 
     public function render()

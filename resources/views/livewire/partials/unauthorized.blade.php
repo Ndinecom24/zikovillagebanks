@@ -1,4 +1,3 @@
-{{-- Unauthorized fallback — included via @else inside @can --}}
 <div class="content-wrapper" style="min-height: 100vh;">
     <div class="content">
         <div class="container-fluid">

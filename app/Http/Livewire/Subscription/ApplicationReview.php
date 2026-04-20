@@ -27,15 +27,15 @@ class ApplicationReview extends Component
     public $statusFilter = 'pending';
     public $perPage = 10;
 
-    /* ── Review modal ── */
+    /* ── Review (inline in detail view) ── */
     public $showReviewModal = false;
     public $reviewAppId = null;
     public $adminRemarks = '';
     public $reviewAction = ''; // approve | reject
 
-    /* ── Detail modal ── */
+    /* ── Detail view ── */
     public $showDetailModal = false;
-    public $detailApp = null;
+    public $detailAppId = null;
 
     public function updatedSearch()
     {
@@ -49,16 +49,31 @@ class ApplicationReview extends Component
 
     public function viewDetail($id)
     {
-        $this->detailApp = BankApplication::with('plan', 'reviewer')->find($id);
+        $this->detailAppId = $id;
         $this->showDetailModal = true;
     }
 
-    public function openReview($id, $action)
+    public function closeDetailModal()
     {
-        $this->reviewAppId = $id;
-        $this->reviewAction = $action;
+        $this->showDetailModal = false;
+        $this->detailAppId = null;
+        $this->reviewAction = '';
         $this->adminRemarks = '';
-        $this->showReviewModal = true;
+        $this->reviewAppId = null;
+    }
+
+    public function startReview($action)
+    {
+        $this->reviewAction = $action;
+        $this->reviewAppId = $this->detailAppId;
+        $this->adminRemarks = '';
+    }
+
+    public function cancelReviewAction()
+    {
+        $this->reviewAction = '';
+        $this->adminRemarks = '';
+        $this->reviewAppId = null;
     }
 
     public function submitReview()
@@ -73,7 +88,7 @@ class ApplicationReview extends Component
 
         if ($application->status !== 'pending') {
             session()->flash('error', 'This application has already been reviewed.');
-            $this->showReviewModal = false;
+            $this->closeDetailModal();
             return;
         }
 
@@ -83,8 +98,7 @@ class ApplicationReview extends Component
             $this->rejectApplication($application);
         }
 
-        $this->showReviewModal = false;
-        $this->reset(['reviewAppId', 'adminRemarks', 'reviewAction']);
+        $this->closeDetailModal();
     }
 
     private function approveApplication(BankApplication $application)
@@ -154,10 +168,13 @@ class ApplicationReview extends Component
                 'village_bank_id' => $villageBank->id,
             ]);
 
-            // 7. Send approval email
+            // 7. Send approval email to contact person and CC bank email
             try {
-                Mail::to($application->contact_email)
-                    ->send(new ApplicationApproved($application, $license->license_key, $staffNo));
+                $mail = Mail::to($application->contact_email);
+                if ($application->bank_email && $application->bank_email !== $application->contact_email) {
+                    $mail->cc($application->bank_email);
+                }
+                $mail->send(new ApplicationApproved($application, $license->license_key, $staffNo));
             } catch (\Exception $e) {
                 // Log but don't block the approval
                 \Log::warning('Failed to send approval email: ' . $e->getMessage());
@@ -176,10 +193,13 @@ class ApplicationReview extends Component
             'reviewed_at'   => now(),
         ]);
 
-        // Send rejection email
+        // Send rejection email to contact person and CC bank email
         try {
-            Mail::to($application->contact_email)
-                ->send(new ApplicationRejected($application));
+            $mail = Mail::to($application->contact_email);
+            if ($application->bank_email && $application->bank_email !== $application->contact_email) {
+                $mail->cc($application->bank_email);
+            }
+            $mail->send(new ApplicationRejected($application));
         } catch (\Exception $e) {
             \Log::warning('Failed to send rejection email: ' . $e->getMessage());
         }
@@ -202,6 +222,17 @@ class ApplicationReview extends Component
             ->orderByDesc('created_at')
             ->paginate($this->perPage);
 
-        return view('livewire.subscription.application-review', compact('applications'));
+        // Load detail app fresh each render (avoid storing Eloquent model as public property)
+        $detailApp = null;
+        if ($this->showDetailModal && $this->detailAppId) {
+            $detailApp = BankApplication::with('plan', 'reviewer')->find($this->detailAppId);
+            if (!$detailApp) {
+                $this->showDetailModal = false;
+                $this->detailAppId = null;
+            }
+        }
+
+        return view('livewire.subscription.application-review', compact('applications', 'detailApp'))
+            ->layout('layouts.main.master-livewire');
     }
 }

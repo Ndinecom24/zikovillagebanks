@@ -1,4 +1,4 @@
-﻿<div>
+<div>
 
 @can('manage-roles')
 <div class="nd-page">

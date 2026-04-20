@@ -1,4 +1,4 @@
-﻿<div>
+<div>
 
 @can('view-activity-logs')
 <div class="nd-page">

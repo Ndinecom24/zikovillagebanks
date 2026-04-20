@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\VillageBanking\Dashboard;
 
+use App\Models\Subscription\BankApplication;
 use App\Models\User;
 use App\Models\VillageBanking\Circle;
 use App\Models\VillageBanking\Loan;
@@ -64,6 +65,14 @@ class Dashboard extends Component
 
         $shareoutsDone      = Shareout::whereIn('circle_id', $circleIds)->count();
         $totalDistributed   = Shareout::whereIn('circle_id', $circleIds)->sum('total_pool');
+
+        /* ══════════════════════════════
+         *  PENDING APPLICATIONS (super admin only)
+         * ══════════════════════════════ */
+        $pendingApplications = 0;
+        if ($user->isSuperAdmin()) {
+            $pendingApplications = BankApplication::where('status', 'pending')->count();
+        }
 
         /* ══════════════════════════════
          *  MY STATS (logged-in user)
@@ -132,6 +141,7 @@ class Dashboard extends Component
             'totalPenalties', 'totalInsurance',
             'pendingPayments', 'confirmedPayments',
             'shareoutsDone', 'totalDistributed',
+            'pendingApplications',
             'myCircles', 'myContributions', 'myActiveLoans', 'myOutstanding', 'myLoans',
             'recentLoans', 'recentPayments',
             'circleHealth',

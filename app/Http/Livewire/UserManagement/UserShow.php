@@ -41,9 +41,18 @@ class UserShow extends Component
 
     protected $listeners = ['refreshUser' => 'loadUser'];
 
-    // Prevent Livewire from dehydrating/hydrating the user model
-    // so it doesn't break requests; we reload it in render() instead
     protected $rules = [];
+
+    /**
+     * Re-load the user model on every subsequent Livewire request
+     * so public properties that depend on it are always fresh.
+     */
+    public function hydrate()
+    {
+        if ($this->userId) {
+            $this->user = User::with(['roles'])->findOrFail($this->userId);
+        }
+    }
 
     public function switchTab($tab)
     {
@@ -78,13 +87,14 @@ class UserShow extends Component
     {
         $this->editing = !$this->editing;
         if ($this->editing) {
-            $this->fillEditFields();
+            $this->loadUser();
         }
         $this->resetErrorBag();
     }
 
     public function cancelEdit()
     {
+        if (!$this->editing) return;
         $this->editing = false;
         $this->fillEditFields();
         $this->resetErrorBag();
@@ -141,7 +151,13 @@ class UserShow extends Component
     // ---------- PASSWORD RESET ----------
     public function togglePasswordReset()
     {
-        $this->showPasswordReset = !$this->showPasswordReset;
+        if (!$this->showPasswordReset) {
+            // Opening
+            $this->showPasswordReset = true;
+        } else {
+            // Closing
+            $this->showPasswordReset = false;
+        }
         $this->newPassword = '';
         $this->newPasswordConfirmation = '';
         $this->resetErrorBag();
@@ -179,13 +195,12 @@ class UserShow extends Component
 
     public function render()
     {
-        $activityLogs = collect();
-        if ($this->activeTab === 'activity') {
-            $activityLogs = ActivityLog::where('user_id', $this->userId)
-                ->orderByDesc('created_at')
-                ->take(50)
-                ->get();
-        }
+        // Always load activity logs — all tabs are always present in the DOM
+        // (CSS display toggle) to prevent Livewire v2 morphdom fingerprint errors.
+        $activityLogs = ActivityLog::where('user_id', $this->userId)
+            ->orderByDesc('created_at')
+            ->take(50)
+            ->get();
 
         return view('livewire.user-management.user-show', [
             'userRoles'    => $this->userRoles,

@@ -1,5 +1,6 @@
-﻿<div>
+<div>
 
+@once
 @push('custom-styles')
 <style>
     /* ── License Manager (lm-*) ── */
@@ -36,6 +37,7 @@
     .lm-info-box{display:flex;gap:.55rem;padding:.65rem .85rem;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;font-size:.82rem;color:#1e40af;margin-bottom:1rem;}
 </style>
 @endpush
+@endonce
 
 @can('manage-licenses')
 <div class="nd-page">
@@ -155,12 +157,12 @@
                                 </td>
                                 <td>
                                     <div style="display:flex;gap:4px;align-items:center;">
-                                        <button wire:click="viewDetail({{ $license->id }})" class="lm-act lm-act-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                        <button type="button" wire:click="viewDetail({{ $license->id }})" class="lm-act lm-act-view" title="View Details"><i class="fas fa-eye"></i></button>
                                         @if($license->status === 'active')
-                                            <button wire:click="openRevoke({{ $license->id }})" class="lm-act" title="Revoke License"><i class="fas fa-ban"></i></button>
+                                            <button type="button" wire:click="openRevoke({{ $license->id }})" class="lm-act" title="Revoke License"><i class="fas fa-ban"></i></button>
                                         @endif
                                         @if($license->status === 'expired' || $license->status === 'revoked')
-                                            <button wire:click="openActivate({{ $license->id }})" class="lm-act lm-act-activate" title="Activate License"><i class="fas fa-check-circle"></i></button>
+                                            <button type="button" wire:click="openActivate({{ $license->id }})" class="lm-act lm-act-activate" title="Activate License"><i class="fas fa-check-circle"></i></button>
                                         @endif
                                     </div>
                                 </td>
@@ -200,8 +202,8 @@
                     </div>
                 </div>
                 <div class="nd-modal-foot">
-                    <button wire:click="$set('showRevokeModal', false)" class="nd-btn-cancel">Cancel</button>
-                    <button wire:click="revokeLicense" class="nd-btn-danger"><i class="fas fa-ban" style="margin-right:.3rem;"></i> Revoke License</button>
+                    <button type="button" wire:click="$set('showRevokeModal', false)" class="nd-btn-cancel">Cancel</button>
+                    <button type="button" wire:click="revokeLicense" class="nd-btn-danger"><i class="fas fa-ban" style="margin-right:.3rem;"></i> Revoke License</button>
                 </div>
             </div>
         </div>
@@ -336,12 +338,12 @@
                 </div>
                 <div class="nd-modal-foot">
                     @if($detailLicense->status !== 'active')
-                        <button wire:click="closeDetail" wire:click.prefetch="openActivate({{ $detailLicense->id }})" class="lm-btn-activate" onclick="@this.closeDetail(); @this.openActivate({{ $detailLicense->id }})"><i class="fas fa-check-circle"></i> Activate</button>
+                        <button type="button" wire:click="activateFromDetail" class="lm-btn-activate"><i class="fas fa-check-circle"></i> Activate</button>
                     @endif
                     @if($detailLicense->status === 'active')
-                        <button wire:click="closeDetail" wire:click.prefetch="openRevoke({{ $detailLicense->id }})" class="nd-btn-danger" onclick="@this.closeDetail(); @this.openRevoke({{ $detailLicense->id }})"><i class="fas fa-ban"></i> Revoke</button>
+                        <button type="button" wire:click="revokeFromDetail" class="nd-btn-danger"><i class="fas fa-ban"></i> Revoke</button>
                     @endif
-                    <button wire:click="closeDetail" class="nd-btn-cancel">Close</button>
+                    <button type="button" wire:click="closeDetail" class="nd-btn-cancel">Close</button>
                 </div>
             </div>
         </div>
@@ -368,8 +370,8 @@
                     </div>
                 </div>
                 <div class="nd-modal-foot">
-                    <button wire:click="$set('showActivateModal', false)" class="nd-btn-cancel">Cancel</button>
-                    <button wire:click="activateLicense" class="lm-btn-activate"><i class="fas fa-check-circle" style="margin-right:.3rem;"></i> Activate License</button>
+                    <button type="button" wire:click="$set('showActivateModal', false)" class="nd-btn-cancel">Cancel</button>
+                    <button type="button" wire:click="activateLicense" class="lm-btn-activate"><i class="fas fa-check-circle" style="margin-right:.3rem;"></i> Activate License</button>
                 </div>
             </div>
         </div>

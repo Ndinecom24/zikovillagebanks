@@ -435,20 +435,24 @@
             @endif
 
             {{-- Pending actions alert --}}
-            @if($pendingMembers > 0 || $pendingLoans > 0 || $pendingPayments > 0)
+            @if($pendingMembers > 0 || $pendingLoans > 0 || $pendingPayments > 0 || $pendingApplications > 0)
                 <div class="db-alert">
                     <i class="fas fa-exclamation-triangle" style="font-size:1.1rem;flex-shrink:0;"></i>
                     <div>
                         <strong>Action needed:</strong>
+                        @if($pendingApplications > 0)
+                            <a href="{{ route('subscription.applications') }}">{{ $pendingApplications }} application(s)</a>
+                        @endif
                         @if($pendingMembers > 0)
+                            {{ $pendingApplications > 0 ? '&middot;' : '' }}
                             <a href="{{ route('members.approval') }}">{{ $pendingMembers }} member(s)</a>
                         @endif
                         @if($pendingLoans > 0)
-                            {{ $pendingMembers > 0 ? '&middot;' : '' }}
+                            {{ ($pendingApplications > 0 || $pendingMembers > 0) ? '&middot;' : '' }}
                             <a href="{{ route('loans.approval') }}">{{ $pendingLoans }} loan(s)</a>
                         @endif
                         @if($pendingPayments > 0)
-                            {{ ($pendingMembers > 0 || $pendingLoans > 0) ? '&middot;' : '' }}
+                            {{ ($pendingApplications > 0 || $pendingMembers > 0 || $pendingLoans > 0) ? '&middot;' : '' }}
                             <a href="{{ route('payments.confirm') }}">{{ $pendingPayments }} payment(s)</a>
                         @endif
                         awaiting review.
