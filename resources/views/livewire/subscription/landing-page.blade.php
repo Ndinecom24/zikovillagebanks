@@ -183,16 +183,104 @@
             <p class="subtitle">Affordable pricing for village banks of every size</p>
 
             @if($plans->count())
+                {{-- Promo banner if any plan has an active discount --}}
+                @if($plans->contains(fn($p) => $p->hasActiveDiscount()))
+                    <div class="deal-alert-banner">
+                        <div class="deal-alert-inner">
+                            <span class="deal-alert-icon"><i class="fas fa-bolt"></i></span>
+                            <span class="deal-alert-text">
+                                <strong>Limited-Time Offers Available!</strong> Lock in discounted rates before they expire.
+                            </span>
+                            <span class="deal-alert-arrow"><i class="fas fa-arrow-down"></i></span>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="pricing-grid">
                     @foreach($plans as $plan)
-                        <div class="plan-card {{ $plan->is_featured ? 'featured' : '' }}">
+                        @php $countdown = $plan->discountCountdown(); @endphp
+                        <div class="plan-card {{ $plan->is_featured ? 'featured' : '' }} {{ $plan->hasActiveDiscount() ? 'plan-card-deal' : '' }} {{ $plan->isDiscountUrgent() ? 'plan-card-urgent' : '' }}" style="position:relative;overflow:hidden;">
+
+                            {{-- Corner ribbon --}}
+                            @if($plan->hasActiveDiscount())
+                                <div class="discount-ribbon"><span>{{ $plan->discountBadge() }}</span></div>
+                            @endif
+
+                            {{-- Urgency top bar --}}
+                            @if($plan->hasActiveDiscount())
+                                <div class="deal-top-bar {{ $plan->isDiscountUrgent() ? 'deal-top-bar-urgent' : '' }}">
+                                    @if($plan->isDiscountUrgent())
+                                        <i class="fas fa-fire-alt"></i> ENDING SOON — Don't miss out!
+                                    @else
+                                        <i class="fas fa-gift"></i> SPECIAL OFFER
+                                    @endif
+                                </div>
+                            @endif
+
                             <div class="plan-name">{{ $plan->name }}</div>
+
                             @if($plan->description)
                                 <p style="color:#64748b;font-size:0.88rem;margin-bottom:0.5rem;">{{ $plan->description }}</p>
                             @endif
-                            <div class="plan-price">
-                                {{ $plan->formattedPrice() }}<span>{{ $plan->cycleName() }}</span>
-                            </div>
+
+                            {{-- Promo label tag --}}
+                            @if($plan->discount_label && $plan->hasActiveDiscount())
+                                <div class="price-label-tag">
+                                    <i class="fas fa-fire"></i> {{ $plan->discount_label }}
+                                </div>
+                            @endif
+
+                            {{-- Price display --}}
+                            @if($plan->hasActiveDiscount())
+                                <div class="price-slash">
+                                    <span class="price-was">{{ $plan->formattedPrice() }}</span>
+                                    <div class="price-now">
+                                        {{ $plan->formattedEffectivePrice() }}<span>{{ $plan->cycleName() }}</span>
+                                    </div>
+                                    <div class="deal-savings-row">
+                                        <span class="price-save-badge">
+                                            <i class="fas fa-arrow-down"></i> Save {{ $plan->savingsPercentage() }}% &mdash; K{{ number_format($plan->discountAmount(), 0) }} off
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {{-- Visual countdown timer --}}
+                                @if($countdown)
+                                    <div class="deal-countdown-box {{ $countdown['urgent'] ? 'deal-countdown-urgent' : '' }}">
+                                        <div class="deal-countdown-label">
+                                            @if($countdown['urgent'])
+                                                <i class="fas fa-exclamation-triangle"></i> Hurry! Offer ends soon
+                                            @else
+                                                <i class="fas fa-hourglass-half"></i> Offer ends in
+                                            @endif
+                                        </div>
+                                        <div class="deal-countdown-digits">
+                                            <div class="deal-cd-unit">
+                                                <span class="deal-cd-num">{{ $countdown['days'] }}</span>
+                                                <span class="deal-cd-label">Days</span>
+                                            </div>
+                                            <span class="deal-cd-sep">:</span>
+                                            <div class="deal-cd-unit">
+                                                <span class="deal-cd-num">{{ str_pad($countdown['hours'], 2, '0', STR_PAD_LEFT) }}</span>
+                                                <span class="deal-cd-label">Hrs</span>
+                                            </div>
+                                            <span class="deal-cd-sep">:</span>
+                                            <div class="deal-cd-unit">
+                                                <span class="deal-cd-num">{{ str_pad($countdown['minutes'], 2, '0', STR_PAD_LEFT) }}</span>
+                                                <span class="deal-cd-label">Min</span>
+                                            </div>
+                                        </div>
+                                        <div class="deal-countdown-enddate">
+                                            <i class="fas fa-calendar-check"></i> Deal expires: {{ $countdown['end_date'] }}
+                                        </div>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="plan-price">
+                                    {{ $plan->formattedPrice() }}<span>{{ $plan->cycleName() }}</span>
+                                </div>
+                            @endif
+
                             <ul class="plan-features">
                                 @if($plan->max_members)
                                     <li><i class="fas fa-check"></i> Up to {{ $plan->max_members }} members</li>
@@ -211,10 +299,22 @@
                                     @endforeach
                                 @endif
                             </ul>
-                            <button wire:click="selectPlan({{ $plan->id }})"
-                                class="btn-plan {{ $plan->is_featured ? 'btn-plan-primary' : 'btn-plan-outline' }}">
-                                Apply Now
-                            </button>
+
+                            {{-- CTA button --}}
+                            @if($plan->hasActiveDiscount())
+                                <button wire:click="selectPlan({{ $plan->id }})"
+                                    class="btn-plan btn-plan-deal">
+                                    <i class="fas fa-bolt" style="margin-right:.3rem;"></i> Grab This Deal
+                                </button>
+                                <div class="deal-trust-nudge">
+                                    <i class="fas fa-shield-alt"></i> Secure checkout &bull; Instant activation
+                                </div>
+                            @else
+                                <button wire:click="selectPlan({{ $plan->id }})"
+                                    class="btn-plan {{ $plan->is_featured ? 'btn-plan-primary' : 'btn-plan-outline' }}">
+                                    Apply Now
+                                </button>
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -376,13 +476,73 @@
                             @if($selectedPlan)
                                 <div style="background:#f0f9f4;border:1px solid #86efac;border-radius:10px;padding:0.75rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem;">
                                     <i class="fas fa-tag" style="color:var(--nd-primary);"></i>
-                                    <div>
+                                    <div style="flex:1;">
                                         <strong style="color:var(--nd-primary);">{{ $selectedPlan->name }}</strong>
-                                        <span style="color:#475569;font-size:0.88rem;"> &mdash; {{ $selectedPlan->formattedPrice() }}{{ $selectedPlan->cycleName() }}</span>
+                                        @if($appliedPromoCode)
+                                            {{-- Show original → after plan discount → after promo --}}
+                                            @if($selectedPlan->hasActiveDiscount())
+                                                <span style="color:#94a3b8;font-size:0.82rem;text-decoration:line-through;margin-left:.3rem;">{{ $selectedPlan->formattedPrice() }}</span>
+                                            @else
+                                                <span style="color:#94a3b8;font-size:0.82rem;text-decoration:line-through;margin-left:.3rem;">{{ $selectedPlan->formattedEffectivePrice() }}</span>
+                                            @endif
+                                            <span style="color:#16a34a;font-size:0.95rem;font-weight:800;margin-left:.2rem;">K{{ number_format($this->getFinalPrice(), 2) }}{{ $selectedPlan->cycleName() }}</span>
+                                            <span style="background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:.66rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;margin-left:.3rem;">PROMO APPLIED</span>
+                                        @elseif($selectedPlan->hasActiveDiscount())
+                                            <span style="color:#94a3b8;font-size:0.82rem;text-decoration:line-through;margin-left:.3rem;">{{ $selectedPlan->formattedPrice() }}</span>
+                                            <span style="color:#16a34a;font-size:0.88rem;font-weight:700;margin-left:.2rem;">{{ $selectedPlan->formattedEffectivePrice() }}{{ $selectedPlan->cycleName() }}</span>
+                                            <span style="background:#fef3c7;color:#92400e;font-size:.68rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;margin-left:.3rem;">{{ $selectedPlan->discountBadge() }}</span>
+                                        @else
+                                            <span style="color:#475569;font-size:0.88rem;"> &mdash; {{ $selectedPlan->formattedPrice() }}{{ $selectedPlan->cycleName() }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             @endif
                         @endif
+
+                        {{-- ── Promo Code Input ── --}}
+                        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:0.85rem 1rem;margin-bottom:1.25rem;">
+                            <div style="font-weight:700;font-size:0.84rem;color:#475569;margin-bottom:0.55rem;">
+                                <i class="fas fa-ticket-alt" style="margin-right:.25rem;color:#D97706;"></i> Have a promo code?
+                            </div>
+                            @if($appliedPromoCode)
+                                {{-- Applied promo view --}}
+                                <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:0.6rem 0.85rem;display:flex;align-items:center;gap:0.65rem;">
+                                    <i class="fas fa-check-circle" style="color:#16a34a;font-size:1rem;"></i>
+                                    <div style="flex:1;">
+                                        <div style="font-family:'Courier New',monospace;font-weight:800;font-size:0.92rem;color:#166534;letter-spacing:1px;">
+                                            {{ $appliedPromoCode->code }}
+                                        </div>
+                                        <div style="font-size:0.78rem;color:#15803d;">
+                                            {{ $promoSuccess }}
+                                        </div>
+                                    </div>
+                                    <button type="button" wire:click="removePromoCode"
+                                        style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:6px;padding:0.3rem 0.6rem;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all .2s;"
+                                        onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">
+                                        <i class="fas fa-times" style="margin-right:.2rem;"></i> Remove
+                                    </button>
+                                </div>
+                            @else
+                                {{-- Promo input --}}
+                                <div style="display:flex;gap:0;">
+                                    <input type="text" wire:model="promoCodeInput"
+                                        style="flex:1;padding:0.5rem 0.75rem;border:2px solid #e2e8f0;border-right:none;border-radius:8px 0 0 8px;font-family:'Courier New',monospace;font-size:0.9rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1E3A5F;transition:border-color .2s;"
+                                        placeholder="Enter code"
+                                        wire:keydown.enter.prevent="applyPromoCode">
+                                    <button type="button" wire:click="applyPromoCode"
+                                        style="padding:0.5rem 1rem;background:linear-gradient(135deg,#1E3A5F,#2B6B96);color:#fff;border:2px solid #1E3A5F;border-radius:0 8px 8px 0;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;"
+                                        wire:loading.attr="disabled" wire:target="applyPromoCode">
+                                        <span wire:loading.remove wire:target="applyPromoCode"><i class="fas fa-check" style="margin-right:.25rem;"></i> Apply</span>
+                                        <span wire:loading wire:target="applyPromoCode"><i class="fas fa-spinner fa-spin"></i></span>
+                                    </button>
+                                </div>
+                                @if($promoError)
+                                    <div style="margin-top:0.4rem;font-size:0.78rem;color:#dc2626;font-weight:600;">
+                                        <i class="fas fa-exclamation-circle" style="margin-right:.2rem;"></i> {{ $promoError }}
+                                    </div>
+                                @endif
+                            @endif
+                        </div>
 
                         <h6 style="font-weight:700;color:var(--nd-primary);margin-bottom:0.75rem;font-size:0.9rem;">
                             <i class="fas fa-building"></i> Village Bank Details
@@ -391,7 +551,7 @@
                         <div class="lf-row">
                             <div>
                                 <label class="lf-label">Village Bank Name <span style="color:#dc3545;">*</span></label>
-                                <input type="text" wire:model.defer="bankName" class="lf-input" placeholder="e.g. Sunrise Village Bank">
+                                <input type="text" wire:model="bankName" class="lf-input" placeholder="e.g. Sunrise Village Bank">
                                 @error('bankName') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
@@ -404,24 +564,24 @@
 
                         <div class="lf-col">
                             <label class="lf-label">Village Bank Description</label>
-                            <textarea wire:model.defer="bankDescription" class="lf-input" rows="2" placeholder="Brief description of your village bank"></textarea>
+                            <textarea wire:model="bankDescription" class="lf-input" rows="2" placeholder="Brief description of your village bank"></textarea>
                         </div>
 
                         <div class="lf-row">
                             <div>
                                 <label class="lf-label">Address</label>
-                                <input type="text" wire:model.defer="bankAddress" class="lf-input" placeholder="Physical address">
+                                <input type="text" wire:model="bankAddress" class="lf-input" placeholder="Physical address">
                             </div>
                             <div>
                                 <label class="lf-label">Phone <span style="color:#dc3545;">*</span></label>
-                                <input type="text" wire:model.defer="bankPhone" class="lf-input" placeholder="+260 9XX XXX XXX">
+                                <input type="text" wire:model="bankPhone" class="lf-input" placeholder="+260 9XX XXX XXX">
                                 @error('bankPhone') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
                         <div class="lf-col">
                             <label class="lf-label">Bank Email <span style="color:#dc3545;">*</span></label>
-                            <input type="email" wire:model.defer="bankEmail" class="lf-input" placeholder="bank@example.com">
+                            <input type="email" wire:model="bankEmail" class="lf-input" placeholder="bank@example.com">
                             @error('bankEmail') <div class="lf-error">{{ $message }}</div> @enderror
                         </div>
 
@@ -434,7 +594,7 @@
                         <div class="lf-row">
                             <div>
                                 <label class="lf-label">Full Name <span style="color:#dc3545;">*</span></label>
-                                <input type="text" wire:model.defer="contactName" class="lf-input" placeholder="John Doe">
+                                <input type="text" wire:model="contactName" class="lf-input" placeholder="John Doe">
                                 @error('contactName') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
@@ -448,12 +608,12 @@
                         <div class="lf-row">
                             <div>
                                 <label class="lf-label">Email <span style="color:#dc3545;">*</span></label>
-                                <input type="email" wire:model.defer="contactEmail" class="lf-input" placeholder="john@example.com">
+                                <input type="email" wire:model="contactEmail" class="lf-input" placeholder="john@example.com">
                                 @error('contactEmail') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
                                 <label class="lf-label">Phone <span style="color:#dc3545;">*</span></label>
-                                <input type="text" wire:model.defer="contactPhone" class="lf-input" placeholder="+260 9XX XXX XXX">
+                                <input type="text" wire:model="contactPhone" class="lf-input" placeholder="+260 9XX XXX XXX">
                                 @error('contactPhone') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -503,7 +663,7 @@
                         <div class="lf-row">
                             <div>
                                 <label class="lf-label">Payment Reference <span style="color:#dc3545;">*</span></label>
-                                <input type="text" wire:model.defer="paymentReference" class="lf-input" placeholder="Transaction ID / Receipt No.">
+                                <input type="text" wire:model="paymentReference" class="lf-input" placeholder="Transaction ID / Receipt No.">
                                 @error('paymentReference') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
@@ -517,6 +677,38 @@
                         <div wire:loading wire:target="proofFile" style="color:var(--nd-primary);font-size:0.85rem;margin-bottom:0.75rem;">
                             <i class="fas fa-spinner fa-spin"></i> Uploading file...
                         </div>
+
+                        {{-- ── Pricing Summary ── --}}
+                        @if($selectedPlanId)
+                            @php $summaryPlan = $plans->firstWhere('id', $selectedPlanId); @endphp
+                            @if($summaryPlan)
+                                <div style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1px solid #bae6fd;border-radius:10px;padding:0.85rem 1rem;margin-bottom:1rem;">
+                                    <div style="font-weight:700;font-size:0.82rem;color:#0369a1;margin-bottom:0.5rem;">
+                                        <i class="fas fa-receipt" style="margin-right:.25rem;"></i> Payment Summary
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#475569;margin-bottom:.25rem;">
+                                        <span>{{ $summaryPlan->name }} ({{ $summaryPlan->duration_days }} days)</span>
+                                        <span>{{ $summaryPlan->formattedPrice() }}</span>
+                                    </div>
+                                    @if($summaryPlan->hasActiveDiscount())
+                                        <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:#16a34a;margin-bottom:.25rem;">
+                                            <span>Plan Discount ({{ $summaryPlan->discountBadge() }})</span>
+                                            <span>- K{{ number_format($summaryPlan->discountAmount(), 2) }}</span>
+                                        </div>
+                                    @endif
+                                    @if($appliedPromoCode)
+                                        <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:#7c3aed;margin-bottom:.25rem;">
+                                            <span>Promo: {{ $appliedPromoCode->code }} ({{ $appliedPromoCode->discountLabel() }})</span>
+                                            <span>- K{{ number_format($promoDiscount, 2) }}</span>
+                                        </div>
+                                    @endif
+                                    <div style="border-top:1px dashed #93c5fd;margin-top:.4rem;padding-top:.4rem;display:flex;justify-content:space-between;font-size:1rem;font-weight:800;color:#0c4a6e;">
+                                        <span>Amount Due</span>
+                                        <span>K{{ number_format($this->getFinalPrice(), 2) }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
 
                         <button type="submit" class="btn-submit-app" wire:loading.attr="disabled" wire:target="submitApplication">
                             <span wire:loading.remove wire:target="submitApplication">
@@ -566,12 +758,12 @@
                         <div class="lf-row">
                             <div>
                                 <label class="lf-label">Full Name <span style="color:#dc3545;">*</span></label>
-                                <input type="text" wire:model.defer="trainingFullName" class="lf-input" placeholder="John Doe">
+                                <input type="text" wire:model="trainingFullName" class="lf-input" placeholder="John Doe">
                                 @error('trainingFullName') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
                                 <label class="lf-label">Email <span style="color:#dc3545;">*</span></label>
-                                <input type="email" wire:model.defer="trainingEmail" class="lf-input" placeholder="john@example.com">
+                                <input type="email" wire:model="trainingEmail" class="lf-input" placeholder="john@example.com">
                                 @error('trainingEmail') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -579,23 +771,23 @@
                         <div class="lf-row">
                             <div>
                                 <label class="lf-label">Phone <span style="color:#dc3545;">*</span></label>
-                                <input type="text" wire:model.defer="trainingPhone" class="lf-input" placeholder="+260 9XX XXX XXX">
+                                <input type="text" wire:model="trainingPhone" class="lf-input" placeholder="+260 9XX XXX XXX">
                                 @error('trainingPhone') <div class="lf-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
                                 <label class="lf-label">Village Bank Name</label>
-                                <input type="text" wire:model.defer="trainingVillageBank" class="lf-input" placeholder="Your village bank (if any)">
+                                <input type="text" wire:model="trainingVillageBank" class="lf-input" placeholder="Your village bank (if any)">
                             </div>
                         </div>
 
                         <div class="lf-col">
                             <label class="lf-label">Your Role in the Bank</label>
-                            <input type="text" wire:model.defer="trainingRoleInBank" class="lf-input" placeholder="e.g. Chairperson, Treasurer, Member">
+                            <input type="text" wire:model="trainingRoleInBank" class="lf-input" placeholder="e.g. Chairperson, Treasurer, Member">
                         </div>
 
                         <div class="lf-col">
                             <label class="lf-label">Why do you want to attend?</label>
-                            <textarea wire:model.defer="trainingMotivation" class="lf-input" rows="3" placeholder="Brief motivation for attending this training"></textarea>
+                            <textarea wire:model="trainingMotivation" class="lf-input" rows="3" placeholder="Brief motivation for attending this training"></textarea>
                         </div>
 
                         <button type="submit" class="btn-submit-app" wire:loading.attr="disabled" wire:target="submitTrainingApplication">

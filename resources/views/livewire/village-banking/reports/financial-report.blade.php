@@ -102,7 +102,7 @@
                 </div>
                 <div>
                     <label class="fr-label">Circle</label>
-                    <select wire:model="circleId" class="fr-select">
+                    <select wire:model.live="circleId" class="fr-select">
                         <option value="">All Circles</option>
                         @foreach ($this->circles as $c)
                             <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -111,11 +111,11 @@
                 </div>
                 <div>
                     <label class="fr-label">From</label>
-                    <input type="date" wire:model.lazy="dateFrom" class="fr-date">
+                    <input type="date" wire:model.blur="dateFrom" class="fr-date">
                 </div>
                 <div>
                     <label class="fr-label">To</label>
-                    <input type="date" wire:model.lazy="dateTo" class="fr-date">
+                    <input type="date" wire:model.blur="dateTo" class="fr-date">
                 </div>
                 <button wire:click="resetFilters" class="fr-clear"><i class="fas fa-times"></i> Clear</button>
             </div>

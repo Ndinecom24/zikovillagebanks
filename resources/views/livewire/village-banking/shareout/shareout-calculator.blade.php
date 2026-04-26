@@ -158,7 +158,7 @@
                                 </div>
                                 <div>
                                     <label class="sc-label">Circle <span style="color:var(--sc-red);">*</span></label>
-                                    <select wire:model="circleId" class="sc-select">
+                                    <select wire:model.live="circleId" class="sc-select">
                                         <option value="">-- Select Circle --</option>
                                         @foreach ($this->circles as $c)
                                             <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }} members)</option>

@@ -59,5 +59,23 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
+
+        // Throttle login attempts: 5 per minute per IP
+        RateLimiter::for('login', function (Request $request) {
+            return Limit::perMinute(5)->by($request->ip())->response(function () {
+                return back()->withErrors([
+                    'email' => 'Too many login attempts. Please try again in a minute.',
+                ]);
+            });
+        });
+
+        // Throttle registration: 3 per hour per IP
+        RateLimiter::for('register', function (Request $request) {
+            return Limit::perHour(3)->by($request->ip())->response(function () {
+                return back()->withErrors([
+                    'email' => 'Too many registration attempts. Please try again later.',
+                ]);
+            });
+        });
     }
 }

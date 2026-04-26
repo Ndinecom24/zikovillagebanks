@@ -152,7 +152,7 @@
                     <div style="display:grid;grid-template-columns:1fr auto;gap:.85rem;align-items:end;">
                         <div>
                             <label class="sf-label">Select Social Fund</label>
-                            <select wire:model="socialFundId" class="sf-select">
+                            <select wire:model.live="socialFundId" class="sf-select">
                                 <option value="">— Choose a social fund —</option>
                                 @foreach ($this->socialFunds as $sf)
                                     <option value="{{ $sf->id }}">
@@ -239,7 +239,7 @@
                                     <div class="sf-form-grid">
                                         <div>
                                             <label class="sf-label">Usage Type</label>
-                                            <select wire:model="usageType" class="sf-select">
+                                            <select wire:model.live="usageType" class="sf-select">
                                                 <option value="shareout">Share Out (distribute to members)</option>
                                                 <option value="donation">Donation (give to person/cause)</option>
                                                 <option value="payment">Payment (for items/services)</option>
@@ -249,26 +249,26 @@
                                         </div>
                                         <div>
                                             <label class="sf-label">Amount (K)</label>
-                                            <input type="number" wire:model.defer="usageAmount" class="sf-input" step="0.01" min="0.01" max="{{ $fund['total_remaining'] + ($editingUsageId ? collect($usages)->firstWhere('id', $editingUsageId)['amount'] ?? 0 : 0) }}" placeholder="0.00">
+                                            <input type="number" wire:model="usageAmount" class="sf-input" step="0.01" min="0.01" max="{{ $fund['total_remaining'] + ($editingUsageId ? collect($usages)->firstWhere('id', $editingUsageId)['amount'] ?? 0 : 0) }}" placeholder="0.00">
                                             @error('usageAmount') <div class="sf-error">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="sf-form-full">
                                             <label class="sf-label">Description</label>
-                                            <input type="text" wire:model.defer="usageDescription" class="sf-input" placeholder="Brief description of what the fund was used for">
+                                            <input type="text" wire:model="usageDescription" class="sf-input" placeholder="Brief description of what the fund was used for">
                                             @error('usageDescription') <div class="sf-error">{{ $message }}</div> @enderror
                                         </div>
                                         <div>
                                             <label class="sf-label">Recipient / Payee</label>
-                                            <input type="text" wire:model.defer="usageRecipient" class="sf-input" placeholder="Name of person or organisation">
+                                            <input type="text" wire:model="usageRecipient" class="sf-input" placeholder="Name of person or organisation">
                                         </div>
                                         <div>
                                             <label class="sf-label">Date</label>
-                                            <input type="date" wire:model.defer="usageDate" class="sf-input">
+                                            <input type="date" wire:model="usageDate" class="sf-input">
                                             @error('usageDate') <div class="sf-error">{{ $message }}</div> @enderror
                                         </div>
                                         <div class="sf-form-full">
                                             <label class="sf-label">Notes (optional)</label>
-                                            <textarea wire:model.defer="usageNotes" class="sf-textarea" rows="2" placeholder="Any additional details…"></textarea>
+                                            <textarea wire:model="usageNotes" class="sf-textarea" rows="2" placeholder="Any additional details…"></textarea>
                                         </div>
                                     </div>
                                     <div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem;">

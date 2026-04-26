@@ -50,7 +50,7 @@
                 <div class="nd-toolbar">
                     <div class="nd-search">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search permissions..." wire:model.debounce.300ms="search">
+                        <input type="text" placeholder="Search permissions..." wire:model.live.debounce.300ms="search">
                     </div>
                 </div>
             </div>
@@ -134,12 +134,12 @@
                     <div class="pm-form-group">
                         <label class="pm-label">Permission Name <span class="req">*</span></label>
                         <input type="text" class="pm-input @error('name') is-invalid @enderror"
-                               wire:model.defer="name" placeholder="e.g. create-ipp, edit-user, view-reports">
+                               wire:model="name" placeholder="e.g. create-ipp, edit-user, view-reports">
                         @error('name') <div class="pm-error">{{ $message }}</div> @enderror
                     </div>
                     <div class="pm-form-group">
                         <label class="pm-label">Group</label>
-                        <select class="nd-select @error('group') is-invalid @enderror" wire:model.defer="group">
+                        <select class="nd-select @error('group') is-invalid @enderror" wire:model.live="group">
                             <option value="">Select a group...</option>
                             @foreach($groups as $g)
                                 <option value="{{ $g }}">{{ $g }}</option>
@@ -150,7 +150,7 @@
                     <div class="pm-form-group">
                         <label class="pm-label">Description</label>
                         <textarea class="pm-textarea @error('description') is-invalid @enderror"
-                                  wire:model.defer="description" rows="2" placeholder="What does this permission allow?"></textarea>
+                                  wire:model="description" rows="2" placeholder="What does this permission allow?"></textarea>
                         @error('description') <div class="pm-error">{{ $message }}</div> @enderror
                     </div>
                 </div>
@@ -175,12 +175,12 @@
                 <div class="nd-modal-body">
                     <div class="pm-form-group">
                         <label class="pm-label">Permission Name <span class="req">*</span></label>
-                        <input type="text" class="pm-input @error('editName') is-invalid @enderror" wire:model.defer="editName">
+                        <input type="text" class="pm-input @error('editName') is-invalid @enderror" wire:model="editName">
                         @error('editName') <div class="pm-error">{{ $message }}</div> @enderror
                     </div>
                     <div class="pm-form-group">
                         <label class="pm-label">Group</label>
-                        <select class="nd-select @error('editGroup') is-invalid @enderror" wire:model.defer="editGroup">
+                        <select class="nd-select @error('editGroup') is-invalid @enderror" wire:model.live="editGroup">
                             <option value="">Select a group...</option>
                             @foreach($groups as $g)
                                 <option value="{{ $g }}">{{ $g }}</option>
@@ -191,7 +191,7 @@
                     <div class="pm-form-group">
                         <label class="pm-label">Description</label>
                         <textarea class="pm-textarea @error('editDescription') is-invalid @enderror"
-                                  wire:model.defer="editDescription" rows="2"></textarea>
+                                  wire:model="editDescription" rows="2"></textarea>
                         @error('editDescription') <div class="pm-error">{{ $message }}</div> @enderror
                     </div>
                 </div>

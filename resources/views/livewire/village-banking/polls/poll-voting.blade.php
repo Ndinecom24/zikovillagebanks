@@ -154,7 +154,7 @@
                     <div class="pv-selector">
                         <div>
                             <label class="pv-label"><i class="fas fa-university" style="color:var(--pv-amber);margin-right:.25rem;"></i> Village Bank</label>
-                            <select wire:model="villageBankId" class="pv-input">
+                            <select wire:model.live="villageBankId" class="pv-input">
                                 <option value="">All Village Banks</option>
                                 @foreach ($this->villageBanks as $vb)
                                     <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -163,7 +163,7 @@
                         </div>
                         <div>
                             <label class="pv-label"><i class="fas fa-poll" style="color:var(--pv-green);margin-right:.25rem;"></i> Active Poll</label>
-                            <select wire:model="activePollId" class="pv-input">
+                            <select wire:model.live="activePollId" class="pv-input">
                                 <option value="">-- Select a poll --</option>
                                 @foreach ($activePolls as $ap)
                                     <option value="{{ $ap->id }}">
@@ -221,7 +221,7 @@
                                                 @foreach ($currentPoll->options as $option)
                                                     <li class="pv-option-item {{ $selectedOption == $option->id ? 'selected' : '' }}"
                                                         onclick="document.getElementById('pv_opt_{{ $option->id }}').click();">
-                                                        <input type="radio" wire:model="selectedOption" value="{{ $option->id }}" id="pv_opt_{{ $option->id }}">
+                                                        <input type="radio" wire:model.live="selectedOption" value="{{ $option->id }}" id="pv_opt_{{ $option->id }}">
                                                         <div class="pv-option-indicator"></div>
                                                         <span class="pv-option-label">{{ $option->label }}</span>
                                                     </li>
@@ -306,7 +306,7 @@
                                 @endif
 
                                 <form wire:submit.prevent="addComment" class="pv-comment-input">
-                                    <input type="text" wire:model.defer="commentBody" placeholder="Share your thoughts...">
+                                    <input type="text" wire:model="commentBody" placeholder="Share your thoughts...">
                                     <button type="submit" class="pv-send-btn"><i class="fas fa-paper-plane"></i></button>
                                 </form>
                                 @error('commentBody') <small style="color:var(--pv-red);font-size:.76rem;">{{ $message }}</small> @enderror

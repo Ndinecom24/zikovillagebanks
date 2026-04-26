@@ -34,6 +34,10 @@ class VillageBankConfiguration extends Model
         'max_loan_amount',
         'late_repayment_penalty_rate',
         'grace_period_days',
+        'communication_channel',
+        'constitution_enabled',
+        'require_constitution_before_activity',
+        'require_rules_before_activity',
     ];
 
     protected $casts = [
@@ -52,6 +56,10 @@ class VillageBankConfiguration extends Model
         'max_loan_amount'             => 'decimal:2',
         'late_repayment_penalty_rate' => 'decimal:2',
         'grace_period_days'           => 'integer',
+        'communication_channel'       => 'string',
+        'constitution_enabled'                 => 'boolean',
+        'require_constitution_before_activity'  => 'boolean',
+        'require_rules_before_activity'         => 'boolean',
     ];
 
     /* ── Relationships ────────────────── */
@@ -88,6 +96,10 @@ class VillageBankConfiguration extends Model
                 'max_loan_amount'            => null,
                 'late_repayment_penalty_rate' => 5.00,
                 'grace_period_days'          => 0,
+                'communication_channel'      => 'email',
+                'constitution_enabled'       => false,
+                'require_constitution_before_activity' => true,
+                'require_rules_before_activity'        => true,
             ]
         );
     }

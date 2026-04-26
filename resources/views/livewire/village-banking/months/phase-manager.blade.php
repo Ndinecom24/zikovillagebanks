@@ -347,18 +347,18 @@
                     <div class="pm-modal-body">
                         <div style="margin-bottom:1.25rem;">
                             <label class="pm-label">Phase Name <span style="color:var(--pm-red);">*</span></label>
-                            <input type="text" wire:model.defer="phaseName" class="pm-input" placeholder="e.g. Share Collection">
+                            <input type="text" wire:model="phaseName" class="pm-input" placeholder="e.g. Share Collection">
                             @error('phaseName') <small style="color:var(--pm-red);font-size:.72rem;">{{ $message }}</small> @enderror
                         </div>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
                             <div>
                                 <label class="pm-label">Start Date &amp; Time <span style="color:var(--pm-red);">*</span></label>
-                                <input type="datetime-local" wire:model.defer="phaseStartDate" class="pm-input">
+                                <input type="datetime-local" wire:model="phaseStartDate" class="pm-input">
                                 @error('phaseStartDate') <small style="color:var(--pm-red);font-size:.72rem;">{{ $message }}</small> @enderror
                             </div>
                             <div>
                                 <label class="pm-label">End Date &amp; Time <span style="color:var(--pm-red);">*</span></label>
-                                <input type="datetime-local" wire:model.defer="phaseEndDate" class="pm-input">
+                                <input type="datetime-local" wire:model="phaseEndDate" class="pm-input">
                                 @error('phaseEndDate') <small style="color:var(--pm-red);font-size:.72rem;">{{ $message }}</small> @enderror
                             </div>
                         </div>

@@ -183,7 +183,7 @@
             <div class="lp-filter-strip">
                 <div>
                     <div class="lp-filter-label"><i class="fas fa-university"></i> Village Bank</div>
-                    <select wire:model="villageBankId" class="lp-input">
+                    <select wire:model.live="villageBankId" class="lp-input">
                         <option value="">All Village Banks</option>
                         @foreach ($this->villageBanks as $vb)
                             <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -192,7 +192,7 @@
                 </div>
                 <div>
                     <div class="lp-filter-label"><i class="fas fa-circle-notch"></i> Circle</div>
-                    <select wire:model="circleId" class="lp-input">
+                    <select wire:model.live="circleId" class="lp-input">
                         <option value="">-- Select Circle --</option>
                         @foreach ($circles as $c)
                             <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -201,7 +201,7 @@
                 </div>
                 <div>
                     <div class="lp-filter-label"><i class="fas fa-calendar-alt"></i> Active Month</div>
-                    <select wire:model="monthId" class="lp-input" {{ empty($circleId) ? 'disabled' : '' }}>
+                    <select wire:model.live="monthId" class="lp-input" {{ empty($circleId) ? 'disabled' : '' }}>
                         <option value="">-- Select Month --</option>
                         @foreach ($months as $mo)
                             <option value="{{ $mo->id }}">Month {{ $mo->month_number }} ({{ $mo->start_date->format('d M') }} – {{ $mo->end_date->format('d M') }})</option>
@@ -365,7 +365,7 @@
                                                     <td style="font-size:.84rem;color:var(--lp-muted);">{{ $lender->email }}</td>
                                                     <td>
                                                         <input type="number" step="0.01" min="0"
-                                                            wire:model.lazy="pairings.{{ $lender->id }}"
+                                                            wire:model.blur="pairings.{{ $lender->id }}"
                                                             class="lp-input" placeholder="0.00"
                                                             style="text-align:right;">
                                                     </td>

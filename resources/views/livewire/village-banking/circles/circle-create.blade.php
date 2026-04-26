@@ -180,7 +180,7 @@
                                 {{-- Village Bank --}}
                                 <div style="margin-bottom:1.25rem;">
                                     <label class="cc-label">Village Bank <span class="req">*</span></label>
-                                    <select wire:model.defer="villageBankId" class="cc-input">
+                                    <select wire:model.live="villageBankId" class="cc-input">
                                         <option value="">-- Select Village Bank --</option>
                                         @foreach ($this->villageBanks as $vb)
                                             <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -192,7 +192,7 @@
                                 {{-- Circle Name --}}
                                 <div style="margin-bottom:1.25rem;">
                                     <label class="cc-label">Circle Name <span class="req">*</span></label>
-                                    <input type="text" wire:model.defer="name" class="cc-input" placeholder="e.g. Savings Circle 2026">
+                                    <input type="text" wire:model="name" class="cc-input" placeholder="e.g. Savings Circle 2026">
                                     @error('name') <div class="cc-error">{{ $message }}</div> @enderror
                                 </div>
 

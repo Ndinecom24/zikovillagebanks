@@ -1,17 +1,24 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddCurrentSessionIdToUsersTable extends Migration
 {
     public function up()
     {
-        DB::statement("ALTER TABLE users ADD COLUMN current_session_id VARCHAR(255) NULL AFTER remember_token");
+        if (!Schema::hasColumn('users', 'current_session_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('current_session_id')->nullable()->after('remember_token');
+            });
+        }
     }
 
     public function down()
     {
-        DB::statement("ALTER TABLE users DROP COLUMN current_session_id");
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('current_session_id');
+        });
     }
 }

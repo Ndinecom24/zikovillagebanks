@@ -201,7 +201,7 @@
                 <div class="ll-card-head">
                     <h3 class="ll-card-title"><i class="fas fa-list-ul"></i> All Loans</h3>
                     <div class="ll-toolbar">
-                        <select wire:model="statusFilter" class="ll-select">
+                        <select wire:model.live="statusFilter" class="ll-select">
                             <option value="">All Statuses</option>
                             <option value="pending">Pending</option>
                             <option value="approved">Approved</option>
@@ -211,9 +211,9 @@
                         </select>
                         <div class="ll-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search loans...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search loans...">
                         </div>
-                        <select wire:model="perPage" class="ll-select" style="width:70px;">
+                        <select wire:model.live="perPage" class="ll-select" style="width:70px;">
                             <option value="10">10</option><option value="15">15</option><option value="25">25</option><option value="50">50</option>
                         </select>
                     </div>

@@ -57,9 +57,9 @@
                 <div class="nd-toolbar">
                     <div class="nd-search">
                         <i class="fas fa-search"></i>
-                        <input type="text" wire:model.debounce.300ms="search" placeholder="Search users...">
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search users...">
                     </div>
-                    <select wire:model="perPage" class="nd-select">
+                    <select wire:model.live="perPage" class="nd-select">
                         <option value="10">10</option>
                         <option value="15">15</option>
                         <option value="25">25</option>
@@ -191,7 +191,7 @@
                         <div class="nd-field">
                             <label>Employee Staff No</label>
                             <div style="display:flex;gap:.5rem;">
-                                <input type="text" wire:model.defer="staffNo" placeholder="e.g. 12345" style="flex:1;">
+                                <input type="text" wire:model="staffNo" placeholder="e.g. 12345" style="flex:1;">
                                 <button type="button" wire:click.prevent="lookupStaff" class="nd-btn nd-btn-navy" style="padding:.4rem .75rem;white-space:nowrap;" wire:loading.attr="disabled">
                                     <i class="fas fa-search"></i> Lookup
                                 </button>
@@ -200,7 +200,7 @@
                         </div>
                         <div class="nd-field">
                             <label>Full Name <span class="req">*</span></label>
-                            <input type="text" wire:model.defer="staffName" placeholder="Full name" {{ $staffFound ? 'readonly' : '' }}>
+                            <input type="text" wire:model="staffName" placeholder="Full name" {{ $staffFound ? 'readonly' : '' }}>
                             @error('staffName') <div class="err">{{ $message }}</div> @enderror
                         </div>
                     </div>
@@ -208,26 +208,26 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
                         <div class="nd-field">
                             <label>Job Title</label>
-                            <input type="text" wire:model.defer="jobTitle" {{ $staffFound ? 'readonly' : '' }}>
+                            <input type="text" wire:model="jobTitle" {{ $staffFound ? 'readonly' : '' }}>
                         </div>
                         <div class="nd-field">
                             <label>Department / Unit</label>
-                            <input type="text" wire:model.defer="userUnit" {{ $staffFound ? 'readonly' : '' }}>
+                            <input type="text" wire:model="userUnit" {{ $staffFound ? 'readonly' : '' }}>
                         </div>
                     </div>
 
                     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;">
                         <div class="nd-field">
                             <label>Directorate</label>
-                            <input type="text" wire:model.defer="directorate" {{ $staffFound ? 'readonly' : '' }}>
+                            <input type="text" wire:model="directorate" {{ $staffFound ? 'readonly' : '' }}>
                         </div>
                         <div class="nd-field">
                             <label>Mobile No</label>
-                            <input type="text" wire:model.defer="mobileNo" {{ $staffFound ? 'readonly' : '' }}>
+                            <input type="text" wire:model="mobileNo" {{ $staffFound ? 'readonly' : '' }}>
                         </div>
                         <div class="nd-field">
                             <label>Email <span class="req">*</span></label>
-                            <input type="email" wire:model.defer="staffEmail" placeholder="email@example.com" {{ $staffFound ? 'readonly' : '' }}>
+                            <input type="email" wire:model="staffEmail" placeholder="email@example.com" {{ $staffFound ? 'readonly' : '' }}>
                             @error('staffEmail') <div class="err">{{ $message }}</div> @enderror
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
                         <div class="nd-field">
                             <label>Default Password <span class="req">*</span></label>
-                            <input type="password" wire:model.defer="password" placeholder="Strong password">
+                            <input type="password" wire:model="password" placeholder="Strong password">
                             @error('password') <div class="err">{{ $message }}</div> @enderror
                             <div style="font-size:.7rem;color:var(--nd-faint);margin-top:.2rem;">Min 8 chars, upper + lower + number + special</div>
                         </div>

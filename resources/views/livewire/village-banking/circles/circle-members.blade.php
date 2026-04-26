@@ -310,7 +310,7 @@
                                     <div class="cm-search-label">Search Active Members</div>
                                     <div class="cm-search-wrap">
                                         <i class="fas fa-search"></i>
-                                        <input type="text" wire:model.debounce.300ms="memberSearch" class="cm-search-input"
+                                        <input type="text" wire:model.live.debounce.300ms="memberSearch" class="cm-search-input"
                                             placeholder="Type name, email or phone...">
                                     </div>
 

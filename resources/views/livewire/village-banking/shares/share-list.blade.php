@@ -209,7 +209,7 @@
                     <div class="sl-card-title"><i class="fas fa-list"></i> All Share Declarations</div>
                     <div class="sl-toolbar">
                         @include('partials.village-bank-selector')
-                        <select wire:model="circleFilter" class="sl-select">
+                        <select wire:model.live="circleFilter" class="sl-select">
                             <option value="">All Circles</option>
                             @foreach ($circles as $c)
                                 <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -217,9 +217,9 @@
                         </select>
                         <div class="sl-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search members...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search members...">
                         </div>
-                        <select wire:model="perPage" class="sl-select" style="width:70px;">
+                        <select wire:model.live="perPage" class="sl-select" style="width:70px;">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="25">25</option>

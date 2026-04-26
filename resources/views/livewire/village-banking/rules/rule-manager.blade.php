@@ -217,7 +217,7 @@
                     <div class="rm-card-title"><i class="fas fa-list-alt"></i> All Rules</div>
                     <div class="rm-toolbar">
                         @include('partials.village-bank-selector')
-                        <select wire:model="categoryFilter" class="rm-select">
+                        <select wire:model.live="categoryFilter" class="rm-select">
                             <option value="">All Categories</option>
                             @foreach ($categories as $key => $label)
                                 <option value="{{ $key }}">{{ $label }}</option>
@@ -225,9 +225,9 @@
                         </select>
                         <div class="rm-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search rules...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search rules...">
                         </div>
-                        <select wire:model="perPage" class="rm-select" style="width:70px;">
+                        <select wire:model.live="perPage" class="rm-select" style="width:70px;">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="25">25</option>
@@ -350,7 +350,7 @@
                             <div class="rm-form-row-3">
                                 <div>
                                     <label class="rm-label">Village Bank <span style="color:var(--rm-red);">*</span></label>
-                                    <select wire:model.defer="formBankId" class="rm-input" style="cursor:pointer;">
+                                    <select wire:model.live="formBankId" class="rm-input" style="cursor:pointer;">
                                         <option value="">-- Select --</option>
                                         @foreach ($this->villageBanks as $vb)
                                             <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -360,7 +360,7 @@
                                 </div>
                                 <div>
                                     <label class="rm-label">Category</label>
-                                    <select wire:model.defer="category" class="rm-input" style="cursor:pointer;">
+                                    <select wire:model.live="category" class="rm-input" style="cursor:pointer;">
                                         @foreach ($categories as $key => $label)
                                             <option value="{{ $key }}">{{ $label }}</option>
                                         @endforeach
@@ -368,21 +368,21 @@
                                 </div>
                                 <div>
                                     <label class="rm-label">Sort Order</label>
-                                    <input type="number" wire:model.defer="sortOrder" class="rm-input" min="0">
+                                    <input type="number" wire:model="sortOrder" class="rm-input" min="0">
                                 </div>
                             </div>
                             <div>
                                 <label class="rm-label">Rule Title <span style="color:var(--rm-red);">*</span></label>
-                                <input type="text" wire:model.defer="title" class="rm-input" placeholder="e.g. Late Payment Penalty">
+                                <input type="text" wire:model="title" class="rm-input" placeholder="e.g. Late Payment Penalty">
                                 @error('title') <small style="color:var(--rm-red);font-size:.76rem;">{{ $message }}</small> @enderror
                             </div>
                             <div>
                                 <label class="rm-label">Description / Full Rule Text <span style="color:var(--rm-red);">*</span></label>
-                                <textarea wire:model.defer="description" class="rm-input" rows="5" placeholder="Describe the rule in detail..." style="resize:vertical;"></textarea>
+                                <textarea wire:model="description" class="rm-input" rows="5" placeholder="Describe the rule in detail..." style="resize:vertical;"></textarea>
                                 @error('description') <small style="color:var(--rm-red);font-size:.76rem;">{{ $message }}</small> @enderror
                             </div>
                             <label class="rm-switch">
-                                <input type="checkbox" wire:model.defer="isActive">
+                                <input type="checkbox" wire:model="isActive">
                                 <div class="rm-switch-track"><div class="rm-switch-knob"></div></div>
                                 <span class="rm-switch-label">Active</span>
                             </label>

@@ -1,4 +1,5 @@
 <div>
+@once
 @push('custom-styles')
 <style>
     :root {
@@ -125,6 +126,10 @@
     .vs-empty i{font-size:2rem;margin-bottom:.5rem;display:block;color:var(--vs-border);}
     .vs-empty p{margin:0;font-size:.85rem;}
 
+    /* ─── Two-column grid (responsive) ─── */
+    .vs-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+    @media(max-width:768px){.vs-grid-2{grid-template-columns:1fr;}}
+
     /* ─── Alert ─── */
     .vs-alert{padding:.65rem 1rem;border-radius:12px;font-size:.85rem;display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;}
     .vs-alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
@@ -166,6 +171,7 @@
     .vs-user-email{font-size:.76rem;color:var(--vs-muted);}
 </style>
 @endpush
+@endonce
 
 @can('view-village-banks')
 <div class="vs-page">
@@ -220,8 +226,8 @@
 
         {{-- Tabs --}}
         <div class="vs-tabs">
-            @foreach (['overview' => ['fas fa-th-large', 'Overview'], 'members' => ['fas fa-users', 'Members'], 'circles' => ['fas fa-circle-notch', 'Circles'], 'finance' => ['fas fa-chart-bar', 'Financials']] as $key => [$icon, $label])
-                <button wire:click="$set('activeTab', '{{ $key }}')" class="vs-tab {{ $activeTab === $key ? 'active' : '' }}">
+            @foreach (['overview' => ['fas fa-th-large', 'Overview'], 'members' => ['fas fa-users', 'Members'], 'circles' => ['fas fa-circle-notch', 'Circles'], 'finance' => ['fas fa-chart-bar', 'Financials'], 'settings' => ['fas fa-cogs', 'Settings']] as $key => [$icon, $label])
+                <button type="button" wire:click="$set('activeTab', '{{ $key }}')" class="vs-tab {{ $activeTab === $key ? 'active' : '' }}">
                     <i class="{{ $icon }}"></i> {{ $label }}
                 </button>
             @endforeach
@@ -278,7 +284,7 @@
             </div>
 
             {{-- Bank information --}}
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+            <div class="vs-grid-2">
                 <div class="vs-card" style="margin-bottom:0;">
                     <div class="vs-card-header"><h3><i class="fas fa-id-card"></i> Bank Information</h3></div>
                     <div class="vs-card-body">
@@ -304,6 +310,64 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Subscription & License --}}
+            <div class="vs-grid-2" style="margin-top:1.25rem;">
+                <div class="vs-card" style="margin-bottom:0;">
+                    <div class="vs-card-header"><h3><i class="fas fa-file-contract"></i> Subscription</h3></div>
+                    <div class="vs-card-body">
+                        @if ($subscription)
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Status</div>
+                                <div class="vs-info-value"><span class="vs-badge vs-badge-active">Active</span></div>
+                            </div>
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Plan</div>
+                                <div class="vs-info-value">{{ ucfirst($subscription->plan ?? '—') }}</div>
+                            </div>
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Started</div>
+                                <div class="vs-info-value">{{ optional($subscription->created_at)->format('d M Y') ?? '—' }}</div>
+                            </div>
+                        @else
+                            <div class="vs-empty" style="padding:1.5rem 1rem;">
+                                <i class="fas fa-file-contract"></i>
+                                <p>No active subscription</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="vs-card" style="margin-bottom:0;">
+                    <div class="vs-card-header"><h3><i class="fas fa-key"></i> License</h3></div>
+                    <div class="vs-card-body">
+                        @if ($license)
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Status</div>
+                                <div class="vs-info-value"><span class="vs-badge vs-badge-active">Active</span></div>
+                            </div>
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Key</div>
+                                <div class="vs-info-value"><span style="background:#f1f5f9;color:var(--vs-navy);padding:.1rem .45rem;border-radius:6px;font-size:.78rem;font-weight:700;font-family:monospace;">{{ Str::limit($license->license_key, 20) }}</span></div>
+                            </div>
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Expires</div>
+                                <div class="vs-info-value">
+                                    {{ $license->expires_at->format('d M Y') }}
+                                    @if ($license->expires_at->diffInDays(now()) <= 30)
+                                        <span class="vs-badge vs-badge-draft" style="margin-left:.35rem;">{{ $license->expires_at->diffForHumans() }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                        @else
+                            <div class="vs-empty" style="padding:1.5rem 1rem;">
+                                <i class="fas fa-key"></i>
+                                <p>No active license</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
         @endif
 
         {{-- ════════════════════════════════════════════════════
@@ -313,7 +377,7 @@
             <div class="vs-card">
                 <div class="vs-card-header">
                     <h3><i class="fas fa-users"></i> Members ({{ $members->total() }})</h3>
-                    <button wire:click="openAddMember" class="vs-btn-add">
+                    <button type="button" wire:click="openAddMember" class="vs-btn-add">
                         <i class="fas fa-user-plus"></i> Add Member
                     </button>
                 </div>
@@ -330,7 +394,7 @@
                         </thead>
                         <tbody>
                             @forelse ($members as $m)
-                                <tr>
+                                <tr wire:key="member-{{ $m->id }}">
                                     <td>
                                         <div style="display:flex;align-items:center;gap:.55rem;">
                                             <div class="vs-avatar">{{ strtoupper(substr($m->name, 0, 1)) }}</div>
@@ -349,15 +413,15 @@
                                     <td>
                                         <div style="display:flex;gap:.3rem;">
                                             @if ($m->pivot->role === 'member')
-                                                <button wire:click="changeRole({{ $m->id }}, 'admin')" class="vs-act vs-act-promote" title="Promote to Admin">
+                                                <button type="button" wire:click="changeRole({{ $m->id }}, 'admin')" class="vs-act vs-act-promote" title="Promote to Admin">
                                                     <i class="fas fa-arrow-up"></i>
                                                 </button>
                                             @else
-                                                <button wire:click="changeRole({{ $m->id }}, 'member')" class="vs-act vs-act-demote" title="Demote to Member">
+                                                <button type="button" wire:click="changeRole({{ $m->id }}, 'member')" class="vs-act vs-act-demote" title="Demote to Member">
                                                     <i class="fas fa-arrow-down"></i>
                                                 </button>
                                             @endif
-                                            <button wire:click="confirmRemoveMember({{ $m->id }})" class="vs-act vs-act-remove" title="Remove">
+                                            <button type="button" wire:click="confirmRemoveMember({{ $m->id }})" class="vs-act vs-act-remove" title="Remove">
                                                 <i class="fas fa-user-minus"></i>
                                             </button>
                                         </div>
@@ -389,6 +453,11 @@
             <div class="vs-card">
                 <div class="vs-card-header">
                     <h3><i class="fas fa-circle-notch"></i> Circles ({{ $circles->count() }})</h3>
+                    @can('create-circles')
+                        <a href="{{ route('circles.create') }}" class="vs-btn-add" style="text-decoration:none;">
+                            <i class="fas fa-plus"></i> Create Circle
+                        </a>
+                    @endcan
                 </div>
                 <div style="overflow-x:auto;">
                     <table class="vs-table">
@@ -407,7 +476,7 @@
                                 @php
                                     $badgeClass = ['active' => 'vs-badge-active', 'draft' => 'vs-badge-draft', 'completed' => 'vs-badge-completed'][$c->status] ?? 'vs-badge-inactive';
                                 @endphp
-                                <tr>
+                                <tr wire:key="circle-{{ $c->id }}">
                                     <td><strong style="font-size:.86rem;">{{ $c->name }}</strong></td>
                                     <td>
                                         <span style="display:inline-flex;align-items:center;gap:.25rem;background:rgba(124,58,237,.08);color:var(--vs-purple);padding:.15rem .45rem;border-radius:6px;font-size:.76rem;font-weight:700;">
@@ -441,7 +510,7 @@
         @if ($activeTab === 'finance')
             @php $s = $this->stats; @endphp
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+            <div class="vs-grid-2">
                 {{-- Financial Summary --}}
                 <div class="vs-card" style="margin-bottom:0;">
                     <div class="vs-card-header"><h3><i class="fas fa-chart-pie"></i> Financial Summary</h3></div>
@@ -504,10 +573,148 @@
                                 <div class="vs-metric-label">Shareouts</div>
                             </div>
                         </div>
+
+                        {{-- Quick Links --}}
+                        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;">
+                            @can('view-loans')
+                                <a href="{{ route('loans.index') }}" class="vs-hero-btn" style="background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.15);color:var(--vs-blue);font-size:.78rem;padding:.4rem .85rem;">
+                                    <i class="fas fa-hand-holding-usd"></i> All Loans
+                                </a>
+                            @endcan
+                            <a href="{{ route('shareout.index') }}" class="vs-hero-btn" style="background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.15);color:var(--vs-amber);font-size:.78rem;padding:.4rem .85rem;">
+                                <i class="fas fa-calculator"></i> Shareout Calculator
+                            </a>
+                            @canany(['view-shares', 'declare-shares'])
+                                <a href="{{ route('shares.declare') }}" class="vs-hero-btn" style="background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.15);color:var(--vs-purple);font-size:.78rem;padding:.4rem .85rem;">
+                                    <i class="fas fa-coins"></i> Shares &amp; Insurance
+                                </a>
+                            @endcanany
+                        </div>
                     </div>
                 </div>
             </div>
         @endif
+
+
+        {{-- ════════════════════════════════════════════════════
+             SETTINGS TAB
+             ════════════════════════════════════════════════════ --}}
+        @if ($activeTab === 'settings')
+            @php $cfg = $config; @endphp
+
+            @can('manage-bank-config')
+                <div style="margin-bottom:1rem;display:flex;justify-content:flex-end;">
+                    <a href="{{ route('settings.bank-config') }}" class="vs-hero-btn vs-hero-btn-amber" style="text-decoration:none;">
+                        <i class="fas fa-edit"></i> Edit Configuration
+                    </a>
+                </div>
+            @endcan
+
+            <div class="vs-grid-2">
+                {{-- Shares & Insurance --}}
+                <div class="vs-card" style="margin-bottom:0;">
+                    <div class="vs-card-header"><h3><i class="fas fa-coins"></i> Shares &amp; Insurance</h3></div>
+                    <div class="vs-card-body">
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Share Unit</div>
+                            <div class="vs-info-value"><strong>K{{ number_format($cfg->share_unit_amount, 2) }}</strong></div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Min Shares/Mo</div>
+                            <div class="vs-info-value">{{ $cfg->min_shares_per_month }}</div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Max Shares/Mo</div>
+                            <div class="vs-info-value">{{ $cfg->max_shares_per_month }}</div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Insurance Type</div>
+                            <div class="vs-info-value"><span class="vs-badge vs-badge-member">{{ ucfirst($cfg->insurance_type) }}</span></div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Insurance Value</div>
+                            <div class="vs-info-value">K{{ number_format($cfg->insurance_value, 2) }}</div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Profit to Members</div>
+                            <div class="vs-info-value">
+                                @if ($cfg->insurance_profit_to_members)
+                                    <span class="vs-badge vs-badge-active">Yes</span>
+                                @else
+                                    <span class="vs-badge vs-badge-inactive">No</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Circle Duration</div>
+                            <div class="vs-info-value">{{ $cfg->circle_duration_months }} months</div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Loan Settings --}}
+                <div class="vs-card" style="margin-bottom:0;">
+                    <div class="vs-card-header"><h3><i class="fas fa-hand-holding-usd"></i> Loan Settings</h3></div>
+                    <div class="vs-card-body">
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Loan Multiplier</div>
+                            <div class="vs-info-value"><strong>{{ $cfg->max_loan_multiplier }}x</strong> shares</div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Interest Rate</div>
+                            <div class="vs-info-value">{{ number_format($cfg->default_interest_rate, 1) }}%</div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Interest Type</div>
+                            <div class="vs-info-value"><span class="vs-badge vs-badge-member">{{ ucfirst($cfg->interest_type) }}</span></div>
+                        </div>
+                        @if ($cfg->interest_type === 'reducing')
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Reducing Rate</div>
+                                <div class="vs-info-value">{{ number_format($cfg->reducing_balance_rate, 1) }}%</div>
+                            </div>
+                        @endif
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Loan Duration</div>
+                            <div class="vs-info-value">{{ $cfg->default_loan_duration }} month{{ $cfg->default_loan_duration > 1 ? 's' : '' }}</div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Multiple Loans</div>
+                            <div class="vs-info-value">
+                                @if ($cfg->allow_multiple_active_loans)
+                                    <span class="vs-badge vs-badge-active">Allowed</span>
+                                @else
+                                    <span class="vs-badge vs-badge-inactive">Not Allowed</span>
+                                @endif
+                            </div>
+                        </div>
+                        @if ($cfg->min_loan_amount)
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Min Loan</div>
+                                <div class="vs-info-value">K{{ number_format($cfg->min_loan_amount, 2) }}</div>
+                            </div>
+                        @endif
+                        @if ($cfg->max_loan_amount)
+                            <div class="vs-info-row">
+                                <div class="vs-info-label">Max Loan</div>
+                                <div class="vs-info-value">K{{ number_format($cfg->max_loan_amount, 2) }}</div>
+                            </div>
+                        @endif
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Late Penalty</div>
+                            <div class="vs-info-value">{{ number_format($cfg->late_repayment_penalty_rate, 1) }}%</div>
+                        </div>
+                        <div class="vs-info-row">
+                            <div class="vs-info-label">Grace Period</div>
+                            <div class="vs-info-value">{{ $cfg->grace_period_days }} day{{ $cfg->grace_period_days !== 1 ? 's' : '' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+
+
     </div>
 
     {{-- ═══ Add Member Modal ═══ --}}
@@ -516,12 +723,12 @@
             <div class="vs-modal vs-modal-md">
                 <div class="vs-modal-head">
                     <h5><i class="fas fa-user-plus"></i> Add Member to {{ $bank->name }}</h5>
-                    <button class="vs-modal-close" wire:click="closeAddMember">&times;</button>
+                    <button type="button" class="vs-modal-close" wire:click="closeAddMember">&times;</button>
                 </div>
                 <div class="vs-modal-body">
                     <div style="margin-bottom:1rem;">
                         <label class="vs-label">Search User</label>
-                        <input type="text" wire:model.debounce.300ms="memberSearch" class="vs-input" placeholder="Type name, email or staff number...">
+                        <input type="text" wire:model.live.debounce.300ms="memberSearch" class="vs-input" placeholder="Type name, email or staff number...">
                     </div>
 
                     @if ($this->searchUsers->count())
@@ -548,7 +755,7 @@
 
                     <div style="margin-bottom:.5rem;">
                         <label class="vs-label">Role</label>
-                        <select wire:model.defer="memberRole" class="vs-input">
+                        <select wire:model.live="memberRole" class="vs-input">
                             <option value="member">Member</option>
                             <option value="admin">Admin</option>
                         </select>
@@ -556,8 +763,8 @@
                     @error('selectedUserId') <div style="font-size:.76rem;color:var(--vs-red);margin-top:.25rem;">{{ $message }}</div> @enderror
                 </div>
                 <div class="vs-modal-foot">
-                    <button wire:click="closeAddMember" class="vs-btn-cancel">Cancel</button>
-                    <button wire:click="addMember" class="vs-btn-primary" wire:loading.attr="disabled" wire:target="addMember" {{ !$selectedUserId ? 'disabled' : '' }}>
+                    <button type="button" wire:click="closeAddMember" class="vs-btn-cancel">Cancel</button>
+                    <button type="button" wire:click="addMember" class="vs-btn-primary" wire:loading.attr="disabled" wire:target="addMember" {{ !$selectedUserId ? 'disabled' : '' }}>
                         <span wire:loading.remove wire:target="addMember"><i class="fas fa-user-plus" style="margin-right:.3rem;"></i> Add Member</span>
                         <span wire:loading wire:target="addMember"><i class="fas fa-spinner fa-spin" style="margin-right:.3rem;"></i> Adding...</span>
                     </button>
@@ -572,7 +779,7 @@
             <div class="vs-modal vs-modal-sm">
                 <div class="vs-modal-head">
                     <h5><i class="fas fa-user-minus"></i> Remove Member</h5>
-                    <button class="vs-modal-close" wire:click="$set('removeMemberId', null)">&times;</button>
+                    <button type="button" class="vs-modal-close" wire:click="$set('removeMemberId', null)">&times;</button>
                 </div>
                 <div class="vs-modal-body" style="text-align:center;">
                     <div style="width:56px;height:56px;border-radius:50%;background:#fef2f2;display:flex;align-items:center;justify-content:center;margin:0 auto .85rem;">
@@ -582,8 +789,8 @@
                     <p style="font-size:.82rem;color:var(--vs-muted);margin:0;">This member will be removed from {{ $bank->name }}.</p>
                 </div>
                 <div class="vs-modal-foot">
-                    <button wire:click="$set('removeMemberId', null)" class="vs-btn-cancel">Cancel</button>
-                    <button wire:click="removeMember" class="vs-btn-danger"><i class="fas fa-user-minus" style="margin-right:.3rem;"></i> Remove</button>
+                    <button type="button" wire:click="$set('removeMemberId', null)" class="vs-btn-cancel">Cancel</button>
+                    <button type="button" wire:click="removeMember" class="vs-btn-danger"><i class="fas fa-user-minus" style="margin-right:.3rem;"></i> Remove</button>
                 </div>
             </div>
         </div>

@@ -143,6 +143,14 @@ return [
             ],
         ],
 
+        /* ── Communications ────────────────────── */
+        'communications' => [
+            'group' => 'Communications',
+            'items' => [
+                'manage-communications' => 'Send and manage village bank communications',
+            ],
+        ],
+
         /* ── Village Banks (platform) ─────────── */
         'village_banks' => [
             'group' => 'Village Banks',
@@ -172,6 +180,7 @@ return [
                 'manage-licenses'      => 'Issue, revoke, and manage licenses',
                 'review-applications'  => 'Approve or reject bank applications',
                 'view-applications'    => 'View submitted bank applications',
+                'manage-sms'           => 'Send and manage SMS messages',
             ],
         ],
 
@@ -230,6 +239,8 @@ return [
             'manage-rules', 'view-rules', 'manage-polls', 'vote-polls', 'view-polls',
             // Reports & Settings
             'view-reports', 'export-reports', 'manage-bank-config',
+            // Communications
+            'manage-communications',
             // Village Banks
             'manage-village-banks', 'view-village-banks',
             // Users (view only)
@@ -245,6 +256,7 @@ return [
             'view-shares', 'view-loans', 'view-repayments', 'view-shareout',
             'manage-rules', 'view-rules', 'manage-polls', 'vote-polls', 'view-polls',
             'view-reports', 'view-users', 'view-village-banks', 'discover-banks',
+            'manage-communications',
         ],
 
         'treasurer' => [

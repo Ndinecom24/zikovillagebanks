@@ -68,15 +68,15 @@
                 <div class="nd-toolbar">
                     <div class="nd-search">
                         <i class="fas fa-search"></i>
-                        <input type="text" wire:model.debounce.300ms="search" placeholder="Search reference, bank, payer...">
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search reference, bank, payer...">
                     </div>
-                    <select wire:model="statusFilter" class="nd-select">
+                    <select wire:model.live="statusFilter" class="nd-select">
                         <option value="">All Status</option>
                         <option value="pending">Pending</option>
                         <option value="confirmed">Confirmed</option>
                         <option value="rejected">Rejected</option>
                     </select>
-                    <select wire:model="perPage" class="nd-select" style="width:72px;">
+                    <select wire:model.live="perPage" class="nd-select" style="width:72px;">
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
@@ -208,7 +208,7 @@
                         Admin Remarks
                         @if($reviewAction === 'reject') <span class="req">*</span> @endif
                     </label>
-                    <textarea wire:model.defer="adminRemarks" class="pr-input" rows="3"
+                    <textarea wire:model="adminRemarks" class="pr-input" rows="3"
                         placeholder="{{ $reviewAction === 'confirm' ? 'Optional notes about this confirmation...' : 'Reason for rejection (required)...' }}"></textarea>
                     @error('adminRemarks') <div class="pr-error">{{ $message }}</div> @enderror
                 </div>

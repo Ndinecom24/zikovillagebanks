@@ -762,7 +762,7 @@
 
     {{-- ═══════════ Password Reset Modal ═══════════ --}}
     {{-- Edit Profile Modal --}}
-    <div style="display:{{ $editing ? 'flex' : 'none' }};" class="us-modal-overlay" onclick="if(event.target===this){@this.call('cancelEdit')}">
+    <div style="display:{{ $editing ? 'flex' : 'none' }};" class="us-modal-overlay" onclick="if(event.target===this){$wire.call('cancelEdit')}">
         <div class="us-modal" style="max-width:640px;">
             <div class="us-modal-head">
                 <h3><i class="fas fa-edit" style="color:var(--nd-amber);"></i> Edit Profile</h3>
@@ -772,30 +772,30 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
                     <div class="nd-field">
                         <label for="editNameInput">Full Name <span class="req">*</span></label>
-                        <input type="text" wire:model.defer="editName" id="editNameInput">
+                        <input type="text" wire:model="editName" id="editNameInput">
                         @error('editName') <div class="err">{{ $message }}</div> @enderror
                     </div>
                     <div class="nd-field">
                         <label for="editEmailInput">Email <span class="req">*</span></label>
-                        <input type="email" wire:model.defer="editEmail" id="editEmailInput">
+                        <input type="email" wire:model="editEmail" id="editEmailInput">
                         @error('editEmail') <div class="err">{{ $message }}</div> @enderror
                     </div>
                     <div class="nd-field">
                         <label for="editMobileInput">Mobile No</label>
-                        <input type="text" wire:model.defer="editMobileNo" id="editMobileInput">
+                        <input type="text" wire:model="editMobileNo" id="editMobileInput">
                         @error('editMobileNo') <div class="err">{{ $message }}</div> @enderror
                     </div>
                     <div class="nd-field">
                         <label for="editJobInput">Job Title</label>
-                        <input type="text" wire:model.defer="editJobTitle" id="editJobInput">
+                        <input type="text" wire:model="editJobTitle" id="editJobInput">
                     </div>
                     <div class="nd-field">
                         <label for="editCompanyInput">Company Name</label>
-                        <input type="text" wire:model.defer="editCompanyName" id="editCompanyInput">
+                        <input type="text" wire:model="editCompanyName" id="editCompanyInput">
                     </div>
                     <div class="nd-field">
                         <label for="editLocationInput">Company Location</label>
-                        <input type="text" wire:model.defer="editCompanyLocation" id="editLocationInput">
+                        <input type="text" wire:model="editCompanyLocation" id="editLocationInput">
                     </div>
                 </div>
             </div>
@@ -810,7 +810,7 @@
     </div>
 
     {{-- Password Reset Modal --}}
-    <div style="display:{{ $showPasswordReset ? 'flex' : 'none' }};" class="us-modal-overlay" onclick="if(event.target===this){@this.call('togglePasswordReset')}">
+    <div style="display:{{ $showPasswordReset ? 'flex' : 'none' }};" class="us-modal-overlay" onclick="if(event.target===this){$wire.call('togglePasswordReset')}">
         <div class="us-modal">
             <div class="us-modal-head">
                 <h3><i class="fas fa-key" style="color:var(--nd-amber);"></i> Reset Password</h3>
@@ -824,7 +824,7 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem;">
                     <div class="nd-field">
                         <label for="resetPwd">New Password <span class="req">*</span></label>
-                        <input type="password" wire:model.defer="newPassword" placeholder="Enter new password" id="resetPwd">
+                        <input type="password" wire:model="newPassword" placeholder="Enter new password" id="resetPwd">
                         @error('newPassword') <div class="err">{{ $message }}</div> @enderror
                         <div class="pwd-req" id="pwdReqGrid">
                             <span id="rr-length"><i class="far fa-circle"></i> Min 8 chars</span>
@@ -837,7 +837,7 @@
                     </div>
                     <div class="nd-field">
                         <label for="resetPwdConfirm">Confirm Password <span class="req">*</span></label>
-                        <input type="password" wire:model.defer="newPasswordConfirmation" placeholder="Confirm password" id="resetPwdConfirm">
+                        <input type="password" wire:model="newPasswordConfirmation" placeholder="Confirm password" id="resetPwdConfirm">
                         @error('newPasswordConfirmation') <div class="err">{{ $message }}</div> @enderror
                     </div>
                 </div>
@@ -894,7 +894,7 @@
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             var overlays = document.querySelectorAll('.us-modal-overlay');
-            var comp = @this;
+            var comp = $wire;
             overlays.forEach(function(ov) {
                 if (ov.style.display === 'flex') {
                     // Check if it's the password modal (has resetPwd input)

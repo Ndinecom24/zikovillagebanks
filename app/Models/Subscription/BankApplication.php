@@ -20,12 +20,15 @@ class BankApplication extends Model
         'bank_phone', 'bank_email',
         'contact_name', 'contact_email', 'contact_phone', 'contact_staff_no',
         'subscription_plan_id', 'proof_file', 'payment_reference',
+        'promo_code_id', 'promo_discount', 'amount_due',
         'status', 'admin_remarks', 'reviewed_by', 'reviewed_at',
         'village_bank_id',
     ];
 
     protected $casts = [
-        'reviewed_at' => 'datetime',
+        'reviewed_at'    => 'datetime',
+        'promo_discount' => 'decimal:2',
+        'amount_due'     => 'decimal:2',
     ];
 
     /* ── Relationships ────────────────── */
@@ -33,6 +36,11 @@ class BankApplication extends Model
     public function plan()
     {
         return $this->belongsTo(SubscriptionPlan::class, 'subscription_plan_id');
+    }
+
+    public function promoCode()
+    {
+        return $this->belongsTo(PromoCode::class, 'promo_code_id');
     }
 
     public function reviewer()

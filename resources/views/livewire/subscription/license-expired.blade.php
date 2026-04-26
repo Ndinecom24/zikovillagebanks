@@ -44,7 +44,7 @@
                             <form wire:submit.prevent="submitRenewal">
                                 <div class="mb-3">
                                     <label class="z-label">Payment Reference <span class="text-danger">*</span></label>
-                                    <input type="text" wire:model.defer="paymentReference" class="z-input form-control"
+                                    <input type="text" wire:model="paymentReference" class="z-input form-control"
                                         placeholder="Transaction ID / Receipt No.">
                                     @error('paymentReference') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>

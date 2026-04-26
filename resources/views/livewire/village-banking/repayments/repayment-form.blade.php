@@ -85,9 +85,9 @@
 
         /* Flash */
         .rf-flash{display:flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-radius:10px;font-size:.84rem;font-weight:600;margin-bottom:1rem;}
-        .rf-flash-success{background:rgba(22,163,74,.08);color:#166534;border:1px solid #bbf7d0;}
-        .rf-flash-warning{background:rgba(217,119,6,.08);color:#92400e;border:1px solid #fde68a;}
-        .rf-flash-error{background:rgba(220,38,38,.08);color:#991b1b;border:1px solid #fecaca;}
+        .rf-flash-success{background:rgba(141, 163, 149, 0.556);color:#166534;border:1px solid #bbf7d0;}
+        .rf-flash-warning{background:rgba(217, 119, 6, 0.556);color:#92400e;border:1px solid #fde68a;}
+        .rf-flash-error{background:rgba(220,38,38,0.556);color:#991b1b;border:1px solid #fecaca;}
 
         /* How-it-works */
         .rf-steps{list-style:none;padding:0;margin:0;}
@@ -147,7 +147,7 @@
                                 {{-- Filters --}}
                                 <div style="margin-bottom:1rem;">
                                     <div class="rf-label"><i class="fas fa-university"></i> Village Bank</div>
-                                    <select wire:model="villageBankId" class="rf-input">
+                                    <select wire:model.live="villageBankId" class="rf-input">
                                         <option value="">All Village Banks</option>
                                         @foreach ($this->villageBanks as $vb)
                                             <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -158,7 +158,7 @@
                                 <div class="rf-row">
                                     <div>
                                         <div class="rf-label"><i class="fas fa-circle-notch"></i> Circle <span class="req">*</span></div>
-                                        <select wire:model="circleId" class="rf-input">
+                                        <select wire:model.live="circleId" class="rf-input">
                                             <option value="">-- Select Circle --</option>
                                             @foreach ($this->circles as $c)
                                                 <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }})</option>
@@ -168,7 +168,7 @@
                                     </div>
                                     <div>
                                         <div class="rf-label"><i class="fas fa-file-invoice-dollar"></i> Loan <span class="req">*</span></div>
-                                        <select wire:model="loanId" class="rf-input" {{ empty($circleId) ? 'disabled' : '' }}>
+                                        <select wire:model.live="loanId" class="rf-input" {{ empty($circleId) ? 'disabled' : '' }}>
                                             <option value="">-- Select Loan --</option>
                                             @foreach ($this->loans as $ln)
                                                 <option value="{{ $ln->id }}">
@@ -232,7 +232,7 @@
                                         <div class="rf-label"><i class="fas fa-money-bill-wave"></i> Amount (K) <span class="req">*</span></div>
                                         <input type="number" step="0.01" min="0.01"
                                                max="{{ $selectedLoan->outstanding_balance ?? '' }}"
-                                               wire:model.defer="amount" class="rf-input" placeholder="0.00"
+                                               wire:model="amount" class="rf-input" placeholder="0.00"
                                                {{ !$selectedLoan ? 'disabled' : '' }}>
                                         @error('amount') <div class="rf-error">{{ $message }}</div> @enderror
                                     </div>
@@ -253,7 +253,7 @@
                                         <div class="rf-row" style="margin-bottom:0;">
                                             <div>
                                                 <div class="rf-label" style="color:#92400e;">Penalty % <span class="req">*</span></div>
-                                                <input type="number" step="0.01" min="0.01" max="100" wire:model.lazy="penaltyPercent" class="rf-input" placeholder="e.g. 5" style="border-color:#fde68a;background:#fffef5;">
+                                                <input type="number" step="0.01" min="0.01" max="100" wire:model.blur="penaltyPercent" class="rf-input" placeholder="e.g. 5" style="border-color:#fde68a;background:#fffef5;">
                                                 @error('penaltyPercent') <div class="rf-error">{{ $message }}</div> @enderror
                                             </div>
                                             <div style="display:flex;align-items:flex-end;padding-bottom:.35rem;">

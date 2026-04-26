@@ -44,7 +44,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-12 mb-3">
                                         <label class="z-label">Village Bank</label>
-                                        <select wire:model="villageBankId" class="form-control z-input">
+                                        <select wire:model.live="villageBankId" class="form-control z-input">
                                             <option value="">All Village Banks</option>
                                             @foreach ($this->villageBanks as $vb)
                                                 <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="z-label">Circle <span class="text-danger">*</span></label>
-                                        <select wire:model="circleId" class="form-control z-input">
+                                        <select wire:model.live="circleId" class="form-control z-input">
                                             <option value="">-- Select Circle --</option>
                                             @foreach ($circles as $c)
                                                 <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }})</option>
@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="z-label">Active Month <span class="text-danger">*</span></label>
-                                        <select wire:model="monthId" class="form-control z-input" {{ empty($circleId) ? 'disabled' : '' }}>
+                                        <select wire:model.live="monthId" class="form-control z-input" {{ empty($circleId) ? 'disabled' : '' }}>
                                             <option value="">-- Select Month --</option>
                                             @foreach ($months as $mo)
                                                 <option value="{{ $mo->id }}">Month {{ $mo->month_number }} ({{ $mo->start_date->format('d M') }} - {{ $mo->end_date->format('d M') }})</option>
@@ -77,7 +77,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-12">
                                         <label class="z-label">Receiver (Lender) <span class="text-danger">*</span></label>
-                                        <select wire:model="receiverId" class="form-control z-input" {{ empty($circleId) ? 'disabled' : '' }}>
+                                        <select wire:model.live="receiverId" class="form-control z-input" {{ empty($circleId) ? 'disabled' : '' }}>
                                             <option value="">-- Select Member --</option>
                                             @foreach ($membersList as $m)
                                                 <option value="{{ $m->id }}">{{ $m->name }} ({{ $m->email }})</option>
@@ -91,12 +91,12 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="z-label">Amount (K) <span class="text-danger">*</span></label>
-                                        <input type="number" step="0.01" min="0.01" wire:model.defer="amount" class="form-control z-input" placeholder="0.00">
+                                        <input type="number" step="0.01" min="0.01" wire:model="amount" class="form-control z-input" placeholder="0.00">
                                         @error('amount') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label class="z-label">Payment Method <span class="text-danger">*</span></label>
-                                        <select wire:model.defer="paymentMethodId" class="form-control z-input">
+                                        <select wire:model.live="paymentMethodId" class="form-control z-input">
                                             <option value="">-- Select Method --</option>
                                             @foreach ($paymentMethods as $pm)
                                                 <option value="{{ $pm->id }}">{{ $pm->name }} ({{ str_replace('_', ' ', $pm->type) }})</option>

@@ -178,7 +178,7 @@
             {{-- VB Selector --}}
             @if(count($this->villageBanks) > 1)
                 <div style="margin-bottom:1rem;">
-                    <select wire:model="villageBankId" class="bc-input" style="max-width:360px;">
+                    <select wire:model.live="villageBankId" class="bc-input" style="max-width:360px;">
                         <option value="">-- Select Village Bank --</option>
                         @foreach($this->villageBanks as $vb)
                             <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -212,6 +212,12 @@
                 </a>
                 <a wire:click.prevent="setTab('accounts')" class="bc-tab {{ $activeTab === 'accounts' ? 'active' : '' }}">
                     <i class="fas fa-wallet"></i> Bank Accounts
+                </a>
+                <a wire:click.prevent="setTab('communications')" class="bc-tab {{ $activeTab === 'communications' ? 'active' : '' }}">
+                    <i class="fas fa-comments"></i> Communications
+                </a>
+                <a wire:click.prevent="setTab('governance')" class="bc-tab {{ $activeTab === 'governance' ? 'active' : '' }}">
+                    <i class="fas fa-gavel"></i> Governance
                 </a>
             </div>
 
@@ -309,7 +315,7 @@
                                 <div class="bc-row bc-row-2">
                                     <div>
                                         <label class="bc-label">Insurance Type</label>
-                                        <select wire:model="insurance_type" class="bc-input @error('insurance_type') bc-input-error @enderror">
+                                        <select wire:model.live="insurance_type" class="bc-input @error('insurance_type') bc-input-error @enderror">
                                             <option value="percentage">Percentage of Shares</option>
                                             <option value="fixed">Fixed Amount</option>
                                         </select>
@@ -423,7 +429,7 @@
                                 <div class="bc-row bc-row-2" style="margin-bottom:1rem;">
                                     <div>
                                         <label class="bc-label">Interest Type</label>
-                                        <select wire:model="interest_type" class="bc-input @error('interest_type') bc-input-error @enderror">
+                                        <select wire:model.live="interest_type" class="bc-input @error('interest_type') bc-input-error @enderror">
                                             <option value="flat">Flat Rate</option>
                                             <option value="reducing_balance">Reducing Balance</option>
                                         </select>
@@ -574,33 +580,33 @@
                                     <td style="font-weight:700;color:var(--bc-navy);">{{ $mc['month_number'] }}</td>
                                     <td>
                                         <input type="text"
-                                               wire:model.defer="monthConfigs.{{ $idx }}.label"
+                                               wire:model="monthConfigs.{{ $idx }}.label"
                                                class="bc-month-label-input"
                                                placeholder="Month {{ $mc['month_number'] }}">
                                     </td>
                                     <td>
                                         <input type="checkbox"
-                                               wire:model.defer="monthConfigs.{{ $idx }}.allow_share_declarations"
+                                               wire:model="monthConfigs.{{ $idx }}.allow_share_declarations"
                                                class="bc-check">
                                     </td>
                                     <td>
                                         <input type="checkbox"
-                                               wire:model.defer="monthConfigs.{{ $idx }}.allow_insurance_declarations"
+                                               wire:model="monthConfigs.{{ $idx }}.allow_insurance_declarations"
                                                class="bc-check">
                                     </td>
                                     <td>
                                         <input type="checkbox"
-                                               wire:model.defer="monthConfigs.{{ $idx }}.allow_loan_requests"
+                                               wire:model="monthConfigs.{{ $idx }}.allow_loan_requests"
                                                class="bc-check">
                                     </td>
                                     <td>
                                         <input type="checkbox"
-                                               wire:model.defer="monthConfigs.{{ $idx }}.allow_loan_repayments"
+                                               wire:model="monthConfigs.{{ $idx }}.allow_loan_repayments"
                                                class="bc-check">
                                     </td>
                                     <td>
                                         <input type="checkbox"
-                                               wire:model.defer="monthConfigs.{{ $idx }}.is_shareout_month"
+                                               wire:model="monthConfigs.{{ $idx }}.is_shareout_month"
                                                class="bc-check">
                                         @if($mc['is_shareout_month'])
                                             <div class="bc-shareout-badge" style="margin-top:.2rem;"><i class="fas fa-star" style="font-size:.5rem;"></i> Shareout</div>
@@ -697,6 +703,103 @@
             </div>
 
             {{-- ── Account Modal ── --}}
+            {{-- ═══════════════════════════════════════
+                 TAB 4: COMMUNICATIONS
+                 ═══════════════════════════════════════ --}}
+            @if($activeTab === 'communications')
+            <form wire:submit.prevent="saveConfiguration">
+                <div class="bc-card">
+                    <div class="bc-card-head">
+                        <div style="display:flex;align-items:center;gap:.45rem;">
+                            <div class="bc-section-icon" style="background:linear-gradient(135deg,#6366f1,#818cf8);"><i class="fas fa-comments"></i></div>
+                            <h3 class="bc-card-title">Communication Channel</h3>
+                        </div>
+                    </div>
+                    <div class="bc-card-body">
+                        <p style="font-size:.78rem;color:var(--bc-muted);margin:0 0 1.25rem;">
+                            Choose how this village bank communicates with its members. The selected channel(s) will be available when sending messages from the Communications module.
+                        </p>
+
+                        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;">
+                            {{-- Email --}}
+                            <label style="display:flex;align-items:flex-start;gap:.75rem;padding:1rem;border:2px solid {{ $communication_channel === 'email' ? 'var(--bc-navy)' : '#e2e8f0' }};border-radius:.5rem;cursor:pointer;background:{{ $communication_channel === 'email' ? '#f0f4ff' : '#fff' }};transition:all .2s;">
+                                <input type="radio" wire:model.live="communication_channel" value="email" style="margin-top:.15rem;accent-color:var(--bc-navy);">
+                                <div>
+                                    <div style="font-weight:700;font-size:.85rem;color:var(--bc-text);display:flex;align-items:center;gap:.35rem;">
+                                        <i class="fas fa-envelope" style="color:#6366f1;"></i> Email Only
+                                    </div>
+                                    <div style="font-size:.72rem;color:var(--bc-muted);margin-top:.25rem;">Send messages via email. Members need a valid email address.</div>
+                                </div>
+                            </label>
+
+                            {{-- SMS --}}
+                            <label style="display:flex;align-items:flex-start;gap:.75rem;padding:1rem;border:2px solid {{ $communication_channel === 'sms' ? 'var(--bc-navy)' : '#e2e8f0' }};border-radius:.5rem;cursor:pointer;background:{{ $communication_channel === 'sms' ? '#f0f4ff' : '#fff' }};transition:all .2s;">
+                                <input type="radio" wire:model.live="communication_channel" value="sms" style="margin-top:.15rem;accent-color:var(--bc-navy);">
+                                <div>
+                                    <div style="font-weight:700;font-size:.85rem;color:var(--bc-text);display:flex;align-items:center;gap:.35rem;">
+                                        <i class="fas fa-sms" style="color:#10b981;"></i> SMS Only
+                                    </div>
+                                    <div style="font-size:.72rem;color:var(--bc-muted);margin-top:.25rem;">Send messages via SMS (MTN gateway). Members need a mobile number.</div>
+                                </div>
+                            </label>
+
+                            {{-- Both --}}
+                            <label style="display:flex;align-items:flex-start;gap:.75rem;padding:1rem;border:2px solid {{ $communication_channel === 'both' ? 'var(--bc-navy)' : '#e2e8f0' }};border-radius:.5rem;cursor:pointer;background:{{ $communication_channel === 'both' ? '#f0f4ff' : '#fff' }};transition:all .2s;">
+                                <input type="radio" wire:model.live="communication_channel" value="both" style="margin-top:.15rem;accent-color:var(--bc-navy);">
+                                <div>
+                                    <div style="font-weight:700;font-size:.85rem;color:var(--bc-text);display:flex;align-items:center;gap:.35rem;">
+                                        <i class="fas fa-paper-plane" style="color:#f59e0b;"></i> Both
+                                    </div>
+                                    <div style="font-size:.72rem;color:var(--bc-muted);margin-top:.25rem;">Allow sending via email or SMS. The sender chooses the channel per message.</div>
+                                </div>
+                            </label>
+
+                            {{-- None --}}
+                            <label style="display:flex;align-items:flex-start;gap:.75rem;padding:1rem;border:2px solid {{ $communication_channel === 'none' ? 'var(--bc-navy)' : '#e2e8f0' }};border-radius:.5rem;cursor:pointer;background:{{ $communication_channel === 'none' ? '#fff5f5' : '#fff' }};transition:all .2s;">
+                                <input type="radio" wire:model.live="communication_channel" value="none" style="margin-top:.15rem;accent-color:var(--bc-navy);">
+                                <div>
+                                    <div style="font-weight:700;font-size:.85rem;color:var(--bc-text);display:flex;align-items:center;gap:.35rem;">
+                                        <i class="fas fa-ban" style="color:#ef4444;"></i> Disabled
+                                    </div>
+                                    <div style="font-size:.72rem;color:var(--bc-muted);margin-top:.25rem;">No communications. The messaging feature will be hidden for this bank.</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        @error('communication_channel')
+                            <div class="bc-error" style="margin-top:.75rem;">{{ $message }}</div>
+                        @enderror
+
+                        {{-- Current status info box --}}
+                        <div style="margin-top:1.25rem;padding:.85rem 1rem;border-radius:.5rem;background:#f8fafc;border:1px solid #e2e8f0;">
+                            <div style="font-size:.78rem;font-weight:700;color:var(--bc-text);margin-bottom:.35rem;">
+                                <i class="fas fa-info-circle" style="color:var(--bc-navy);"></i> Current Status
+                            </div>
+                            <div style="font-size:.75rem;color:var(--bc-muted);">
+                                @if($communication_channel === 'email')
+                                    Members will receive communications via <strong>email</strong>. Ensure members have valid email addresses.
+                                @elseif($communication_channel === 'sms')
+                                    Members will receive communications via <strong>SMS</strong>. Ensure members have valid mobile numbers.
+                                @elseif($communication_channel === 'both')
+                                    Both <strong>email</strong> and <strong>SMS</strong> channels are available. The sender can choose per message.
+                                @else
+                                    Communications are <strong>disabled</strong> for this village bank. Members will not receive any messages.
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Save button --}}
+                <div style="margin-top:1.25rem;display:flex;justify-content:flex-end;">
+                    <button type="submit" class="bc-btn bc-btn-primary" wire:loading.attr="disabled" wire:target="saveConfiguration">
+                        <span wire:loading.remove wire:target="saveConfiguration"><i class="fas fa-save"></i> Save Communication Settings</span>
+                        <span wire:loading wire:target="saveConfiguration"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                    </button>
+                </div>
+            </form>
+            @endif
+
             @if($showAccountModal)
             <div class="bc-overlay" wire:click.self="$set('showAccountModal', false)">
                 <div class="bc-modal">
@@ -711,14 +814,14 @@
                         <div class="bc-row bc-row-2">
                             <div>
                                 <label class="bc-label">Account Type</label>
-                                <select wire:model="accountForm.account_type" class="bc-input">
+                                <select wire:model.live="accountForm.account_type" class="bc-input">
                                     <option value="mobile_money">Mobile Money</option>
                                     <option value="bank_account">Bank Account</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="bc-label">Provider / Bank Name <span style="color:var(--bc-red);">*</span></label>
-                                <input type="text" wire:model.defer="accountForm.provider_name"
+                                <input type="text" wire:model="accountForm.provider_name"
                                        class="bc-input @error('accountForm.provider_name') bc-input-error @enderror"
                                        placeholder="{{ $accountForm['account_type'] === 'mobile_money' ? 'e.g. Airtel Money, MTN MoMo' : 'e.g. FNB, Zanaco' }}">
                                 @error('accountForm.provider_name') <div class="bc-error">{{ $message }}</div> @enderror
@@ -727,14 +830,14 @@
                         <div class="bc-row bc-row-2">
                             <div>
                                 <label class="bc-label">Account Name <span style="color:var(--bc-red);">*</span></label>
-                                <input type="text" wire:model.defer="accountForm.account_name"
+                                <input type="text" wire:model="accountForm.account_name"
                                        class="bc-input @error('accountForm.account_name') bc-input-error @enderror"
                                        placeholder="Name on the account">
                                 @error('accountForm.account_name') <div class="bc-error">{{ $message }}</div> @enderror
                             </div>
                             <div>
                                 <label class="bc-label">Account / Phone Number <span style="color:var(--bc-red);">*</span></label>
-                                <input type="text" wire:model.defer="accountForm.account_number"
+                                <input type="text" wire:model="accountForm.account_number"
                                        class="bc-input @error('accountForm.account_number') bc-input-error @enderror"
                                        placeholder="{{ $accountForm['account_type'] === 'mobile_money' ? 'e.g. 0977123456' : 'e.g. 0012345678' }}">
                                 @error('accountForm.account_number') <div class="bc-error">{{ $message }}</div> @enderror
@@ -744,18 +847,18 @@
                         <div class="bc-row">
                             <div>
                                 <label class="bc-label">Branch</label>
-                                <input type="text" wire:model.defer="accountForm.branch"
+                                <input type="text" wire:model="accountForm.branch"
                                        class="bc-input" placeholder="e.g. Cairo Road Branch">
                             </div>
                         </div>
                         @endif
                         <div style="display:flex;gap:1.5rem;margin-top:.5rem;">
                             <div style="display:flex;align-items:center;gap:.5rem;">
-                                <input type="checkbox" wire:model.defer="accountForm.is_primary" id="acct_primary" style="accent-color:var(--bc-amber);">
+                                <input type="checkbox" wire:model="accountForm.is_primary" id="acct_primary" style="accent-color:var(--bc-amber);">
                                 <label for="acct_primary" style="font-size:.82rem;font-weight:600;color:var(--bc-text);cursor:pointer;">Set as Primary</label>
                             </div>
                             <div style="display:flex;align-items:center;gap:.5rem;">
-                                <input type="checkbox" wire:model.defer="accountForm.is_active" id="acct_active" style="accent-color:var(--bc-green);">
+                                <input type="checkbox" wire:model="accountForm.is_active" id="acct_active" style="accent-color:var(--bc-green);">
                                 <label for="acct_active" style="font-size:.82rem;font-weight:600;color:var(--bc-text);cursor:pointer;">Active</label>
                             </div>
                         </div>
@@ -771,6 +874,272 @@
                 </div>
             </div>
             @endif
+            @endif
+
+            {{-- ═══════════════════════════════════════
+                 TAB 5: GOVERNANCE
+                 ═══════════════════════════════════════ --}}
+            @if($activeTab === 'governance')
+            <form wire:submit.prevent="saveConstitution">
+                <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+                    {{-- ── Enforcement Settings ── --}}
+                    <div class="bc-card">
+                        <div class="bc-card-head">
+                            <div style="display:flex;align-items:center;gap:.45rem;">
+                                <div class="bc-section-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);"><i class="fas fa-shield-alt"></i></div>
+                                <h3 class="bc-card-title">Compliance & Enforcement</h3>
+                            </div>
+                        </div>
+                        <div class="bc-card-body">
+                            <p style="font-size:.78rem;color:var(--bc-muted);margin:0 0 1.25rem;line-height:1.5;">
+                                Configure which compliance requirements must be met before members can request loans or make share declarations.
+                                When enabled, members who haven't read and acknowledged the required documents will be blocked from performing these activities.
+                            </p>
+
+                            <div style="display:grid;gap:1rem;">
+                                {{-- Require Rules --}}
+                                <div style="display:flex;align-items:flex-start;gap:.85rem;padding:1rem;border:2px solid {{ $require_rules_before_activity ? 'var(--bc-navy)' : '#e2e8f0' }};border-radius:.5rem;background:{{ $require_rules_before_activity ? '#f0f4ff' : '#fff' }};transition:all .2s;">
+                                    <button type="button"
+                                        class="bc-toggle {{ $require_rules_before_activity ? 'active' : '' }}"
+                                        wire:click="$toggle('require_rules_before_activity')"
+                                        style="margin-top:.1rem;"></button>
+                                    <div>
+                                        <div style="font-weight:700;font-size:.88rem;color:var(--bc-text);display:flex;align-items:center;gap:.35rem;">
+                                            <i class="fas fa-scroll" style="color:#d97706;"></i> Require Rules Acknowledgement
+                                        </div>
+                                        <div style="font-size:.75rem;color:var(--bc-muted);margin-top:.25rem;line-height:1.5;">
+                                            Members must read and agree to <strong>all active village bank rules</strong> before they can request loans or make share declarations.
+                                            Their acknowledgement status is tracked and visible in the member list.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Enable Constitution --}}
+                                <div style="display:flex;align-items:flex-start;gap:.85rem;padding:1rem;border:2px solid {{ $constitution_enabled ? 'var(--bc-navy)' : '#e2e8f0' }};border-radius:.5rem;background:{{ $constitution_enabled ? '#f0f4ff' : '#fff' }};transition:all .2s;">
+                                    <button type="button"
+                                        class="bc-toggle {{ $constitution_enabled ? 'active' : '' }}"
+                                        wire:click="$toggle('constitution_enabled')"
+                                        style="margin-top:.1rem;"></button>
+                                    <div>
+                                        <div style="font-weight:700;font-size:.88rem;color:var(--bc-text);display:flex;align-items:center;gap:.35rem;">
+                                            <i class="fas fa-file-contract" style="color:#7c3aed;"></i> Enable Constitution
+                                        </div>
+                                        <div style="font-size:.75rem;color:var(--bc-muted);margin-top:.25rem;line-height:1.5;">
+                                            Upload or write a constitution (terms & conditions) for your village bank. This acts as a binding agreement all members must sign.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Require Constitution Before Activity --}}
+                                @if($constitution_enabled)
+                                <div style="display:flex;align-items:flex-start;gap:.85rem;padding:1rem;border:2px solid {{ $require_constitution_before_activity ? '#7c3aed' : '#e2e8f0' }};border-radius:.5rem;background:{{ $require_constitution_before_activity ? '#f5f3ff' : '#fff' }};transition:all .2s;margin-left:1.5rem;">
+                                    <button type="button"
+                                        class="bc-toggle {{ $require_constitution_before_activity ? 'active' : '' }}"
+                                        wire:click="$toggle('require_constitution_before_activity')"
+                                        style="margin-top:.1rem;"></button>
+                                    <div>
+                                        <div style="font-weight:700;font-size:.88rem;color:var(--bc-text);display:flex;align-items:center;gap:.35rem;">
+                                            <i class="fas fa-lock" style="color:#ef4444;"></i> Enforce Constitution Before Activity
+                                        </div>
+                                        <div style="font-size:.75rem;color:var(--bc-muted);margin-top:.25rem;line-height:1.5;">
+                                            Members <strong>must</strong> read and sign the constitution before requesting loans or making share declarations.
+                                            If disabled, the constitution will still be available for members to read, but won't block activities.
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- ── Constitution Content ── --}}
+                    @if($constitution_enabled)
+                    <div class="bc-card">
+                        <div class="bc-card-head">
+                            <div style="display:flex;align-items:center;gap:.45rem;">
+                                <div class="bc-section-icon" style="background:linear-gradient(135deg,#059669,#10b981);"><i class="fas fa-file-contract"></i></div>
+                                <h3 class="bc-card-title">Constitution Document</h3>
+                            </div>
+                            @if($existing_constitution)
+                                <div style="margin-left:auto;display:flex;align-items:center;gap:.5rem;">
+                                    <span style="font-size:.72rem;color:var(--bc-muted);">
+                                        Version {{ $existing_constitution->version }}
+                                        &bull; {{ $existing_constitution->acknowledgementRate() }}% signed
+                                        &bull; {{ $existing_constitution->pendingCount() }} pending
+                                    </span>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="bc-card-body">
+                            {{-- Title --}}
+                            <div class="bc-row" style="margin-bottom:1rem;">
+                                <div>
+                                    <label class="bc-label">Constitution Title</label>
+                                    <input type="text" wire:model="constitution_title"
+                                           class="bc-input @error('constitution_title') bc-input-error @enderror"
+                                           placeholder="e.g. Village Bank Constitution">
+                                    @error('constitution_title') <div class="bc-error">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+
+                            {{-- Content Type Selector --}}
+                            <div style="margin-bottom:1rem;">
+                                <label class="bc-label">Content Type</label>
+                                <div style="display:flex;gap:1rem;margin-top:.3rem;">
+                                    <label style="display:flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border:2px solid {{ $constitution_content_type === 'text' ? 'var(--bc-navy)' : '#e2e8f0' }};border-radius:8px;cursor:pointer;background:{{ $constitution_content_type === 'text' ? '#f0f4ff' : '#fff' }};font-size:.84rem;font-weight:600;transition:all .2s;">
+                                        <input type="radio" wire:model.live="constitution_content_type" value="text" style="accent-color:var(--bc-navy);">
+                                        <i class="fas fa-pen-fancy" style="color:#059669;"></i> Write Text
+                                    </label>
+                                    <label style="display:flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border:2px solid {{ $constitution_content_type === 'file' ? 'var(--bc-navy)' : '#e2e8f0' }};border-radius:8px;cursor:pointer;background:{{ $constitution_content_type === 'file' ? '#f0f4ff' : '#fff' }};font-size:.84rem;font-weight:600;transition:all .2s;">
+                                        <input type="radio" wire:model.live="constitution_content_type" value="file" style="accent-color:var(--bc-navy);">
+                                        <i class="fas fa-file-pdf" style="color:#dc2626;"></i> Upload PDF
+                                    </label>
+                                </div>
+                            </div>
+
+                            {{-- Text Input --}}
+                            @if($constitution_content_type === 'text')
+                                <div>
+                                    <label class="bc-label">Constitution Text</label>
+                                    <textarea wire:model="constitution_body"
+                                              class="bc-input @error('constitution_body') bc-input-error @enderror"
+                                              rows="12"
+                                              placeholder="Enter the full constitution / terms & conditions for your village bank..."
+                                              style="resize:vertical;min-height:200px;font-size:.85rem;line-height:1.6;"></textarea>
+                                    @error('constitution_body') <div class="bc-error">{{ $message }}</div> @enderror
+                                    <div class="bc-hint">Write the full text of your village bank's constitution. Members will see this and must agree to it.</div>
+                                </div>
+                            @endif
+
+                            {{-- File Upload --}}
+                            @if($constitution_content_type === 'file')
+                                <div>
+                                    <label class="bc-label">Constitution PDF</label>
+                                    @if($existing_constitution && $existing_constitution->file_path)
+                                        <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;">
+                                            <i class="fas fa-file-pdf" style="font-size:1.5rem;color:#dc2626;"></i>
+                                            <div style="flex:1;">
+                                                <div style="font-size:.85rem;font-weight:600;color:var(--bc-text);">{{ $existing_constitution->file_name }}</div>
+                                                <div style="font-size:.72rem;color:var(--bc-muted);">Current file &bull; Version {{ $existing_constitution->version }}</div>
+                                            </div>
+                                            <a href="{{ asset('storage/' . $existing_constitution->file_path) }}" target="_blank"
+                                               style="font-size:.78rem;color:var(--bc-navy);font-weight:600;text-decoration:none;">
+                                                <i class="fas fa-external-link-alt"></i> View
+                                            </a>
+                                        </div>
+                                    @endif
+                                    <input type="file" wire:model="constitution_file"
+                                           class="bc-input @error('constitution_file') bc-input-error @enderror"
+                                           accept=".pdf"
+                                           style="padding:.45rem .75rem;">
+                                    @error('constitution_file') <div class="bc-error">{{ $message }}</div> @enderror
+                                    <div class="bc-hint">Upload a PDF file (max 10 MB). {{ $existing_constitution?->file_path ? 'Uploading a new file will replace the current one.' : '' }}</div>
+                                    <div wire:loading wire:target="constitution_file" style="color:var(--bc-navy);font-size:.8rem;margin-top:.3rem;">
+                                        <i class="fas fa-spinner fa-spin"></i> Uploading...
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- Version bump notice --}}
+                            @if($existing_constitution)
+                                <div style="margin-top:1rem;padding:.75rem 1rem;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;">
+                                    <div style="font-size:.78rem;color:#92400e;font-weight:600;">
+                                        <i class="fas fa-info-circle"></i> Version Notice
+                                    </div>
+                                    <div style="font-size:.75rem;color:#a16207;margin-top:.25rem;line-height:1.5;">
+                                        If you change the constitution content, the version will be bumped from <strong>v{{ $existing_constitution->version }}</strong> to <strong>v{{ $existing_constitution->version + 1 }}</strong>.
+                                        Members who previously signed will need to re-acknowledge the updated version.
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- Delete constitution --}}
+                            @if($existing_constitution)
+                                <div style="margin-top:1rem;padding:.75rem 1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;display:flex;align-items:center;justify-content:space-between;">
+                                    <div>
+                                        <div style="font-size:.78rem;color:#991b1b;font-weight:600;"><i class="fas fa-trash-alt"></i> Remove Constitution</div>
+                                        <div style="font-size:.72rem;color:#b91c1c;margin-top:.15rem;">This will delete the constitution and all acknowledgement records.</div>
+                                    </div>
+                                    <button type="button" wire:click="deleteConstitution"
+                                            wire:confirm="Are you sure? This will permanently remove the constitution and all member signatures."
+                                            class="bc-btn" style="background:#fee2e2;color:#dc2626;font-size:.78rem;">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- ── Compliance Status Summary ── --}}
+                    <div class="bc-card">
+                        <div class="bc-card-head">
+                            <div style="display:flex;align-items:center;gap:.45rem;">
+                                <div class="bc-section-icon" style="background:linear-gradient(135deg,#0369a1,#38bdf8);"><i class="fas fa-clipboard-check"></i></div>
+                                <h3 class="bc-card-title">Current Enforcement Summary</h3>
+                            </div>
+                        </div>
+                        <div class="bc-card-body">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                                <div style="padding:.85rem;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+                                    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--bc-faint);">
+                                        Rules Enforcement
+                                    </div>
+                                    <div style="font-size:1rem;font-weight:800;color:{{ $require_rules_before_activity ? 'var(--bc-green)' : 'var(--bc-faint)' }};margin-top:.25rem;">
+                                        <i class="fas fa-{{ $require_rules_before_activity ? 'check-circle' : 'minus-circle' }}"></i>
+                                        {{ $require_rules_before_activity ? 'Active' : 'Inactive' }}
+                                    </div>
+                                    <div style="font-size:.72rem;color:var(--bc-muted);margin-top:.2rem;">
+                                        {{ $require_rules_before_activity ? 'Members must acknowledge all rules' : 'Rules are optional to read' }}
+                                    </div>
+                                </div>
+                                <div style="padding:.85rem;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+                                    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--bc-faint);">
+                                        Constitution Enforcement
+                                    </div>
+                                    <div style="font-size:1rem;font-weight:800;color:{{ ($constitution_enabled && $require_constitution_before_activity) ? 'var(--bc-green)' : 'var(--bc-faint)' }};margin-top:.25rem;">
+                                        <i class="fas fa-{{ ($constitution_enabled && $require_constitution_before_activity) ? 'check-circle' : 'minus-circle' }}"></i>
+                                        {{ ($constitution_enabled && $require_constitution_before_activity) ? 'Active' : ($constitution_enabled ? 'Optional' : 'Disabled') }}
+                                    </div>
+                                    <div style="font-size:.72rem;color:var(--bc-muted);margin-top:.2rem;">
+                                        @if($constitution_enabled && $require_constitution_before_activity)
+                                            Members must sign the constitution
+                                        @elseif($constitution_enabled)
+                                            Constitution available but not mandatory
+                                        @else
+                                            Constitution feature is disabled
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if($require_rules_before_activity || ($constitution_enabled && $require_constitution_before_activity))
+                                <div style="margin-top:1rem;padding:.75rem 1rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;">
+                                    <div style="font-size:.78rem;color:#166534;font-weight:600;">
+                                        <i class="fas fa-shield-alt"></i> Active Restrictions
+                                    </div>
+                                    <div style="font-size:.75rem;color:#15803d;margin-top:.25rem;line-height:1.5;">
+                                        Members who have not met the requirements above will be <strong>blocked</strong> from:
+                                        <ul style="margin:.35rem 0 0 1.25rem;padding:0;">
+                                            <li>Requesting loans</li>
+                                            <li>Making share declarations</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Save button --}}
+                <div style="margin-top:1.25rem;display:flex;justify-content:flex-end;">
+                    <button type="submit" class="bc-btn bc-btn-primary" wire:loading.attr="disabled" wire:target="saveConstitution">
+                        <span wire:loading.remove wire:target="saveConstitution"><i class="fas fa-save"></i> Save Governance Settings</span>
+                        <span wire:loading wire:target="saveConstitution"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                    </button>
+                </div>
+            </form>
             @endif
 
             @else

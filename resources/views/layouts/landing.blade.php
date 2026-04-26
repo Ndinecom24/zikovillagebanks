@@ -218,6 +218,44 @@
         .plan-name { font-size:1.2rem; font-weight:700; margin-bottom:0.25rem; }
         .plan-price { font-size:2.5rem; font-weight:800; color:var(--nd-primary); margin:0.75rem 0; }
         .plan-price span { font-size:1rem; font-weight:500; color:#64748b; }
+        /* Price Slash styling */
+        .price-slash { position:relative; margin:0.75rem 0; }
+        .price-was {
+            font-size:1.15rem; font-weight:600; color:#94a3b8; position:relative; display:inline-block;
+        }
+        .price-was::after {
+            content:''; position:absolute; left:-4px; right:-4px; top:50%;
+            height:2px; background:linear-gradient(90deg,#ef4444,#dc2626); transform:rotate(-8deg);
+        }
+        .price-now { font-size:2.5rem; font-weight:800; color:var(--nd-primary); display:block; line-height:1.1; }
+        .price-now span { font-size:1rem; font-weight:500; color:#64748b; }
+        .price-save-badge {
+            display:inline-flex; align-items:center; gap:.3rem; background:linear-gradient(135deg,#dcfce7,#bbf7d0);
+            color:#166534; font-size:.76rem; font-weight:700; padding:.3rem .65rem; border-radius:20px;
+            margin-top:.35rem; border:1px solid #86efac;
+        }
+        .price-save-badge i { font-size:.65rem; }
+        .price-timer {
+            display:inline-flex; align-items:center; gap:.25rem; font-size:.72rem; font-weight:600;
+            color:#dc2626; margin-left:.5rem; animation: pulseDeal 2s ease-in-out infinite;
+        }
+        .price-timer i { font-size:.6rem; }
+        @keyframes pulseDeal { 0%,100%{opacity:1;} 50%{opacity:.5;} }
+        .price-label-tag {
+            display:inline-flex; align-items:center; gap:.25rem;
+            background:#fef3c7; color:#92400e; font-size:.74rem; font-weight:700;
+            padding:.25rem .65rem; border-radius:6px; margin-bottom:.5rem; border:1px solid #fde68a;
+        }
+        .price-label-tag i { font-size:.6rem; }
+        .discount-ribbon {
+            position:absolute; top:-1px; right:-1px; z-index:2; overflow:hidden; width:90px; height:90px;
+        }
+        .discount-ribbon span {
+            display:block; position:absolute; top:18px; right:-22px; width:130px; text-align:center;
+            font-size:.7rem; font-weight:800; color:#fff; letter-spacing:.5px;
+            background:linear-gradient(135deg,#ef4444,#dc2626); padding:4px 0;
+            transform:rotate(45deg); box-shadow:0 2px 6px rgba(220,38,38,.4);
+        }
         .plan-features { list-style:none; padding:0; margin:1.25rem 0; }
         .plan-features li { padding:0.4rem 0; font-size:0.9rem; color:#475569; display:flex; align-items:center; gap:0.5rem; }
         .plan-features li i { color:var(--nd-accent); font-size:0.85rem; }
@@ -229,6 +267,120 @@
         .btn-plan-primary:hover { background:var(--nd-primary-dark); }
         .btn-plan-outline { background:#fff; color:var(--nd-primary); border:2px solid var(--nd-primary); }
         .btn-plan-outline:hover { background:#eef2f7; }
+
+        /* ── Deal Alert Banner ── */
+        .deal-alert-banner {
+            max-width:700px; margin:0 auto 2rem; animation: dealSlideIn .5s ease-out;
+        }
+        .deal-alert-inner {
+            display:flex; align-items:center; justify-content:center; gap:.75rem;
+            background:linear-gradient(135deg,#fef3c7 0%,#fff7ed 100%);
+            border:2px solid #fbbf24; border-radius:12px; padding:.75rem 1.25rem;
+        }
+        .deal-alert-icon {
+            width:32px; height:32px; min-width:32px; border-radius:50%;
+            background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff;
+            display:flex; align-items:center; justify-content:center; font-size:.9rem;
+            animation: dealIconPulse 1.5s ease-in-out infinite;
+        }
+        .deal-alert-text { font-size:.88rem; color:#92400e; }
+        .deal-alert-text strong { color:#78350f; }
+        .deal-alert-arrow { color:#d97706; animation: dealBounce 1.5s ease-in-out infinite; }
+        @keyframes dealSlideIn { from { opacity:0; transform:translateY(-15px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes dealIconPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.15); } }
+        @keyframes dealBounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(4px); } }
+
+        /* ── Discounted card enhancements ── */
+        .plan-card-deal {
+            border-color:#f59e0b !important;
+            box-shadow:0 0 0 1px #fde68a, 0 8px 30px rgba(245,158,11,.15) !important;
+        }
+        .plan-card-deal:hover {
+            box-shadow:0 0 0 2px #f59e0b, 0 12px 40px rgba(245,158,11,.25) !important;
+        }
+        .plan-card-urgent {
+            animation: urgentGlow 2s ease-in-out infinite;
+        }
+        @keyframes urgentGlow {
+            0%,100% { box-shadow:0 0 0 1px #fecaca, 0 8px 30px rgba(239,68,68,.12); }
+            50%     { box-shadow:0 0 0 3px #fca5a5, 0 8px 40px rgba(239,68,68,.25); }
+        }
+
+        /* ── Deal top bar ── */
+        .deal-top-bar {
+            background:linear-gradient(135deg,#fbbf24,#f59e0b); color:#78350f;
+            text-align:center; font-size:.7rem; font-weight:800; letter-spacing:1px;
+            padding:.35rem .5rem; margin:-2rem -2rem 1rem -2rem; border-radius:14px 14px 0 0;
+        }
+        .deal-top-bar i { margin-right:.25rem; }
+        .deal-top-bar-urgent {
+            background:linear-gradient(135deg,#ef4444,#dc2626) !important; color:#fff !important;
+            animation:urgentBarPulse 2s ease-in-out infinite;
+        }
+        @keyframes urgentBarPulse { 0%,100%{opacity:1;} 50%{opacity:.85;} }
+
+        /* ── Deal savings row ── */
+        .deal-savings-row { display:flex; flex-wrap:wrap; align-items:center; gap:.4rem; margin-top:.35rem; }
+
+        /* ── Deal countdown box ── */
+        .deal-countdown-box {
+            background:linear-gradient(135deg,#fffbeb,#fef3c7); border:1px solid #fde68a;
+            border-radius:10px; padding:.75rem; margin:.75rem 0; text-align:center;
+        }
+        .deal-countdown-urgent {
+            background:linear-gradient(135deg,#fef2f2,#fee2e2) !important;
+            border-color:#fecaca !important;
+        }
+        .deal-countdown-label {
+            font-size:.76rem; font-weight:700; color:#92400e; margin-bottom:.5rem;
+            text-transform:uppercase; letter-spacing:.5px;
+        }
+        .deal-countdown-urgent .deal-countdown-label { color:#dc2626; }
+        .deal-countdown-digits {
+            display:flex; align-items:center; justify-content:center; gap:.25rem;
+        }
+        .deal-cd-unit { display:flex; flex-direction:column; align-items:center; }
+        .deal-cd-num {
+            background:linear-gradient(135deg,#1E3A5F,#2B6B96); color:#fff;
+            font-size:1.35rem; font-weight:800; width:44px; height:44px; line-height:44px;
+            border-radius:8px; font-family:'Courier New',monospace;
+            box-shadow:0 2px 6px rgba(30,58,95,.25);
+        }
+        .deal-countdown-urgent .deal-cd-num {
+            background:linear-gradient(135deg,#ef4444,#dc2626);
+            animation: cdNumPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes cdNumPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
+        .deal-cd-label { font-size:.6rem; font-weight:700; color:#64748b; text-transform:uppercase; margin-top:.2rem; }
+        .deal-cd-sep { font-size:1.2rem; font-weight:800; color:#94a3b8; margin:0 .1rem; }
+        .deal-countdown-enddate {
+            font-size:.72rem; color:#64748b; margin-top:.5rem; font-weight:600;
+        }
+        .deal-countdown-enddate i { color:#d97706; margin-right:.2rem; }
+
+        /* ── Deal CTA button ── */
+        .btn-plan-deal {
+            background:linear-gradient(135deg,#f59e0b,#d97706) !important; color:#fff !important;
+            border:none !important; font-size:1rem; padding:.85rem; position:relative; overflow:hidden;
+            box-shadow:0 4px 15px rgba(245,158,11,.35);
+        }
+        .btn-plan-deal:hover {
+            background:linear-gradient(135deg,#d97706,#b45309) !important;
+            transform:translateY(-1px); box-shadow:0 6px 20px rgba(245,158,11,.45);
+        }
+        .btn-plan-deal::after {
+            content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+            animation:dealShine 3s ease-in-out infinite;
+        }
+        @keyframes dealShine { 0%{left:-100%;} 50%{left:100%;} 100%{left:100%;} }
+
+        /* ── Trust nudge below deal button ── */
+        .deal-trust-nudge {
+            text-align:center; font-size:.72rem; color:#64748b; margin-top:.5rem; font-weight:600;
+        }
+        .deal-trust-nudge i { color:#16a34a; margin-right:.2rem; }
+
         /* ===== How It Works ===== */
         .how-it-works { padding:4rem 1.5rem; background:#fff; }
         .how-it-works .container { max-width:900px; margin:0 auto; }
@@ -325,6 +477,9 @@
         @media (max-width: 768px) {
             .hero h1 { font-size:2rem; }
             .plan-price { font-size:2rem; }
+            .price-now { font-size:2rem; }
+            .discount-ribbon { width:75px; height:75px; }
+            .discount-ribbon span { font-size:.6rem; top:14px; right:-26px; }
             .lf-row { grid-template-columns:1fr; }
         }
     </style>

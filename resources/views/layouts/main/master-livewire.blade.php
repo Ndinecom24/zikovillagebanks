@@ -150,7 +150,7 @@
 
 <script>
     // Re-initialize AdminLTE Treeview after Livewire DOM updates
-    document.addEventListener('livewire:load', function () {
+    document.addEventListener('livewire:init', function () {
         $('[data-widget="treeview"]').each(function () {
             $(this).Treeview('init');
         });

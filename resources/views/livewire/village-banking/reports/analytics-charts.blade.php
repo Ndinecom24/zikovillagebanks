@@ -29,7 +29,7 @@
     @push('custom-scripts')
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.44.0/dist/apexcharts.min.js"></script>
     <script>
-    document.addEventListener('livewire:load', function () {
+    document.addEventListener('livewire:init', function () {
         const navy = '#1E3A5F', navyLight = '#2B6B96', amber = '#D97706', green = '#16a34a',
               red = '#dc2626', blue = '#2563eb', purple = '#7c3aed', cyan = '#0891b2', orange = '#ea580c';
         const chartDefaults = { chart: { fontFamily: 'inherit', toolbar: { show: false } }, grid: { borderColor: '#edf0f7', strokeDashArray: 3 } };
@@ -159,7 +159,7 @@
                 <div><label class="ac-label">Village Bank</label>@include('partials.village-bank-selector')</div>
                 <div>
                     <label class="ac-label">Circle</label>
-                    <select wire:model="circleId" class="ac-select"><option value="">All Circles</option>@foreach($this->circles as $c)<option value="{{ $c->id }}">{{ $c->name }}</option>@endforeach</select>
+                    <select wire:model.live="circleId" class="ac-select"><option value="">All Circles</option>@foreach($this->circles as $c)<option value="{{ $c->id }}">{{ $c->name }}</option>@endforeach</select>
                 </div>
             </div>
 

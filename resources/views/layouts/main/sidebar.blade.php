@@ -198,6 +198,16 @@
                             </a>
                         </li>
                         @endcan
+                          {{-- Repayments --}}
+                @canany(['view-repayments', 'make-repayments'])
+                <li class="nav-item">
+                    <a href="{{ route('repayments.index') }}"
+                       class="nav-link {{ request()->routeIs('repayments.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-money-bill-wave"></i>
+                        <p>Repayments</p>
+                    </a>
+                </li>
+                @endcanany
                         @can('pair-loans')
                         <li class="nav-item">
                             <a href="{{ route('loans.pairing') }}"
@@ -253,16 +263,7 @@
                 </li>
                 @endcanany
 
-                {{-- Repayments --}}
-                @canany(['view-repayments', 'make-repayments'])
-                <li class="nav-item">
-                    <a href="{{ route('repayments.index') }}"
-                       class="nav-link {{ request()->routeIs('repayments.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-money-bill-wave"></i>
-                        <p>Repayments</p>
-                    </a>
-                </li>
-                @endcanany
+              
 
                 {{-- Shareout --}}
                 @canany(['view-shareout', 'calculate-shareout'])
@@ -308,6 +309,17 @@
                     </a>
                 </li>
                 @endcanany
+
+                {{-- Compliance Center --}}
+                @can('view-rules')
+                <li class="nav-item">
+                    <a href="{{ route('compliance.index') }}"
+                       class="nav-link {{ request()->routeIs('compliance.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-clipboard-check"></i>
+                        <p>Compliance Center</p>
+                    </a>
+                </li>
+                @endcan
 
                 {{-- Polls --}}
                 @canany(['view-polls', 'manage-polls', 'vote-polls'])
@@ -458,6 +470,13 @@
                                class="nav-link {{ request()->routeIs('subscription.payment-config') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Payment Config</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('subscription.promo-codes') }}"
+                               class="nav-link {{ request()->routeIs('subscription.promo-codes') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Promo Codes</p>
                             </a>
                         </li>
                         @endcan

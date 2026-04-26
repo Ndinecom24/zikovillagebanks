@@ -83,10 +83,10 @@
         <div class="lr-content container-fluid lr-animate">
             <div class="lr-filters">
                 <div><label class="lr-label">Village Bank</label>@include('partials.village-bank-selector')</div>
-                <div><label class="lr-label">Circle</label><select wire:model="circleId" class="lr-select"><option value="">All Circles</option>@foreach($this->circles as $c)<option value="{{ $c->id }}">{{ $c->name }}</option>@endforeach</select></div>
-                <div><label class="lr-label">Status</label><select wire:model="statusFilter" class="lr-select"><option value="">All Statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="active">Active</option><option value="completed">Completed</option><option value="rejected">Rejected</option></select></div>
-                <div><label class="lr-label">From</label><input type="date" wire:model.lazy="dateFrom" class="lr-date"></div>
-                <div><label class="lr-label">To</label><input type="date" wire:model.lazy="dateTo" class="lr-date"></div>
+                <div><label class="lr-label">Circle</label><select wire:model.live="circleId" class="lr-select"><option value="">All Circles</option>@foreach($this->circles as $c)<option value="{{ $c->id }}">{{ $c->name }}</option>@endforeach</select></div>
+                <div><label class="lr-label">Status</label><select wire:model.live="statusFilter" class="lr-select"><option value="">All Statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="active">Active</option><option value="completed">Completed</option><option value="rejected">Rejected</option></select></div>
+                <div><label class="lr-label">From</label><input type="date" wire:model.blur="dateFrom" class="lr-date"></div>
+                <div><label class="lr-label">To</label><input type="date" wire:model.blur="dateTo" class="lr-date"></div>
                 <button wire:click="resetFilters" class="lr-clear"><i class="fas fa-times"></i> Clear</button>
             </div>
 

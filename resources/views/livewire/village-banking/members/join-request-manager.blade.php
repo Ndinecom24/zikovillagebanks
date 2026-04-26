@@ -311,7 +311,7 @@
                             </p>
                             <div style="margin-bottom:1.25rem;">
                                 <label class="jr-label">Guarantor Username</label>
-                                <input type="text" wire:model.defer="assignGuarantor" class="jr-input" placeholder="e.g. jane.smith">
+                                <input type="text" wire:model="assignGuarantor" class="jr-input" placeholder="e.g. jane.smith">
                                 <div class="jr-hint"><i class="fas fa-info-circle"></i> Enter the username of an existing member to serve as guarantor.</div>
                             </div>
                         @else
@@ -321,7 +321,7 @@
                         @endif
                         <div>
                             <label class="jr-label">Admin Remarks <span style="color:var(--jr-faint);font-weight:500;text-transform:none;">(optional)</span></label>
-                            <textarea wire:model.defer="adminRemarks" class="jr-input" rows="3" placeholder="{{ $isApprove ? 'Welcome note or instructions…' : 'Reason for rejection…' }}" style="resize:vertical;"></textarea>
+                            <textarea wire:model="adminRemarks" class="jr-input" rows="3" placeholder="{{ $isApprove ? 'Welcome note or instructions…' : 'Reason for rejection…' }}" style="resize:vertical;"></textarea>
                         </div>
                     </div>
                     <div class="jr-modal-footer">

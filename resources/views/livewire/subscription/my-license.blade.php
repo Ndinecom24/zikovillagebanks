@@ -364,7 +364,7 @@
                         <div class="ml-plan-grid">
                             @foreach($availablePlans as $ap)
                                 <label class="ml-plan-option {{ $selectedPlanId == $ap->id ? 'ml-plan-selected' : '' }}" wire:click="$set('selectedPlanId', {{ $ap->id }})">
-                                    <input type="radio" wire:model="selectedPlanId" value="{{ $ap->id }}" style="display:none;">
+                                    <input type="radio" wire:model.live="selectedPlanId" value="{{ $ap->id }}" style="display:none;">
                                     <div class="ml-plan-option-name">{{ $ap->name }}</div>
                                     <div class="ml-plan-option-price">K{{ number_format($ap->price, 2) }} <small>{{ $ap->cycleName() }}</small></div>
                                     <div class="ml-plan-option-details">
@@ -382,7 +382,7 @@
                     <div class="ml-section-label" style="margin-top:1.25rem;"><i class="fas fa-upload"></i> Upload Proof of Payment</div>
                     <div style="margin-bottom:1rem;">
                         <label class="ml-label">Payment / Transaction Reference <span class="req">*</span></label>
-                        <input type="text" wire:model.defer="paymentReference" class="ml-input" placeholder="e.g. TXN-123456789">
+                        <input type="text" wire:model="paymentReference" class="ml-input" placeholder="e.g. TXN-123456789">
                         @error('paymentReference') <div class="ml-error">{{ $message }}</div> @enderror
                     </div>
                     <div style="margin-bottom:1rem;">

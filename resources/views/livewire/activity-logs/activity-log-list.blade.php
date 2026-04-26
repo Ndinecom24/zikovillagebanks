@@ -46,15 +46,15 @@
                 <div class="nd-toolbar">
                     <div class="nd-search">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search logs..." wire:model.debounce.300ms="search">
+                        <input type="text" placeholder="Search logs..." wire:model.live.debounce.300ms="search">
                     </div>
-                    <select class="nd-select" wire:model="filterType">
+                    <select class="nd-select" wire:model.live="filterType">
                         <option value="">All Types</option>
                         <option value="auth">Auth</option>
                         <option value="model">Model</option>
                         <option value="system">System</option>
                     </select>
-                    <select class="nd-select" wire:model="filterEvent">
+                    <select class="nd-select" wire:model.live="filterEvent">
                         <option value="">All Events</option>
                         <option value="login">Login</option>
                         <option value="logout">Logout</option>

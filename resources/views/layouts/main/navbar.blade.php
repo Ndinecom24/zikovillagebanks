@@ -19,7 +19,7 @@
         @auth
             @if(Auth::user()->user_role_id != 1 || session('current_village_bank_id'))
             <li class="nav-item d-flex align-items-center mr-2">
-                <a href="#" class="nav-link d-flex align-items-center" style="gap:0.4rem;background:rgba(30,58,95,0.08);border-radius:8px;padding:0.35rem 0.75rem;color:#1E3A5F;font-size:0.82rem;font-weight:600;" onclick="event.preventDefault(); Livewire.emit('openBankSelector');" title="Switch Village Bank">
+                <a href="#" class="nav-link d-flex align-items-center" style="gap:0.4rem;background:rgba(30,58,95,0.08);border-radius:8px;padding:0.35rem 0.75rem;color:#1E3A5F;font-size:0.82rem;font-weight:600;" onclick="event.preventDefault(); Livewire.dispatch('openBankSelector');" title="Switch Village Bank">
                     <i class="fas fa-university" style="color:#D97706;font-size:0.9rem;"></i>
                     <span class="d-none d-md-inline">{{ session('current_village_bank_name', 'Select Bank') }}</span>
                     <i class="fas fa-exchange-alt ml-1" style="font-size:0.65rem;opacity:0.5;"></i>

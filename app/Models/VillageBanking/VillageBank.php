@@ -66,6 +66,11 @@ class VillageBank extends Model
         return $this->rules()->where('is_active', true);
     }
 
+    public function constitution()
+    {
+        return $this->hasOne(Constitution::class);
+    }
+
     public function configuration()
     {
         return $this->hasOne(VillageBankConfiguration::class);
@@ -141,5 +146,46 @@ class VillageBank extends Model
             ->where('status', 'active')
             ->where('expires_at', '>', now())
             ->latest();
+    }
+
+    /* ── Constitution & Compliance ────── */
+
+    /**
+     * Does this bank have a constitution uploaded/created?
+     */
+    public function hasConstitution(): bool
+    {
+        return $this->constitution()->exists();
+    }
+
+    /**
+     * Is the constitution feature enabled in config?
+     */
+    public function isConstitutionEnabled(): bool
+    {
+        $config = $this->configuration ?? $this->getOrCreateConfig();
+        return (bool) $config->constitution_enabled;
+    }
+
+    /**
+     * Check if a user (member) is fully compliant to operate.
+     */
+    public function isMemberCompliant(int $userId): bool
+    {
+        $membership = $this->bankMemberships()->where('user_id', $userId)->first();
+        if (! $membership) return false;
+
+        return $membership->isCompliant();
+    }
+
+    /**
+     * Get compliance gaps for a user.
+     */
+    public function memberComplianceGaps(int $userId): array
+    {
+        $membership = $this->bankMemberships()->where('user_id', $userId)->first();
+        if (! $membership) return ['You are not a member of this village bank.'];
+
+        return $membership->complianceGaps();
     }
 }

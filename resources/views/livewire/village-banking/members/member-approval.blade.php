@@ -52,9 +52,9 @@
                     <div class="d-flex align-items-center" style="gap: 0.75rem;">
                         <div class="z-search">
                             <i class="fas fa-search si"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search pending members...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search pending members...">
                         </div>
-                        <select wire:model="perPage" class="z-per-page">
+                        <select wire:model.live="perPage" class="z-per-page">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="25">25</option>
@@ -189,7 +189,7 @@
                         {{-- Remarks (required for rejection) --}}
                         <div class="mb-2">
                             <label class="z-label">Remarks <small class="text-muted">(required for rejection)</small></label>
-                            <textarea wire:model.defer="remarks" class="form-control z-input" rows="3" placeholder="Add any notes or reasons..."></textarea>
+                            <textarea wire:model="remarks" class="form-control z-input" rows="3" placeholder="Add any notes or reasons..."></textarea>
                             @error('remarks') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>

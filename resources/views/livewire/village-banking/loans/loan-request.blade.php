@@ -129,7 +129,7 @@
                             <div class="lr-row" style="margin-bottom:1rem;">
                                 <div>
                                     <label class="lr-label">Village Bank</label>
-                                    <select wire:model="villageBankId" class="lr-input">
+                                    <select wire:model.live="villageBankId" class="lr-input">
                                         <option value="">All Village Banks</option>
                                         @foreach ($this->villageBanks as $vb)
                                             <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -142,7 +142,7 @@
                             <div class="lr-row lr-row-2">
                                 <div>
                                     <label class="lr-label">Circle <span style="color:var(--lr-red);">*</span></label>
-                                    <select wire:model="circleId" class="lr-input @error('circleId') lr-input-error @enderror">
+                                    <select wire:model.live="circleId" class="lr-input @error('circleId') lr-input-error @enderror">
                                         <option value="">-- Select Circle --</option>
                                         @foreach ($circles as $c)
                                             <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }} members)</option>
@@ -152,7 +152,7 @@
                                 </div>
                                 <div>
                                     <label class="lr-label">Active Month <span style="color:var(--lr-red);">*</span></label>
-                                    <select wire:model="monthId" class="lr-input @error('monthId') lr-input-error @enderror" {{ empty($circleId) ? 'disabled' : '' }}>
+                                    <select wire:model.live="monthId" class="lr-input @error('monthId') lr-input-error @enderror" {{ empty($circleId) ? 'disabled' : '' }}>
                                         <option value="">-- Select Month --</option>
                                         @foreach ($months as $mo)
                                             <option value="{{ $mo->id }}">Month {{ $mo->month_number }} ({{ $mo->start_date->format('d M') }} - {{ $mo->end_date->format('d M') }})</option>
@@ -166,7 +166,7 @@
                             <div class="lr-row" style="margin-bottom:1rem;">
                                 <div>
                                     <label class="lr-label">Borrower <span style="color:var(--lr-red);">*</span></label>
-                                    <select wire:model="borrowerId" class="lr-input @error('borrowerId') lr-input-error @enderror" {{ empty($circleId) ? 'disabled' : '' }}>
+                                    <select wire:model.live="borrowerId" class="lr-input @error('borrowerId') lr-input-error @enderror" {{ empty($circleId) ? 'disabled' : '' }}>
                                         <option value="">-- Select Member --</option>
                                         @foreach ($membersList as $m)
                                             <option value="{{ $m->id }}">{{ $m->name }} ({{ $m->email }})</option>

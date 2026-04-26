@@ -93,13 +93,13 @@
             <div class="nd-card-header">
                 <h3><i class="fas fa-list"></i> All Licenses</h3>
                 <div class="nd-toolbar">
-                    <select wire:model="statusFilter" class="nd-select" style="min-width:130px;">
+                    <select wire:model.live="statusFilter" class="nd-select" style="min-width:130px;">
                         <option value="">All Status</option><option value="active">Active</option><option value="expired">Expired</option><option value="revoked">Revoked</option>
                     </select>
                     <div class="nd-search"><i class="fas fa-search"></i>
-                        <input type="text" wire:model.debounce.300ms="search" placeholder="Search license key, bank...">
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search license key, bank...">
                     </div>
-                    <select wire:model="perPage" class="nd-select" style="min-width:75px;">
+                    <select wire:model.live="perPage" class="nd-select" style="min-width:75px;">
                         <option value="10">10</option><option value="25">25</option>
                     </select>
                 </div>
@@ -197,7 +197,7 @@
                     </div>
                     <div>
                         <label class="lm-label">Reason for Revocation <span class="req">*</span></label>
-                        <textarea wire:model.defer="revokeReason" class="lm-input" rows="3" placeholder="Explain why this license is being revoked..."></textarea>
+                        <textarea wire:model="revokeReason" class="lm-input" rows="3" placeholder="Explain why this license is being revoked..."></textarea>
                         @error('revokeReason') <div class="lm-error">{{ $message }}</div> @enderror
                     </div>
                 </div>
@@ -364,7 +364,7 @@
                     </div>
                     <div style="margin-top:1rem;">
                         <label class="lm-label">Duration (days) <span class="req">*</span></label>
-                        <input type="number" wire:model.defer="activateDays" class="lm-input" min="1" max="3650" placeholder="e.g. 365">
+                        <input type="number" wire:model="activateDays" class="lm-input" min="1" max="3650" placeholder="e.g. 365">
                         @error('activateDays') <div class="lm-error">{{ $message }}</div> @enderror
                         <small style="color:var(--nd-faint);font-size:.76rem;">The license will be valid from today until {{ now()->addDays($activateDays ?? 365)->format('d M Y') }}</small>
                     </div>

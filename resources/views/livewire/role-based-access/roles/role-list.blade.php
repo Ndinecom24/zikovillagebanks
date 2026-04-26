@@ -44,7 +44,7 @@
                 <div class="nd-toolbar">
                     <div class="nd-search">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search roles..." wire:model.debounce.300ms="search">
+                        <input type="text" placeholder="Search roles..." wire:model.live.debounce.300ms="search">
                     </div>
                 </div>
             </div>
@@ -128,13 +128,13 @@
                     <div class="rl-form-group">
                         <label class="rl-label">Role Name <span class="req">*</span></label>
                         <input type="text" class="rl-input @error('name') is-invalid @enderror"
-                               wire:model.defer="name" placeholder="e.g. Admin, Editor, Viewer">
+                               wire:model="name" placeholder="e.g. Admin, Editor, Viewer">
                         @error('name') <div class="rl-error">{{ $message }}</div> @enderror
                     </div>
                     <div class="rl-form-group">
                         <label class="rl-label">Description</label>
                         <textarea class="rl-textarea @error('description') is-invalid @enderror"
-                                  wire:model.defer="description" rows="3" placeholder="Brief description of this role..."></textarea>
+                                  wire:model="description" rows="3" placeholder="Brief description of this role..."></textarea>
                         @error('description') <div class="rl-error">{{ $message }}</div> @enderror
                     </div>
                 </div>
@@ -159,13 +159,13 @@
                 <div class="nd-modal-body">
                     <div class="rl-form-group">
                         <label class="rl-label">Role Name <span class="req">*</span></label>
-                        <input type="text" class="rl-input @error('editName') is-invalid @enderror" wire:model.defer="editName">
+                        <input type="text" class="rl-input @error('editName') is-invalid @enderror" wire:model="editName">
                         @error('editName') <div class="rl-error">{{ $message }}</div> @enderror
                     </div>
                     <div class="rl-form-group">
                         <label class="rl-label">Description</label>
                         <textarea class="rl-textarea @error('editDescription') is-invalid @enderror"
-                                  wire:model.defer="editDescription" rows="3"></textarea>
+                                  wire:model="editDescription" rows="3"></textarea>
                         @error('editDescription') <div class="rl-error">{{ $message }}</div> @enderror
                     </div>
                 </div>

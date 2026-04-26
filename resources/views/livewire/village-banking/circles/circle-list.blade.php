@@ -242,7 +242,7 @@
                     <div class="cl-card-title"><i class="fas fa-list"></i> All Circles</div>
                     <div class="cl-toolbar">
                         @include('partials.village-bank-selector')
-                        <select wire:model="statusFilter" class="cl-select">
+                        <select wire:model.live="statusFilter" class="cl-select">
                             <option value="">All Statuses</option>
                             <option value="draft">Draft</option>
                             <option value="active">Active</option>
@@ -250,9 +250,9 @@
                         </select>
                         <div class="cl-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search circles...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search circles...">
                         </div>
-                        <select wire:model="perPage" class="cl-select" style="width:70px;">
+                        <select wire:model.live="perPage" class="cl-select" style="width:70px;">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="25">25</option>

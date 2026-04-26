@@ -294,7 +294,7 @@
                             @endif
 
                             <form wire:submit.prevent="addComment" class="ps-comment-input">
-                                <input type="text" wire:model.defer="commentBody" placeholder="Add your comment...">
+                                <input type="text" wire:model="commentBody" placeholder="Add your comment...">
                                 <button type="submit" class="ps-send-btn"><i class="fas fa-paper-plane"></i></button>
                             </form>
                             @error('commentBody') <small style="color:var(--ps-red);font-size:.76rem;">{{ $message }}</small> @enderror

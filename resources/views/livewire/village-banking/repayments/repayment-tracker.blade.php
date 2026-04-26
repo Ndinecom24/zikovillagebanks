@@ -156,13 +156,13 @@
                     <div class="rt-card-title"><i class="fas fa-list-alt"></i> Loan Repayment Overview</div>
                     <div class="rt-toolbar">
                         @include('partials.village-bank-selector')
-                        <select wire:model="circleFilter" class="rt-select">
+                        <select wire:model.live="circleFilter" class="rt-select">
                             <option value="">All Circles</option>
                             @foreach ($this->circles as $c)
                                 <option value="{{ $c->id }}">{{ $c->name }}</option>
                             @endforeach
                         </select>
-                        <select wire:model="statusFilter" class="rt-select">
+                        <select wire:model.live="statusFilter" class="rt-select">
                             <option value="">All Statuses</option>
                             <option value="pending">Pending</option>
                             <option value="approved">Approved</option>
@@ -171,9 +171,9 @@
                         </select>
                         <div class="rt-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search borrower...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search borrower...">
                         </div>
-                        <select wire:model="perPage" class="rt-select" style="width:70px;">
+                        <select wire:model.live="perPage" class="rt-select" style="width:70px;">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="25">25</option>

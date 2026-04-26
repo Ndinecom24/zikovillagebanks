@@ -205,7 +205,7 @@
                     <div class="is-card-title"><i class="fas fa-list"></i> Insurance Contributions</div>
                     <div class="is-toolbar">
                         @include('partials.village-bank-selector')
-                        <select wire:model="circleFilter" class="is-select">
+                        <select wire:model.live="circleFilter" class="is-select">
                             <option value="">All Circles</option>
                             @foreach ($circles as $c)
                                 <option value="{{ $c->id }}">
@@ -218,9 +218,9 @@
                         </select>
                         <div class="is-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search members...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search members...">
                         </div>
-                        <select wire:model="perPage" class="is-select" style="width:70px;">
+                        <select wire:model.live="perPage" class="is-select" style="width:70px;">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="25">25</option>

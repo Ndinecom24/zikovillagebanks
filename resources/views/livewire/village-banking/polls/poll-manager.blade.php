@@ -208,7 +208,7 @@
                     <div class="pm-card-title"><i class="fas fa-list-alt"></i> All Polls</div>
                     <div class="pm-toolbar">
                         @include('partials.village-bank-selector')
-                        <select wire:model="statusFilter" class="pm-select">
+                        <select wire:model.live="statusFilter" class="pm-select">
                             <option value="">All Statuses</option>
                             <option value="draft">Draft</option>
                             <option value="active">Active</option>
@@ -216,9 +216,9 @@
                         </select>
                         <div class="pm-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search polls...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search polls...">
                         </div>
-                        <select wire:model="perPage" class="pm-select" style="width:70px;">
+                        <select wire:model.live="perPage" class="pm-select" style="width:70px;">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="25">25</option>
@@ -333,7 +333,7 @@
                             <div class="pm-form-row-3">
                                 <div>
                                     <label class="pm-label">Village Bank <span style="color:var(--pm-red);">*</span></label>
-                                    <select wire:model.defer="formBankId" class="pm-input" style="cursor:pointer;">
+                                    <select wire:model.live="formBankId" class="pm-input" style="cursor:pointer;">
                                         <option value="">-- Select --</option>
                                         @foreach ($this->villageBanks as $vb)
                                             <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -343,14 +343,14 @@
                                 </div>
                                 <div>
                                     <label class="pm-label">Vote Type</label>
-                                    <select wire:model.defer="pollType" class="pm-input" style="cursor:pointer;">
+                                    <select wire:model.live="pollType" class="pm-input" style="cursor:pointer;">
                                         <option value="single">Single Choice</option>
                                         <option value="multiple">Multiple Choice</option>
                                     </select>
                                 </div>
                                 <div style="display:flex;align-items:flex-end;padding-bottom:.35rem;">
                                     <label class="pm-switch">
-                                        <input type="checkbox" wire:model.defer="isAnonymous">
+                                        <input type="checkbox" wire:model="isAnonymous">
                                         <div class="pm-switch-track"><div class="pm-switch-knob"></div></div>
                                         <span class="pm-switch-label">Anonymous</span>
                                     </label>
@@ -358,19 +358,19 @@
                             </div>
                             <div>
                                 <label class="pm-label">Question <span style="color:var(--pm-red);">*</span></label>
-                                <input type="text" wire:model.defer="question" class="pm-input" placeholder="e.g. Should we increase the interest rate to 25%?">
+                                <input type="text" wire:model="question" class="pm-input" placeholder="e.g. Should we increase the interest rate to 25%?">
                                 @error('question') <small style="color:var(--pm-red);font-size:.76rem;">{{ $message }}</small> @enderror
                             </div>
                             <div>
                                 <label class="pm-label">Additional Context (optional)</label>
-                                <textarea wire:model.defer="description" class="pm-input" rows="2" placeholder="Provide more detail or background..." style="resize:vertical;"></textarea>
+                                <textarea wire:model="description" class="pm-input" rows="2" placeholder="Provide more detail or background..." style="resize:vertical;"></textarea>
                             </div>
                             <div>
                                 <label class="pm-label">Options <span style="color:var(--pm-red);">*</span></label>
                                 @foreach ($options as $i => $opt)
                                     <div class="pm-opt-row">
                                         <div class="pm-opt-num">{{ $i + 1 }}</div>
-                                        <input type="text" wire:model.defer="options.{{ $i }}" class="pm-input" placeholder="Option {{ $i + 1 }}" style="flex:1;">
+                                        <input type="text" wire:model="options.{{ $i }}" class="pm-input" placeholder="Option {{ $i + 1 }}" style="flex:1;">
                                         @if (count($options) > 2)
                                             <button type="button" wire:click="removeOption({{ $i }})" class="pm-btn-del-sm"><i class="fas fa-times"></i></button>
                                         @endif
@@ -386,11 +386,11 @@
                             <div class="pm-form-row">
                                 <div>
                                     <label class="pm-label">Start Date / Time (optional)</label>
-                                    <input type="datetime-local" wire:model.defer="startsAt" class="pm-input">
+                                    <input type="datetime-local" wire:model="startsAt" class="pm-input">
                                 </div>
                                 <div>
                                     <label class="pm-label">End Date / Time (optional)</label>
-                                    <input type="datetime-local" wire:model.defer="endsAt" class="pm-input">
+                                    <input type="datetime-local" wire:model="endsAt" class="pm-input">
                                     @error('endsAt') <small style="color:var(--pm-red);font-size:.76rem;">{{ $message }}</small> @enderror
                                 </div>
                             </div>

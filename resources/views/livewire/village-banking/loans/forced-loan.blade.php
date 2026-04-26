@@ -277,7 +277,7 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
                         <div class="nd-field">
                             <label>Circle</label>
-                            <select wire:model="circleId" class="nd-select" style="width:100%;padding:0.5rem 0.8rem;border-radius:10px;">
+                            <select wire:model.live="circleId" class="nd-select" style="width:100%;padding:0.5rem 0.8rem;border-radius:10px;">
                                 <option value="">— Select Circle —</option>
                                 @foreach($circles as $c)
                                     <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }} members)</option>
@@ -286,7 +286,7 @@
                         </div>
                         <div class="nd-field">
                             <label>Month</label>
-                            <select wire:model="monthId" class="nd-select" style="width:100%;padding:0.5rem 0.8rem;border-radius:10px;" {{ empty($circleId) ? 'disabled' : '' }}>
+                            <select wire:model.live="monthId" class="nd-select" style="width:100%;padding:0.5rem 0.8rem;border-radius:10px;" {{ empty($circleId) ? 'disabled' : '' }}>
                                 <option value="">— Select Month —</option>
                                 @foreach($months as $m)
                                     <option value="{{ $m->id }}">
@@ -417,7 +417,7 @@
                                         <div style="width:140px;text-align:right;">
                                             <input type="number"
                                                    class="fl-amount-input"
-                                                   wire:model.lazy="amounts.{{ $mId }}"
+                                                   wire:model.blur="amounts.{{ $mId }}"
                                                    step="0.01"
                                                    min="0"
                                                    max="{{ $alloc['savings_limit'] }}"

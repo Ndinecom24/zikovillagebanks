@@ -67,7 +67,7 @@
                 <div><label class="mr-label">Village Bank</label>@include('partials.village-bank-selector')</div>
                 <div>
                     <label class="mr-label">Circle</label>
-                    <select wire:model="circleId" class="mr-select"><option value="">All Circles</option>@foreach ($this->circles as $c)<option value="{{ $c->id }}">{{ $c->name }}</option>@endforeach</select>
+                    <select wire:model.live="circleId" class="mr-select"><option value="">All Circles</option>@foreach ($this->circles as $c)<option value="{{ $c->id }}">{{ $c->name }}</option>@endforeach</select>
                 </div>
             </div>
 

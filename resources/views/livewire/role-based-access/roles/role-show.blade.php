@@ -234,7 +234,7 @@
             <div class="nd-modal-body">
                 <div style="position:relative;">
                     <i class="fas fa-search" style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--nd-faint);font-size:.78rem;"></i>
-                    <input type="text" wire:model.debounce.300ms="permSearch"
+                    <input type="text" wire:model.live.debounce.300ms="permSearch"
                            class="rs-modal-search" placeholder="Search permissions by name or groupâ€¦">
                 </div>
 
@@ -294,7 +294,7 @@
             <div class="nd-modal-body">
                 <div style="position:relative;">
                     <i class="fas fa-search" style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--nd-faint);font-size:.78rem;"></i>
-                    <input type="text" wire:model.debounce.300ms="userSearch"
+                    <input type="text" wire:model.live.debounce.300ms="userSearch"
                            class="rs-modal-search" placeholder="Search users by name, email, or staff noâ€¦">
                 </div>
 

@@ -129,7 +129,7 @@
                     <div class="la-toolbar">
                         <div class="la-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search by borrower...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search by borrower...">
                         </div>
                     </div>
                 </div>
@@ -215,7 +215,7 @@
 
                     <div style="border-top:1px solid var(--la-border);padding-top:1rem;">
                         <label class="la-label">Remarks <span style="font-size:.65rem;color:var(--la-faint);text-transform:none;letter-spacing:0;">(required for rejection)</span></label>
-                        <textarea wire:model.defer="remarks" class="la-textarea" placeholder="Add notes..."></textarea>
+                        <textarea wire:model="remarks" class="la-textarea" placeholder="Add notes..."></textarea>
                         @error('remarks') <div style="font-size:.75rem;color:var(--la-red);margin-top:.2rem;font-weight:600;">{{ $message }}</div> @enderror
                     </div>
                 </div>

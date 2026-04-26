@@ -137,7 +137,7 @@
                     </div>
                     <div class="dc-search-wrap">
                         <i class="fas fa-search dc-search-icon"></i>
-                        <input type="text" wire:model.debounce.350ms="search" class="dc-search" placeholder="Search by name, code, or location...">
+                        <input type="text" wire:model.live.debounce.350ms="search" class="dc-search" placeholder="Search by name, code, or location...">
                     </div>
                 </div>
             </div>
@@ -287,7 +287,7 @@
 
                         <div style="margin-bottom:1.15rem;">
                             <label class="dc-label">Guarantor Username <span style="color:var(--dc-faint);font-weight:500;text-transform:none;letter-spacing:0;">(optional)</span></label>
-                            <input type="text" wire:model.defer="joinGuarantor" class="dc-input" placeholder="e.g. john.doe">
+                            <input type="text" wire:model="joinGuarantor" class="dc-input" placeholder="e.g. john.doe">
                             <div class="dc-hint">
                                 <i class="fas fa-info-circle"></i> Enter the username of an existing member who can vouch for you. You can also add this later.
                             </div>
@@ -295,7 +295,7 @@
 
                         <div>
                             <label class="dc-label">Message <span style="color:var(--dc-faint);font-weight:500;text-transform:none;letter-spacing:0;">(optional)</span></label>
-                            <textarea wire:model.defer="joinMessage" class="dc-input dc-textarea" placeholder="Tell the admin a bit about yourself or why you'd like to join..."></textarea>
+                            <textarea wire:model="joinMessage" class="dc-input dc-textarea" placeholder="Tell the admin a bit about yourself or why you'd like to join..."></textarea>
                         </div>
                     </div>
                     <div class="dc-modal-footer">
@@ -424,7 +424,7 @@
                         </p>
                         <div>
                             <label class="dc-label">Guarantor Username <span style="color:var(--dc-red);">*</span></label>
-                            <input type="text" wire:model.defer="guarantorUsername" class="dc-input" placeholder="e.g. john.doe" required>
+                            <input type="text" wire:model="guarantorUsername" class="dc-input" placeholder="e.g. john.doe" required>
                             @error('guarantorUsername') <div style="font-size:.72rem;color:var(--dc-red);margin-top:.25rem;">{{ $message }}</div> @enderror
                         </div>
                     </div>

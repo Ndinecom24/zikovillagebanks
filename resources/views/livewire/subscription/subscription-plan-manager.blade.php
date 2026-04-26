@@ -30,6 +30,18 @@
 .sp-switch input[type="checkbox"]{width:16px;height:16px;accent-color:var(--nd-navy,#1E3A5F);}
 .sp-btn-save{padding:.45rem 1.1rem;border-radius:8px;border:none;font-size:.84rem;font-weight:600;cursor:pointer;background:linear-gradient(135deg,#1E3A5F,#2d5a8e);color:#fff;display:inline-flex;align-items:center;gap:.3rem;transition:opacity .15s;}
 .sp-btn-save:hover{opacity:.9;}
+/* Price Slash in table */
+.sp-price-was{position:relative;display:inline-block;font-size:.78rem;color:#94a3b8;font-weight:500;}
+.sp-price-was::after{content:'';position:absolute;left:-2px;right:-2px;top:50%;height:1.5px;background:linear-gradient(90deg,#ef4444,#dc2626);transform:rotate(-8deg);}
+.sp-price-now{display:block;font-size:1rem;font-weight:800;color:#166534;line-height:1.2;}
+.sp-discount-tag{display:inline-flex;align-items:center;gap:.2rem;background:linear-gradient(135deg,#fef2f2,#fee2e2);color:#b91c1c;font-size:.62rem;font-weight:800;padding:.15rem .4rem;border-radius:4px;border:1px solid #fecaca;letter-spacing:.3px;}
+.sp-discount-tag i{font-size:.5rem;}
+.sp-save-text{display:block;font-size:.66rem;color:#16a34a;font-weight:600;margin-top:.1rem;}
+.sp-promo-label{display:inline-flex;align-items:center;gap:.2rem;background:#fffbeb;color:#92400e;font-size:.62rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;border:1px solid #fde68a;margin-top:.2rem;}
+.sp-promo-label i{font-size:.5rem;}
+.sp-timer{display:inline-flex;align-items:center;gap:.2rem;font-size:.62rem;color:#dc2626;font-weight:600;margin-left:.3rem;animation:spPulse 2s ease-in-out infinite;}
+.sp-timer i{font-size:.5rem;}
+@keyframes spPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 </style>
 @endpush
 
@@ -65,9 +77,9 @@
                 <h3><i class="fas fa-list"></i> All Plans</h3>
                 <div class="nd-toolbar">
                     <div class="nd-search"><i class="fas fa-search"></i>
-                        <input type="text" wire:model.debounce.300ms="search" placeholder="Search plans...">
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search plans...">
                     </div>
-                    <select wire:model="perPage" class="nd-select" style="min-width:75px;">
+                    <select wire:model.live="perPage" class="nd-select" style="min-width:75px;">
                         <option value="10">10</option><option value="25">25</option><option value="50">50</option>
                     </select>
                 </div>
@@ -76,7 +88,7 @@
                 <table class="nd-table">
                     <thead>
                         <tr>
-                            <th>#</th><th>Plan</th><th>Price</th><th>Billing</th><th>Duration</th><th>Limits</th><th>Status</th><th style="width:120px;">Actions</th>
+                            <th>#</th><th>Plan</th><th>Price</th><th>Discount</th><th>Billing</th><th>Duration</th><th>Limits</th><th>Status</th><th style="width:120px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,7 +101,37 @@
                                     </div>
                                     <div style="font-size:.74rem;color:var(--nd-faint);font-family:monospace;">{{ $plan->slug }}</div>
                                 </td>
-                                <td><strong style="color:var(--nd-green);">{{ $plan->formattedPrice() }}</strong></td>
+                                <td>
+                                    @if($plan->hasActiveDiscount())
+                                        <div>
+                                            <span class="sp-price-was">{{ $plan->formattedPrice() }}</span>
+                                            <span class="sp-price-now">{{ $plan->formattedEffectivePrice() }}</span>
+                                            <span class="sp-save-text">
+                                                <i class="fas fa-arrow-down" style="font-size:.5rem;"></i>
+                                                Save {{ $plan->savingsPercentage() }}% (K{{ number_format($plan->discountAmount(), 0) }})
+                                            </span>
+                                        </div>
+                                    @else
+                                        <strong style="color:var(--nd-green);font-size:1rem;">{{ $plan->formattedPrice() }}</strong>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($plan->hasActiveDiscount())
+                                        <div>
+                                            <span class="sp-discount-tag">
+                                                <i class="fas fa-bolt"></i> {{ $plan->discountBadge() }}
+                                            </span>
+                                            @if($plan->discount_label)
+                                                <div><span class="sp-promo-label"><i class="fas fa-fire"></i> {{ $plan->discount_label }}</span></div>
+                                            @endif
+                                            @if($plan->discountTimeRemaining())
+                                                <div style="margin-top:.15rem;"><span class="sp-timer"><i class="fas fa-clock"></i> {{ $plan->discountTimeRemaining() }}</span></div>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <span style="font-size:.78rem;color:var(--nd-faint);">None</span>
+                                    @endif
+                                </td>
                                 <td><span class="nd-badge sp-badge-cycle">{{ ucfirst($plan->billing_cycle) }}</span></td>
                                 <td style="font-size:.84rem;">{{ $plan->duration_days }} days</td>
                                 <td style="font-size:.8rem;color:var(--nd-muted);">
@@ -109,7 +151,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="8"><div class="nd-empty"><i class="fas fa-tags"></i><p>No subscription plans found</p></div></td></tr>
+                            <tr><td colspan="9"><div class="nd-empty"><i class="fas fa-tags"></i><p>No subscription plans found</p></div></td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -134,24 +176,64 @@
                 <form wire:submit.prevent="save">
                     <div class="nd-modal-body">
                         <div class="sp-grid sp-grid-2" style="margin-bottom:1rem;">
-                            <div><label class="sp-label">Plan Name <span class="req">*</span></label><input type="text" wire:model.defer="name" class="sp-input">@error('name')<div class="sp-error">{{ $message }}</div>@enderror</div>
-                            <div><label class="sp-label">Slug <span class="req">*</span></label><input type="text" wire:model.defer="slug" class="sp-input">@error('slug')<div class="sp-error">{{ $message }}</div>@enderror</div>
+                            <div><label class="sp-label">Plan Name <span class="req">*</span></label><input type="text" wire:model="name" class="sp-input">@error('name')<div class="sp-error">{{ $message }}</div>@enderror</div>
+                            <div><label class="sp-label">Slug <span class="req">*</span></label><input type="text" wire:model="slug" class="sp-input">@error('slug')<div class="sp-error">{{ $message }}</div>@enderror</div>
                         </div>
-                        <div style="margin-bottom:1rem;"><label class="sp-label">Description</label><textarea wire:model.defer="description" class="sp-input" rows="2"></textarea></div>
+                        <div style="margin-bottom:1rem;"><label class="sp-label">Description</label><textarea wire:model="description" class="sp-input" rows="2"></textarea></div>
                         <div class="sp-grid sp-grid-3" style="margin-bottom:1rem;">
-                            <div><label class="sp-label">Price (K) <span class="req">*</span></label><input type="number" wire:model.defer="price" class="sp-input" step="0.01" min="0">@error('price')<div class="sp-error">{{ $message }}</div>@enderror</div>
-                            <div><label class="sp-label">Billing Cycle <span class="req">*</span></label><select wire:model.defer="billingCycle" class="sp-input"><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="yearly">Yearly</option></select>@error('billingCycle')<div class="sp-error">{{ $message }}</div>@enderror</div>
-                            <div><label class="sp-label">Duration (Days) <span class="req">*</span></label><input type="number" wire:model.defer="durationDays" class="sp-input" min="1">@error('durationDays')<div class="sp-error">{{ $message }}</div>@enderror</div>
+                            <div><label class="sp-label">Price (K) <span class="req">*</span></label><input type="number" wire:model="price" class="sp-input" step="0.01" min="0">@error('price')<div class="sp-error">{{ $message }}</div>@enderror</div>
+                            <div><label class="sp-label">Billing Cycle <span class="req">*</span></label><select wire:model.live="billingCycle" class="sp-input"><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="yearly">Yearly</option></select>@error('billingCycle')<div class="sp-error">{{ $message }}</div>@enderror</div>
+                            <div><label class="sp-label">Duration (Days) <span class="req">*</span></label><input type="number" wire:model="durationDays" class="sp-input" min="1">@error('durationDays')<div class="sp-error">{{ $message }}</div>@enderror</div>
                         </div>
                         <div class="sp-grid sp-grid-3" style="margin-bottom:1rem;">
-                            <div><label class="sp-label">Max Circles</label><input type="number" wire:model.defer="maxCircles" class="sp-input" min="1" placeholder="âˆž"></div>
-                            <div><label class="sp-label">Max Members</label><input type="number" wire:model.defer="maxMembers" class="sp-input" min="1" placeholder="âˆž"></div>
-                            <div><label class="sp-label">Sort Order</label><input type="number" wire:model.defer="sortOrder" class="sp-input" min="0"></div>
+                            <div><label class="sp-label">Max Circles</label><input type="number" wire:model="maxCircles" class="sp-input" min="1" placeholder="âˆž"></div>
+                            <div><label class="sp-label">Max Members</label><input type="number" wire:model="maxMembers" class="sp-input" min="1" placeholder="âˆž"></div>
+                            <div><label class="sp-label">Sort Order</label><input type="number" wire:model="sortOrder" class="sp-input" min="0"></div>
                         </div>
-                        <div style="margin-bottom:1rem;"><label class="sp-label">Features <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--nd-faint);">(one per line)</span></label><textarea wire:model.defer="featuresText" class="sp-input" rows="3" placeholder="Loan tracking&#10;SMS notifications&#10;Email reports"></textarea></div>
+                        <div style="margin-bottom:1rem;"><label class="sp-label">Features <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--nd-faint);">(one per line)</span></label><textarea wire:model="featuresText" class="sp-input" rows="3" placeholder="Loan tracking&#10;SMS notifications&#10;Email reports"></textarea></div>
+                        {{-- Discount Section --}}
+                        <div style="margin-bottom:1rem;padding:.85rem;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;">
+                            <div style="font-weight:700;font-size:.82rem;color:#92400e;margin-bottom:.65rem;"><i class="fas fa-percentage" style="margin-right:.3rem;"></i> Discount / Promotion</div>
+                            <div class="sp-grid sp-grid-3" style="margin-bottom:.75rem;">
+                                <div>
+                                    <label class="sp-label">Discount Type</label>
+                                    <select wire:model.live="discountType" class="sp-input">
+                                        <option value="none">No Discount</option>
+                                        <option value="percentage">Percentage (%)</option>
+                                        <option value="fixed">Fixed Amount (K)</option>
+                                    </select>
+                                </div>
+                                @if($discountType !== 'none')
+                                    <div>
+                                        <label class="sp-label">Value {{ $discountType === 'percentage' ? '(%)' : '(K)' }} <span class="req">*</span></label>
+                                        <input type="number" wire:model="discountValue" class="sp-input" step="0.01" min="0" {{ $discountType === 'percentage' ? 'max=100' : '' }}>
+                                        @error('discountValue')<div class="sp-error">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div>
+                                        <label class="sp-label">Label</label>
+                                        <input type="text" wire:model="discountLabel" class="sp-input" placeholder="e.g. Launch Offer!">
+                                    </div>
+                                @endif
+                            </div>
+                            @if($discountType !== 'none')
+                                <div class="sp-grid sp-grid-2">
+                                    <div>
+                                        <label class="sp-label">Starts At</label>
+                                        <input type="datetime-local" wire:model="discountStartsAt" class="sp-input">
+                                        @error('discountStartsAt')<div class="sp-error">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div>
+                                        <label class="sp-label">Ends At</label>
+                                        <input type="datetime-local" wire:model="discountEndsAt" class="sp-input">
+                                        @error('discountEndsAt')<div class="sp-error">{{ $message }}</div>@enderror
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="sp-grid sp-grid-2">
-                            <label class="sp-switch"><input type="checkbox" wire:model.defer="isActive"> Active</label>
-                            <label class="sp-switch"><input type="checkbox" wire:model.defer="isFeatured"> Featured (highlighted on landing)</label>
+                            <label class="sp-switch"><input type="checkbox" wire:model="isActive"> Active</label>
+                            <label class="sp-switch"><input type="checkbox" wire:model="isFeatured"> Featured (highlighted on landing)</label>
                         </div>
                     </div>
                     <div class="nd-modal-foot">

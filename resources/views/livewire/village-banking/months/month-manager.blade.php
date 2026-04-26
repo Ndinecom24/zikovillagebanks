@@ -378,17 +378,17 @@
                         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;">
                             <div>
                                 <label class="mm-label">Month # <span style="color:var(--mm-red);">*</span></label>
-                                <input type="number" wire:model.defer="monthNumber" class="mm-input" min="1">
+                                <input type="number" wire:model="monthNumber" class="mm-input" min="1">
                                 @error('monthNumber') <small style="color:var(--mm-red);font-size:.72rem;">{{ $message }}</small> @enderror
                             </div>
                             <div>
                                 <label class="mm-label">Start Date <span style="color:var(--mm-red);">*</span></label>
-                                <input type="date" wire:model.defer="startDate" class="mm-input">
+                                <input type="date" wire:model="startDate" class="mm-input">
                                 @error('startDate') <small style="color:var(--mm-red);font-size:.72rem;">{{ $message }}</small> @enderror
                             </div>
                             <div>
                                 <label class="mm-label">End Date <span style="color:var(--mm-red);">*</span></label>
-                                <input type="date" wire:model.defer="endDate" class="mm-input">
+                                <input type="date" wire:model="endDate" class="mm-input">
                                 @error('endDate') <small style="color:var(--mm-red);font-size:.72rem;">{{ $message }}</small> @enderror
                             </div>
                         </div>

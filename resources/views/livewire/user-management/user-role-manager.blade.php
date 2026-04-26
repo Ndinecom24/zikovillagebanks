@@ -32,7 +32,7 @@
             <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap">
                 <div class="d-flex align-items-center">
                     <div class="input-group input-group-sm" style="width: 300px;">
-                        <input type="text" class="form-control" placeholder="Search by name, staff no or email..." wire:model.debounce.300ms="search">
+                        <input type="text" class="form-control" placeholder="Search by name, staff no or email..." wire:model.live.debounce.300ms="search">
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
                         </div>
@@ -143,7 +143,7 @@
 
     {{-- Close modals on Livewire event --}}
     <script>
-        document.addEventListener('livewire:load', function () {
+        document.addEventListener('livewire:init', function () {
             Livewire.on('closeModal', function (modalId) {
                 $('#' + modalId).modal('hide');
             });

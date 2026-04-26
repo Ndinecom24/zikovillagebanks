@@ -230,7 +230,7 @@
 
             {{-- Search bar --}}
             <div class="vd-search-wrap">
-                <input type="text" wire:model.debounce.300ms="search" class="vd-search-input"
+                <input type="text" wire:model.live.debounce.300ms="search" class="vd-search-input"
                     placeholder="Search village banks by name, code, location…">
                 <span style="font-size:.78rem;color:var(--vd-faint);font-weight:600;">
                     {{ $banks->count() }} bank(s) found
@@ -383,7 +383,7 @@
 
                         <div style="margin-bottom:1.25rem;">
                             <label class="vd-label">Guarantor Username <span style="color:var(--vd-faint);font-weight:500;text-transform:none;">(optional)</span></label>
-                            <input type="text" wire:model.defer="guarantorUsername" class="vd-input" placeholder="e.g. john.doe">
+                            <input type="text" wire:model="guarantorUsername" class="vd-input" placeholder="e.g. john.doe">
                             <div class="vd-hint">
                                 <i class="fas fa-info-circle"></i>
                                 If you know a current member, enter their username. You can also add this later, or the admin can assign one for you.
@@ -393,7 +393,7 @@
 
                         <div>
                             <label class="vd-label">Message to Admin <span style="color:var(--vd-faint);font-weight:500;text-transform:none;">(optional)</span></label>
-                            <textarea wire:model.defer="joinMessage" class="vd-input" rows="3" placeholder="Tell the admin why you'd like to join…" style="resize:vertical;"></textarea>
+                            <textarea wire:model="joinMessage" class="vd-input" rows="3" placeholder="Tell the admin why you'd like to join…" style="resize:vertical;"></textarea>
                             @error('joinMessage') <div style="font-size:.72rem;color:var(--vd-red);margin-top:.25rem;">{{ $message }}</div> @enderror
                         </div>
                     </div>

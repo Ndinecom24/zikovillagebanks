@@ -191,16 +191,16 @@
             <div class="vl-card-header">
                 <h3><i class="fas fa-list"></i> All Village Banks</h3>
                 <div class="vl-toolbar">
-                    <select wire:model="statusFilter" class="vl-select">
+                    <select wire:model.live="statusFilter" class="vl-select">
                         <option value="">All Statuses</option>
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select>
                     <div class="vl-search">
                         <i class="fas fa-search"></i>
-                        <input type="text" wire:model.debounce.300ms="search" placeholder="Search banks...">
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search banks...">
                     </div>
-                    <select wire:model="perPage" class="vl-select" style="min-width:75px;">
+                    <select wire:model.live="perPage" class="vl-select" style="min-width:75px;">
                         <option value="10">10</option>
                         <option value="15">15</option>
                         <option value="25">25</option>

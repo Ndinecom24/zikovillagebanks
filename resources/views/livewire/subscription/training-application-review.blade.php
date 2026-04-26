@@ -89,21 +89,21 @@ tr.ta-pending:hover{background:#fef9c3;}
                 <div class="nd-toolbar">
                     <div class="nd-search">
                         <i class="fas fa-search"></i>
-                        <input type="text" wire:model.debounce.300ms="search" placeholder="Search applicants, email, bank...">
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search applicants, email, bank...">
                     </div>
-                    <select wire:model="filterStatus" class="nd-select">
+                    <select wire:model.live="filterStatus" class="nd-select">
                         <option value="">All Status</option>
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
                         <option value="rejected">Rejected</option>
                     </select>
-                    <select wire:model="filterProgram" class="nd-select" style="max-width:200px;">
+                    <select wire:model.live="filterProgram" class="nd-select" style="max-width:200px;">
                         <option value="">All Programs</option>
                         @foreach($programs as $p)
                             <option value="{{ $p->id }}">{{ Str::limit($p->title, 30) }}</option>
                         @endforeach
                     </select>
-                    <select wire:model="perPage" class="nd-select" style="width:72px;">
+                    <select wire:model.live="perPage" class="nd-select" style="width:72px;">
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="50">50</option>
@@ -286,7 +286,7 @@ tr.ta-pending:hover{background:#fef9c3;}
                 {{-- Admin Notes --}}
                 <div class="ta-section-title"><i class="fas fa-sticky-note"></i> Admin Notes</div>
                 <div style="margin-bottom:.75rem;">
-                    <textarea wire:model.defer="adminNotes" class="ta-input" rows="2" placeholder="Add notes about this application..."></textarea>
+                    <textarea wire:model="adminNotes" class="ta-input" rows="2" placeholder="Add notes about this application..."></textarea>
                 </div>
             </div>
 

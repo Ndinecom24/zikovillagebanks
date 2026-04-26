@@ -123,16 +123,16 @@
                     <div class="ar-card-header">
                         <h3 class="ar-card-title"><i class="fas fa-list"></i> All Applications</h3>
                         <div class="ar-toolbar">
-                            <select wire:model="statusFilter" class="ar-select" style="min-width:130px;">
+                            <select wire:model.live="statusFilter" class="ar-select" style="min-width:130px;">
                                 <option value="">All Status</option>
                                 <option value="pending">Pending</option>
                                 <option value="approved">Approved</option>
                                 <option value="rejected">Rejected</option>
                             </select>
                             <div class="ar-search"><i class="fas fa-search"></i>
-                                <input type="text" wire:model.debounce.300ms="search" placeholder="Search name, email, ref...">
+                                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search name, email, ref...">
                             </div>
-                            <select wire:model="perPage" class="ar-select" style="min-width:75px;">
+                            <select wire:model.live="perPage" class="ar-select" style="min-width:75px;">
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                             </select>
@@ -295,7 +295,7 @@
                                     @endif
                                     <div style="margin-bottom:.75rem;">
                                         <label class="ar-label">Admin Remarks @if ($reviewAction === 'reject') <span class="req">*</span> @endif</label>
-                                        <textarea wire:model.defer="adminRemarks" class="ar-input" rows="3" placeholder="{{ $reviewAction === 'approve' ? 'Optional notes...' : 'Please provide a reason for rejection...' }}"></textarea>
+                                        <textarea wire:model="adminRemarks" class="ar-input" rows="3" placeholder="{{ $reviewAction === 'approve' ? 'Optional notes...' : 'Please provide a reason for rejection...' }}"></textarea>
                                         @error('adminRemarks') <div class="ar-field-error">{{ $message }}</div> @enderror
                                     </div>
                                     <div style="display:flex;gap:.5rem;justify-content:flex-end;">

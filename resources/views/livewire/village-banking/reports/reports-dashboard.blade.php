@@ -23,7 +23,7 @@
                     <div class="row align-items-end" style="gap-y:0.5rem;">
                         <div class="col-md-3">
                             <label class="z-label mb-1">Village Bank</label>
-                            <select wire:model="villageBankId" class="form-control z-input">
+                            <select wire:model.live="villageBankId" class="form-control z-input">
                                 <option value="">All Village Banks</option>
                                 @foreach ($this->villageBanks as $vb)
                                     <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-md-2">
                             <label class="z-label mb-1">Circle</label>
-                            <select wire:model="circleId" class="form-control z-input">
+                            <select wire:model.live="circleId" class="form-control z-input">
                                 <option value="">All Circles</option>
                                 @foreach ($this->circles as $c)
                                     <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -41,11 +41,11 @@
                         </div>
                         <div class="col-md-2">
                             <label class="z-label mb-1">From</label>
-                            <input type="date" wire:model.lazy="dateFrom" class="form-control z-input">
+                            <input type="date" wire:model.blur="dateFrom" class="form-control z-input">
                         </div>
                         <div class="col-md-2">
                             <label class="z-label mb-1">To</label>
-                            <input type="date" wire:model.lazy="dateTo" class="form-control z-input">
+                            <input type="date" wire:model.blur="dateTo" class="form-control z-input">
                         </div>
                         <div class="col-md-1 d-flex align-items-end" style="gap:0.5rem;">
                             <button wire:click="$set('dateFrom', '')" class="btn btn-sm btn-outline-secondary" style="border-radius:6px;" title="Clear dates">

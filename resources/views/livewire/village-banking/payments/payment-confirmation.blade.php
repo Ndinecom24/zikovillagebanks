@@ -67,16 +67,16 @@
                     <h3><i class="fas fa-exchange-alt mr-2" style="color:var(--z-green)"></i>Transactions</h3>
                     <div class="d-flex align-items-center flex-wrap" style="gap:0.75rem;">
                         @include('partials.village-bank-selector')
-                        <select wire:model="statusFilter" class="z-per-page">
+                        <select wire:model.live="statusFilter" class="z-per-page">
                             <option value="">All Statuses</option>
                             <option value="pending">Pending</option>
                             <option value="confirmed">Confirmed</option>
                             <option value="rejected">Rejected</option>
                         </select>
                         <div class="z-search"><i class="fas fa-search si"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search by name...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search by name...">
                         </div>
-                        <select wire:model="perPage" class="z-per-page">
+                        <select wire:model.live="perPage" class="z-per-page">
                             <option value="10">10</option><option value="15">15</option><option value="25">25</option>
                         </select>
                     </div>

@@ -79,16 +79,16 @@
                 <div class="nd-toolbar">
                     <div class="nd-search">
                         <i class="fas fa-search"></i>
-                        <input type="text" wire:model.debounce.300ms="search" placeholder="Search programs, trainers...">
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search programs, trainers...">
                     </div>
-                    <select wire:model="filterStatus" class="nd-select">
+                    <select wire:model.live="filterStatus" class="nd-select">
                         <option value="">All Status</option>
                         <option value="draft">Draft</option>
                         <option value="published">Published</option>
                         <option value="closed">Closed</option>
                         <option value="completed">Completed</option>
                     </select>
-                    <select wire:model="perPage" class="nd-select" style="width:72px;">
+                    <select wire:model.live="perPage" class="nd-select" style="width:72px;">
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
@@ -229,7 +229,7 @@
                     {{-- Title (full width) --}}
                     <div style="margin-bottom:1rem;">
                         <label class="tp-label">Program Title <span class="req">*</span></label>
-                        <input type="text" wire:model.defer="title" class="tp-input" placeholder="e.g. Village Bank Financial Management Training">
+                        <input type="text" wire:model="title" class="tp-input" placeholder="e.g. Village Bank Financial Management Training">
                         @error('title') <div class="tp-error">{{ $message }}</div> @enderror
                     </div>
 
@@ -237,7 +237,7 @@
                     <div class="tp-form-grid" style="margin-bottom:1rem;">
                         <div>
                             <label class="tp-label">Category <span class="req">*</span></label>
-                            <select wire:model.defer="category" class="tp-input">
+                            <select wire:model.live="category" class="tp-input">
                                 <option value="general">General</option>
                                 <option value="finance">Finance & Accounting</option>
                                 <option value="governance">Governance & Compliance</option>
@@ -248,14 +248,14 @@
                         </div>
                         <div>
                             <label class="tp-label">Trainer / Facilitator</label>
-                            <input type="text" wire:model.defer="trainer" class="tp-input" placeholder="Name of trainer">
+                            <input type="text" wire:model="trainer" class="tp-input" placeholder="Name of trainer">
                         </div>
                     </div>
 
                     {{-- Description (full width) --}}
                     <div style="margin-bottom:1rem;">
                         <label class="tp-label">Description</label>
-                        <textarea wire:model.defer="description" class="tp-input" rows="3" placeholder="What participants will learn, objectives, topics..."></textarea>
+                        <textarea wire:model="description" class="tp-input" rows="3" placeholder="What participants will learn, objectives, topics..."></textarea>
                         @error('description') <div class="tp-error">{{ $message }}</div> @enderror
                     </div>
 
@@ -263,11 +263,11 @@
                     <div class="tp-form-grid" style="margin-bottom:1rem;">
                         <div>
                             <label class="tp-label">Location / Venue</label>
-                            <input type="text" wire:model.defer="location" class="tp-input" placeholder="e.g. Lusaka Conference Center">
+                            <input type="text" wire:model="location" class="tp-input" placeholder="e.g. Lusaka Conference Center">
                         </div>
                         <div>
                             <label class="tp-label">Duration</label>
-                            <input type="text" wire:model.defer="duration" class="tp-input" placeholder="e.g. 3 days, 1 week">
+                            <input type="text" wire:model="duration" class="tp-input" placeholder="e.g. 3 days, 1 week">
                         </div>
                     </div>
 
@@ -275,17 +275,17 @@
                     <div class="tp-form-third" style="margin-bottom:1rem;">
                         <div>
                             <label class="tp-label">Start Date</label>
-                            <input type="date" wire:model.defer="startDate" class="tp-input">
+                            <input type="date" wire:model="startDate" class="tp-input">
                             @error('startDate') <div class="tp-error">{{ $message }}</div> @enderror
                         </div>
                         <div>
                             <label class="tp-label">End Date</label>
-                            <input type="date" wire:model.defer="endDate" class="tp-input">
+                            <input type="date" wire:model="endDate" class="tp-input">
                             @error('endDate') <div class="tp-error">{{ $message }}</div> @enderror
                         </div>
                         <div>
                             <label class="tp-label">Fee (ZMW)</label>
-                            <input type="number" wire:model.defer="fee" class="tp-input" min="0" step="0.01" placeholder="0 = Free">
+                            <input type="number" wire:model="fee" class="tp-input" min="0" step="0.01" placeholder="0 = Free">
                         </div>
                     </div>
 
@@ -293,7 +293,7 @@
                     <div class="tp-form-grid" style="margin-bottom:1rem;">
                         <div>
                             <label class="tp-label">Max Participants</label>
-                            <input type="number" wire:model.defer="maxParticipants" class="tp-input" min="1" placeholder="Leave empty for unlimited">
+                            <input type="number" wire:model="maxParticipants" class="tp-input" min="1" placeholder="Leave empty for unlimited">
                         </div>
                         <div>
                             <label class="tp-label">Cover Image</label>
@@ -306,7 +306,7 @@
                     <div class="tp-form-third" style="margin-bottom:1rem;">
                         <div>
                             <label class="tp-label">Status</label>
-                            <select wire:model.defer="status" class="tp-input">
+                            <select wire:model.live="status" class="tp-input">
                                 <option value="draft">Draft</option>
                                 <option value="published">Published</option>
                                 <option value="closed">Closed</option>
@@ -315,12 +315,12 @@
                         </div>
                         <div>
                             <label class="tp-label">Sort Order</label>
-                            <input type="number" wire:model.defer="sortOrder" class="tp-input" min="0">
+                            <input type="number" wire:model="sortOrder" class="tp-input" min="0">
                         </div>
                         <div>
                             <label class="tp-label" style="margin-bottom:.55rem;">Featured</label>
                             <div class="tp-switch">
-                                <input type="checkbox" wire:model.defer="isFeatured" id="tpFeaturedSwitch">
+                                <input type="checkbox" wire:model="isFeatured" id="tpFeaturedSwitch">
                                 <span>Mark as Featured</span>
                             </div>
                         </div>

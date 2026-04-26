@@ -608,27 +608,27 @@
                                 <div class="nd-row nd-row-auto">
                                     <div class="nd-field">
                                         <label>Full Name <span class="req">*</span></label>
-                                        <input type="text" wire:model.defer="name" placeholder="Enter full name">
+                                        <input type="text" wire:model="name" placeholder="Enter full name">
                                         @error('name') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Email <span class="req">*</span></label>
-                                        <input type="email" wire:model.defer="email" placeholder="Enter email">
+                                        <input type="email" wire:model="email" placeholder="Enter email">
                                         @error('email') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Username</label>
-                                        <input type="text" wire:model.defer="username" placeholder="Enter username">
+                                        <input type="text" wire:model="username" placeholder="Enter username">
                                         @error('username') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Phone</label>
-                                        <input type="text" wire:model.defer="phone" placeholder="0977 123 456">
+                                        <input type="text" wire:model="phone" placeholder="0977 123 456">
                                         @error('phone') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Mobile</label>
-                                        <input type="text" wire:model.defer="mobileNo" placeholder="0966 789 012">
+                                        <input type="text" wire:model="mobileNo" placeholder="0966 789 012">
                                         @error('mobileNo') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
@@ -643,12 +643,12 @@
                                 <div class="nd-row nd-row-auto">
                                     <div class="nd-field">
                                         <label>Date of Birth</label>
-                                        <input type="date" wire:model.defer="dateOfBirth">
+                                        <input type="date" wire:model="dateOfBirth">
                                         @error('dateOfBirth') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Gender</label>
-                                        <select wire:model.defer="gender">
+                                        <select wire:model.live="gender">
                                             <option value="">Select</option>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
@@ -658,7 +658,7 @@
                                     </div>
                                     <div class="nd-field">
                                         <label>National ID / NRC</label>
-                                        <input type="text" wire:model.defer="nationalId" placeholder="123456/78/1">
+                                        <input type="text" wire:model="nationalId" placeholder="123456/78/1">
                                         @error('nationalId') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
@@ -744,7 +744,7 @@
                                 <div class="nd-row nd-row-auto">
                                     <div class="nd-field">
                                         <label>Employment Status</label>
-                                        <select wire:model.defer="employmentStatus">
+                                        <select wire:model.live="employmentStatus">
                                             <option value="">Select status</option>
                                             <option value="employed">Employed</option>
                                             <option value="self_employed">Self Employed</option>
@@ -756,17 +756,17 @@
                                     </div>
                                     <div class="nd-field">
                                         <label>Job Title / Occupation</label>
-                                        <input type="text" wire:model.defer="jobTitle" placeholder="e.g. Accountant">
+                                        <input type="text" wire:model="jobTitle" placeholder="e.g. Accountant">
                                         @error('jobTitle') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Company / Employer</label>
-                                        <input type="text" wire:model.defer="companyName" placeholder="e.g. ABC Limited">
+                                        <input type="text" wire:model="companyName" placeholder="e.g. ABC Limited">
                                         @error('companyName') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Company Location</label>
-                                        <input type="text" wire:model.defer="companyLocation" placeholder="e.g. Lusaka, Cairo Road">
+                                        <input type="text" wire:model="companyLocation" placeholder="e.g. Lusaka, Cairo Road">
                                         @error('companyLocation') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
@@ -833,22 +833,22 @@
                                 <div class="nd-row nd-row-auto">
                                     <div class="nd-field">
                                         <label>Country</label>
-                                        <input type="text" wire:model.defer="country" placeholder="e.g. Zambia">
+                                        <input type="text" wire:model="country" placeholder="e.g. Zambia">
                                         @error('country') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Province / State</label>
-                                        <input type="text" wire:model.defer="province" placeholder="e.g. Lusaka Province">
+                                        <input type="text" wire:model="province" placeholder="e.g. Lusaka Province">
                                         @error('province') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>City / Town</label>
-                                        <input type="text" wire:model.defer="city" placeholder="e.g. Lusaka">
+                                        <input type="text" wire:model="city" placeholder="e.g. Lusaka">
                                         @error('city') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Home Address</label>
-                                        <textarea wire:model.defer="homeAddress" placeholder="e.g. Plot 123, Kabulonga Road"></textarea>
+                                        <textarea wire:model="homeAddress" placeholder="e.g. Plot 123, Kabulonga Road"></textarea>
                                         @error('homeAddress') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
@@ -862,12 +862,12 @@
                                 <div class="nd-row nd-row-auto">
                                     <div class="nd-field">
                                         <label>Full Name</label>
-                                        <input type="text" wire:model.defer="nokName" placeholder="e.g. Mary Banda">
+                                        <input type="text" wire:model="nokName" placeholder="e.g. Mary Banda">
                                         @error('nokName') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Relationship</label>
-                                        <select wire:model.defer="nokRelationship">
+                                        <select wire:model.live="nokRelationship">
                                             <option value="">Select</option>
                                             <option value="spouse">Spouse</option>
                                             <option value="parent">Parent</option>
@@ -880,12 +880,12 @@
                                     </div>
                                     <div class="nd-field">
                                         <label>Contact Phone</label>
-                                        <input type="text" wire:model.defer="nokContact" placeholder="0977 999 888">
+                                        <input type="text" wire:model="nokContact" placeholder="0977 999 888">
                                         @error('nokContact') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="nd-field">
                                         <label>Address</label>
-                                        <textarea wire:model.defer="nokAddress" placeholder="e.g. Chilenje South, Lusaka"></textarea>
+                                        <textarea wire:model="nokAddress" placeholder="e.g. Chilenje South, Lusaka"></textarea>
                                         @error('nokAddress') <div class="err">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
@@ -1327,7 +1327,7 @@
                     {{-- Label --}}
                     <div class="nd-field" style="margin-bottom:0.85rem;">
                         <label>Label / Nickname <span style="font-weight:400;color:var(--nd-faint);">(optional)</span></label>
-                        <input type="text" wire:model.defer="pmLabel" placeholder="e.g. My Salary Account, Airtel Money">
+                        <input type="text" wire:model="pmLabel" placeholder="e.g. My Salary Account, Airtel Money">
                         @error('pmLabel') <div class="err">{{ $message }}</div> @enderror
                     </div>
 
@@ -1335,30 +1335,30 @@
                         {{-- Bank Fields --}}
                         <div class="nd-field" style="margin-bottom:0.85rem;">
                             <label>Bank Name <span class="req">*</span></label>
-                            <input type="text" wire:model.defer="pmBankName" placeholder="e.g. Zanaco, FNB, Stanbic">
+                            <input type="text" wire:model="pmBankName" placeholder="e.g. Zanaco, FNB, Stanbic">
                             @error('pmBankName') <div class="err">{{ $message }}</div> @enderror
                         </div>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
                             <div class="nd-field" style="margin-bottom:0.85rem;">
                                 <label>Account Name <span class="req">*</span></label>
-                                <input type="text" wire:model.defer="pmAccountName" placeholder="John Banda">
+                                <input type="text" wire:model="pmAccountName" placeholder="John Banda">
                                 @error('pmAccountName') <div class="err">{{ $message }}</div> @enderror
                             </div>
                             <div class="nd-field" style="margin-bottom:0.85rem;">
                                 <label>Account Number <span class="req">*</span></label>
-                                <input type="text" wire:model.defer="pmAccountNumber" placeholder="0123456789">
+                                <input type="text" wire:model="pmAccountNumber" placeholder="0123456789">
                                 @error('pmAccountNumber') <div class="err">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
                             <div class="nd-field" style="margin-bottom:0.85rem;">
                                 <label>Branch Name</label>
-                                <input type="text" wire:model.defer="pmBranchName" placeholder="e.g. Cairo Road Branch">
+                                <input type="text" wire:model="pmBranchName" placeholder="e.g. Cairo Road Branch">
                                 @error('pmBranchName') <div class="err">{{ $message }}</div> @enderror
                             </div>
                             <div class="nd-field" style="margin-bottom:0.85rem;">
                                 <label>SWIFT Code</label>
-                                <input type="text" wire:model.defer="pmSwiftCode" placeholder="e.g.ABORZMLU">
+                                <input type="text" wire:model="pmSwiftCode" placeholder="e.g.ABORZMLU">
                                 @error('pmSwiftCode') <div class="err">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -1366,7 +1366,7 @@
                         {{-- Mobile Money Fields --}}
                         <div class="nd-field" style="margin-bottom:0.85rem;">
                             <label>Provider <span class="req">*</span></label>
-                            <select wire:model.defer="pmProvider">
+                            <select wire:model.live="pmProvider">
                                 <option value="">Select provider</option>
                                 <option value="Airtel Money">Airtel Money</option>
                                 <option value="MTN MoMo">MTN Mobile Money</option>
@@ -1378,12 +1378,12 @@
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
                             <div class="nd-field" style="margin-bottom:0.85rem;">
                                 <label>Mobile Number <span class="req">*</span></label>
-                                <input type="text" wire:model.defer="pmMobileNumber" placeholder="e.g. 0977 123 456">
+                                <input type="text" wire:model="pmMobileNumber" placeholder="e.g. 0977 123 456">
                                 @error('pmMobileNumber') <div class="err">{{ $message }}</div> @enderror
                             </div>
                             <div class="nd-field" style="margin-bottom:0.85rem;">
                                 <label>Registered Name <span class="req">*</span></label>
-                                <input type="text" wire:model.defer="pmRegisteredName" placeholder="John Banda">
+                                <input type="text" wire:model="pmRegisteredName" placeholder="John Banda">
                                 @error('pmRegisteredName') <div class="err">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -1393,7 +1393,7 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;align-items:end;">
                         <div class="nd-field" style="margin-bottom:0.85rem;">
                             <label>Currency</label>
-                            <select wire:model.defer="pmCurrency">
+                            <select wire:model.live="pmCurrency">
                                 <option value="ZMW">ZMW (Kwacha)</option>
                                 <option value="USD">USD (US Dollar)</option>
                                 <option value="EUR">EUR (Euro)</option>
@@ -1403,7 +1403,7 @@
                         </div>
                         <div class="nd-field" style="margin-bottom:0.85rem;">
                             <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-                                <input type="checkbox" wire:model.defer="pmIsPrimary" style="width:auto;cursor:pointer;">
+                                <input type="checkbox" wire:model="pmIsPrimary" style="width:auto;cursor:pointer;">
                                 <span style="text-transform:none;font-size:0.82rem;">Set as primary</span>
                             </label>
                         </div>
@@ -1435,17 +1435,17 @@
                 <div class="nd-modal-body">
                     <div class="nd-field" style="margin-bottom:0.85rem;">
                         <label>Current Password</label>
-                        <input type="password" wire:model.defer="currentPassword" placeholder="Enter current password">
+                        <input type="password" wire:model="currentPassword" placeholder="Enter current password">
                         @error('currentPassword') <div class="err">{{ $message }}</div> @enderror
                     </div>
                     <div class="nd-field" style="margin-bottom:0.85rem;">
                         <label>New Password</label>
-                        <input type="password" wire:model.defer="newPassword" placeholder="Min 8 characters">
+                        <input type="password" wire:model="newPassword" placeholder="Min 8 characters">
                         @error('newPassword') <div class="err">{{ $message }}</div> @enderror
                     </div>
                     <div class="nd-field" style="margin-bottom:0.85rem;">
                         <label>Confirm New Password</label>
-                        <input type="password" wire:model.defer="newPasswordConfirmation" placeholder="Re-enter new password">
+                        <input type="password" wire:model="newPasswordConfirmation" placeholder="Re-enter new password">
                         @error('newPasswordConfirmation') <div class="err">{{ $message }}</div> @enderror
                     </div>
                     <div style="display:flex;gap:0.5rem;margin-top:1rem;">

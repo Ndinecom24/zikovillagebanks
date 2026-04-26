@@ -340,7 +340,7 @@
                 <div class="ml-card-head">
                     <h3 class="ml-card-title"><i class="fas fa-list-ul"></i> All Members</h3>
                     <div class="ml-toolbar">
-                        <select wire:model="statusFilter" class="ml-select">
+                        <select wire:model.live="statusFilter" class="ml-select">
                             <option value="">All Statuses</option>
                             <option value="active">Active</option>
                             <option value="pending">Pending</option>
@@ -348,9 +348,9 @@
                         </select>
                         <div class="ml-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" wire:model.debounce.300ms="search" placeholder="Search members...">
+                            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search members...">
                         </div>
-                        <select wire:model="perPage" class="ml-select" style="width:70px;">
+                        <select wire:model.live="perPage" class="ml-select" style="width:70px;">
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="25">25</option>

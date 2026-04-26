@@ -250,7 +250,7 @@
             <div class="sd-filter-strip">
                 <div class="sd-filter-group">
                     <div class="sd-filter-label"><i class="fas fa-university"></i> Village Bank</div>
-                    <select wire:model="villageBankId" class="sd-input">
+                    <select wire:model.live="villageBankId" class="sd-input">
                         <option value="">All Village Banks</option>
                         @foreach ($this->villageBanks as $vb)
                             <option value="{{ $vb->id }}">{{ $vb->name }} ({{ $vb->code }})</option>
@@ -259,7 +259,7 @@
                 </div>
                 <div class="sd-filter-group">
                     <div class="sd-filter-label"><i class="fas fa-circle-notch"></i> Circle</div>
-                    <select wire:model="circleId" class="sd-input">
+                    <select wire:model.live="circleId" class="sd-input">
                         <option value="">-- Select Circle --</option>
                         @foreach ($circles as $c)
                             <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->members_count }} members)</option>
@@ -268,7 +268,7 @@
                 </div>
                 <div class="sd-filter-group">
                     <div class="sd-filter-label"><i class="fas fa-calendar-alt"></i> Active Month</div>
-                    <select wire:model="monthId" class="sd-input" {{ empty($circleId) ? 'disabled' : '' }}>
+                    <select wire:model.live="monthId" class="sd-input" {{ empty($circleId) ? 'disabled' : '' }}>
                         <option value="">-- Select Month --</option>
                         @foreach ($months as $mo)
                             <option value="{{ $mo->id }}">Month {{ $mo->month_number }} ({{ $mo->start_date->format('d M') }} - {{ $mo->end_date->format('d M') }})</option>
@@ -413,7 +413,7 @@
                                         </td>
                                         <td>
                                             <input type="number" step="{{ $shareUnitAmount }}" min="0" max="{{ $maxShareAmount }}"
-                                                wire:model.lazy="shares.{{ $m->id }}"
+                                                wire:model.blur="shares.{{ $m->id }}"
                                                 class="sd-amount-input {{ isset($shareErrors[$m->id]) ? 'sd-input-error' : '' }}" placeholder="0.00">
                                             @if (isset($shareErrors[$m->id]))
                                                 <div class="sd-share-error"><i class="fas fa-exclamation-circle"></i> {{ $shareErrors[$m->id] }}</div>
@@ -421,7 +421,7 @@
                                         </td>
                                         <td>
                                             <input type="number" step="0.01" min="0"
-                                                wire:model.lazy="insuranceAmounts.{{ $m->id }}"
+                                                wire:model.blur="insuranceAmounts.{{ $m->id }}"
                                                 class="sd-amount-input-ins" placeholder="0.00">
                                         </td>
                                         <td>
@@ -442,7 +442,7 @@
                                         <td>
                                             @if ($balTotal > 0)
                                                 <input type="number" step="0.01" min="0" max="{{ $balTotal }}"
-                                                    wire:model.lazy="repaymentAmounts.{{ $m->id }}"
+                                                    wire:model.blur="repaymentAmounts.{{ $m->id }}"
                                                     class="sd-amount-input-rep {{ isset($repaymentErrors[$m->id]) ? 'sd-input-error' : '' }}" placeholder="0.00">
                                                 @if (isset($repaymentErrors[$m->id]))
                                                     <div class="sd-share-error"><i class="fas fa-exclamation-circle"></i> {{ $repaymentErrors[$m->id] }}</div>
@@ -518,7 +518,7 @@
                         </p>
                         <div style="margin-bottom:1.25rem;">
                             <label class="sd-label">Type <span class="req">*</span></label>
-                            <select wire:model="configType" class="sd-input">
+                            <select wire:model.live="configType" class="sd-input">
                                 <option value="fixed">Fixed Amount</option>
                                 <option value="percentage">Percentage of Shares</option>
                             </select>
@@ -529,7 +529,7 @@
                                 {{ $configType === 'fixed' ? 'Amount (K)' : 'Percentage (%)' }}
                                 <span class="req">*</span>
                             </label>
-                            <input type="number" step="0.01" min="0" wire:model.defer="configValue"
+                            <input type="number" step="0.01" min="0" wire:model="configValue"
                                 class="sd-input" placeholder="{{ $configType === 'fixed' ? '0.00' : '0' }}">
                             @error('configValue') <div class="sd-error">{{ $message }}</div> @enderror
                             <div class="sd-hint">

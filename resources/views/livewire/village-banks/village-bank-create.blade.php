@@ -126,12 +126,12 @@
                         <div class="vc-row vc-row-8-4">
                             <div class="vc-field">
                                 <label class="vc-label">Bank Name <span class="req">*</span></label>
-                                <input type="text" wire:model.defer="name" class="vc-input" placeholder="e.g. Kafue Road Village Bank">
+                                <input type="text" wire:model="name" class="vc-input" placeholder="e.g. Kafue Road Village Bank">
                                 @error('name') <div class="vc-error">{{ $message }}</div> @enderror
                             </div>
                             <div class="vc-field">
                                 <label class="vc-label">Code <span class="req">*</span></label>
-                                <input type="text" wire:model.defer="code" class="vc-input" placeholder="e.g. KRVB" maxlength="20" style="text-transform:uppercase;">
+                                <input type="text" wire:model="code" class="vc-input" placeholder="e.g. KRVB" maxlength="20" style="text-transform:uppercase;">
                                 @error('code') <div class="vc-error">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -139,7 +139,7 @@
                         {{-- Description --}}
                         <div style="margin-bottom:1.15rem;">
                             <label class="vc-label">Description</label>
-                            <textarea wire:model.defer="description" class="vc-input" rows="3" placeholder="Brief description of the village bank..."></textarea>
+                            <textarea wire:model="description" class="vc-input" rows="3" placeholder="Brief description of the village bank..."></textarea>
                             @error('description') <div class="vc-error">{{ $message }}</div> @enderror
                         </div>
 
@@ -147,12 +147,12 @@
                         <div class="vc-row vc-row-2">
                             <div class="vc-field">
                                 <label class="vc-label">Email</label>
-                                <input type="email" wire:model.defer="email" class="vc-input" placeholder="bank@example.com">
+                                <input type="email" wire:model="email" class="vc-input" placeholder="bank@example.com">
                                 @error('email') <div class="vc-error">{{ $message }}</div> @enderror
                             </div>
                             <div class="vc-field">
                                 <label class="vc-label">Phone</label>
-                                <input type="text" wire:model.defer="phone" class="vc-input" placeholder="+260 97X XXX XXX">
+                                <input type="text" wire:model="phone" class="vc-input" placeholder="+260 97X XXX XXX">
                                 @error('phone') <div class="vc-error">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                         {{-- Address --}}
                         <div style="margin-bottom:1.15rem;">
                             <label class="vc-label">Address</label>
-                            <input type="text" wire:model.defer="address" class="vc-input" placeholder="Physical address">
+                            <input type="text" wire:model="address" class="vc-input" placeholder="Physical address">
                             @error('address') <div class="vc-error">{{ $message }}</div> @enderror
                         </div>
 
