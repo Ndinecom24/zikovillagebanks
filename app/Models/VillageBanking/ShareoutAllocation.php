@@ -5,10 +5,12 @@ namespace App\Models\VillageBanking;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ShareoutAllocation extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'shareout_allocations';
 

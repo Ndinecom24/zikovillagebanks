@@ -5,6 +5,7 @@ namespace App\Models\Subscription;
 use App\Models\VillageBanking\VillageBank;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use App\Traits\LogsActivity;
 
@@ -12,6 +13,7 @@ class License extends Model
 {
     use HasFactory;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $table = 'licenses';
 

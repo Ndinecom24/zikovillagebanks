@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Traits\ScopedToVillageBank;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\LogsActivity;
 
 class Circle extends Model
@@ -13,6 +14,7 @@ class Circle extends Model
     use HasFactory;
     use LogsActivity;
     use ScopedToVillageBank;
+    use SoftDeletes;
 
     public string $villageBankScopeTier = 'direct';
 

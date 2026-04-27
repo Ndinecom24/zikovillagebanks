@@ -122,13 +122,15 @@ class ApplicationReview extends Component
             $staffNo = $application->contact_staff_no ?: ('VB' . str_pad($villageBank->id, 4, '0', STR_PAD_LEFT));
             $user = User::where('username', $staffNo)->first();
 
+            $defaultPassword = Str::random(12);
+
             if (!$user) {
                 $user = User::create([
                     'name'             => $application->contact_name,
                     'username'         => $staffNo,
                     'email'            => $application->contact_email,
                     'mobile_no'        => $application->contact_phone,
-                    'password'         => Hash::make('password123'),
+                    'password'         => Hash::make($defaultPassword),
                     'password_changed' => false,
                     'status'           => 'active',
                     'uuid'             => Str::uuid(),
@@ -176,7 +178,7 @@ class ApplicationReview extends Component
                 if ($application->bank_email && $application->bank_email !== $application->contact_email) {
                     $mail->cc($application->bank_email);
                 }
-                $mail->send(new ApplicationApproved($application, $license->license_key, $staffNo));
+                $mail->send(new ApplicationApproved($application, $license->license_key, $staffNo, $defaultPassword));
             } catch (\Exception $e) {
                 // Log but don't block the approval
                 \Log::warning('Failed to send approval email: ' . $e->getMessage());

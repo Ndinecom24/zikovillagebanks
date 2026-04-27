@@ -4,10 +4,11 @@ namespace App\Mail\Subscription;
 
 use App\Models\Subscription\BankApplication;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ApplicationReceived extends Mailable
+class ApplicationReceived extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

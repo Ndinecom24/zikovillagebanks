@@ -2,33 +2,24 @@
 
 namespace App\Services;
 
-
-use App\Models\Contract\Contracts;
-use App\Models\CreditNote;
-use App\Models\Invoices\Invoice;
-use App\Models\Statuses;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 
 class HelperService
 {
-
-    public static function createInvoice($name, $sequenceName, $newFormat, $zeros)
+    /**
+     * Generate a formatted reference number using a database sequence.
+     *
+     * @param  string  $prefix   Prefix for the reference (e.g. "INV")
+     * @param  string  $table    Table name to count from (used as sequence source)
+     * @param  string  $suffix   Suffix appended after the number
+     * @param  int     $padding  Number of zero-padded digits
+     * @return string
+     */
+    public static function generateReference(string $prefix, string $table, string $suffix = '', int $padding = 6): string
     {
+        // Use a safe parameterised count instead of raw SQL concatenation
+        $nextValue = DB::table($table)->count() + 1;
 
-        // Fetch the next value from the Oracle sequence
-        $sequenceValue = DB::selectOne('SELECT ' . $sequenceName . ' as seq FROM dual');
-
-        // Extract the sequence number
-        $nextValue = $sequenceValue->seq;
-
-        // Generate the reference number
-        $referenceNumber = $name . str_pad($nextValue, $zeros, '0', STR_PAD_LEFT) . $newFormat;
-
-        // Output or use the reference number
-        return $referenceNumber;
+        return $prefix . str_pad($nextValue, $padding, '0', STR_PAD_LEFT) . $suffix;
     }
-
-
 }
