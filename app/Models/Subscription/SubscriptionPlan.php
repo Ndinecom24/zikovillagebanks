@@ -80,7 +80,7 @@ class SubscriptionPlan extends Model
     {
         if (! $this->hasActiveDiscount()) {
             return 0;
-        }
+        }  
 
         if ($this->discount_type === 'percentage') {
             return round($this->price * ($this->discount_value / 100), 2);

@@ -22,6 +22,15 @@ return new class extends Migration
 
     public function up(): void
     {
+        // Fix non-nullable timestamp columns in licenses before altering
+        // (MySQL strict mode rejects implicit 0000-00-00 defaults on ALTER)
+        if (Schema::hasTable('licenses')) {
+            Schema::table('licenses', function (Blueprint $t) {
+                $t->timestamp('issued_at')->nullable()->change();
+                $t->timestamp('expires_at')->nullable()->change();
+            });
+        }
+
         foreach ($this->tables as $table) {
             if (Schema::hasTable($table) && ! Schema::hasColumn($table, 'deleted_at')) {
                 Schema::table($table, function (Blueprint $t) {

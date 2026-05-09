@@ -80,8 +80,8 @@ return new class extends Migration
             $table->foreignId('subscription_id')->constrained()->cascadeOnDelete();
             $table->string('license_key', 40)->unique();                    // e.g. "VB-XXXX-XXXX-XXXX"
             $table->enum('status', ['active', 'expired', 'revoked'])->default('active');
-            $table->timestamp('issued_at');
-            $table->timestamp('expires_at');
+            $table->timestamp('issued_at')->nullable();
+            $table->timestamp('expires_at')->nullable();
             $table->timestamp('revoked_at')->nullable();
             $table->text('revoke_reason')->nullable();
             $table->timestamps();
