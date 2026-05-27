@@ -184,7 +184,7 @@
                                             <div style="font-size:.72rem;color:var(--ar-faint);">{{ $app->created_at->diffForHumans() }}</div>
                                         </td>
                                         <td>
-                                            <button type="button" wire:click.prevent="viewDetail({{ $app->id }})" class="ar-act" title="View Details">
+                                            <button type="button" wire:click="viewDetail({{ $app->id }})" class="ar-act" title="View Details">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </td>
@@ -212,7 +212,7 @@
                     <div class="ar-detail-card">
                         <div class="ar-detail-header">
                             <h3><i class="fas fa-eye"></i> Application Details</h3>
-                            <button type="button" wire:click.prevent="closeDetailModal" class="ar-detail-back"><i class="fas fa-arrow-left"></i> Back to List</button>
+                            <button type="button" wire:click="closeDetailModal" class="ar-detail-back"><i class="fas fa-arrow-left"></i> Back to List</button>
                         </div>
 
                         <div class="ar-detail-body">
@@ -299,8 +299,8 @@
                                         @error('adminRemarks') <div class="ar-field-error">{{ $message }}</div> @enderror
                                     </div>
                                     <div style="display:flex;gap:.5rem;justify-content:flex-end;">
-                                        <button type="button" wire:click.prevent="cancelReviewAction" class="ar-btn ar-btn-cancel">Cancel</button>
-                                        <button type="button" wire:click.prevent="submitReview" class="ar-btn {{ $reviewAction === 'approve' ? 'ar-btn-approve' : 'ar-btn-reject' }}">
+                                        <button type="button" wire:click="cancelReviewAction" class="ar-btn ar-btn-cancel">Cancel</button>
+                                        <button type="button" wire:click="submitReview" class="ar-btn {{ $reviewAction === 'approve' ? 'ar-btn-approve' : 'ar-btn-reject' }}">
                                             <i class="fas fa-{{ $reviewAction === 'approve' ? 'check' : 'times' }}"></i>
                                             {{ $reviewAction === 'approve' ? 'Confirm Approve' : 'Confirm Reject' }}
                                         </button>
@@ -312,13 +312,13 @@
                         {{-- Footer --}}
                         @if ($detailApp->status === 'pending' && !$reviewAction)
                             <div class="ar-detail-footer">
-                                <button type="button" wire:click.prevent="closeDetailModal" class="ar-btn ar-btn-cancel"><i class="fas fa-arrow-left"></i> Back</button>
-                                <button type="button" wire:click.prevent="startReview('approve')" class="ar-btn ar-btn-approve"><i class="fas fa-check-circle"></i> Approve</button>
-                                <button type="button" wire:click.prevent="startReview('reject')" class="ar-btn ar-btn-reject"><i class="fas fa-times-circle"></i> Reject</button>
+                                <button type="button" wire:click="closeDetailModal" class="ar-btn ar-btn-cancel"><i class="fas fa-arrow-left"></i> Back</button>
+                                <button type="button" wire:click="startReview('approve')" class="ar-btn ar-btn-approve"><i class="fas fa-check-circle"></i> Approve</button>
+                                <button type="button" wire:click="startReview('reject')" class="ar-btn ar-btn-reject"><i class="fas fa-times-circle"></i> Reject</button>
                             </div>
                         @elseif (!$reviewAction)
                             <div class="ar-detail-footer">
-                                <button type="button" wire:click.prevent="closeDetailModal" class="ar-btn ar-btn-cancel"><i class="fas fa-arrow-left"></i> Back to List</button>
+                                <button type="button" wire:click="closeDetailModal" class="ar-btn ar-btn-cancel"><i class="fas fa-arrow-left"></i> Back to List</button>
                             </div>
                         @endif
                     </div>
